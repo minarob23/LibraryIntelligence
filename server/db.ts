@@ -1,15 +1,24 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
-import * as schema from "@shared/schema";
 
-neonConfig.webSocketConstructor = ws;
+// In-memory storage implementation
+class InMemoryDB {
+  private data: Map<string, any[]>;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+  constructor() {
+    this.data = new Map();
+    this.data.set('books', []);
+    this.data.set('borrowers', []);
+    this.data.set('librarians', []);
+    this.data.set('borrowings', []);
+    this.data.set('research', []);
+  }
+
+  getCollection(name: string) {
+    return this.data.get(name) || [];
+  }
+
+  setCollection(name: string, data: any[]) {
+    this.data.set(name, data);
+  }
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+export const db = new InMemoryDB();
