@@ -14,12 +14,12 @@ const MembershipPage = () => {
         <h2 className="text-2xl font-bold">Membership Registration</h2>
         <p className="text-gray-600 dark:text-gray-400">Join our library community</p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <MembershipForm />
         </div>
-        
+
         <div className="space-y-6">
           <Card>
             <CardContent className="p-6">
@@ -103,27 +103,21 @@ const MembershipPage = () => {
               </ul>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold mb-4">Library Hours</h3>
               <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Monday - Friday</span>
-                  <span>8:00 AM - 9:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>11:00 AM - 5:00 PM</span>
-                </div>
+                {Object.entries(JSON.parse(localStorage.getItem('libraryHours') || '{}')).map(([day, hours]: [string, any]) => (
+                  <div key={day} className="flex justify-between">
+                    <span className="capitalize">{day}</span>
+                    <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-0 overflow-hidden">
               <div className="grid grid-cols-2 gap-1">

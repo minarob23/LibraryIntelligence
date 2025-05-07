@@ -134,4 +134,8 @@ export type InsertBorrower = z.infer<typeof insertBorrowerSchema>;
 export type Borrowing = typeof borrowings.$inferSelect;
 export type InsertBorrowing = z.infer<typeof insertBorrowingSchema>;
 
+export type LibraryHours = {
+  [key: string]: { open: string; close: string };
+};
+
 export type MembershipApplication = z.infer<typeof membershipApplicationSchema>;

@@ -136,6 +136,52 @@ const Settings = () => {
     }
   };
 
+  const handleExportData = () => {
+    const exportData = {
+      libraryHours,
+      books,
+      research,
+      borrowers,
+      librarians
+    };
+    
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'library-data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target?.result as string);
+          if (importedData.libraryHours) {
+            setLibraryHours(importedData.libraryHours);
+          }
+          toast({
+            title: "Data imported",
+            description: "Library hours have been updated.",
+          });
+        } catch (error) {
+          toast({
+            title: "Import failed",
+            description: "Failed to import data. Please check the file format.",
+            variant: "destructive",
+          });
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const handleSavePreferences = () => {
     // Apply font size setting to document
     document.documentElement.classList.remove('text-sm', 'text-base', 'text-lg');
@@ -150,6 +196,9 @@ const Settings = () => {
         document.documentElement.classList.add('text-lg');
         break;
     }
+
+    // Save library hours to localStorage for membership page
+    localStorage.setItem('libraryHours', JSON.stringify(libraryHours));
     
     toast({
       title: "Preferences saved",
