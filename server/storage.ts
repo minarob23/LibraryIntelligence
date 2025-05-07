@@ -4,8 +4,15 @@ import {
   InsertLibrarian, Librarian, 
   InsertBorrower, Borrower, 
   InsertBorrowing, Borrowing, 
-  MembershipApplication
+  MembershipApplication,
+  books,
+  researchPapers,
+  librarians,
+  borrowers,
+  borrowings
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, like, desc, asc, and, gt, sql, count } from "drizzle-orm";
 
 // Storage interface
 export interface IStorage {
@@ -56,6 +63,238 @@ export interface IStorage {
   
   // Membership application
   createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian>;
+}
+
+// Database storage implementation
+export class DatabaseStorage implements IStorage {
+  // Book CRUD
+  async getBooks(): Promise<Book[]> {
+    return db.select().from(books).orderBy(books.name);
+  }
+
+  async getBook(id: number): Promise<Book | undefined> {
+    const result = await db.select().from(books).where(eq(books.id, id));
+    return result[0];
+  }
+
+  async createBook(book: InsertBook): Promise<Book> {
+    const result = await db.insert(books).values(book).returning();
+    return result[0];
+  }
+
+  async updateBook(id: number, book: Partial<InsertBook>): Promise<Book | undefined> {
+    const result = await db.update(books).set(book).where(eq(books.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteBook(id: number): Promise<boolean> {
+    const result = await db.delete(books).where(eq(books.id, id)).returning();
+    return result.length > 0;
+  }
+
+  // Research Paper CRUD
+  async getResearchPapers(): Promise<ResearchPaper[]> {
+    return db.select().from(researchPapers).orderBy(researchPapers.name);
+  }
+
+  async getResearchPaper(id: number): Promise<ResearchPaper | undefined> {
+    const result = await db.select().from(researchPapers).where(eq(researchPapers.id, id));
+    return result[0];
+  }
+
+  async createResearchPaper(research: InsertResearchPaper): Promise<ResearchPaper> {
+    const result = await db.insert(researchPapers).values(research).returning();
+    return result[0];
+  }
+
+  async updateResearchPaper(id: number, research: Partial<InsertResearchPaper>): Promise<ResearchPaper | undefined> {
+    const result = await db.update(researchPapers).set(research).where(eq(researchPapers.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteResearchPaper(id: number): Promise<boolean> {
+    const result = await db.delete(researchPapers).where(eq(researchPapers.id, id)).returning();
+    return result.length > 0;
+  }
+
+  // Librarian CRUD
+  async getLibrarians(): Promise<Librarian[]> {
+    return db.select().from(librarians).orderBy(librarians.name);
+  }
+
+  async getLibrarian(id: number): Promise<Librarian | undefined> {
+    const result = await db.select().from(librarians).where(eq(librarians.id, id));
+    return result[0];
+  }
+
+  async createLibrarian(librarian: InsertLibrarian): Promise<Librarian> {
+    const result = await db.insert(librarians).values(librarian).returning();
+    return result[0];
+  }
+
+  async updateLibrarian(id: number, librarian: Partial<InsertLibrarian>): Promise<Librarian | undefined> {
+    const result = await db.update(librarians).set(librarian).where(eq(librarians.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteLibrarian(id: number): Promise<boolean> {
+    const result = await db.delete(librarians).where(eq(librarians.id, id)).returning();
+    return result.length > 0;
+  }
+
+  // Borrower CRUD
+  async getBorrowers(): Promise<Borrower[]> {
+    return db.select().from(borrowers).orderBy(borrowers.name);
+  }
+
+  async getBorrower(id: number): Promise<Borrower | undefined> {
+    const result = await db.select().from(borrowers).where(eq(borrowers.id, id));
+    return result[0];
+  }
+
+  async getBorrowersByCategory(category: string): Promise<Borrower[]> {
+    return db.select().from(borrowers).where(eq(borrowers.category, category));
+  }
+
+  async createBorrower(borrower: InsertBorrower): Promise<Borrower> {
+    const result = await db.insert(borrowers).values(borrower).returning();
+    return result[0];
+  }
+
+  async updateBorrower(id: number, borrower: Partial<InsertBorrower>): Promise<Borrower | undefined> {
+    const result = await db.update(borrowers).set(borrower).where(eq(borrowers.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteBorrower(id: number): Promise<boolean> {
+    const result = await db.delete(borrowers).where(eq(borrowers.id, id)).returning();
+    return result.length > 0;
+  }
+
+  // Borrowing CRUD
+  async getBorrowings(): Promise<Borrowing[]> {
+    return db.select().from(borrowings).orderBy(desc(borrowings.createdAt));
+  }
+
+  async getBorrowing(id: number): Promise<Borrowing | undefined> {
+    const result = await db.select().from(borrowings).where(eq(borrowings.id, id));
+    return result[0];
+  }
+
+  async createBorrowing(borrowing: InsertBorrowing): Promise<Borrowing> {
+    const result = await db.insert(borrowings).values(borrowing).returning();
+    return result[0];
+  }
+
+  async updateBorrowing(id: number, borrowing: Partial<InsertBorrowing>): Promise<Borrowing | undefined> {
+    const result = await db.update(borrowings).set(borrowing).where(eq(borrowings.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteBorrowing(id: number): Promise<boolean> {
+    const result = await db.delete(borrowings).where(eq(borrowings.id, id)).returning();
+    return result.length > 0;
+  }
+
+  // Get borrowed books/research for a borrower
+  async getBorrowingsByBorrowerId(borrowerId: number): Promise<Borrowing[]> {
+    return db.select().from(borrowings).where(eq(borrowings.borrowerId, borrowerId));
+  }
+
+  // Dashboard data
+  async getMostBorrowedBooks(limit: number = 5): Promise<any[]> {
+    const result = await db.select({
+      bookId: borrowings.bookId,
+      borrowCount: count(borrowings.id)
+    })
+    .from(borrowings)
+    .where(sql`${borrowings.bookId} IS NOT NULL`)
+    .groupBy(borrowings.bookId)
+    .orderBy(desc(count(borrowings.id)))
+    .limit(limit);
+    
+    // Get book details for each result
+    const booksWithCounts = await Promise.all(
+      result.map(async ({ bookId, borrowCount }) => {
+        const bookResult = await db.select().from(books).where(eq(books.id, bookId || 0));
+        const book = bookResult[0];
+        return book ? { ...book, borrowCount } : null;
+      })
+    );
+    
+    return booksWithCounts.filter(Boolean) as any[];
+  }
+
+  async getPopularBooks(limit: number = 4): Promise<any[]> {
+    // For our demo, we'll just return some books
+    const result = await db.select().from(books).limit(limit);
+    return result.map(book => ({ ...book, rating: 4.5 }));
+  }
+
+  async getTopBorrowers(limit: number = 5): Promise<any[]> {
+    const result = await db.select({
+      borrowerId: borrowings.borrowerId,
+      borrowCount: count(borrowings.id)
+    })
+    .from(borrowings)
+    .groupBy(borrowings.borrowerId)
+    .orderBy(desc(count(borrowings.id)))
+    .limit(limit);
+    
+    // Get borrower details for each result
+    const borrowersWithCounts = await Promise.all(
+      result.map(async ({ borrowerId, borrowCount }) => {
+        const borrowerResult = await db.select().from(borrowers).where(eq(borrowers.id, borrowerId));
+        const borrower = borrowerResult[0];
+        return borrower ? { ...borrower, borrowCount } : null;
+      })
+    );
+    
+    return borrowersWithCounts.filter(Boolean) as any[];
+  }
+
+  async getBorrowerDistribution(): Promise<any> {
+    const categories = ['primary', 'middle', 'secondary', 'university', 'graduate'];
+    const distribution: Record<string, number> = {};
+    
+    for (const category of categories) {
+      const count = await db.select({ value: count() }).from(borrowers).where(eq(borrowers.category, category));
+      distribution[category] = count[0]?.value || 0;
+    }
+    
+    return distribution;
+  }
+
+  async createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian> {
+    if (application.stage === 'librarian') {
+      const librarian: InsertLibrarian = {
+        name: application.name,
+        phone: application.phone,
+        email: application.email,
+        appointmentDate: new Date().toISOString().split('T')[0],
+        membershipStatus: 'active'
+      };
+      return this.createLibrarian(librarian);
+    } else {
+      const borrower: InsertBorrower = {
+        name: application.name,
+        phone: application.phone,
+        email: application.email,
+        category: application.stage as any,
+        joinedDate: new Date().toISOString().split('T')[0],
+        expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        address: application.address,
+        churchName: application.churchName,
+        fatherOfConfession: application.fatherOfConfession,
+        studies: application.studies || '',
+        job: application.job || '',
+        additionalPhone: application.additionalPhone || '',
+        hobbies: application.hobbies || '',
+        favoriteBooks: application.favoriteBooks || ''
+      };
+      return this.createBorrower(borrower);
+    }
+  }
 }
 
 // Memory storage implementation
@@ -342,4 +581,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
