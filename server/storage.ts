@@ -254,15 +254,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getBorrowerDistribution(): Promise<any> {
-    const categories = ['primary', 'middle', 'secondary', 'university', 'graduate'];
-    const distribution: Record<string, number> = {};
-    
-    for (const category of categories) {
-      const count = await db.select({ value: count() }).from(borrowers).where(eq(borrowers.category, category));
-      distribution[category] = count[0]?.value || 0;
-    }
-    
-    return distribution;
+    const result = await db
+      .select({
+        primary: sql`count(case when ${borrowers.category} = 'primary' then 1 end)`,
+        middle: sql`count(case when ${borrowers.category} = 'middle' then 1 end)`,
+        secondary: sql`count(case when ${borrowers.category} = 'secondary' then 1 end)`,
+        university: sql`count(case when ${borrowers.category} = 'university' then 1 end)`,
+        graduate: sql`count(case when ${borrowers.category} = 'graduate' then 1 end)`
+      })
+      .from(borrowers);
+
+    return result[0];
   }
 
   async createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian> {
