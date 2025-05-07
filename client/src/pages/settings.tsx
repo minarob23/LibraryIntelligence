@@ -30,31 +30,18 @@ const Settings = () => {
     thursday: { open: '09:00', close: '18:00' },
     friday: { open: '09:00', close: '18:00' },
     saturday: { open: '10:00', close: '16:00' },
-    sunday: { open: 'Closed', close: 'Closed' },
+    sunday: { open: '09:00', close: '17:00' },
   });
 
-  // Fetch data for export
-  const { data: books } = useQuery({ 
-    queryKey: ['/api/books'],
-  });
-  
-  const { data: research } = useQuery({ 
-    queryKey: ['/api/research'],
-  });
-  
-  const { data: borrowers } = useQuery({ 
-    queryKey: ['/api/borrowers'],
-  });
-  
-  const { data: librarians } = useQuery({ 
-    queryKey: ['/api/librarians'],
-  });
+  // Queries for export data
+  const { data: books } = useQuery({ queryKey: ['/api/books'] });
+  const { data: research } = useQuery({ queryKey: ['/api/research'] });
+  const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
+  const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
+    if (file) setSelectedFile(file);
   };
 
   const handleImport = () => {
@@ -66,9 +53,6 @@ const Settings = () => {
       });
       return;
     }
-
-    // Here you would process the file for import
-    // This is a simplified simulation for demonstration
     setTimeout(() => {
       toast({
         title: "Import successful",
@@ -98,8 +82,6 @@ const Settings = () => {
       case 'librarians':
         dataToExport = Array.isArray(librarians) ? librarians : [];
         fileName = 'librarians_export';
-        break;
-      default:
         break;
     }
 
@@ -137,7 +119,6 @@ const Settings = () => {
   };
 
   const handleSavePreferences = () => {
-    // Apply font size setting to document
     document.documentElement.classList.remove('text-sm', 'text-base', 'text-lg');
     switch (fontSizePreference) {
       case 'small':
@@ -150,13 +131,12 @@ const Settings = () => {
         document.documentElement.classList.add('text-lg');
         break;
     }
-    
     toast({
-      title: "Preferences saved",
-      description: "Your settings have been updated."
+      title: "Settings saved",
+      description: "Your preferences have been updated successfully."
     });
   };
-  
+
   const handleLibraryHoursChange = (day: string, type: 'open' | 'close', value: string) => {
     setLibraryHours(prev => ({
       ...prev,
@@ -173,11 +153,10 @@ const Settings = () => {
         <h2 className="text-2xl font-bold">Settings</h2>
         <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          {/* Data Export/Import */}
-          <Card>
+        {/* Data Export/Import and Library Hours side by side */}
+        <Card>
           <CardHeader>
             <CardTitle>Data Export/Import</CardTitle>
           </CardHeader>
@@ -187,172 +166,93 @@ const Settings = () => {
                 <TabsTrigger value="export">Export</TabsTrigger>
                 <TabsTrigger value="import">Import</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="export" className="space-y-6">
-                <div>
-                  <h4 className="text-md font-medium mb-2">Export Data</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                {/* Export content */}
+                <div className="space-y-3">
+                  {['books', 'research', 'borrowers', 'librarians'].map((type) => (
+                    <div key={type} className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm">Books Collection</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all books data</p>
+                        <p className="text-sm capitalize">{type}</p>
+                        <p className="text-xs text-gray-500">Export all {type} data</p>
                       </div>
                       <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           className="flex items-center"
-                          onClick={() => handleExport('books', 'excel')}
+                          onClick={() => handleExport(type, 'excel')}
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <Button
+                          variant="outline"
+                          size="sm"
                           className="flex items-center"
-                          onClick={() => handleExport('books', 'notion')}
+                          onClick={() => handleExport(type, 'notion')}
                         >
                           <FileText className="mr-1 h-4 w-4" /> Notion
                         </Button>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm">Research Papers</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all research papers data</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('research', 'excel')}
-                        >
-                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('research', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm">Borrowers</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all borrowers data</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('borrowers', 'excel')}
-                        >
-                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('borrowers', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm">Librarians</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all librarians data</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('librarians', 'excel')}
-                        >
-                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('librarians', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="import">
-                <div>
-                  <h4 className="text-md font-medium mb-2">Import Data</h4>
-                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
-                    <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop files or click to upload</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">Supported formats: .xlsx, .csv, .json</p>
-                    
-                    <div className="flex flex-col space-y-4">
-                      <input
-                        type="file"
-                        id="file-upload"
-                        className="hidden"
-                        accept=".xlsx,.csv,.json"
-                        onChange={handleFileUpload}
-                      />
-                      <Button 
-                        variant="outline"
-                        className="bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/30"
-                        onClick={() => document.getElementById('file-upload')?.click()}
-                      >
-                        <Upload className="mr-2 h-4 w-4" /> Select Files
-                      </Button>
-                      
-                      {selectedFile && (
-                        <div className="mt-4 flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    Drag & drop files or click to upload
+                  </p>
+                  <p className="text-xs text-gray-500 mb-4">
+                    Supported formats: .xlsx, .csv, .json
+                  </p>
+                  <div className="space-y-4">
+                    <input
+                      type="file"
+                      id="file-upload"
+                      className="hidden"
+                      accept=".xlsx,.csv,.json"
+                      onChange={handleFileUpload}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => document.getElementById('file-upload')?.click()}
+                    >
+                      <Upload className="mr-2 h-4 w-4" /> Select Files
+                    </Button>
+                    {selectedFile && (
+                      <>
+                        <div className="mt-4 flex items-center justify-between p-2 border rounded">
                           <div className="flex items-center">
                             <FileText className="h-5 w-5 text-gray-500 mr-2" />
-                            <span className="text-sm truncate max-w-[200px]">{selectedFile.name}</span>
+                            <span className="text-sm truncate max-w-[200px]">
+                              {selectedFile.name}
+                            </span>
                           </div>
-                          <Button 
-                            size="sm" 
-                            onClick={() => setSelectedFile(null)}
+                          <Button
+                            size="sm"
                             variant="ghost"
+                            onClick={() => setSelectedFile(null)}
                           >
                             Remove
                           </Button>
                         </div>
-                      )}
-                      
-                      {selectedFile && (
-                        <Button 
-                          className="mt-4"
-                          onClick={handleImport}
-                        >
+                        <Button onClick={handleImport}>
                           <Download className="mr-2 h-4 w-4" /> Import Data
                         </Button>
-                      )}
-                    </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
-        
+
         {/* System Preferences */}
-        <Card className="mt-6">
+        <Card>
           <CardHeader>
             <CardTitle>System Preferences</CardTitle>
           </CardHeader>
@@ -364,22 +264,20 @@ const Settings = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Dark Mode</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Switch between light and dark themes</p>
+                      <p className="text-xs text-gray-500">Switch between light and dark themes</p>
                     </div>
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={(checked) => {
                         setIsDarkMode(checked);
                         document.documentElement.classList.toggle('dark', checked);
-                        localStorage.theme = checked ? 'dark' : 'light';
                       }}
                     />
                   </div>
-                  
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Compact View</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Reduce padding in tables and lists</p>
+                      <p className="text-xs text-gray-500">Reduce padding in tables and lists</p>
                     </div>
                     <Switch
                       checked={isCompactView}
@@ -388,36 +286,34 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="text-md font-medium mb-3">Notifications</h4>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Email Notifications</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive emails for important updates</p>
+                      <p className="text-xs text-gray-500">Receive emails for important updates</p>
                     </div>
                     <Switch
                       checked={emailNotifications}
                       onCheckedChange={setEmailNotifications}
                     />
                   </div>
-                  
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Expiry Reminders</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for membership expirations</p>
+                      <p className="text-xs text-gray-500">Notifications for membership expirations</p>
                     </div>
                     <Switch
                       checked={expiryReminders}
                       onCheckedChange={setExpiryReminders}
                     />
                   </div>
-                  
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Overdue Items</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Alerts for overdue books and materials</p>
+                      <p className="text-xs text-gray-500">Alerts for overdue books and materials</p>
                     </div>
                     <Switch
                       checked={overdueItems}
@@ -426,25 +322,24 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="text-md font-medium mb-3">Data Management</h4>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Automatic Backups</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Regularly backup system data</p>
+                      <p className="text-xs text-gray-500">Regularly backup system data</p>
                     </div>
                     <Switch
                       checked={autoBackup}
                       onCheckedChange={setAutoBackup}
                     />
                   </div>
-                  
                   <div>
-                    <Label htmlFor="backup-frequency" className="text-sm">Backup Frequency</Label>
-                    <Select 
-                      value={backupFrequency} 
+                    <Label htmlFor="backup-frequency">Backup Frequency</Label>
+                    <Select
+                      value={backupFrequency}
                       onValueChange={setBackupFrequency}
                       disabled={!autoBackup}
                     >
@@ -460,15 +355,14 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
-              {/* Font Size Settings */}
-              <div className="mt-6">
+
+              <div>
                 <h4 className="text-md font-medium mb-3">Text Size</h4>
                 <div className="flex items-center space-x-4">
                   <Type className="h-5 w-5 text-gray-500" />
                   <div className="flex-1">
-                    <Select 
-                      value={fontSizePreference} 
+                    <Select
+                      value={fontSizePreference}
                       onValueChange={setFontSizePreference}
                     >
                       <SelectTrigger>
@@ -483,16 +377,14 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="pt-6">
-                <Button onClick={handleSavePreferences}>
-                  Save Preferences
-                </Button>
-              </div>
+
+              <Button onClick={handleSavePreferences}>
+                Save Preferences
+              </Button>
             </div>
           </CardContent>
         </Card>
-        
+
         {/* Library Hours */}
         <Card className="col-span-full">
           <CardHeader className="flex flex-row items-center justify-between">
