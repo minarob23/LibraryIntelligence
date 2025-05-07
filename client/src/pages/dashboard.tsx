@@ -7,6 +7,15 @@ import TopBorrowers from '@/components/dashboard/top-borrowers';
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
+  
+  // Auto refresh every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshData();
+    }, 30000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const refreshData = () => {
     queryClient.invalidateQueries({ queryKey: ['/api/books'] });
