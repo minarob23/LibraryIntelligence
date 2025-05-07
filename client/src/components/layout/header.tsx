@@ -81,6 +81,10 @@ const UserMenu = () => {
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" defaultValue="admin@library.com" />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Update Password</Label>
+              <Input id="password" type="password" placeholder="Enter new password" />
+            </div>
           </div>
           <DialogFooter>
             <Button type="submit">Save changes</Button>
