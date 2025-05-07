@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Menu, User } from 'lucide-react';
+import { useLocation } from 'wouter';
 import ThemeToggle from './theme-toggle';
 import NotificationDropdown from './notification-dropdown';
 import { 
