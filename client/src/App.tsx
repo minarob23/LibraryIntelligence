@@ -18,10 +18,31 @@ import Layout from "@/components/layout/sidebar";
 import Login from "@/pages/login";
 
 function Router() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('isAuthenticated'));
+
+  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    const [, setLocation] = useLocation();
+    
+    useEffect(() => {
+      if (!isAuthenticated) {
+        setLocation('/login');
+      }
+    }, [isAuthenticated]);
+
+    return isAuthenticated ? <>{children}</> : null;
+  };
+
   return (
     <Switch>
-      <Route path="/login" component={Login} />
+      <Route path="/login">
+        {() => <Login onLogin={() => {
+          localStorage.setItem('isAuthenticated', 'true');
+          setIsAuthenticated(true);
+        }} />}
+      </Route>
       <Route path="/dashboard">
+        {() => (
+          <PrivateRoute>
         {() => (
           <Layout>
             <Dashboard />
@@ -30,7 +51,8 @@ function Router() {
       </Route>
       <Route path="/books">
         {() => (
-          <Layout>
+          <PrivateRoute>
+            <Layout>
             <Books />
           </Layout>
         )}

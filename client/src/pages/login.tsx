@@ -7,7 +7,11 @@ import { useTheme } from '@/lib/hooks/use-theme';
 import { useToast } from '@/hooks/use-toast';
 import { Sun, Moon } from 'lucide-react';
 
-const Login = () => {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+const Login = ({ onLogin }: LoginProps) => {
   const [, setLocation] = useLocation();
   const { theme, setTheme } = useTheme();
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -37,6 +41,7 @@ const Login = () => {
         className: "bg-green-500 text-white",
         duration: 3000
       });
+      onLogin();
       setTimeout(() => setLocation('/dashboard'), 1000);
     } else {
       toast({
