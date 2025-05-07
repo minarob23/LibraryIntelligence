@@ -22,8 +22,8 @@ interface SidebarItemProps {
 const SidebarItem = ({ icon, label, to, active }: SidebarItemProps) => {
   return (
     <Link href={to}>
-      <a
-        className={`flex items-center px-4 py-2 text-sm font-medium rounded-md mx-2 transition duration-150 ease-in-out
+      <div
+        className={`flex items-center px-4 py-2 text-sm font-medium rounded-md mx-2 transition duration-150 ease-in-out cursor-pointer
           ${active 
             ? 'bg-primary text-white' 
             : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
@@ -31,7 +31,7 @@ const SidebarItem = ({ icon, label, to, active }: SidebarItemProps) => {
       >
         <span className="mr-3 text-lg">{icon}</span>
         {label}
-      </a>
+      </div>
     </Link>
   );
 };
