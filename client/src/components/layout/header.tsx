@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Menu, User } from 'lucide-react';
+import { Menu, User, Settings, LogOut } from 'lucide-react';
+import { useNavigate } from 'wouter';
 import ThemeToggle from './theme-toggle';
 import NotificationDropdown from './notification-dropdown';
+import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
   DropdownMenuTrigger,
