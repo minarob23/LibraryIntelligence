@@ -14,22 +14,23 @@ import Borrowing from "@/pages/borrowing";
 import Membership from "@/pages/membership";
 import Settings from "@/pages/settings";
 import Layout from "@/components/layout/sidebar";
+import LoginPage from "@/pages/login"; // Import the LoginPage component
+
 
 function Router() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" component={Dashboard} />
-        <Route path="/books" component={Books} />
-        <Route path="/research" component={Research} />
-        <Route path="/borrowers" component={Borrowers} />
-        <Route path="/librarians" component={Librarians} />
-        <Route path="/borrowing" component={Borrowing} />
-        <Route path="/membership" component={Membership} />
-        <Route path="/settings" component={Settings} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <Switch>
+      <Route path="/login" component={LoginPage} /> {/* Added login route */}
+      <Route path="/" component={() => <Layout><Dashboard /></Layout>} />
+      <Route path="/books" component={Books} />
+      <Route path="/research" component={Research} />
+      <Route path="/borrowers" component={Borrowers} />
+      <Route path="/librarians" component={Librarians} />
+      <Route path="/borrowing" component={Borrowing} />
+      <Route path="/membership" component={Membership} />
+      <Route path="/settings" component={Settings} />
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
