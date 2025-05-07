@@ -9,6 +9,7 @@ interface StatsCardProps {
   change?: {
     value: number;
     trend: 'up' | 'down';
+    text: string;
   };
   iconColor?: string;
 }
@@ -39,7 +40,7 @@ const StatsCard = ({
             ) : (
               <ArrowDown className="inline-block mr-1" size={16} />
             )}
-            {Math.abs(change.value)}% since last month
+            {Math.abs(change.value)}% {change.text}
           </div>
         )}
       </CardContent>
