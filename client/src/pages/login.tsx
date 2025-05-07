@@ -34,7 +34,8 @@ const Login = () => {
       toast({
         title: "Success!",
         description: "Logged in successfully",
-        className: "bg-green-500 text-white"
+        className: "bg-green-500 text-white",
+        duration: 3000
       });
       setTimeout(() => setLocation('/dashboard'), 1000);
     } else {
