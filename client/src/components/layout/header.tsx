@@ -89,15 +89,15 @@ const UserMenu = () => {
 
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <button className="flex items-center space-x-2 focus:outline-none">
+          <div className="flex items-center space-x-2 cursor-pointer">
             <Avatar>
-              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full" />
+              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full object-cover" />
               <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
                 A
               </AvatarFallback>
             </Avatar>
             <span className="hidden md:inline-block font-medium">Admin</span>
-          </button>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
