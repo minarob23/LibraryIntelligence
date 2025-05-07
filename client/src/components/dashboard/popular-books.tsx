@@ -66,9 +66,13 @@ const PopularBooks = () => {
             books?.map((book: any) => (
               <div key={book.id} className="flex space-x-3">
                 <img 
-                  className="w-16 h-24 object-cover rounded" 
-                  src={book.coverImage} 
-                  alt={`Cover of ${book.name}`} 
+                  className="w-16 h-24 object-cover rounded shadow-sm border border-gray-200 dark:border-gray-700" 
+                  src={book.coverImage || '/placeholder-cover.jpg'} 
+                  alt={`Cover of ${book.name}`}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = coverImage1;
+                  }}
                 />
                 <div>
                   <h4 className="font-medium">{book.name}</h4>
