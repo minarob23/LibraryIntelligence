@@ -15,7 +15,16 @@ const PopularBooks = () => {
   
   const { data: books, isLoading } = useQuery({
     queryKey: ['/api/dashboard/popular-books'],
-    refetchInterval: 30000 // Refresh every 30 seconds
+    select: (data) => {
+      // Map local SVGs to the cover images
+      return data.map((book: any, index: number) => {
+        const coverImages = [coverImage1, coverImage2, coverImage3, coverImage4];
+        return {
+          ...book,
+          coverImage: coverImages[index % coverImages.length]
+        };
+      });
+    }
   });
 
   const handleFilterChange = (value: string) => {
