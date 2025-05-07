@@ -37,7 +37,11 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
             onClick={toggleSidebar}
             className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
           >
-            <Menu size={20} />
+            <div className="flex flex-col gap-1">
+              <div className="w-5 h-0.5 bg-current"></div>
+              <div className="w-5 h-0.5 bg-current"></div>
+              <div className="w-5 h-0.5 bg-current"></div>
+            </div>
           </button>
           <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Library Management System</h1>
         </div>
