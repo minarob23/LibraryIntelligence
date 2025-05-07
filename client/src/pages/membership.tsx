@@ -9,8 +9,8 @@ import student2 from '@/assets/student-images/student2.svg';
 
 const MembershipPage = () => {
   return (
-    <div>
-      <div className="mb-6">
+    <div className="animate-fade-in">
+      <div className="mb-6 animate-slide-up">
         <h2 className="text-2xl font-bold">Membership Registration</h2>
         <p className="text-gray-600 dark:text-gray-400">Join our library community</p>
       </div>

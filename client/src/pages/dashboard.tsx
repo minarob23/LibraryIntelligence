@@ -67,7 +67,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="mb-6">
+      <div className="mb-6 animate-slide-up">
         <h2 className="text-2xl font-bold">Dashboard</h2>
         <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
       </div>

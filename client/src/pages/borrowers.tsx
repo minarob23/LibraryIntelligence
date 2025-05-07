@@ -222,8 +222,8 @@ const BorrowersPage = () => {
   ];
 
   return (
-    <div>
-      <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center">
+    <div className="animate-fade-in">
+      <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center animate-slide-up">
         <div>
           <h2 className="text-2xl font-bold">Borrowers Management</h2>
           <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>

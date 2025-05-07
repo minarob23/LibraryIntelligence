@@ -218,8 +218,8 @@ const Settings = () => {
   };
 
   return (
-    <div>
-      <div className="mb-6">
+    <div className="animate-fade-in">
+      <div className="mb-6 animate-slide-up">
         <h2 className="text-2xl font-bold">Settings</h2>
         <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
       </div>

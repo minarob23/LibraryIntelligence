@@ -140,8 +140,8 @@ const LibrariansPage = () => {
   ];
 
   return (
-    <div>
-      <div className="mb-6 flex justify-between items-center">
+    <div className="animate-fade-in">
+      <div className="mb-6 flex justify-between items-center animate-slide-up">
         <div>
           <h2 className="text-2xl font-bold">Librarians Management</h2>
           <p className="text-gray-600 dark:text-gray-400">Browse and manage library staff</p>
