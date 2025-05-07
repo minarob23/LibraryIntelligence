@@ -21,10 +21,14 @@ import { useLocation } from "wouter";
 
 function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('isAuthenticated'));
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    const authState = localStorage.getItem('isAuthenticated');
+    setIsAuthenticated(!!authState);
+  }, []);
 
   const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-    const [, setLocation] = useLocation();
-    
     useEffect(() => {
       if (!isAuthenticated) {
         setLocation('/login');
@@ -42,7 +46,7 @@ function Router() {
           setIsAuthenticated(true);
         }} />}
       </Route>
-      <Route path="/dashboard">
+      <Route path="/">
         {() => (
           <PrivateRoute>
             <Layout>
