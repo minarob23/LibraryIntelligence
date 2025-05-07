@@ -32,8 +32,6 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
         
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          <NotificationDropdown />
-          
           {/* User Menu */}
           <UserMenu />
         </div>
@@ -44,35 +42,63 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
 
 const UserMenu = () => {
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [, navigate] = useLocation();
   
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <button className="flex items-center space-x-2 focus:outline-none">
-          <Avatar>
-            <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
-              A
-            </AvatarFallback>
-          </Avatar>
-          <span className="hidden md:inline-block font-medium">Admin</span>
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem>
-          <User size={16} className="mr-2" />
-          Your Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings size={16} className="mr-2" />
-          Settings
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut size={16} className="mr-2" />
-          Sign out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Profile Settings</DialogTitle>
+            <DialogDescription>
+              Update your profile information here.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" defaultValue="Admin" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" defaultValue="admin@library.com" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center space-x-2 focus:outline-none">
+            <Avatar>
+              <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
+                A
+              </AvatarFallback>
+            </Avatar>
+            <span className="hidden md:inline-block font-medium">Admin</span>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
+            <User size={16} className="mr-2" />
+            Your Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => navigate('/settings')}>
+            <Settings size={16} className="mr-2" />
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <LogOut size={16} className="mr-2" />
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 

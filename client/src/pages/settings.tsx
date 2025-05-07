@@ -175,8 +175,8 @@ const Settings = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Data Export/Import */}
-        <Card>
+        {/* Data Export/Import with System Preferences */}
+        <Card className="md:col-span-1">
           <CardHeader>
             <CardTitle>Data Export/Import</CardTitle>
           </CardHeader>

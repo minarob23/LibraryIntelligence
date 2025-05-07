@@ -6,6 +6,17 @@ import PopularBooks from '@/components/dashboard/popular-books';
 import TopBorrowers from '@/components/dashboard/top-borrowers';
 
 const Dashboard = () => {
+  const queryClient = useQueryClient();
+
+  const refreshData = () => {
+    queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/research'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+  };
+
   // Fetch dashboard statistics
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
