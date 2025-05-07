@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BookOpen, Users, Repeat, FileText } from 'lucide-react';
 import StatsCard from '@/components/dashboard/stats-card';
 import ChartContainer from '@/components/dashboard/chart-container';
