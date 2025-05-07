@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/lib/hooks/use-theme';
+import { useToast } from '@/hooks/use-toast';
 import { Sun, Moon } from 'lucide-react';
 
 const Login = () => {
@@ -12,13 +13,35 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { toast } = useToast();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Basic email validation
+    if (!email.includes('@')) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Email",
+        description: "Please enter a valid email address with @ symbol"
+      });
+      return;
+    }
+
     // Check default password
     if (password === '123') {
-      setLocation('/dashboard');
+      toast({
+        title: "Success!",
+        description: "Logged in successfully",
+        className: "bg-green-500 text-white"
+      });
+      setTimeout(() => setLocation('/dashboard'), 1000);
     } else {
-      alert('Invalid credentials');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Invalid email or password"
+      });
     }
   };
 
