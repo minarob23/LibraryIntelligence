@@ -164,12 +164,9 @@ const Settings = () => {
       reader.onload = (e) => {
         try {
           const importedData = JSON.parse(e.target?.result as string);
-          if (importedData.libraryHours) {
-            setLibraryHours(importedData.libraryHours);
-          }
           toast({
             title: "Data imported",
-            description: "Library hours have been updated.",
+            description: "Data has been imported successfully.",
           });
         } catch (error) {
           toast({
