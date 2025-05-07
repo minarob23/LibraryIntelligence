@@ -87,6 +87,7 @@ const UserMenu = () => {
         <DropdownMenuTrigger asChild>
           <button className="flex items-center space-x-2 focus:outline-none">
             <Avatar>
+              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full" />
               <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
                 A
               </AvatarFallback>
