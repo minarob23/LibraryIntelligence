@@ -53,7 +53,7 @@ const Layout = ({ children }: LayoutProps) => {
         <aside
           className={`${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 z-10 w-64 md:relative md:translate-x-0 bg-sidebar dark:bg-sidebar-background shadow-md transition-transform duration-300 ease-in-out flex flex-col`}
+          } fixed inset-y-0 z-10 w-64 md:relative md:translate-x-0 bg-white dark:bg-gray-800 shadow-md transition-transform duration-300 ease-in-out flex flex-col`}
           style={{ marginTop: '60px', height: 'calc(100vh - 60px)' }}
         >
           <div className="p-4 border-b dark:border-gray-700">

@@ -34,8 +34,9 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
       <div className="flex items-center justify-between px-4 py-3 h-full">
         <div className="flex items-center">
           <button
-            onClick={toggleSidebar}
-            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
+            onClick={() => toggleSidebar()}
+            aria-label="Toggle Sidebar"
+            className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none cursor-pointer"
           >
             <div className="flex flex-col gap-1.5">
               <div className="w-6 h-0.5 bg-current transition-all"></div>
