@@ -78,7 +78,7 @@ const Dashboard = () => {
           title="Total Books"
           value={books?.length || 0}
           icon={<BookOpen className="h-5 w-5 text-blue-500 dark:text-blue-400" />}
-          change={{ value: 12, trend: 'up', text: 'since last month' }}
+          change={{ value: books?.length || 0, trend: books?.length > 0 ? 'up' : 'down', text: 'total' }}
           iconColor="text-blue-500 dark:text-blue-400"
         />
         
@@ -86,7 +86,7 @@ const Dashboard = () => {
           title="Active Borrowers"
           value={borrowers?.length || 0}
           icon={<Users className="h-5 w-5 text-green-500 dark:text-green-400" />}
-          change={{ value: 8, trend: 'up', text: 'since last month' }}
+          change={{ value: borrowers?.length || 0, trend: borrowers?.length > 0 ? 'up' : 'down', text: 'total' }}
           iconColor="text-green-500 dark:text-green-400"
         />
         
@@ -94,7 +94,7 @@ const Dashboard = () => {
           title="Books Borrowed"
           value={borrowings?.length || 0}
           icon={<Repeat className="h-5 w-5 text-purple-500 dark:text-purple-400" />}
-          change={{ value: 5, trend: 'up', text: 'since last month' }}
+          change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
           iconColor="text-purple-500 dark:text-purple-400"
         />
         
@@ -102,7 +102,7 @@ const Dashboard = () => {
           title="Research Papers"
           value={research?.length || 0}
           icon={<FileText className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />}
-          change={{ value: 3, trend: 'up', text: 'since last month' }}
+          change={{ value: research?.length || 0, trend: research?.length > 0 ? 'up' : 'down', text: 'total' }}
           iconColor="text-yellow-500 dark:text-yellow-400"
         />
       </div>
