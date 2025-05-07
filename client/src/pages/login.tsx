@@ -9,7 +9,8 @@ import { Sun, Moon } from 'lucide-react';
 
 const Login = () => {
   const [, setLocation] = useLocation();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -48,7 +49,12 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="absolute top-4 right-4">
-        <Button variant="ghost" size="icon" onClick={toggleTheme}>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={toggleTheme}
+          className="hover:bg-accent"
+        >
           {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
       </div>
