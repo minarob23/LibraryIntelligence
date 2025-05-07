@@ -1,0 +1,441 @@
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { Upload, Download, FileText, FileSpreadsheet } from 'lucide-react';
+import { exportToExcel, exportToNotion } from '@/lib/utils/export';
+import { useQuery } from '@tanstack/react-query';
+
+const Settings = () => {
+  const { toast } = useToast();
+  const [backupFrequency, setBackupFrequency] = useState('daily');
+  const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
+  const [isCompactView, setIsCompactView] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [expiryReminders, setExpiryReminders] = useState(true);
+  const [overdueItems, setOverdueItems] = useState(true);
+  const [autoBackup, setAutoBackup] = useState(true);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Fetch data for export
+  const { data: books } = useQuery({ 
+    queryKey: ['/api/books'],
+  });
+  
+  const { data: research } = useQuery({ 
+    queryKey: ['/api/research'],
+  });
+  
+  const { data: borrowers } = useQuery({ 
+    queryKey: ['/api/borrowers'],
+  });
+  
+  const { data: librarians } = useQuery({ 
+    queryKey: ['/api/librarians'],
+  });
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleImport = () => {
+    if (!selectedFile) {
+      toast({
+        title: "No file selected",
+        description: "Please select a file to import",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Here you would process the file for import
+    // This is a simplified simulation for demonstration
+    setTimeout(() => {
+      toast({
+        title: "Import successful",
+        description: `Data from ${selectedFile.name} has been imported.`
+      });
+      setSelectedFile(null);
+    }, 1000);
+  };
+
+  const handleExport = (dataType: string, format: 'excel' | 'notion') => {
+    let dataToExport: any[] = [];
+    let fileName = '';
+
+    switch (dataType) {
+      case 'books':
+        dataToExport = books || [];
+        fileName = 'books_export';
+        break;
+      case 'research':
+        dataToExport = research || [];
+        fileName = 'research_papers_export';
+        break;
+      case 'borrowers':
+        dataToExport = borrowers || [];
+        fileName = 'borrowers_export';
+        break;
+      case 'librarians':
+        dataToExport = librarians || [];
+        fileName = 'librarians_export';
+        break;
+      default:
+        break;
+    }
+
+    if (dataToExport.length === 0) {
+      toast({
+        title: "No data available",
+        description: "There is no data to export",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (format === 'excel') {
+      exportToExcel(dataToExport, fileName);
+      toast({
+        title: "Export successful",
+        description: `Data exported to Excel as ${fileName}.xlsx`
+      });
+    } else {
+      exportToNotion(dataToExport)
+        .then(() => {
+          toast({
+            title: "Export successful",
+            description: "Data exported to Notion"
+          });
+        })
+        .catch(error => {
+          toast({
+            title: "Export failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        });
+    }
+  };
+
+  const handleSavePreferences = () => {
+    toast({
+      title: "Preferences saved",
+      description: "Your settings have been updated."
+    });
+  };
+
+  return (
+    <div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Settings</h2>
+        <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Data Export/Import */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Export/Import</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="export">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger value="export">Export</TabsTrigger>
+                <TabsTrigger value="import">Import</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="export" className="space-y-6">
+                <div>
+                  <h4 className="text-md font-medium mb-2">Export Data</h4>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm">Books Collection</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all books data</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('books', 'excel')}
+                        >
+                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('books', 'notion')}
+                        >
+                          <FileText className="mr-1 h-4 w-4" /> Notion
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm">Research Papers</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all research papers data</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('research', 'excel')}
+                        >
+                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('research', 'notion')}
+                        >
+                          <FileText className="mr-1 h-4 w-4" /> Notion
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm">Borrowers</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all borrowers data</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('borrowers', 'excel')}
+                        >
+                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('borrowers', 'notion')}
+                        >
+                          <FileText className="mr-1 h-4 w-4" /> Notion
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm">Librarians</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all librarians data</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('librarians', 'excel')}
+                        >
+                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('librarians', 'notion')}
+                        >
+                          <FileText className="mr-1 h-4 w-4" /> Notion
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="import">
+                <div>
+                  <h4 className="text-md font-medium mb-2">Import Data</h4>
+                  <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
+                    <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop files or click to upload</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">Supported formats: .xlsx, .csv, .json</p>
+                    
+                    <div className="flex flex-col space-y-4">
+                      <input
+                        type="file"
+                        id="file-upload"
+                        className="hidden"
+                        accept=".xlsx,.csv,.json"
+                        onChange={handleFileUpload}
+                      />
+                      <Button 
+                        variant="outline"
+                        className="bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/30"
+                        onClick={() => document.getElementById('file-upload')?.click()}
+                      >
+                        <Upload className="mr-2 h-4 w-4" /> Select Files
+                      </Button>
+                      
+                      {selectedFile && (
+                        <div className="mt-4 flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded">
+                          <div className="flex items-center">
+                            <FileText className="h-5 w-5 text-gray-500 mr-2" />
+                            <span className="text-sm truncate max-w-[200px]">{selectedFile.name}</span>
+                          </div>
+                          <Button 
+                            size="sm" 
+                            onClick={() => setSelectedFile(null)}
+                            variant="ghost"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      )}
+                      
+                      {selectedFile && (
+                        <Button 
+                          className="mt-4"
+                          onClick={handleImport}
+                        >
+                          <Download className="mr-2 h-4 w-4" /> Import Data
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+        
+        {/* System Preferences */}
+        <Card>
+          <CardHeader>
+            <CardTitle>System Preferences</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-md font-medium mb-3">Appearance</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Dark Mode</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Switch between light and dark themes</p>
+                    </div>
+                    <Switch
+                      checked={isDarkMode}
+                      onCheckedChange={(checked) => {
+                        setIsDarkMode(checked);
+                        document.documentElement.classList.toggle('dark', checked);
+                        localStorage.theme = checked ? 'dark' : 'light';
+                      }}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Compact View</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Reduce padding in tables and lists</p>
+                    </div>
+                    <Switch
+                      checked={isCompactView}
+                      onCheckedChange={setIsCompactView}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-md font-medium mb-3">Notifications</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Email Notifications</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive emails for important updates</p>
+                    </div>
+                    <Switch
+                      checked={emailNotifications}
+                      onCheckedChange={setEmailNotifications}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Expiry Reminders</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for membership expirations</p>
+                    </div>
+                    <Switch
+                      checked={expiryReminders}
+                      onCheckedChange={setExpiryReminders}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Overdue Items</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Alerts for overdue books and materials</p>
+                    </div>
+                    <Switch
+                      checked={overdueItems}
+                      onCheckedChange={setOverdueItems}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-md font-medium mb-3">Data Management</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Automatic Backups</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Regularly backup system data</p>
+                    </div>
+                    <Switch
+                      checked={autoBackup}
+                      onCheckedChange={setAutoBackup}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="backup-frequency" className="text-sm">Backup Frequency</Label>
+                    <Select 
+                      value={backupFrequency} 
+                      onValueChange={setBackupFrequency}
+                      disabled={!autoBackup}
+                    >
+                      <SelectTrigger id="backup-frequency" className="mt-1">
+                        <SelectValue placeholder="Select frequency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-2">
+                <Button onClick={handleSavePreferences}>
+                  Save Preferences
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;

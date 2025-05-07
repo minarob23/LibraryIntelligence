@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300">
+  <rect width="200" height="300" fill="#EC4899" />
+  <rect x="10" y="10" width="180" height="280" fill="#DB2777" />
+  <rect x="20" y="20" width="160" height="260" fill="#BE185D" />
+  <text x="100" y="120" font-family="Arial" font-size="24" fill="white" text-anchor="middle">The</text>
+  <text x="100" y="150" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Alchemist</text>
+  <text x="100" y="200" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Paulo Coelho</text>
+  <rect x="40" y="220" width="120" height="2" fill="white" />
+</svg>

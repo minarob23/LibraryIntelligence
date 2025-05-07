@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#F8FAFC" />
+  
+  <!-- Background - table/desk -->
+  <rect x="50" y="200" width="300" height="20" fill="#64748B" />
+  <rect x="60" y="220" width="280" height="60" fill="#475569" />
+  
+  <!-- Book -->
+  <rect x="150" y="120" width="100" height="10" fill="#64748B" />
+  <rect x="150" y="130" width="100" height="60" fill="#FEF3C7" />
+  <rect x="150" y="130" width="50" height="60" fill="#FEF9C3" />
+  <line x1="200" y1="130" x2="200" y2="190" stroke="#64748B" stroke-width="1" />
+  
+  <!-- Student figure - simple outline -->
+  <circle cx="250" cy="80" r="30" fill="#FBCFE8" />
+  <rect x="240" y="110" width="20" height="40" fill="#FBCFE8" />
+  <rect x="210" y="150" width="20" height="40" stroke="#FBCFE8" fill="#FBCFE8" />
+  <rect x="270" y="150" width="20" height="40" stroke="#FBCFE8" fill="#FBCFE8" />
+  
+  <!-- Arms reaching to book -->
+  <rect x="190" y="130" width="50" height="10" fill="#FBCFE8" />
+  <rect x="180" y="140" width="10" height="25" fill="#FBCFE8" />
+  
+  <!-- Chair -->
+  <rect x="220" y="190" width="60" height="10" fill="#94A3B8" />
+  <rect x="225" y="200" width="10" height="20" fill="#94A3B8" />
+  <rect x="265" y="200" width="10" height="20" fill="#94A3B8" />
+  
+  <!-- Table lamp -->
+  <rect x="95" y="150" width="30" height="50" fill="#94A3B8" />
+  <circle cx="110" cy="140" r="20" fill="#FCD34D" fill-opacity="0.5" />
+  <circle cx="110" cy="140" r="10" fill="#FBBF24" />
+  
+  <text x="200" y="280" font-family="Arial" font-size="12" fill="#1E293B" text-anchor="middle">Student Reading</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#F8FAFC" />
+  
+  <!-- Background - library study area -->
+  <rect x="0" y="0" width="400" height="300" fill="#F1F5F9" />
+  <rect x="0" y="220" width="400" height="80" fill="#94A3B8" />
+  
+  <!-- Study table -->
+  <rect x="50" y="150" width="300" height="10" fill="#64748B" />
+  <rect x="60" y="160" width="10" height="60" fill="#64748B" />
+  <rect x="330" y="160" width="10" height="60" fill="#64748B" />
+  
+  <!-- Books on table -->
+  <rect x="80" y="120" width="60" height="30" fill="#3B82F6" />
+  <rect x="90" y="110" width="40" height="10" fill="#2563EB" />
+  
+  <rect x="160" y="120" width="60" height="30" fill="#EC4899" />
+  <rect x="170" y="110" width="40" height="10" fill="#DB2777" />
+  
+  <rect x="240" y="120" width="60" height="30" fill="#8B5CF6" />
+  <rect x="250" y="110" width="40" height="10" fill="#7C3AED" />
+  
+  <!-- Students - simplified figures -->
+  <!-- Student 1 -->
+  <circle cx="100" cy="70" r="20" fill="#FEF3C7" />
+  <rect x="90" y="90" width="20" height="30" fill="#FEF3C7" />
+  <rect x="85" y="120" width="8" height="25" fill="#FEF3C7" />
+  <rect x="107" y="120" width="8" height="25" fill="#FEF3C7" />
+  
+  <!-- Student 2 -->
+  <circle cx="200" cy="70" r="20" fill="#DBEAFE" />
+  <rect x="190" y="90" width="20" height="30" fill="#DBEAFE" />
+  <rect x="185" y="120" width="8" height="25" fill="#DBEAFE" />
+  <rect x="207" y="120" width="8" height="25" fill="#DBEAFE" />
+  
+  <!-- Student 3 -->
+  <circle cx="300" cy="70" r="20" fill="#FCE7F3" />
+  <rect x="290" y="90" width="20" height="30" fill="#FCE7F3" />
+  <rect x="285" y="120" width="8" height="25" fill="#FCE7F3" />
+  <rect x="307" y="120" width="8" height="25" fill="#FCE7F3" />
+  
+  <!-- Chairs -->
+  <rect x="80" y="150" width="40" height="5" fill="#475569" />
+  <rect x="90" y="155" width="20" height="30" fill="#475569" />
+  
+  <rect x="180" y="150" width="40" height="5" fill="#475569" />
+  <rect x="190" y="155" width="20" height="30" fill="#475569" />
+  
+  <rect x="280" y="150" width="40" height="5" fill="#475569" />
+  <rect x="290" y="155" width="20" height="30" fill="#475569" />
+  
+  <text x="200" y="280" font-family="Arial" font-size="12" fill="#1E293B" text-anchor="middle">Students Studying</text>
+</svg>
