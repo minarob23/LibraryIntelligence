@@ -42,18 +42,22 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [location] = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header sidebarOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <Header sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside
           className={`${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 z-10 w-64 md:relative md:translate-x-0 bg-white dark:bg-gray-800 shadow-md transition-transform duration-300 ease-in-out flex flex-col`}
+          } fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-md transition-transform duration-300 ease-in-out flex flex-col md:relative md:translate-x-0`}
           style={{ marginTop: '60px', height: 'calc(100vh - 60px)' }}
         >
           <div className="p-4 border-b dark:border-gray-700">
