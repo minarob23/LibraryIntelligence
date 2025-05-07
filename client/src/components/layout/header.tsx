@@ -37,11 +37,7 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
             onClick={toggleSidebar}
             className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
           >
-            <div className="flex flex-col gap-1">
-              <div className="w-5 h-0.5 bg-current"></div>
-              <div className="w-5 h-0.5 bg-current"></div>
-              <div className="w-5 h-0.5 bg-current"></div>
-            </div>
+            <Menu size={20} />
           </button>
           <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Library Management System</h1>
         </div>
@@ -89,15 +85,15 @@ const UserMenu = () => {
 
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <div className="flex items-center space-x-2 cursor-pointer">
+          <button className="flex items-center space-x-2 focus:outline-none">
             <Avatar>
-              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full object-cover" />
+              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full" />
               <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
                 A
               </AvatarFallback>
             </Avatar>
             <span className="hidden md:inline-block font-medium">Admin</span>
-          </div>
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
