@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { queryClient } from '@/lib/queryClient';
+import ImageUpload from '@/components/ui/image-upload';
 
 // Extend the schema to add validation messages
 const researchSchema = insertResearchPaperSchema.extend({
@@ -27,13 +28,13 @@ const researchSchema = insertResearchPaperSchema.extend({
   researchCode: z.string().min(2, 'Research code must be at least 2 characters'),
   copies: z.number().min(1, 'Number of copies must be at least 1'),
   description: z.string().optional(),
-  coverImage: z.string().url('Please provide a valid image URL'),
+  coverImage: z.string().min(1, 'Cover image is required'),
 });
 
 type ResearchFormValues = z.infer<typeof researchSchema>;
 
 interface ResearchFormProps {
-  research?: ResearchFormValues;
+  research?: ResearchFormValues & { id?: number };
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -180,9 +181,12 @@ const ResearchForm = ({ research, onSuccess, onCancel }: ResearchFormProps) => {
                 name="coverImage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cover Image URL</FormLabel>
+                    <FormLabel>Cover Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter image URL" {...field} />
+                      <ImageUpload
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

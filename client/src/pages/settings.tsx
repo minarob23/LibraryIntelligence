@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Download, FileText, FileSpreadsheet } from 'lucide-react';
+import { Upload, Download, FileText, FileSpreadsheet, Clock, Type } from 'lucide-react';
 import { exportToExcel, exportToNotion } from '@/lib/utils/export';
 import { useQuery } from '@tanstack/react-query';
 
@@ -21,6 +21,16 @@ const Settings = () => {
   const [overdueItems, setOverdueItems] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fontSizePreference, setFontSizePreference] = useState('medium');
+  const [libraryHours, setLibraryHours] = useState({
+    monday: { open: '09:00', close: '18:00' },
+    tuesday: { open: '09:00', close: '18:00' },
+    wednesday: { open: '09:00', close: '18:00' },
+    thursday: { open: '09:00', close: '18:00' },
+    friday: { open: '09:00', close: '18:00' },
+    saturday: { open: '10:00', close: '16:00' },
+    sunday: { open: 'Closed', close: 'Closed' },
+  });
 
   // Fetch data for export
   const { data: books } = useQuery({ 
@@ -126,10 +136,34 @@ const Settings = () => {
   };
 
   const handleSavePreferences = () => {
+    // Apply font size setting to document
+    document.documentElement.classList.remove('text-sm', 'text-base', 'text-lg');
+    switch (fontSizePreference) {
+      case 'small':
+        document.documentElement.classList.add('text-sm');
+        break;
+      case 'medium':
+        document.documentElement.classList.add('text-base');
+        break;
+      case 'large':
+        document.documentElement.classList.add('text-lg');
+        break;
+    }
+    
     toast({
       title: "Preferences saved",
       description: "Your settings have been updated."
     });
+  };
+  
+  const handleLibraryHoursChange = (day: string, type: 'open' | 'close', value: string) => {
+    setLibraryHours(prev => ({
+      ...prev,
+      [day]: {
+        ...prev[day as keyof typeof prev],
+        [type]: value
+      }
+    }));
   };
 
   return (
