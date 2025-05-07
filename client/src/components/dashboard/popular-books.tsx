@@ -15,7 +15,9 @@ const PopularBooks = () => {
   
   const { data: books, isLoading } = useQuery({
     queryKey: ['/api/dashboard/popular-books'],
-    refetchInterval: 30000
+    refetchInterval: 30000,
+    staleTime: 0,
+    cacheTime: 0
   });
 
   const handleFilterChange = (value: string) => {
