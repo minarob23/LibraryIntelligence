@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const Settings = () => {
   const { toast } = useToast();
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const [isCompactView, setIsCompactView] = useState(false);
@@ -224,7 +225,143 @@ const Settings = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Data Export/Import with System Preferences */}
+        {/* Profile Settings */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile Settings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex flex-col items-center space-y-3">
+                <div className="relative w-24 h-24">
+                  <img
+                    src={profileImage || 'https://github.com/shadcn.png'}
+                    alt="Profile"
+                    className="rounded-full w-full h-full object-cover"
+                  />
+                  <label
+                    htmlFor="profile-upload"
+                    className="absolute bottom-0 right-0 bg-primary text-primary-foreground p-1 rounded-full cursor-pointer hover:bg-primary/90"
+                  >
+                    <Upload className="h-4 w-4" />
+                  </label>
+                  <input
+                    id="profile-upload"
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                          setProfileImage(e.target?.result as string);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </div>
+                <Button variant="outline" size="sm" onClick={() => setProfileImage(null)}>
+                  Remove Photo
+                </Button>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="display-name">Display Name</Label>
+                <Input id="display-name" placeholder="Your name" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="your@email.com" />
+              </div>
+              <Button onClick={() => toast({ title: "Profile updated" })}>
+                Save Profile
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Library Hours */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Library Hours</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {Object.entries(libraryHours).map(([day, hours]) => (
+                <div key={day} className="flex justify-between text-sm">
+                  <span className="font-medium capitalize">{day}</span>
+                  <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
+                </div>
+              ))}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="mt-4 w-full">Edit Hours</Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Edit Library Hours</DialogTitle>
+                    <DialogDescription>
+                      Set the opening and closing hours for each day of the week.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    {Object.entries(libraryHours).map(([day, hours]) => (
+                      <div key={day} className="grid grid-cols-[1fr,2fr,2fr,auto] gap-4 items-center">
+                        <div className="font-medium capitalize">{day}</div>
+                        <div>
+                          <Label htmlFor={`${day}-open`} className="text-xs mb-1 block">Opening Time</Label>
+                          <Input
+                            id={`${day}-open`}
+                            type="time"
+                            value={hours.open !== 'Closed' ? hours.open : ''}
+                            disabled={hours.open === 'Closed'}
+                            onChange={(e) => handleLibraryHoursChange(day, 'open', e.target.value || 'Closed')}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`${day}-close`} className="text-xs mb-1 block">Closing Time</Label>
+                          <Input
+                            id={`${day}-close`}
+                            type="time"
+                            value={hours.close !== 'Closed' ? hours.close : ''}
+                            disabled={hours.close === 'Closed'}
+                            onChange={(e) => handleLibraryHoursChange(day, 'close', e.target.value || 'Closed')}
+                          />
+                        </div>
+                        <div className="flex items-end">
+                          <Button
+                            variant={hours.open === 'Closed' ? "destructive" : "outline"}
+                            size="sm"
+                            className="mb-[2px]"
+                            onClick={() => {
+                              if (hours.open === 'Closed') {
+                                handleLibraryHoursChange(day, 'open', '09:00');
+                                handleLibraryHoursChange(day, 'close', '17:00');
+                              } else {
+                                handleLibraryHoursChange(day, 'open', 'Closed');
+                                handleLibraryHoursChange(day, 'close', 'Closed');
+                              }
+                            }}
+                          >
+                            {hours.open === 'Closed' ? 'Open Day' : 'Close Day'}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={handleSavePreferences}>
+                      Save Changes
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Data Export/Import */}
         <Card className="md:col-span-1">
           <CardHeader>
             <CardTitle>Data Export/Import</CardTitle>
