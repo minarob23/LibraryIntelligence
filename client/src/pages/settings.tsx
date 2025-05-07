@@ -83,19 +83,19 @@ const Settings = () => {
 
     switch (dataType) {
       case 'books':
-        dataToExport = books || [];
+        dataToExport = Array.isArray(books) ? books : [];
         fileName = 'books_export';
         break;
       case 'research':
-        dataToExport = research || [];
+        dataToExport = Array.isArray(research) ? research : [];
         fileName = 'research_papers_export';
         break;
       case 'borrowers':
-        dataToExport = borrowers || [];
+        dataToExport = Array.isArray(borrowers) ? borrowers : [];
         fileName = 'borrowers_export';
         break;
       case 'librarians':
-        dataToExport = librarians || [];
+        dataToExport = Array.isArray(librarians) ? librarians : [];
         fileName = 'librarians_export';
         break;
       default:
@@ -459,9 +459,79 @@ const Settings = () => {
                 </div>
               </div>
               
-              <div className="pt-2">
+              {/* Font Size Settings */}
+              <div className="mt-6">
+                <h4 className="text-md font-medium mb-3">Text Size</h4>
+                <div className="flex items-center space-x-4">
+                  <Type className="h-5 w-5 text-gray-500" />
+                  <div className="flex-1">
+                    <Select 
+                      value={fontSizePreference} 
+                      onValueChange={setFontSizePreference}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select text size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="small">Small</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="large">Large</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-6">
                 <Button onClick={handleSavePreferences}>
                   Save Preferences
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Library Hours */}
+        <Card className="col-span-full">
+          <CardHeader className="flex flex-row items-center">
+            <CardTitle>
+              <div className="flex items-center">
+                <Clock className="mr-2 h-5 w-5" />
+                Library Hours
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {Object.entries(libraryHours).map(([day, hours]) => (
+                <div key={day} className="grid grid-cols-3 gap-4 items-center">
+                  <div className="font-medium capitalize">{day}</div>
+                  <div>
+                    <Label htmlFor={`${day}-open`} className="text-xs mb-1 block">Opening Time</Label>
+                    <Input
+                      id={`${day}-open`}
+                      type="time"
+                      value={hours.open !== 'Closed' ? hours.open : ''}
+                      disabled={day === 'sunday'}
+                      onChange={(e) => handleLibraryHoursChange(day, 'open', e.target.value || 'Closed')}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor={`${day}-close`} className="text-xs mb-1 block">Closing Time</Label>
+                    <Input
+                      id={`${day}-close`}
+                      type="time"
+                      value={hours.close !== 'Closed' ? hours.close : ''}
+                      disabled={day === 'sunday'}
+                      onChange={(e) => handleLibraryHoursChange(day, 'close', e.target.value || 'Closed')}
+                    />
+                  </div>
+                </div>
+              ))}
+              
+              <div className="flex justify-end mt-6">
+                <Button onClick={handleSavePreferences}>
+                  Save Library Hours
                 </Button>
               </div>
             </div>
