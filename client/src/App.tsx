@@ -46,7 +46,7 @@ function Router() {
           setIsAuthenticated(true);
         }} />}
       </Route>
-      <Route path="/">
+      <Route path="/dashboard">
         {() => (
           <PrivateRoute>
             <Layout>
@@ -119,7 +119,13 @@ function Router() {
         )}
       </Route>
       <Route path="/">
-        {() => <Redirect to="/login" />}
+        {() => (
+          <PrivateRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </PrivateRoute>
+        )}
       </Route>
       <Route component={NotFound} />
     </Switch>
