@@ -16,6 +16,8 @@ import Membership from "@/pages/membership";
 import Settings from "@/pages/settings";
 import Layout from "@/components/layout/sidebar";
 import Login from "@/pages/login";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 
 function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('isAuthenticated'));
@@ -43,60 +45,73 @@ function Router() {
       <Route path="/dashboard">
         {() => (
           <PrivateRoute>
-        {() => (
-          <Layout>
-            <Dashboard />
-          </Layout>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/books">
         {() => (
           <PrivateRoute>
             <Layout>
-            <Books />
-          </Layout>
+              <Books />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/research">
         {() => (
-          <Layout>
-            <Research />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Research />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/borrowers">
         {() => (
-          <Layout>
-            <Borrowers />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Borrowers />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/librarians">
         {() => (
-          <Layout>
-            <Librarians />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Librarians />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/borrowing">
         {() => (
-          <Layout>
-            <Borrowing />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Borrowing />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/membership">
         {() => (
-          <Layout>
-            <Membership />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Membership />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/settings">
         {() => (
-          <Layout>
-            <Settings />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <Settings />
+            </Layout>
+          </PrivateRoute>
         )}
       </Route>
       <Route path="/">
