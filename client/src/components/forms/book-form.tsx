@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { queryClient } from '@/lib/queryClient';
+import ImageUpload from '@/components/ui/image-upload';
 
 // Extend the schema to add validation messages
 const bookSchema = insertBookSchema.extend({
@@ -27,13 +28,13 @@ const bookSchema = insertBookSchema.extend({
   bookCode: z.string().min(2, 'Book code must be at least 2 characters'),
   copies: z.number().min(1, 'Number of copies must be at least 1'),
   description: z.string().optional(),
-  coverImage: z.string().url('Please provide a valid image URL'),
+  coverImage: z.string().min(1, 'Cover image is required'),
 });
 
 type BookFormValues = z.infer<typeof bookSchema>;
 
 interface BookFormProps {
-  book?: BookFormValues;
+  book?: BookFormValues & { id?: number };
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -180,9 +181,12 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                 name="coverImage"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cover Image URL</FormLabel>
+                    <FormLabel>Cover Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter image URL" {...field} />
+                      <ImageUpload
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
