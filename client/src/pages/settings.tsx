@@ -174,9 +174,10 @@ const Settings = () => {
         <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Data Export/Import */}
-        <Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          {/* Data Export/Import */}
+          <Card>
           <CardHeader>
             <CardTitle>Data Export/Import</CardTitle>
           </CardHeader>
@@ -351,7 +352,7 @@ const Settings = () => {
         </Card>
         
         {/* System Preferences */}
-        <Card>
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>System Preferences</CardTitle>
           </CardHeader>
