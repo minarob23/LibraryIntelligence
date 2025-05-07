@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { Menu, User, Settings, LogOut } from 'lucide-react';
-import { useNavigate } from 'wouter';
+import { Menu, User } from 'lucide-react';
 import ThemeToggle from './theme-toggle';
 import NotificationDropdown from './notification-dropdown';
-import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
   DropdownMenuTrigger,
@@ -34,6 +32,8 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
         
         <div className="flex items-center space-x-4">
           <ThemeToggle />
+          <NotificationDropdown />
+          
           {/* User Menu */}
           <UserMenu />
         </div>
@@ -44,72 +44,74 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
 
 const UserMenu = () => {
   const [open, setOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const navigate = useNavigate();
   
   return (
-    <>
-      <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Profile Settings</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Display Name</Label>
-              <Input defaultValue="Admin" />
-            </div>
-            <div>
-              <Label>Email</Label>
-              <Input defaultValue="admin@library.com" type="email" />
-            </div>
-            <div>
-              <Label>Avatar</Label>
-              <div className="flex items-center space-x-4">
-                <Avatar className="h-20 w-20">
-                  <AvatarFallback>A</AvatarFallback>
-                </Avatar>
-                <Button variant="outline">Change Avatar</Button>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      
-      <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger asChild>
-          <button className="flex items-center space-x-2 focus:outline-none">
-            <Avatar>
-              <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
-                A
-              </AvatarFallback>
-            </Avatar>
-            <span className="hidden md:inline-block font-medium">Admin</span>
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem onClick={() => setProfileOpen(true)}>
-            <User size={16} className="mr-2" />
-            Your Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate('/settings')}>
-            <Settings size={16} className="mr-2" />
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <LogOut size={16} className="mr-2" />
-            Sign out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <button className="flex items-center space-x-2 focus:outline-none">
+          <Avatar>
+            <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
+              A
+            </AvatarFallback>
+          </Avatar>
+          <span className="hidden md:inline-block font-medium">Admin</span>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuItem>
+          <User size={16} className="mr-2" />
+          Your Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Settings size={16} className="mr-2" />
+          Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <LogOut size={16} className="mr-2" />
+          Sign out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
+// Icons needed for user menu
+const Settings = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+);
 
+const LogOut = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+    <polyline points="16 17 21 12 16 7"></polyline>
+    <line x1="21" y1="12" x2="9" y2="12"></line>
+  </svg>
+);
 
 export default Header;

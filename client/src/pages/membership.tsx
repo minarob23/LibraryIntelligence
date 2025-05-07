@@ -108,12 +108,18 @@ const MembershipPage = () => {
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold mb-4">Library Hours</h3>
               <div className="space-y-2">
-                {Object.entries(libraryHours).map(([day, hours]) => (
-                  <div key={day} className="flex justify-between">
-                    <span className="capitalize">{day}</span>
-                    <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
-                  </div>
-                ))}
+                <div className="flex justify-between">
+                  <span>Monday - Friday</span>
+                  <span>8:00 AM - 9:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Saturday</span>
+                  <span>9:00 AM - 7:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Sunday</span>
+                  <span>11:00 AM - 5:00 PM</span>
+                </div>
               </div>
             </CardContent>
           </Card>

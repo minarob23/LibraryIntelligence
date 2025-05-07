@@ -7,7 +7,7 @@ import TopBorrowers from '@/components/dashboard/top-borrowers';
 
 const Dashboard = () => {
   // Fetch dashboard statistics
-  const { data: books, refetch: refetchAll } = useQuery({ 
+  const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
   });
   
@@ -56,15 +56,9 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Dashboard</h2>
-          <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
-        </div>
-        <Button variant="outline" onClick={() => refetchAll()}>
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Refresh
-        </Button>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">Dashboard</h2>
+        <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
       </div>
       
       {/* Statistics Cards */}
