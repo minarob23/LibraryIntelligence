@@ -110,7 +110,7 @@ const UserMenu = () => {
             Your Profile
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => navigate('/settings')}>
-            <Settings size={16} className="mr-2" />
+            <Settings size={18} className="mr-2 text-primary" />
             Settings
           </DropdownMenuItem>
           <DropdownMenuSeparator />
