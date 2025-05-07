@@ -493,47 +493,85 @@ const Settings = () => {
         
         {/* Library Hours */}
         <Card className="col-span-full">
-          <CardHeader className="flex flex-row items-center">
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>
               <div className="flex items-center">
                 <Clock className="mr-2 h-5 w-5" />
                 Library Hours
               </div>
             </CardTitle>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Edit Hours</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>Edit Library Hours</DialogTitle>
+                  <DialogDescription>
+                    Set the opening and closing hours for each day of the week.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  {Object.entries(libraryHours).map(([day, hours]) => (
+                    <div key={day} className="grid grid-cols-[1fr,2fr,2fr,auto] gap-4 items-center">
+                      <div className="font-medium capitalize">{day}</div>
+                      <div>
+                        <Label htmlFor={`${day}-open`} className="text-xs mb-1 block">Opening Time</Label>
+                        <Input
+                          id={`${day}-open`}
+                          type="time"
+                          value={hours.open !== 'Closed' ? hours.open : ''}
+                          disabled={hours.open === 'Closed'}
+                          onChange={(e) => handleLibraryHoursChange(day, 'open', e.target.value || 'Closed')}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor={`${day}-close`} className="text-xs mb-1 block">Closing Time</Label>
+                        <Input
+                          id={`${day}-close`}
+                          type="time"
+                          value={hours.close !== 'Closed' ? hours.close : ''}
+                          disabled={hours.close === 'Closed'}
+                          onChange={(e) => handleLibraryHoursChange(day, 'close', e.target.value || 'Closed')}
+                        />
+                      </div>
+                      <div className="flex items-end">
+                        <Button
+                          variant={hours.open === 'Closed' ? "destructive" : "outline"}
+                          size="sm"
+                          className="mb-[2px]"
+                          onClick={() => {
+                            if (hours.open === 'Closed') {
+                              handleLibraryHoursChange(day, 'open', '09:00');
+                              handleLibraryHoursChange(day, 'close', '17:00');
+                            } else {
+                              handleLibraryHoursChange(day, 'open', 'Closed');
+                              handleLibraryHoursChange(day, 'close', 'Closed');
+                            }
+                          }}
+                        >
+                          {hours.open === 'Closed' ? 'Open Day' : 'Close Day'}
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <DialogFooter>
+                  <Button onClick={handleSavePreferences}>
+                    Save Changes
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {Object.entries(libraryHours).map(([day, hours]) => (
-                <div key={day} className="grid grid-cols-3 gap-4 items-center">
-                  <div className="font-medium capitalize">{day}</div>
-                  <div>
-                    <Label htmlFor={`${day}-open`} className="text-xs mb-1 block">Opening Time</Label>
-                    <Input
-                      id={`${day}-open`}
-                      type="time"
-                      value={hours.open !== 'Closed' ? hours.open : ''}
-                      disabled={day === 'sunday'}
-                      onChange={(e) => handleLibraryHoursChange(day, 'open', e.target.value || 'Closed')}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor={`${day}-close`} className="text-xs mb-1 block">Closing Time</Label>
-                    <Input
-                      id={`${day}-close`}
-                      type="time"
-                      value={hours.close !== 'Closed' ? hours.close : ''}
-                      disabled={day === 'sunday'}
-                      onChange={(e) => handleLibraryHoursChange(day, 'close', e.target.value || 'Closed')}
-                    />
-                  </div>
+                <div key={day} className="flex justify-between text-sm">
+                  <span className="font-medium capitalize">{day}</span>
+                  <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
                 </div>
               ))}
-              
-              <div className="flex justify-end mt-6">
-                <Button onClick={handleSavePreferences}>
-                  Save Library Hours
-                </Button>
-              </div>
             </div>
           </CardContent>
         </Card>
