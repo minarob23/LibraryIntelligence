@@ -38,15 +38,15 @@ const Settings = () => {
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
   });
-  
+
   const { data: research } = useQuery({ 
     queryKey: ['/api/research'],
   });
-  
+
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
-  
+
   const { data: librarians } = useQuery({ 
     queryKey: ['/api/librarians'],
   });
@@ -145,7 +145,7 @@ const Settings = () => {
       borrowers,
       librarians
     };
-    
+
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -197,13 +197,13 @@ const Settings = () => {
 
     // Save library hours to localStorage for membership page
     localStorage.setItem('libraryHours', JSON.stringify(libraryHours));
-    
+
     toast({
       title: "Preferences saved",
       description: "Your settings have been updated."
     });
   };
-  
+
   const handleLibraryHoursChange = (day: string, type: 'open' | 'close', value: string) => {
     setLibraryHours(prev => ({
       ...prev,
@@ -220,7 +220,7 @@ const Settings = () => {
         <h2 className="text-2xl font-bold">Settings</h2>
         <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Profile Settings */}
         <Card>
@@ -369,7 +369,7 @@ const Settings = () => {
                 <TabsTrigger value="export">Export</TabsTrigger>
                 <TabsTrigger value="import">Import</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="export" className="space-y-6">
                 <div>
                   <h4 className="text-md font-medium mb-2">Export Data</h4>
@@ -398,7 +398,7 @@ const Settings = () => {
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm">Research Papers</p>
@@ -423,7 +423,7 @@ const Settings = () => {
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm">Borrowers</p>
@@ -448,7 +448,7 @@ const Settings = () => {
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm">Librarians</p>
@@ -476,7 +476,7 @@ const Settings = () => {
                   </div>
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="import">
                 <div>
                   <h4 className="text-md font-medium mb-2">Import Data</h4>
@@ -484,7 +484,7 @@ const Settings = () => {
                     <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop files or click to upload</p>
                     <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">Supported formats: .xlsx, .csv, .json</p>
-                    
+
                     <div className="flex flex-col space-y-4">
                       <input
                         type="file"
@@ -500,7 +500,7 @@ const Settings = () => {
                       >
                         <Upload className="mr-2 h-4 w-4" /> Select Files
                       </Button>
-                      
+
                       {selectedFile && (
                         <div className="mt-4 flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded">
                           <div className="flex items-center">
@@ -516,7 +516,7 @@ const Settings = () => {
                           </Button>
                         </div>
                       )}
-                      
+
                       {selectedFile && (
                         <Button 
                           className="mt-4"
@@ -528,86 +528,11 @@ const Settings = () => {
                     </div>
                   </div>
                 </div>
-              {/* Library Hours */}
-                <div className="mt-6">
-                  <h4 className="text-md font-medium mb-3">Library Hours</h4>
-                  <div className="space-y-2">
-                    {Object.entries(libraryHours).map(([day, hours]) => (
-                      <div key={day} className="flex justify-between text-sm">
-                        <span className="font-medium capitalize">{day}</span>
-                        <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" className="mt-4">Edit Hours</Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl">
-                      <DialogHeader>
-                        <DialogTitle>Edit Library Hours</DialogTitle>
-                        <DialogDescription>
-                          Set the opening and closing hours for each day of the week.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        {Object.entries(libraryHours).map(([day, hours]) => (
-                          <div key={day} className="grid grid-cols-[1fr,2fr,2fr,auto] gap-4 items-center">
-                            <div className="font-medium capitalize">{day}</div>
-                            <div>
-                              <Label htmlFor={`${day}-open`} className="text-xs mb-1 block">Opening Time</Label>
-                              <Input
-                                id={`${day}-open`}
-                                type="time"
-                                value={hours.open !== 'Closed' ? hours.open : ''}
-                                disabled={hours.open === 'Closed'}
-                                onChange={(e) => handleLibraryHoursChange(day, 'open', e.target.value || 'Closed')}
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`${day}-close`} className="text-xs mb-1 block">Closing Time</Label>
-                              <Input
-                                id={`${day}-close`}
-                                type="time"
-                                value={hours.close !== 'Closed' ? hours.close : ''}
-                                disabled={hours.close === 'Closed'}
-                                onChange={(e) => handleLibraryHoursChange(day, 'close', e.target.value || 'Closed')}
-                              />
-                            </div>
-                            <div className="flex items-end">
-                              <Button
-                                variant={hours.open === 'Closed' ? "destructive" : "outline"}
-                                size="sm"
-                                className="mb-[2px]"
-                                onClick={() => {
-                                  if (hours.open === 'Closed') {
-                                    handleLibraryHoursChange(day, 'open', '09:00');
-                                    handleLibraryHoursChange(day, 'close', '17:00');
-                                  } else {
-                                    handleLibraryHoursChange(day, 'open', 'Closed');
-                                    handleLibraryHoursChange(day, 'close', 'Closed');
-                                  }
-                                }}
-                              >
-                                {hours.open === 'Closed' ? 'Open Day' : 'Close Day'}
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <DialogFooter>
-                        <Button onClick={handleSavePreferences}>
-                          Save Changes
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </div>
               </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
-        
+
         {/* System Preferences */}
         <Card>
           <CardHeader>
@@ -632,7 +557,7 @@ const Settings = () => {
                       }}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Compact View</p>
@@ -645,7 +570,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="text-md font-medium mb-3">Notifications</h4>
                 <div className="space-y-3">
@@ -659,7 +584,7 @@ const Settings = () => {
                       onCheckedChange={setEmailNotifications}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Expiry Reminders</p>
@@ -670,7 +595,7 @@ const Settings = () => {
                       onCheckedChange={setExpiryReminders}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Overdue Items</p>
@@ -683,7 +608,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="text-md font-medium mb-3">Data Management</h4>
                 <div className="space-y-3">
@@ -697,7 +622,7 @@ const Settings = () => {
                       onCheckedChange={setAutoBackup}
                     />
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="backup-frequency" className="text-sm">Backup Frequency</Label>
                     <Select 
@@ -717,7 +642,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Font Size Settings */}
               <div className="mt-6">
                 <h4 className="text-md font-medium mb-3">Text Size</h4>
@@ -740,7 +665,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="pt-6">
                 <Button onClick={handleSavePreferences}>
                   Save Preferences
@@ -749,8 +674,8 @@ const Settings = () => {
             </div>
           </CardContent>
         </Card>
-        
-        
+
+
       </div>
     </div>
   );
