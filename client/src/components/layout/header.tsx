@@ -44,7 +44,7 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
               <div className="w-6 h-0.5 bg-current transition-all"></div>
             </div>
           </button>
-          <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Library Management System</h1>
+          <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Welcome back, Admin</h1>
         </div>
         
         <div className="flex items-center space-x-4">
