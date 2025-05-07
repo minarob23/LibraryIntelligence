@@ -1,4 +1,5 @@
-import { Switch, Route } from "wouter";
+
+import { Switch, Route, Redirect } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,21 +15,71 @@ import Borrowing from "@/pages/borrowing";
 import Membership from "@/pages/membership";
 import Settings from "@/pages/settings";
 import Layout from "@/components/layout/sidebar";
-import LoginPage from "@/pages/login"; // Import the LoginPage component
-
+import Login from "@/pages/login";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/login" component={LoginPage} /> {/* Added login route */}
-      <Route path="/" component={() => <Layout><Dashboard /></Layout>} />
-      <Route path="/books" component={Books} />
-      <Route path="/research" component={Research} />
-      <Route path="/borrowers" component={Borrowers} />
-      <Route path="/librarians" component={Librarians} />
-      <Route path="/borrowing" component={Borrowing} />
-      <Route path="/membership" component={Membership} />
-      <Route path="/settings" component={Settings} />
+      <Route path="/login" component={Login} />
+      <Route path="/dashboard">
+        {() => (
+          <Layout>
+            <Dashboard />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/books">
+        {() => (
+          <Layout>
+            <Books />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/research">
+        {() => (
+          <Layout>
+            <Research />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/borrowers">
+        {() => (
+          <Layout>
+            <Borrowers />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/librarians">
+        {() => (
+          <Layout>
+            <Librarians />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/borrowing">
+        {() => (
+          <Layout>
+            <Borrowing />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/membership">
+        {() => (
+          <Layout>
+            <Membership />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/settings">
+        {() => (
+          <Layout>
+            <Settings />
+          </Layout>
+        )}
+      </Route>
+      <Route path="/">
+        {() => <Redirect to="/login" />}
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
