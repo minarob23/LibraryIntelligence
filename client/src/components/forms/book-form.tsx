@@ -93,6 +93,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
   };
   
   return (
+    <ScrollArea className="h-[80vh]">
     <Card>
       <CardHeader>
         <CardTitle>{isEditing ? 'Edit Book' : 'Add New Book'}</CardTitle>
@@ -226,6 +227,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
         </Form>
       </CardContent>
     </Card>
+    </ScrollArea>
   );
 };
 

@@ -93,6 +93,7 @@ const ResearchForm = ({ research, onSuccess, onCancel }: ResearchFormProps) => {
   };
   
   return (
+    <ScrollArea className="h-[80vh]">
     <Card>
       <CardHeader>
         <CardTitle>{isEditing ? 'Edit Research Paper' : 'Add New Research Paper'}</CardTitle>
@@ -226,6 +227,7 @@ const ResearchForm = ({ research, onSuccess, onCancel }: ResearchFormProps) => {
         </Form>
       </CardContent>
     </Card>
+    </ScrollArea>
   );
 };
 
