@@ -478,8 +478,31 @@ const Settings = () => {
               </TabsContent>
 
               <TabsContent value="import">
-                <div>
-                  <h4 className="text-md font-medium mb-2">Import Data</h4>
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-md font-medium">Import Data</h4>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Upload and manage your data</p>
+                    </div>
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      className="flex items-center"
+                      onClick={() => {
+                        const isConfirmed = window.confirm("Are you sure you want to reset all data? This action cannot be undone.");
+                        if (isConfirmed) {
+                          localStorage.clear();
+                          toast({
+                            title: "Data Reset",
+                            description: "All data has been reset to default values.",
+                          });
+                          window.location.reload();
+                        }
+                      }}
+                    >
+                      Reset All Data
+                    </Button>
+                  </div>
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
                     <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop files or click to upload</p>
