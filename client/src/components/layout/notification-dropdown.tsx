@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Bell } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks/use-notifications';
@@ -5,6 +6,13 @@ import { useQuery } from '@tanstack/react-query';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
   const notifications: any[] = [];
@@ -47,13 +55,6 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
 
   return notifications;
 };
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
