@@ -7,13 +7,49 @@ export interface Notification {
   read: boolean;
 }
 
-const INITIAL_NOTIFICATIONS: Notification[] = [
-  { id: 1, message: '5 new members joined today', time: '2 minutes ago', read: false },
-  { id: 2, message: 'Membership renewal required for 3 borrowers', time: '1 hour ago', read: false },
-  { id: 3, message: 'New book collection arrived', time: '3 hours ago', read: true },
-  { id: 4, message: '10 books are overdue for return', time: '1 day ago', read: true },
-  { id: 5, message: 'System backup completed successfully', time: '2 days ago', read: true }
-];
+const INITIAL_NOTIFICATIONS: Notification[] = [];
+
+const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
+  const notifications: Notification[] = [];
+  const today = new Date();
+
+  // Check membership expiration
+  borrowers?.forEach(borrower => {
+    const expiryDate = new Date(borrower.expiryDate);
+    const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
+        time: 'Today',
+        read: false,
+      });
+    } else if (daysUntilExpiry <= 0) {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `${borrower.name}'s membership has expired`,
+        time: 'Today',
+        read: false,
+      });
+    }
+  });
+
+  // Check overdue items
+  borrowings?.forEach(borrowing => {
+    const dueDate = new Date(borrowing.dueDate);
+    if (dueDate < today && borrowing.status !== 'returned') {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `Overdue: ${borrowing.bookTitle || 'Item'} (${Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))} days)`,
+        time: 'Today',
+        read: false,
+      });
+    }
+  });
+
+  return notifications;
+};
 
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>(() => {

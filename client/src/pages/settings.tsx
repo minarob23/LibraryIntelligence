@@ -628,17 +628,6 @@ const Settings = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm">Email Notifications</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive emails for important updates</p>
-                    </div>
-                    <Switch
-                      checked={emailNotifications}
-                      onCheckedChange={setEmailNotifications}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
                       <p className="text-sm">Expiry Reminders</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for membership expirations</p>
                     </div>

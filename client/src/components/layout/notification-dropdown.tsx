@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks/use-notifications';
+import { useQuery } from '@tanstack/react-query';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,19 @@ import { Button } from "@/components/ui/button";
 
 const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
-  const { notifications, markAsRead, markAllAsRead, unreadCount } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, unreadCount, addNotification } = useNotifications();
+  
+  const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
+  const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
+
+  useEffect(() => {
+    if (borrowers && borrowings) {
+      const notifications = checkExpiryAndOverdue(borrowers, borrowings);
+      notifications.forEach(notification => {
+        addNotification(notification.message);
+      });
+    }
+  }, [borrowers, borrowings]);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
