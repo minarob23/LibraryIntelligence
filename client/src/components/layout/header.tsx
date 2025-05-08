@@ -49,6 +49,7 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
 
         <div className="flex items-center space-x-4">
           <ThemeToggle />
+          <NotificationDropdown />
           {/* User Menu */}
           <UserMenu />
         </div>
