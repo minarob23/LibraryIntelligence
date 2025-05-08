@@ -223,29 +223,9 @@ const BorrowersPage = () => {
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center animate-slide-up">
-        <div>
-          <h2 className="text-2xl font-bold">Borrowers Management</h2>
-          <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
-        </div>
-        <div className="mt-4 md:mt-0">
-          <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" /> Add Borrower
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[700px]">
-              <DialogHeader>
-                <DialogTitle>Add New Borrower</DialogTitle>
-                <DialogDescription>
-                  Add a new borrower to the library system. Fill out the form below with the borrower details.
-                </DialogDescription>
-              </DialogHeader>
-              <BorrowerForm onSuccess={() => setOpenAddDialog(false)} onCancel={() => setOpenAddDialog(false)} />
-            </DialogContent>
-          </Dialog>
-        </div>
+      <div className="mb-6 animate-slide-up">
+        <h2 className="text-2xl font-bold">Borrowers Management</h2>
+        <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
       </div>
       
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
