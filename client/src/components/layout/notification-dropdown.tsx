@@ -5,6 +5,48 @@ import { useQuery } from '@tanstack/react-query';
 import {
   DropdownMenu,
   DropdownMenuContent,
+
+const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
+  const notifications: any[] = [];
+  const today = new Date();
+
+  // Check membership expiration
+  borrowers?.forEach(borrower => {
+    const expiryDate = new Date(borrower.expiryDate);
+    const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
+        time: 'Today',
+        read: false,
+      });
+    } else if (daysUntilExpiry <= 0) {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `${borrower.name}'s membership has expired`,
+        time: 'Today',
+        read: false,
+      });
+    }
+  });
+
+  // Check overdue items
+  borrowings?.forEach(borrowing => {
+    const dueDate = new Date(borrowing.dueDate);
+    if (dueDate < today && borrowing.status !== 'returned') {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `Overdue: ${borrowing.bookTitle || 'Item'} (${Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))} days)`,
+        time: 'Today',
+        read: false,
+      });
+    }
+  });
+
+  return notifications;
+};
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
