@@ -45,15 +45,15 @@ const BorrowersPage = () => {
   const [editingBorrower, setEditingBorrower] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  
+
   const { data: borrowers, isLoading } = useQuery({ 
     queryKey: ['/api/borrowers', selectedCategory !== 'all' ? { category: selectedCategory } : undefined],
-    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchInterval: 1000, // Refetch every 1 second
   });
-  
+
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
-    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchInterval: 1000, // Refetch every 1 second
   });
 
   const handleDelete = async (id: number) => {
@@ -73,20 +73,20 @@ const BorrowersPage = () => {
       });
     }
   };
-  
+
   const renewMembership = async (borrower: any) => {
     try {
       // Set expiry date to one year from now
       const oneYearFromNow = new Date();
       oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-      
+
       await apiRequest('PUT', `/api/borrowers/${borrower.id}`, {
         ...borrower,
         expiryDate: oneYearFromNow.toISOString().split('T')[0],
       });
-      
+
       queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-      
+
       toast({
         title: 'Success',
         description: 'Membership renewed successfully',
@@ -104,7 +104,7 @@ const BorrowersPage = () => {
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
-    
+
     return [
       { name: 'Primary', value: borrowerDistribution.primary || 0 },
       { name: 'Middle', value: borrowerDistribution.middle || 0 },
@@ -152,7 +152,7 @@ const BorrowersPage = () => {
   // Get status badge based on days until expiry
   const getStatusBadge = (expiryDate: string) => {
     const daysUntilExpiry = getDaysUntilExpiry(expiryDate);
-    
+
     if (daysUntilExpiry < 0) {
       return (
         <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
@@ -229,7 +229,7 @@ const BorrowersPage = () => {
         <h2 className="text-2xl font-bold">Borrowers Management</h2>
         <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
       </div>
-      
+
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
         <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
           {categories.map((category) => (
@@ -238,7 +238,7 @@ const BorrowersPage = () => {
             </TabsTrigger>
           ))}
         </TabsList>
-        
+
         {categories.map((category) => (
           <TabsContent key={category.value} value={category.value}>
             {category.value === 'all' && (
@@ -254,7 +254,7 @@ const BorrowersPage = () => {
                 />
               </div>
             )}
-            
+
             <DataTable
               data={borrowers || []}
               columns={columns}
@@ -290,7 +290,7 @@ const BorrowersPage = () => {
                       )}
                     </DialogContent>
                   </Dialog>
-                  
+
                   {getDaysUntilExpiry(row.expiryDate) < 0 && (
                     <Button 
                       variant="ghost" 
@@ -300,7 +300,7 @@ const BorrowersPage = () => {
                       <RefreshCw size={16} className="mr-1" /> Renew
                     </Button>
                   )}
-                  
+
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">
