@@ -46,10 +46,15 @@ const BorrowersPage = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const { data: borrowers, isLoading } = useQuery({ 
-    queryKey: ['/api/borrowers', selectedCategory !== 'all' ? { category: selectedCategory } : undefined],
+  const { data: allBorrowers, isLoading } = useQuery({ 
+    queryKey: ['/api/borrowers'],
     refetchInterval: 1000, // Refetch every 1 second
   });
+
+  // Filter borrowers based on selected category
+  const borrowers = selectedCategory === 'all' 
+    ? allBorrowers 
+    : allBorrowers?.filter(borrower => borrower.category === selectedCategory);
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
