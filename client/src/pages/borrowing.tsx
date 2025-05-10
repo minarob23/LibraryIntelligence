@@ -29,20 +29,12 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 
 const BorrowingPage = () => {
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBorrowing, setEditingBorrowing] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   
   const { data: borrowings, isLoading: isLoadingBorrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
-    select: (data) => {
-      if (!data || !borrowers) return [];
-      return data.filter(borrowing => {
-        const borrower = borrowers.find(b => b.id === borrowing.borrowerId);
-        return selectedCategory === 'all' || borrower?.category === selectedCategory;
-      });
-    }
   });
   
   const { data: borrowers } = useQuery({ 
@@ -216,18 +208,6 @@ const BorrowingPage = () => {
           <h2 className="text-2xl font-bold">Borrowing Management</h2>
           <p className="text-gray-600 dark:text-gray-400">Track borrowed books and research papers</p>
         </div>
-        <select 
-          value={selectedCategory} 
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
-        >
-          <option value="all">All Categories</option>
-          <option value="primary">Primary</option>
-          <option value="middle">Middle</option>
-          <option value="secondary">Secondary</option>
-          <option value="university">University</option>
-          <option value="graduate">Graduate</option>
-        </select>
         <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
           <DialogTrigger asChild>
             <Button>
