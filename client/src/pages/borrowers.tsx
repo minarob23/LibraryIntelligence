@@ -48,10 +48,12 @@ const BorrowersPage = () => {
   
   const { data: borrowers, isLoading } = useQuery({ 
     queryKey: ['/api/borrowers', selectedCategory !== 'all' ? { category: selectedCategory } : undefined],
+    refetchInterval: 5000, // Refetch every 5 seconds
   });
   
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
+    refetchInterval: 5000, // Refetch every 5 seconds
   });
 
   const handleDelete = async (id: number) => {
