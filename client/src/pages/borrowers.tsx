@@ -241,6 +241,9 @@ const BorrowersPage = () => {
 
         {categories.map((category) => (
           <TabsContent key={category.value} value={category.value}>
+            <h3 className="text-lg font-semibold mb-4 capitalize">
+              {category.value === 'all' ? 'All Categories' : `${category.value} Stage`}
+            </h3>
             {category.value === 'all' && (
               <div className="mb-6">
                 <ChartContainer
