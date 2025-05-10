@@ -3,10 +3,11 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import * as schema from '@shared/schema';
 
+// Initialize SQLite database
 const sqlite = new Database('library.db');
 export const db = drizzle(sqlite, { schema });
 
-// Create tables if they don't exist
+// Create all required tables
 const createTables = async () => {
   // Books table
   sqlite.exec(`
@@ -45,7 +46,7 @@ const createTables = async () => {
       name TEXT NOT NULL,
       phone TEXT NOT NULL,
       appointment_date DATE NOT NULL,
-      membership_status TEXT NOT NULL,
+      membership_status TEXT NOT NULL CHECK (membership_status IN ('active', 'inactive', 'temporary')),
       email TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
@@ -57,7 +58,7 @@ const createTables = async () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       phone TEXT NOT NULL,
-      category TEXT NOT NULL,
+      category TEXT NOT NULL CHECK (category IN ('primary', 'middle', 'secondary', 'university', 'graduate')),
       joined_date DATE NOT NULL,
       expiry_date DATE NOT NULL,
       email TEXT,
@@ -73,7 +74,7 @@ const createTables = async () => {
     )
   `);
 
-  // Borrowings table
+  // Borrowings table with foreign key constraints
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS borrowings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,14 +85,17 @@ const createTables = async () => {
       borrow_date DATE NOT NULL,
       due_date DATE NOT NULL,
       return_date DATE,
-      status TEXT NOT NULL,
+      status TEXT NOT NULL CHECK (status IN ('borrowed', 'returned', 'overdue')),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (borrower_id) REFERENCES borrowers(id),
-      FOREIGN KEY (librarian_id) REFERENCES librarians(id),
-      FOREIGN KEY (book_id) REFERENCES books(id),
-      FOREIGN KEY (research_id) REFERENCES research_papers(id)
+      FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
+      FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
+      FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+      FOREIGN KEY (research_id) REFERENCES research_papers(id) ON DELETE CASCADE,
+      CHECK ((book_id IS NOT NULL AND research_id IS NULL) OR (book_id IS NULL AND research_id IS NOT NULL))
     )
   `);
 };
 
+// Initialize tables
 createTables();
+
