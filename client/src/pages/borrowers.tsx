@@ -30,7 +30,7 @@ import BorrowerForm from '@/components/forms/borrower-form';
 import ChartContainer from '@/components/dashboard/chart-container';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 
-const categories = [
+const stages = [
   { value: 'all', label: 'All' },
   { value: 'primary', label: 'Primary' },
   { value: 'middle', label: 'Middle' },
@@ -237,19 +237,19 @@ const BorrowersPage = () => {
 
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
         <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
-          {categories.map((category) => (
-            <TabsTrigger key={category.value} value={category.value}>
-              {category.label}
+          {stages.map((stage) => (
+            <TabsTrigger key={stage.value} value={stage.value}>
+              {stage.label}
             </TabsTrigger>
           ))}
         </TabsList>
 
-        {categories.map((category) => (
-          <TabsContent key={category.value} value={category.value}>
+        {stages.map((stage) => (
+          <TabsContent key={stage.value} value={stage.value}>
             <h3 className="text-lg font-semibold mb-4 capitalize">
-              {category.value === 'all' ? 'All Categories' : `${category.value} Stage`}
+              {stage.value === 'all' ? 'All Stages' : `${stage.value} Stage`}
             </h3>
-            {category.value === 'all' && (
+            {stage.value === 'all' && (
               <div className="mb-6">
                 <ChartContainer
                   title="Borrowers Distribution by Category"
