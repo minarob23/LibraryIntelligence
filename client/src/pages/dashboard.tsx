@@ -131,13 +131,12 @@ const Dashboard = () => {
         />
         
         <ChartContainer
-          title="Borrower Categories Distribution"
+          title="Borrower Categories"
           type="doughnut"
           data={formatBorrowerDistribution()}
           nameKey="name"
           dataKey="value"
           colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
-          height={400}
         />
       </div>
       

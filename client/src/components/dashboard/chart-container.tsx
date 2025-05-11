@@ -71,14 +71,13 @@ const ChartContainer = ({
           data={data}
           cx="50%"
           cy="50%"
-          innerRadius={isDoughnut ? 80 : 0}
-          outerRadius={120}
+          innerRadius={isDoughnut ? 70 : 0}
+          outerRadius={100}
           fill="#8884d8"
-          paddingAngle={2}
+          paddingAngle={1}
           dataKey={dataKey}
           nameKey={nameKey}
-          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
-          labelLine={true}
+          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
