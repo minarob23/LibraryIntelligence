@@ -77,9 +77,6 @@ export class DatabaseStorage implements IStorage {
     const createTables = require('./db').createTables;
     await createTables();
   }
-
-
-export class DatabaseStorage implements IStorage {
   async getBooks(): Promise<Book[]> {
     return db.select().from(books);
   }
