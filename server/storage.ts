@@ -213,37 +213,55 @@ export class DatabaseStorage implements IStorage {
     return db.getCollection('borrowings').filter(b => b.borrowerId === borrowerId);
   }
   async getMostBorrowedBooks(limit: number = 5): Promise<any[]> {
-    const borrowings = db.getCollection('borrowings');
-    const bookCounts = new Map<number, number>();
-    for (const borrowing of borrowings) {
-      if (borrowing.bookId) {
-        bookCounts.set(borrowing.bookId, (bookCounts.get(borrowing.bookId) || 0) + 1);
-      }
-    }
-    const sortedBooks = Array.from(bookCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, limit);
-    return Promise.all(sortedBooks.map(async ([bookId, count]) => ({ ...(await this.getBook(bookId))!, borrowCount: count })));
+    const result = await db.select({
+      bookId: borrowings.bookId,
+      count: sql`count(*)`.as('count')
+    })
+    .from(borrowings)
+    .where(sql`book_id IS NOT NULL`)
+    .groupBy(borrowings.bookId)
+    .orderBy(sql`count DESC`)
+    .limit(limit);
+
+    return Promise.all(result.map(async (row) => {
+      const book = await this.getBook(row.bookId!);
+      return { ...book, borrowCount: Number(row.count) };
+    }));
   }
+
   async getPopularBooks(limit: number = 4): Promise<any[]> {
-    const books = await this.getBooks();
-    return books.slice(0, limit).map(book => ({ ...book, rating: (Math.random() * 2 + 3).toFixed(1) }));
+    const books = await db.select().from(schema.books).limit(limit);
+    return books.map(book => ({ ...book, rating: (Math.random() * 2 + 3).toFixed(1) }));
   }
+
   async getTopBorrowers(limit: number = 5): Promise<any[]> {
-    const borrowings = db.getCollection('borrowings');
-    const borrowerCounts = new Map<number, number>();
-    for (const borrowing of borrowings) {
-      borrowerCounts.set(borrowing.borrowerId, (borrowerCounts.get(borrowing.borrowerId) || 0) + 1);
-    }
-    const sortedBorrowers = Array.from(borrowerCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, limit);
-    return Promise.all(sortedBorrowers.map(async ([borrowerId, count]) => ({ ...(await this.getBorrower(borrowerId))!, borrowCount: count })));
+    const result = await db.select({
+      borrowerId: borrowings.borrowerId,
+      count: sql`count(*)`.as('count')
+    })
+    .from(borrowings)
+    .groupBy(borrowings.borrowerId)
+    .orderBy(sql`count DESC`)
+    .limit(limit);
+
+    return Promise.all(result.map(async (row) => {
+      const borrower = await this.getBorrower(row.borrowerId);
+      return { ...borrower, borrowCount: Number(row.count) };
+    }));
   }
+
   async getBorrowerDistribution(): Promise<any> {
-    const borrowers = await this.getBorrowers();
-    const categories = ['primary', 'middle', 'secondary', 'university', 'graduate'];
-    const distribution = categories.reduce((acc, category) => {
-      acc[category] = borrowers.filter(b => b.category === category).length;
+    const result = await db.select({
+      category: borrowers.category,
+      count: sql`count(*)`.as('count')
+    })
+    .from(borrowers)
+    .groupBy(borrowers.category);
+
+    return result.reduce((acc, row) => {
+      acc[row.category] = Number(row.count);
       return acc;
     }, {} as Record<string, number>);
-    return distribution;
   }
   async createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian> {
     if (application.stage === 'librarian') {
