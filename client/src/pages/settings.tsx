@@ -605,20 +605,6 @@ const Settings = () => {
               <div>
                 <h4 className="text-md font-medium mb-3">Appearance</h4>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Dark Mode</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Switch between light and dark themes</p>
-                    </div>
-                    <Switch
-                      checked={isDarkMode}
-                      onCheckedChange={(checked) => {
-                        setIsDarkMode(checked);
-                        document.documentElement.classList.toggle('dark', checked);
-                        localStorage.theme = checked ? 'dark' : 'light';
-                      }}
-                    />
-                  </div>
 
                   <div className="flex items-center justify-between">
                     <div>
