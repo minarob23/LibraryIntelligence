@@ -1,4 +1,3 @@
-
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import * as schema from '@shared/schema';
@@ -20,7 +19,7 @@ const createTables = async () => {
       book_code TEXT UNIQUE NOT NULL,
       copies INTEGER NOT NULL DEFAULT 1,
       description TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TEXT DEFAULT (datetime('now'))
     )
   `);
 
@@ -35,7 +34,7 @@ const createTables = async () => {
       research_code TEXT UNIQUE NOT NULL,
       copies INTEGER NOT NULL DEFAULT 1,
       description TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TEXT DEFAULT (datetime('now'))
     )
   `);
 
@@ -48,7 +47,7 @@ const createTables = async () => {
       appointment_date DATE NOT NULL,
       membership_status TEXT NOT NULL CHECK (membership_status IN ('active', 'inactive', 'temporary')),
       email TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TEXT DEFAULT (datetime('now'))
     )
   `);
 
@@ -70,7 +69,7 @@ const createTables = async () => {
       hobbies TEXT,
       favorite_books TEXT,
       additional_phone TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TEXT DEFAULT (datetime('now'))
     )
   `);
 
@@ -86,7 +85,7 @@ const createTables = async () => {
       due_date DATE NOT NULL,
       return_date DATE,
       status TEXT NOT NULL CHECK (status IN ('borrowed', 'returned', 'overdue')),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
       FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
       FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
@@ -98,4 +97,3 @@ const createTables = async () => {
 
 // Initialize tables
 createTables();
-

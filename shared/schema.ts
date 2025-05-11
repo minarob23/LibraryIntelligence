@@ -1,6 +1,7 @@
 import { pgTable, text, serial, integer, boolean, date, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 
 // Enums
 export const educationalStageEnum = pgEnum('educational_stage', ['primary', 'middle', 'secondary', 'university', 'graduate']);
@@ -16,7 +17,7 @@ export const books = pgTable("books", {
   bookCode: text("book_code").notNull().unique(),
   copies: integer("copies").notNull().default(1),
   description: text("description"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const insertBookSchema = createInsertSchema(books).omit({
@@ -34,7 +35,7 @@ export const researchPapers = pgTable("research_papers", {
   researchCode: text("research_code").notNull().unique(),
   copies: integer("copies").notNull().default(1),
   description: text("description"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const insertResearchPaperSchema = createInsertSchema(researchPapers).omit({
@@ -50,7 +51,7 @@ export const librarians = pgTable("librarians", {
   appointmentDate: date("appointment_date").notNull(),
   membershipStatus: text("membership_status").notNull().$type<'active' | 'inactive' | 'temporary'>(),
   email: text("email"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const insertLibrarianSchema = createInsertSchema(librarians).omit({
@@ -75,7 +76,7 @@ export const borrowers = pgTable("borrowers", {
   hobbies: text("hobbies"),
   favoriteBooks: text("favorite_books"),
   additionalPhone: text("additional_phone"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const insertBorrowerSchema = createInsertSchema(borrowers).omit({
@@ -94,7 +95,7 @@ export const borrowings = pgTable("borrowings", {
   dueDate: date("due_date").notNull(),
   returnDate: date("return_date"),
   status: text("status").notNull().$type<'borrowed' | 'returned' | 'overdue'>(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const insertBorrowingSchema = createInsertSchema(borrowings).omit({
