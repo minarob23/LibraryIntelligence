@@ -230,38 +230,6 @@ const Settings = () => {
       <div className="mb-6 animate-slide-up">
         <h2 className="text-2xl font-bold">Settings</h2>
         <p className="text-gray-600 dark:text-gray-400">Configure system preferences and data management</p>
-        
-        <div className="mt-8">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">Reset All Data</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This will permanently delete all data and create a fresh database. This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction 
-                  onClick={async () => {
-                    try {
-                      await fetch('/api/reset-database', { method: 'POST' });
-                      window.location.reload();
-                    } catch (error) {
-                      console.error('Failed to reset database:', error);
-                    }
-                  }}
-                  className="bg-red-500 hover:bg-red-600"
-                >
-                  Yes, Reset Everything
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
