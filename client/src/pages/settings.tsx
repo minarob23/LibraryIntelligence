@@ -495,42 +495,6 @@ const Settings = () => {
                       <h4 className="text-md font-medium">Import Data</h4>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Upload and manage your data</p>
                     </div>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button 
-                          variant="destructive" 
-                          size="sm"
-                          className="flex items-center"
-                        >
-                          Reset All Data
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete all your data
-                            and reset everything to default values.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => {
-                              localStorage.clear();
-                              toast({
-                                title: "Data Reset",
-                                description: "All data has been reset to default values.",
-                              });
-                              window.location.reload();
-                            }}
-                            className="bg-red-500 hover:bg-red-600"
-                          >
-                            Yes, Reset Everything
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                   </div>
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
                     <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
