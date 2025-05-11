@@ -8,8 +8,9 @@ import {
 } from "@shared/schema";
 
 import { db } from './db';
+import * as schema from '@shared/schema';
+import { eq, sql } from 'drizzle-orm';
 import { books, researchPapers, librarians, borrowers, borrowings } from '@shared/schema';
-import { eq } from 'drizzle-orm';
 
 export interface IStorage {
   // Book CRUD
@@ -75,20 +76,17 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
   async updateBook(id: number, book: Partial<InsertBook>): Promise<Book | undefined> {
-    const books = db.getCollection('books');
-    const index = books.findIndex(b => b.id === id);
-    if (index === -1) return undefined;
-    books[index] = { ...books[index], ...book };
-    db.setCollection('books', books);
-    return books[index];
+    const result = await db.update(books)
+      .set(book)
+      .where(eq(books.id, id))
+      .returning();
+    return result[0];
   }
   async deleteBook(id: number): Promise<boolean> {
-    const books = db.getCollection('books');
-    const index = books.findIndex(b => b.id === id);
-    if (index === -1) return false;
-    books.splice(index, 1);
-    db.setCollection('books', books);
-    return true;
+    const result = await db.delete(books)
+      .where(eq(books.id, id))
+      .returning();
+    return result.length > 0;
   }
   async getResearchPapers(): Promise<ResearchPaper[]> {
     return db.getCollection('researchPapers');
