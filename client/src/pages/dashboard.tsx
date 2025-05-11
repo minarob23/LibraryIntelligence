@@ -131,7 +131,7 @@ const Dashboard = () => {
         />
         
         <ChartContainer
-          title="Borrower Categories"
+          title="Borrower Distribution by Stage"
           type="doughnut"
           data={formatBorrowerDistribution()}
           nameKey="name"
