@@ -241,6 +241,14 @@ export class DatabaseStorage implements IStorage {
       return acc;
     }, {} as Record<string, number>);
   }
+  async resetDatabase(): Promise<void> {
+    await db.delete(borrowings);
+    await db.delete(borrowers);
+    await db.delete(librarians);
+    await db.delete(books);
+    await db.delete(researchPapers);
+  }
+
   async createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian> {
     if (application.stage === 'librarian') {
       return this.createLibrarian({
