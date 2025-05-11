@@ -7,18 +7,9 @@ import {
   MembershipApplication,
 } from "@shared/schema";
 
-// Simple in-memory database
-const db = {
-  collections: {
-    books: [] as Book[],
-    researchPapers: [] as ResearchPaper[],
-    librarians: [] as Librarian[],
-    borrowers: [] as Borrower[],
-    borrowings: [] as Borrowing[],
-  },
-  getCollection: (name: string) => db.collections[name],
-  setCollection: (name: string, collection: any[]) => { db.collections[name] = collection; },
-};
+import { db } from './db';
+import { books, researchPapers, librarians, borrowers, borrowings } from '@shared/schema';
+import { eq } from 'drizzle-orm';
 
 export interface IStorage {
   // Book CRUD
@@ -73,17 +64,15 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getBooks(): Promise<Book[]> {
-    return db.getCollection('books');
+    return db.select().from(books);
   }
   async getBook(id: number): Promise<Book | undefined> {
-    return db.getCollection('books').find(b => b.id === id);
+    const result = await db.select().from(books).where(eq(books.id, id));
+    return result[0];
   }
   async createBook(book: InsertBook): Promise<Book> {
-    const books = db.getCollection('books');
-    const newBook = { ...book, id: books.length + 1 };
-    books.push(newBook);
-    db.setCollection('books', books);
-    return newBook;
+    const result = await db.insert(books).values(book).returning();
+    return result[0];
   }
   async updateBook(id: number, book: Partial<InsertBook>): Promise<Book | undefined> {
     const books = db.getCollection('books');
