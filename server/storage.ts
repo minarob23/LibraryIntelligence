@@ -89,126 +89,106 @@ export class DatabaseStorage implements IStorage {
     return result.length > 0;
   }
   async getResearchPapers(): Promise<ResearchPaper[]> {
-    return db.getCollection('researchPapers');
+    return db.select().from(researchPapers);
   }
   async getResearchPaper(id: number): Promise<ResearchPaper | undefined> {
-    return db.getCollection('researchPapers').find(rp => rp.id === id);
+    const result = await db.select().from(researchPapers).where(eq(researchPapers.id, id));
+    return result[0];
   }
   async createResearchPaper(research: InsertResearchPaper): Promise<ResearchPaper> {
-    const researchPapers = db.getCollection('researchPapers');
-    const newResearchPaper = { ...research, id: researchPapers.length + 1 };
-    researchPapers.push(newResearchPaper);
-    db.setCollection('researchPapers', researchPapers);
-    return newResearchPaper;
+    const result = await db.insert(researchPapers).values(research).returning();
+    return result[0];
   }
   async updateResearchPaper(id: number, research: Partial<InsertResearchPaper>): Promise<ResearchPaper | undefined> {
-    const researchPapers = db.getCollection('researchPapers');
-    const index = researchPapers.findIndex(rp => rp.id === id);
-    if (index === -1) return undefined;
-    researchPapers[index] = { ...researchPapers[index], ...research };
-    db.setCollection('researchPapers', researchPapers);
-    return researchPapers[index];
+    const result = await db.update(researchPapers)
+      .set(research)
+      .where(eq(researchPapers.id, id))
+      .returning();
+    return result[0];
   }
   async deleteResearchPaper(id: number): Promise<boolean> {
-    const researchPapers = db.getCollection('researchPapers');
-    const index = researchPapers.findIndex(rp => rp.id === id);
-    if (index === -1) return false;
-    researchPapers.splice(index, 1);
-    db.setCollection('researchPapers', researchPapers);
-    return true;
+    const result = await db.delete(researchPapers)
+      .where(eq(researchPapers.id, id))
+      .returning();
+    return result.length > 0;
   }
   async getLibrarians(): Promise<Librarian[]> {
-    return db.getCollection('librarians');
+    return db.select().from(librarians);
   }
   async getLibrarian(id: number): Promise<Librarian | undefined> {
-    return db.getCollection('librarians').find(l => l.id === id);
+    const result = await db.select().from(librarians).where(eq(librarians.id, id));
+    return result[0];
   }
   async createLibrarian(librarian: InsertLibrarian): Promise<Librarian> {
-    const librarians = db.getCollection('librarians');
-    const newLibrarian = { ...librarian, id: librarians.length + 1 };
-    librarians.push(newLibrarian);
-    db.setCollection('librarians', librarians);
-    return newLibrarian;
+    const result = await db.insert(librarians).values(librarian).returning();
+    return result[0];
   }
   async updateLibrarian(id: number, librarian: Partial<InsertLibrarian>): Promise<Librarian | undefined> {
-    const librarians = db.getCollection('librarians');
-    const index = librarians.findIndex(l => l.id === id);
-    if (index === -1) return undefined;
-    librarians[index] = { ...librarians[index], ...librarian };
-    db.setCollection('librarians', librarians);
-    return librarians[index];
+    const result = await db.update(librarians)
+      .set(librarian)
+      .where(eq(librarians.id, id))
+      .returning();
+    return result[0];
   }
   async deleteLibrarian(id: number): Promise<boolean> {
-    const librarians = db.getCollection('librarians');
-    const index = librarians.findIndex(l => l.id === id);
-    if (index === -1) return false;
-    librarians.splice(index, 1);
-    db.setCollection('librarians', librarians);
-    return true;
+    const result = await db.delete(librarians)
+      .where(eq(librarians.id, id))
+      .returning();
+    return result.length > 0;
   }
   async getBorrowers(): Promise<Borrower[]> {
-    return db.getCollection('borrowers');
+    return db.select().from(borrowers);
   }
   async getBorrower(id: number): Promise<Borrower | undefined> {
-    return db.getCollection('borrowers').find(b => b.id === id);
+    const result = await db.select().from(borrowers).where(eq(borrowers.id, id));
+    return result[0];
   }
   async getBorrowersByCategory(category: string): Promise<Borrower[]> {
-    return db.getCollection('borrowers').filter(b => b.category === category);
+    return db.select().from(borrowers).where(eq(borrowers.category, category));
   }
   async createBorrower(borrower: InsertBorrower): Promise<Borrower> {
-    const borrowers = db.getCollection('borrowers');
-    const newBorrower = { ...borrower, id: borrowers.length + 1 };
-    borrowers.push(newBorrower);
-    db.setCollection('borrowers', borrowers);
-    return newBorrower;
+    const result = await db.insert(borrowers).values(borrower).returning();
+    return result[0];
   }
   async updateBorrower(id: number, borrower: Partial<InsertBorrower>): Promise<Borrower | undefined> {
-    const borrowers = db.getCollection('borrowers');
-    const index = borrowers.findIndex(b => b.id === id);
-    if (index === -1) return undefined;
-    borrowers[index] = { ...borrowers[index], ...borrower };
-    db.setCollection('borrowers', borrowers);
-    return borrowers[index];
+    const result = await db.update(borrowers)
+      .set(borrower)
+      .where(eq(borrowers.id, id))
+      .returning();
+    return result[0];
   }
   async deleteBorrower(id: number): Promise<boolean> {
-    const borrowers = db.getCollection('borrowers');
-    const index = borrowers.findIndex(b => b.id === id);
-    if (index === -1) return false;
-    borrowers.splice(index, 1);
-    db.setCollection('borrowers', borrowers);
-    return true;
+    const result = await db.delete(borrowers)
+      .where(eq(borrowers.id, id))
+      .returning();
+    return result.length > 0;
   }
   async getBorrowings(): Promise<Borrowing[]> {
-    return db.getCollection('borrowings');
+    return db.select().from(borrowings);
   }
   async getBorrowing(id: number): Promise<Borrowing | undefined> {
-    return db.getCollection('borrowings').find(b => b.id === id);
+    const result = await db.select().from(borrowings).where(eq(borrowings.id, id));
+    return result[0];
   }
   async createBorrowing(borrowing: InsertBorrowing): Promise<Borrowing> {
-    const borrowings = db.getCollection('borrowings');
-    const newBorrowing = { ...borrowing, id: borrowings.length + 1 };
-    borrowings.push(newBorrowing);
-    db.setCollection('borrowings', borrowings);
-    return newBorrowing;
+    const result = await db.insert(borrowings).values(borrowing).returning();
+    return result[0];
   }
   async updateBorrowing(id: number, borrowing: Partial<InsertBorrowing>): Promise<Borrowing | undefined> {
-    const borrowings = db.getCollection('borrowings');
-    const index = borrowings.findIndex(b => b.id === id);
-    if (index === -1) return undefined;
-    borrowings[index] = { ...borrowings[index], ...borrowing };
-    db.setCollection('borrowings', borrowings);
-    return borrowings[index];
+    const result = await db.update(borrowings)
+      .set(borrowing)
+      .where(eq(borrowings.id, id))
+      .returning();
+    return result[0];
   }
   async deleteBorrowing(id: number): Promise<boolean> {
-    const borrowings = db.getCollection('borrowings');
-    const index = borrowings.findIndex(b => b.id === id);
-    if (index === -1) return false;
-    borrowings.splice(index, 1);
-    db.setCollection('borrowings', borrowings);
-    return true;
+    const result = await db.delete(borrowings)
+      .where(eq(borrowings.id, id))
+      .returning();
+    return result.length > 0;
   }
   async getBorrowingsByBorrowerId(borrowerId: number): Promise<Borrowing[]> {
-    return db.getCollection('borrowings').filter(b => b.borrowerId === borrowerId);
+    return db.select().from(borrowings).where(eq(borrowings.borrowerId, borrowerId));
   }
   async getMostBorrowedBooks(limit: number = 5): Promise<any[]> {
     const result = await db.select({
