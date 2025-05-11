@@ -22,7 +22,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         errors: validationError.details 
       });
     }
-    
+
     console.error('Unexpected error:', err);
     return res.status(500).json({ message: 'Internal server error' });
   };
@@ -221,13 +221,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { category } = req.query;
       let borrowers;
-      
+
       if (category && typeof category === 'string') {
         borrowers = await storage.getBorrowersByCategory(category);
       } else {
         borrowers = await storage.getBorrowers();
       }
-      
+
       res.json(borrowers);
     } catch (err) {
       console.error('Error fetching borrowers:', err);
@@ -292,13 +292,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { borrowerId } = req.query;
       let borrowings;
-      
+
       if (borrowerId && typeof borrowerId === 'string') {
         borrowings = await storage.getBorrowingsByBorrowerId(parseInt(borrowerId));
       } else {
         borrowings = await storage.getBorrowings();
       }
-      
+
       res.json(borrowings);
     } catch (err) {
       console.error('Error fetching borrowings:', err);
@@ -323,7 +323,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/borrowings', async (req, res) => {
     try {
       const borrowingData = insertBorrowingSchema.parse(req.body);
-      
+
       // Validate that either bookId or researchId is provided, but not both
       if ((!borrowingData.bookId && !borrowingData.researchId) || 
           (borrowingData.bookId && borrowingData.researchId)) {
@@ -331,7 +331,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: 'Either bookId or researchId must be provided, but not both' 
         });
       }
-      
+
       const borrowing = await storage.createBorrowing(borrowingData);
       res.status(201).json(borrowing);
     } catch (err) {
@@ -420,6 +420,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (err) {
       return handleZodError(err, res);
     }
+  });
+
+  app.post('/api/reset-database', async (_req, res) => {
+    await storage.resetDatabase();
+    res.json({ message: 'Database reset successfully' });
   });
 
   const httpServer = createServer(app);

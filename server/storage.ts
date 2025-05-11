@@ -60,7 +60,23 @@ export interface IStorage {
 
   // Membership application
   createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian>;
+  
+  // Reset database
+  resetDatabase(): Promise<void>;
 }
+
+export class DatabaseStorage implements IStorage {
+  async resetDatabase(): Promise<void> {
+    // Delete the database file
+    const fs = require('fs');
+    if (fs.existsSync('library.db')) {
+      fs.unlinkSync('library.db');
+    }
+    
+    // Recreate tables
+    const createTables = require('./db').createTables;
+    await createTables();
+  }
 
 
 export class DatabaseStorage implements IStorage {
