@@ -124,14 +124,16 @@ const PopularBooks = () => {
                       )}
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
-                          <div className="bg-yellow-100 dark:bg-yellow-900/50 rounded-lg px-4 py-2">
-                            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
-                              {book.rating}
-                              <div className="text-lg">
+                          <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
+                            <div className="flex items-center justify-between">
+                              <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
+                                {book.rating}
+                              </div>
+                              <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
                                 {renderStars(parseFloat(book.rating))}
                               </div>
                             </div>
-                            <div className="text-xs text-yellow-600/80 dark:text-yellow-400/80 font-medium">
+                            <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
                               Rating Score
                             </div>
                           </div>
