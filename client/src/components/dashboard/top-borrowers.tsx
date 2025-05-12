@@ -135,20 +135,30 @@ const TopBorrowers = () => {
                         {borrower.category}
                       </Badge>
                     </TableCell>
-                    <TableCell className="whitespace-nowrap">
+                    <TableCell>
                       {filter === 'engagement' ? (
-                        <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-lg text-blue-600 dark:text-blue-400">
-                            {calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}
-                          </span>
-                          <span className="text-sm text-gray-500">points</span>
+                        <div className="flex flex-col items-start gap-1">
+                          <div className="flex items-center gap-2">
+                            <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                              {calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">engagement score</div>
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Last borrowed: {new Date(borrower.lastBorrowDate).toLocaleDateString()}
+                          </div>
                         </div>
                       ) : (
-                        <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-lg text-purple-600 dark:text-purple-400">
-                            {borrower.borrowCount || 0}
-                          </span>
-                          <span className="text-sm text-gray-500">times</span>
+                        <div className="flex flex-col items-start gap-1">
+                          <div className="flex items-center gap-2">
+                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                              {borrower.borrowCount || 0}
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">times borrowed</div>
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Since: {new Date(borrower.joinedDate).toLocaleDateString()}
+                          </div>
                         </div>
                       )}
                     </TableCell>
