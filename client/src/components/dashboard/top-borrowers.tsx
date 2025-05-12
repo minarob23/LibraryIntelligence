@@ -130,11 +130,27 @@ const TopBorrowers = () => {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm capitalize">{borrower.category}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">
-                      {filter === 'engagement' 
-                        ? `Engagement Score: ${calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}`
-                        : `Times Borrowed: ${borrower.borrowCount || 0}`}
+                    <TableCell>
+                      <Badge variant="outline" className={`${getCategoryColor(borrower.category)} px-3 py-1`}>
+                        {borrower.category}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {filter === 'engagement' ? (
+                        <div className="flex items-center space-x-2">
+                          <span className="font-semibold text-lg text-blue-600 dark:text-blue-400">
+                            {calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}
+                          </span>
+                          <span className="text-sm text-gray-500">points</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-2">
+                          <span className="font-semibold text-lg text-purple-600 dark:text-purple-400">
+                            {borrower.borrowCount || 0}
+                          </span>
+                          <span className="text-sm text-gray-500">times</span>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={`${getStatusColor(daysUntilExpiry)}`}>
