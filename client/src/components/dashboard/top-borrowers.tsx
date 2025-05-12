@@ -10,9 +10,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
-  const calculateEngagementScore = (borrowCount: number, lastBorrowDate: string) => {
+  const calculateEngagementScore = (borrowCount: number | null | undefined, lastBorrowDate: string | null | undefined): number => {
+    if (!borrowCount || !lastBorrowDate) return 0;
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowDate).getTime()) / (1000 * 3600 * 24));
-    return Math.round(((borrowCount * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
+    const score = Math.round(((borrowCount * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
+    return isNaN(score) ? 0 : score;
   };
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
