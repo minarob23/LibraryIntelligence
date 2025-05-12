@@ -24,21 +24,21 @@ const StatsCard = ({
   return (
     <Card className="overflow-hidden border-2">
       <CardContent className="p-6">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col items-center text-center">
+          <div className={`p-3 rounded-xl ${iconColor} bg-opacity-15 backdrop-blur-sm mb-4`}>
+            {icon}
+          </div>
           <div className="space-y-3">
             <div className="text-lg font-semibold text-black dark:text-gray-100">
               {title}
             </div>
-            <div className="text-4xl font-bold text-black dark:text-gray-100">
+            <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               {value}
             </div>
           </div>
-          <div className={`p-3 rounded-xl ${iconColor} bg-opacity-15 backdrop-blur-sm`}>
-            {icon}
-          </div>
         </div>
         {change && (
-          <div className="flex items-center mt-4 space-x-2">
+          <div className="flex items-center mt-4 space-x-2 justify-center">
             {change.trend === 'up' ? (
               <TrendingUp className="w-4 h-4 text-green-500" />
             ) : (

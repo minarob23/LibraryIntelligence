@@ -89,19 +89,19 @@ const Dashboard = () => {
       <div className="max-w-4xl mx-auto mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StatsCard
-            title="Active Borrowers"
-            value={borrowers?.length || 0}
-            icon={<Users className="h-6 w-6 text-green-500 dark:text-green-400" />}
-            change={{ value: borrowers?.length || 0, trend: borrowers?.length > 0 ? 'up' : 'down', text: 'total' }}
-            iconColor="text-green-500 dark:text-green-400"
-          />
-          
-          <StatsCard
             title="Books Borrowed"
             value={borrowings?.length || 0}
             icon={<Repeat className="h-6 w-6 text-purple-500 dark:text-purple-400" />}
             change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
             iconColor="text-purple-500 dark:text-purple-400"
+          />
+          
+          <StatsCard
+            title="Active Borrowers"
+            value={borrowers?.length || 0}
+            icon={<Users className="h-6 w-6 text-green-500 dark:text-green-400" />}
+            change={{ value: borrowers?.length || 0, trend: borrowers?.length > 0 ? 'up' : 'down', text: 'total' }}
+            iconColor="text-green-500 dark:text-green-400"
           />
         </div>
       </div>
