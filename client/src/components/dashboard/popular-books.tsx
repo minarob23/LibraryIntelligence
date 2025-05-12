@@ -97,16 +97,45 @@ const PopularBooks = () => {
                       </span>
                     </div>
                   ) : (
-                    <div className="mt-1 text-sm">
+                    <div className="mt-3">
                       {filter === 'popularity' && (
-                        <span className="text-blue-600 dark:text-blue-400">
-                          Score: {book.popularityScore}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="bg-blue-100 dark:bg-blue-900/50 rounded-lg px-4 py-2">
+                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                              {book.popularityScore}
+                            </div>
+                            <div className="text-xs text-blue-600/80 dark:text-blue-400/80 font-medium">
+                              Popularity Score
+                            </div>
+                          </div>
+                        </div>
                       )}
                       {filter === 'borrowed' && (
-                        <span className="text-purple-600 dark:text-purple-400">
-                          Borrowed: {book.timesBorrowed} times
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="bg-purple-100 dark:bg-purple-900/50 rounded-lg px-4 py-2">
+                            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                              {book.timesBorrowed}
+                            </div>
+                            <div className="text-xs text-purple-600/80 dark:text-purple-400/80 font-medium">
+                              Times Borrowed
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {filter === 'rating' && (
+                        <div className="flex items-center gap-2">
+                          <div className="bg-yellow-100 dark:bg-yellow-900/50 rounded-lg px-4 py-2">
+                            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
+                              {book.rating}
+                              <div className="text-lg">
+                                {renderStars(parseFloat(book.rating))}
+                              </div>
+                            </div>
+                            <div className="text-xs text-yellow-600/80 dark:text-yellow-400/80 font-medium">
+                              Rating Score
+                            </div>
+                          </div>
+                        </div>
                       )}
                     </div>
                   )}
