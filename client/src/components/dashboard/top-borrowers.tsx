@@ -68,12 +68,12 @@ const TopBorrowers = () => {
   };
 
   return (
-    <Card>
+    <Card className="border-none shadow-lg bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
-          <CardTitle>Top Borrowers</CardTitle>
+          <CardTitle className="text-xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-white bg-clip-text text-transparent">Top Borrowers</CardTitle>
           <Select defaultValue="engagement" onValueChange={(value) => setFilter(value as string)}>
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px] border-gray-200 dark:border-gray-700">
               <SelectValue placeholder="Filter by" />
             </SelectTrigger>
             <SelectContent>
