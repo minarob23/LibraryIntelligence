@@ -26,10 +26,10 @@ const StatsCard = ({
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div className="space-y-3">
-            <div className="text-base font-semibold text-gray-600 dark:text-gray-300">
+            <div className="text-lg font-semibold text-black dark:text-gray-100">
               {title}
             </div>
-            <div className="text-3xl font-bold bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent">
+            <div className="text-4xl font-bold text-black dark:text-gray-100">
               {value}
             </div>
           </div>
