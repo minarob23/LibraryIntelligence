@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const TopBorrowers = () => {
+  const [filter, setFilter] = useState('engagement');
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
   });
@@ -61,8 +62,19 @@ const TopBorrowers = () => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Top Borrowers</CardTitle>
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-center">
+          <CardTitle>Top Borrowers</CardTitle>
+          <Select defaultValue="engagement" onValueChange={(value) => setFilter(value as string)}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Filter by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="engagement">Engagement Score</SelectItem>
+              <SelectItem value="borrowing">Borrowing Times</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent>
         <Table>

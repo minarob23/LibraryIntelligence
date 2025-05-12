@@ -34,9 +34,9 @@ const PopularBooks = () => {
               <SelectValue placeholder="Filter by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="rating">By Rating</SelectItem>
-              <SelectItem value="random">Random</SelectItem>
-              <SelectItem value="borrowed">Most Borrowed</SelectItem>
+              <SelectItem value="popularity">Popularity Score</SelectItem>
+              <SelectItem value="borrowed">Times Borrowed</SelectItem>
+              <SelectItem value="rating">Rate</SelectItem>
             </SelectContent>
           </Select>
         </div>
