@@ -8,17 +8,34 @@ import coverImage2 from '@/assets/book-covers/cover2.svg';
 import coverImage3 from '@/assets/book-covers/cover3.svg';
 import coverImage4 from '@/assets/book-covers/cover4.svg';
 
-type FilterType = 'rating' | 'random' | 'borrowed';
+type FilterType = 'rating' | 'random' | 'borrowed' | 'popularity';
 
 const PopularBooks = () => {
-  const [filter, setFilter] = useState<FilterType>('rating');
-  
+  const [filter, setFilter] = useState<FilterType>('popularity');
+
   const { data: books, isLoading } = useQuery({
     queryKey: ['/api/dashboard/popular-books'],
     refetchInterval: 30000,
     staleTime: 0,
     cacheTime: 0
   });
+
+  const sortBooks = (books: any[]) => {
+    if (!books) return [];
+
+    switch (filter) {
+      case 'popularity':
+        return [...books].sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0));
+      case 'borrowed':
+        return [...books].sort((a, b) => (b.timesBorrowed || 0) - (a.timesBorrowed || 0));
+      case 'rating':
+        return [...books].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      default:
+        return books;
+    }
+  };
+
+  const sortedBooks = sortBooks(books);
 
   const handleFilterChange = (value: string) => {
     setFilter(value as FilterType);
@@ -36,7 +53,7 @@ const PopularBooks = () => {
             <SelectContent>
               <SelectItem value="popularity">Popularity Score</SelectItem>
               <SelectItem value="borrowed">Times Borrowed</SelectItem>
-              <SelectItem value="rating">Rate</SelectItem>
+              <SelectItem value="rating">Rating</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -45,7 +62,7 @@ const PopularBooks = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {isLoading ? (
             // Skeleton loading state
-            Array(4).fill(0).map((_, index) => (
+            Array(3).fill(0).map((_, index) => (
               <div key={index} className="flex space-x-3">
                 <Skeleton className="w-16 h-24" />
                 <div className="space-y-2">
@@ -56,7 +73,7 @@ const PopularBooks = () => {
               </div>
             ))
           ) : (
-            books?.map((book: any) => (
+            sortedBooks?.map((book: any) => (
               <div key={book.id} className="flex space-x-3">
                 <img 
                   className="w-16 h-24 object-cover rounded shadow-sm border border-gray-200 dark:border-gray-700" 
@@ -94,22 +111,22 @@ const renderStars = (rating: number) => {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;
   const remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
+
   // Full stars
   for (let i = 0; i < fullStars; i++) {
     stars.push(<StarFull key={`full-${i}`} />);
   }
-  
+
   // Half star if needed
   if (hasHalfStar) {
     stars.push(<StarHalf key="half" />);
   }
-  
+
   // Empty stars
   for (let i = 0; i < remainingStars; i++) {
     stars.push(<StarEmpty key={`empty-${i}`} />);
   }
-  
+
   return stars;
 };
 
