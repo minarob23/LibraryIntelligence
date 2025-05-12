@@ -87,14 +87,29 @@ const PopularBooks = () => {
                 <div>
                   <h4 className="font-medium">{book.name}</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
-                  <div className="flex items-center mt-1">
-                    <div className="flex text-yellow-400">
-                      {renderStars(parseFloat(book.rating))}
+                  {filter === 'rating' ? (
+                    <div className="flex items-center mt-1">
+                      <div className="flex text-yellow-400">
+                        {renderStars(parseFloat(book.rating))}
+                      </div>
+                      <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
+                        {book.rating}/5
+                      </span>
                     </div>
-                    <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
-                      {book.rating}/5
-                    </span>
-                  </div>
+                  ) : (
+                    <div className="mt-1 text-sm">
+                      {filter === 'popularity' && (
+                        <span className="text-blue-600 dark:text-blue-400">
+                          Score: {book.popularityScore}
+                        </span>
+                      )}
+                      {filter === 'borrowed' && (
+                        <span className="text-purple-600 dark:text-purple-400">
+                          Borrowed: {book.timesBorrowed} times
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             ))

@@ -209,7 +209,25 @@ export class DatabaseStorage implements IStorage {
 
   async getPopularBooks(limit: number = 4): Promise<any[]> {
     const books = await db.select().from(schema.books).limit(limit);
-    return books.map(book => ({ ...book, rating: (Math.random() * 2 + 3).toFixed(1) }));
+    const borrowings = await db.select().from(schema.borrowings);
+    
+    return books.map(book => {
+      const bookBorrowings = borrowings.filter(b => b.bookId === book.id);
+      const timesBorrowed = bookBorrowings.length;
+      const lastBorrowed = bookBorrowings.length > 0 
+        ? Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime()))
+        : new Date().getTime();
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowed) / (1000 * 60 * 60 * 24));
+      
+      const popularityScore = Number(((timesBorrowed * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40).toFixed(1));
+      
+      return {
+        ...book,
+        timesBorrowed,
+        popularityScore,
+        rating: (Math.random() * 2 + 3).toFixed(1)
+      };
+    });
   }
 
   async getTopBorrowers(limit: number = 5): Promise<any[]> {
