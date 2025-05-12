@@ -107,6 +107,14 @@ const Dashboard = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartContainer
+          title="Most Borrowed Books"
+          type="bar"
+          data={formatMostBorrowedBooks()}
+          nameKey="name"
+          dataKey="value"
+        />
+        
+        <ChartContainer
           title="Borrower Categories"
           type="doughnut"
           data={formatBorrowerDistribution()}
@@ -114,20 +122,12 @@ const Dashboard = () => {
           dataKey="value"
           colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
         />
-        <TopBorrowers />
       </div>
       
-      {/* Books Section */}
-      <div className="space-y-6">
+      {/* Popular Books & Top Borrowers */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <PopularBooks />
-        <ChartContainer
-          title="Most Borrowed Books"
-          type="bar"
-          data={formatMostBorrowedBooks()}
-          nameKey="name"
-          dataKey="value"
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm"
-        />
+        <TopBorrowers />
       </div>
     </div>
   );

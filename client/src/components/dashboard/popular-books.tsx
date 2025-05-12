@@ -59,7 +59,7 @@ const PopularBooks = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {isLoading ? (
             // Skeleton loading state
             Array(3).fill(0).map((_, index) => (
@@ -74,9 +74,9 @@ const PopularBooks = () => {
             ))
           ) : (
             sortedBooks?.map((book: any) => (
-              <div key={book.id} className="flex space-x-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg transition-all hover:scale-[1.02]">
+              <div key={book.id} className="flex space-x-3">
                 <img 
-                  className="w-20 h-28 object-cover rounded-md shadow-md border border-gray-200 dark:border-gray-700" 
+                  className="w-16 h-24 object-cover rounded shadow-sm border border-gray-200 dark:border-gray-700" 
                   src={book.coverImage || '/placeholder-cover.jpg'} 
                   alt={`Cover of ${book.name}`}
                   onError={(e) => {
