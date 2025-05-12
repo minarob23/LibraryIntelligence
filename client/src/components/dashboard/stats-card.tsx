@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface StatsCardProps {
   title: string;
@@ -22,25 +22,37 @@ const StatsCard = ({
   iconColor = 'text-primary-500 dark:text-primary-400'
 }: StatsCardProps) => {
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-center">
-          <div className={`p-3 rounded-full ${getTrendBgColor(iconColor)} mr-4`}>
-            {icon}
+    <Card className="overflow-hidden border-2">
+      <CardContent className="p-6">
+        <div className="flex justify-between items-start">
+          <div className="space-y-3">
+            <div className="text-base font-semibold text-gray-600 dark:text-gray-300">
+              {title}
+            </div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent">
+              {value}
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
-            <p className="text-2xl font-semibold">{value}</p>
+          <div className={`p-3 rounded-xl ${iconColor} bg-opacity-15 backdrop-blur-sm`}>
+            {icon}
           </div>
         </div>
         {change && (
-          <div className={`mt-4 text-sm ${getTrendTextColor(change.trend)}`}>
+          <div className="flex items-center mt-4 space-x-2">
             {change.trend === 'up' ? (
-              <ArrowUp className="inline-block mr-1" size={16} />
+              <TrendingUp className="w-4 h-4 text-green-500" />
             ) : (
-              <ArrowDown className="inline-block mr-1" size={16} />
+              <TrendingDown className="w-4 h-4 text-red-500" />
             )}
-            {Math.abs(change.value)}% {change.text}
+            <div
+              className={`text-sm font-medium ${
+                change.trend === 'up'
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              }`}
+            >
+              {change.value} {change.text}
+            </div>
           </div>
         )}
       </CardContent>
