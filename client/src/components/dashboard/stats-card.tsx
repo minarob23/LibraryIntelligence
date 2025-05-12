@@ -32,7 +32,7 @@ const StatsCard = ({
             <div className="text-lg font-semibold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-white bg-clip-text text-transparent">
               {title}
             </div>
-            <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-gradient">
+            <div className="text-3xl font-bold text-black dark:text-white">
               {value}
             </div>
           </div>

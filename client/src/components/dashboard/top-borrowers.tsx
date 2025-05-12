@@ -9,6 +9,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
+
+  const calculateEngagementScore = (borrowCount: number, lastBorrowDate: string) => {
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowDate).getTime()) / (1000 * 3600 * 24));
+    return Math.round(((borrowCount * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
+  };
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
   });
@@ -126,7 +131,11 @@ const TopBorrowers = () => {
                       </div>
                     </TableCell>
                     <TableCell className="whitespace-nowrap text-sm capitalize">{borrower.category}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{borrower.borrowCount || 0}</TableCell>
+                    <TableCell className="whitespace-nowrap text-sm">
+                      {filter === 'engagement' 
+                        ? `Engagement Score: ${calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}`
+                        : `Times Borrowed: ${borrower.borrowCount || 0}`}
+                    </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={`${getStatusColor(daysUntilExpiry)}`}>
                         {getStatusText(daysUntilExpiry)}
