@@ -22,17 +22,17 @@ const StatsCard = ({
   iconColor = 'text-primary-500 dark:text-primary-400'
 }: StatsCardProps) => {
   return (
-    <Card className="overflow-hidden border-2">
-      <CardContent className="p-6">
+    <Card className="overflow-hidden border-none shadow-lg bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 hover:shadow-xl transition-all duration-300">
+      <CardContent className="p-8">
         <div className="flex flex-col items-center text-center">
-          <div className={`p-3 rounded-xl ${iconColor} bg-opacity-15 backdrop-blur-sm mb-4`}>
+          <div className={`p-4 rounded-2xl ${iconColor} bg-opacity-15 backdrop-blur-sm mb-6 transform hover:scale-110 transition-transform duration-300 shadow-inner`}>
             {icon}
           </div>
-          <div className="space-y-3">
-            <div className="text-lg font-semibold text-black dark:text-gray-100">
+          <div className="space-y-4">
+            <div className="text-lg font-semibold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-white bg-clip-text text-transparent">
               {title}
             </div>
-            <div className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-gradient">
               {value}
             </div>
           </div>
