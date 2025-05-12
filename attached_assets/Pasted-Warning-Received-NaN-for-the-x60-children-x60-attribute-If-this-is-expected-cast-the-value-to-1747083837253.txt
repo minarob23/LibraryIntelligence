@@ -1,0 +1,71 @@
+Warning: Received NaN for the &#x60;children&#x60; attribute. If this is expected, cast the value to a string.
+    at div
+    at div
+    at div
+    at td
+    at _c13 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:152:13)
+    at tr
+    at _c9 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:102:12)
+    at tbody
+    at _c5 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:55:12)
+    at table
+    at div
+    at _c (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:20:11)
+    at div
+    at _c9 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/card.tsx:20:11)
+    at TopBorrowers (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/dashboard/top-borrowers.tsx:28:31)
+    at div
+    at div
+    at Dashboard (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/pages/dashboard.tsx:27:23)
+    at main
+    at div
+    at div
+    at Layout (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/layout/sidebar.tsx:63:19)
+    at PrivateRoute (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=I9AhZ_y59W1xOwsN5DAlN:46:27)
+    at Route (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:338:16)
+    at Switch (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:394:17)
+    at Router (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=I9AhZ_y59W1xOwsN5DAlN:40:49)
+    at Provider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=c42d5482:38:15)
+    at TooltipProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c42d5482:63:5)
+    at ThemeProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=c42d5482:2875:3)
+    at App
+at div
+at div
+at div
+at td
+at _c13 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:152:13)
+at tr
+at _c9 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:102:12)
+at tbody
+at _c5 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:55:12)
+at table
+at div
+at _c (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/table.tsx:20:11)
+at div
+at _c9 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/card.tsx:114:12)
+at div
+at _c (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/ui/card.tsx:20:11)
+at TopBorrowers (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/dashboard/top-borrowers.tsx:28:31)
+at div
+at div
+at Dashboard (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/pages/dashboard.tsx:27:23)
+at main
+at div
+at div
+at Layout (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/layout/sidebar.tsx:63:19)
+at PrivateRoute (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=I9AhZ_y59W1xOwsN5DAlN:46:27)
+at Route (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:338:16)
+at Switch (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:394:17)
+at Router (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=I9AhZ_y59W1xOwsN5DAlN:40:49)
+at Provider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=c42d5482:38:15)
+at TooltipProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c42d5482:63:5)
+at ThemeProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/lib/context/app-context.tsx:21:3)
+at QueryClientProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=c42d5482:2875:3)
+at App
+at t.value (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
