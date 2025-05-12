@@ -151,7 +151,7 @@ const TopBorrowers = () => {
                       ) : (
                         <div className="flex flex-col items-start gap-1">
                           <div className="flex items-center gap-2">
-                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            <div className="text-lg font-bold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">
                               {borrower.borrowCount || 0}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">times borrowed</div>
