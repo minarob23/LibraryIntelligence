@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { setupBackup } from "./backup";
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -51,6 +52,9 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
+  // Setup database backup
+  setupBackup();
+
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
