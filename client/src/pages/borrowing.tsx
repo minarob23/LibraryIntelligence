@@ -259,11 +259,10 @@ const BorrowingPage = () => {
                   <div className="py-6">
                     <StarRating
                       value={parseInt((document.getElementById(`rating-${row.id}`) as HTMLInputElement)?.value || '8')}
-                      onChange={(value) => {
+                      onChange={(newValue) => {
                         const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
                         if (input) {
-                          input.value = value.toString();
-                          input.dispatchEvent(new Event('change', { bubbles: true }));
+                          input.value = newValue.toString();
                         }
                       }}
                       max={10}
