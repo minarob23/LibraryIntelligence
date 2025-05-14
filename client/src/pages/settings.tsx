@@ -282,7 +282,46 @@ const Settings = () => {
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="your@email.com" />
               </div>
-              <Button onClick={() => toast({ title: "Profile updated" })}>
+              <div className="space-y-4 mt-4">
+                <h4 className="text-sm font-medium">Update Password</h4>
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Input id="currentPassword" type="password" placeholder="Enter current password" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input id="newPassword" type="password" placeholder="Enter new password" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Input id="confirmPassword" type="password" placeholder="Confirm new password" />
+                </div>
+              </div>
+              <Button onClick={() => {
+                const currentPassword = (document.getElementById('currentPassword') as HTMLInputElement)?.value;
+                const newPassword = (document.getElementById('newPassword') as HTMLInputElement)?.value;
+                const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement)?.value;
+                
+                if (currentPassword && (!newPassword || !confirmPassword)) {
+                  toast({
+                    title: "Validation Error",
+                    description: "Please fill in all password fields to update password",
+                    variant: "destructive"
+                  });
+                  return;
+                }
+
+                if (newPassword && newPassword !== confirmPassword) {
+                  toast({
+                    title: "Password Mismatch",
+                    description: "New password and confirmation do not match",
+                    variant: "destructive"
+                  });
+                  return;
+                }
+
+                toast({ title: "Profile updated" });
+              }}>
                 Save Profile
               </Button>
             </div>

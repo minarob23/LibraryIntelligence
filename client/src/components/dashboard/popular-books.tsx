@@ -156,7 +156,7 @@ const renderStars = (rating: number) => {
   const stars = [];
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;
-  const remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const remainingStars = 10 - fullStars - (hasHalfStar ? 1 : 0);
 
   // Full stars
   for (let i = 0; i < fullStars; i++) {

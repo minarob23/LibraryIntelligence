@@ -234,13 +234,39 @@ const BorrowingPage = () => {
         actions={(row) => (
           <>
             {row.status === 'borrowed' && (
-              <Button
-                variant="ghost"
-                className="text-green-500 hover:text-green-600"
-                onClick={() => handleReturn(row)}
-              >
-                <CheckCircle size={16} className="mr-1" /> Return
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-green-500 hover:text-green-600"
+                  >
+                    <CheckCircle size={16} className="mr-1" /> Return
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Rate Book</DialogTitle>
+                    <DialogDescription>
+                      Please rate this book before returning (1-10)
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="py-4">
+                    <Input 
+                      type="number" 
+                      min="1" 
+                      max="10" 
+                      placeholder="Rate from 1-10"
+                      id={`rating-${row.id}`}
+                      defaultValue="8"
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={() => handleReturn(row)}>
+                      Submit & Return
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             )}
             
             <Dialog open={openEditDialog && editingBorrowing?.id === row.id} onOpenChange={(open) => {
