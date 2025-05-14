@@ -11,10 +11,14 @@ const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
   const calculateEngagementScore = (borrowCount: number | null | undefined, lastBorrowDate: string | null | undefined): number => {
-    if (!borrowCount || !lastBorrowDate) return 0;
+    if (!borrowCount || borrowCount === 0) return 0;
+    
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowDate).getTime()) / (1000 * 3600 * 24));
-    const score = Math.round(((borrowCount * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
-    return isNaN(score) ? 0 : score;
+    const borrowingFactor = borrowCount * 10;
+    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Allow negative values but cap at -50
+    
+    const score = Math.round(((borrowingFactor + recencyFactor) / 40) * 10) / 10;
+    return score;
   };
 
   const { data: borrowers, isLoading } = useQuery({
