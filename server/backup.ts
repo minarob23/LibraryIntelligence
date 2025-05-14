@@ -4,7 +4,7 @@ import path from 'path';
 import { log } from './vite';
 
 export function setupBackup() {
-  const backupInterval = 60 * 60 * 1000; // 1 hour
+  const backupInterval = 1000; // 1 second
   
   const performBackup = () => {
     try {

@@ -35,38 +35,34 @@ const Dashboard = () => {
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
   });
-  
+
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
-  
+
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
   });
-  
+
   const { data: research } = useQuery({ 
     queryKey: ['/api/research'],
   });
-  
+
   const { data: mostBorrowedBooks } = useQuery({ 
     queryKey: ['/api/dashboard/most-borrowed-books'],
   });
-  
+
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
-  });
-
-  const { data: borrowers } = useQuery({
-    queryKey: ['/api/borrowers'],
   });
 
   // Format borrower growth data for chart
   const formatBorrowerGrowth = () => {
     if (!borrowers) return [];
-    
+
     const monthlyGrowth = new Map();
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
+
     // Initialize last 6 months with 0
     const today = new Date();
     for (let i = 5; i >= 0; i--) {
@@ -93,7 +89,7 @@ const Dashboard = () => {
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
-    
+
     return [
       { name: 'Primary', value: borrowerDistribution.primary || 0 },
       { name: 'Middle', value: borrowerDistribution.middle || 0 },
@@ -106,7 +102,7 @@ const Dashboard = () => {
   // Format most borrowed books data for chart
   const formatMostBorrowedBooks = () => {
     if (!mostBorrowedBooks) return [];
-    
+
     return mostBorrowedBooks.map((book: any) => ({
       name: book.name,
       value: book.borrowCount,
@@ -119,7 +115,7 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold">Dashboard</h2>
         <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
       </div>
-      
+
       {/* Statistics Cards */}
       <div className="max-w-4xl mx-auto mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -130,7 +126,7 @@ const Dashboard = () => {
             change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
             iconColor="text-purple-500 dark:text-purple-400"
           />
-          
+
           <StatsCard
             title="Active Borrowers"
             value={borrowers?.length || 0}
@@ -140,13 +136,13 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      
+
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <PopularBooks />
         <TopBorrowers />
       </div>
-      
+
       {/* Categories & Growth */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartContainer
