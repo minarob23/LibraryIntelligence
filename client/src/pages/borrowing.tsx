@@ -206,12 +206,12 @@ const BorrowingPage = () => {
     {
       key: 'rating',
       header: 'Rating',
-      cell: (row: any) => row.rating ? (
+      cell: (row: any) => (
         <div className="flex items-center gap-1">
-          <StarRating value={row.rating} readOnly max={10} />
-          <span className="text-sm text-muted-foreground ml-2">{row.rating}/10</span>
+          <StarRating value={row.rating || 0} readOnly max={10} />
+          <span className="text-sm text-muted-foreground ml-2">{row.rating || 0}/10</span>
         </div>
-      ) : '-',
+      ),
     },
   ];
 
