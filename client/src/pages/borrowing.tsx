@@ -77,20 +77,28 @@ const BorrowingPage = () => {
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
-      const currentRating = borrowing.rating;
       
       await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, {
         ...borrowing,
         returnDate: today,
         status: 'returned',
-        rating: currentRating
       });
       
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      // Update local state and cache
+      const newBorrowings = [...borrowings];
+      const index = newBorrowings.findIndex(b => b.id === borrowing.id);
+      if (index !== -1) {
+        newBorrowings[index] = {
+          ...borrowing,
+          returnDate: today,
+          status: 'returned'
+        };
+        queryClient.setQueryData(['/api/borrowings'], newBorrowings);
+      }
       
       toast({
         title: 'Success',
-        description: `Item returned successfully! You rated this ${currentRating}/10`,
+        description: `Item returned successfully! You rated this ${borrowing.rating}/10`,
         variant: 'default',
       });
     } catch (error) {
