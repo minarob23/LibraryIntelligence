@@ -39,7 +39,7 @@ const BorrowingTrends = () => {
   return (
     <ChartContainer
       title="Borrowing Trends"
-      type="line"
+      type="bar"
       data={getMonthlyData()}
       nameKey="name"
       dataKey="value"
