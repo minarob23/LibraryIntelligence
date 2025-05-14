@@ -16,6 +16,14 @@ const TopBorrowers = () => {
     const score = Math.round(((borrowCount * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
     return isNaN(score) ? 0 : score;
   };
+
+  const { data: borrowers, isLoading } = useQuery({
+    queryKey: ['/api/dashboard/top-borrowers'],
+    select: (data) => data?.map((borrower: any) => ({
+      ...borrower,
+      engagementScore: calculateEngagementScore(borrower.totalBooksBorrowed, borrower.lastBorrowDate)
+    }))
+  });
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
   });

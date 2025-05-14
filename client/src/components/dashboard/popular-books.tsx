@@ -32,18 +32,29 @@ const PopularBooks = () => {
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
+  const calculatePopularityScore = (timesBorrowed: number, lastBorrowedDate: string) => {
+    if (!timesBorrowed || !lastBorrowedDate) return 0;
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowedDate).getTime()) / (1000 * 3600 * 24));
+    return Math.round(((timesBorrowed * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
+  };
+
   const sortBooks = (books: any[]) => {
     if (!books) return [];
+    
+    const booksWithScore = books.map(book => ({
+      ...book,
+      popularityScore: calculatePopularityScore(book.timesBorrowed, book.lastBorrowedDate)
+    }));
 
     switch (filter) {
       case 'popularity':
-        return [...books].sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0));
+        return [...booksWithScore].sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0));
       case 'borrowed':
-        return [...books].sort((a, b) => (b.timesBorrowed || 0) - (a.timesBorrowed || 0));
+        return [...booksWithScore].sort((a, b) => (b.timesBorrowed || 0) - (a.timesBorrowed || 0));
       case 'rating':
-        return [...books].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        return [...booksWithScore].sort((a, b) => (b.rating || 0) - (a.rating || 0));
       default:
-        return books;
+        return booksWithScore;
     }
   };
 
