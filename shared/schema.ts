@@ -95,6 +95,7 @@ export const borrowings = pgTable("borrowings", {
   dueDate: date("due_date").notNull(),
   returnDate: date("return_date"),
   status: text("status").notNull().$type<'borrowed' | 'returned' | 'overdue'>(),
+  rating: integer("rating"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
