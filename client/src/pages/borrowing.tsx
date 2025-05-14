@@ -77,7 +77,7 @@ const BorrowingPage = () => {
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
-      const currentRating = borrowing.rating || 0;
+      const currentRating = borrowing.rating;
       
       await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, {
         ...borrowing,
