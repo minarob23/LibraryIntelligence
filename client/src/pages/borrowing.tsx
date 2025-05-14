@@ -91,7 +91,8 @@ const BorrowingPage = () => {
       
       toast({
         title: 'Success',
-        description: `Item returned successfully with rating ${rating}/10`,
+        description: `Item returned successfully! You rated this ${rating}/10`,
+        variant: 'default',
       });
     } catch (error) {
       console.error('Error returning item:', error);
