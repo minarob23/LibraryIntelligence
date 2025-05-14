@@ -24,9 +24,6 @@ const TopBorrowers = () => {
       engagementScore: calculateEngagementScore(borrower.totalBooksBorrowed, borrower.lastBorrowDate)
     }))
   });
-  const { data: borrowers, isLoading } = useQuery({
-    queryKey: ['/api/dashboard/top-borrowers'],
-  });
 
   // Get initials from a name
   const getInitials = (name: string) => {
