@@ -77,18 +77,21 @@ const BorrowingPage = () => {
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
+      const ratingInput = document.getElementById(`rating-${borrowing.id}`) as HTMLInputElement;
+      const rating = ratingInput ? parseInt(ratingInput.value) : 8;
       
       await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, {
         ...borrowing,
         returnDate: today,
         status: 'returned',
+        rating: rating
       });
       
       queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
       
       toast({
         title: 'Success',
-        description: 'Item returned successfully',
+        description: `Item returned successfully with rating ${rating}/10`,
       });
     } catch (error) {
       console.error('Error returning item:', error);
