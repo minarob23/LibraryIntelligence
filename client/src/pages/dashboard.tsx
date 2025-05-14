@@ -5,6 +5,7 @@ import StatsCard from '@/components/dashboard/stats-card';
 import ChartContainer from '@/components/dashboard/chart-container';
 import PopularBooks from '@/components/dashboard/popular-books';
 import TopBorrowers from '@/components/dashboard/top-borrowers';
+import BorrowingTrends from '@/components/dashboard/borrowing-trends';
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
