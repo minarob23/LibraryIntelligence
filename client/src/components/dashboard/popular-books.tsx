@@ -93,7 +93,7 @@ const PopularBooks = () => {
                         {renderStars(parseFloat(book.rating))}
                       </div>
                       <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
-                        {book.rating}/5
+                        {book.rating}/10
                       </span>
                     </div>
                   ) : (
