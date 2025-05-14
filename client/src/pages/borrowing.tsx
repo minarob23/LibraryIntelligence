@@ -270,18 +270,13 @@ const BorrowingPage = () => {
                       <StarRating
                         value={row.rating || 0}
                         onChange={(newValue) => {
-                          const currentRating = row.rating || 0;
-                          if (row.status === 'returned' || row.status === 'borrowed') {
-                            row.rating = currentRating;
-                          } else {
-                            row.rating = newValue;
-                            // Force a re-render
-                            const newBorrowings = [...borrowings];
-                            const index = newBorrowings.findIndex(b => b.id === row.id);
-                            if (index !== -1) {
-                              newBorrowings[index] = { ...row };
-                              queryClient.setQueryData(['/api/borrowings'], newBorrowings);
-                            }
+                          row.rating = newValue;
+                          // Force a re-render
+                          const newBorrowings = [...borrowings];
+                          const index = newBorrowings.findIndex(b => b.id === row.id);
+                          if (index !== -1) {
+                            newBorrowings[index] = { ...row };
+                            queryClient.setQueryData(['/api/borrowings'], newBorrowings);
                           }
                         }}
                         max={10}
