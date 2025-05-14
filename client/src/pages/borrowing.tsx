@@ -257,16 +257,20 @@ const BorrowingPage = () => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="py-6">
-                    <StarRating
-                      value={parseInt((document.getElementById(`rating-${row.id}`) as HTMLInputElement)?.value || '8')}
-                      onChange={(newValue) => {
-                        const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
-                        if (input) {
-                          input.value = newValue.toString();
-                        }
-                      }}
-                      max={10}
-                    />
+                    <div className="flex flex-col items-center gap-2">
+                      <StarRating
+                        value={row.rating || 8}
+                        onChange={(newValue) => {
+                          const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
+                          if (input) {
+                            input.value = newValue.toString();
+                            row.rating = newValue;
+                          }
+                        }}
+                        max={10}
+                      />
+                      <div className="text-sm text-muted-foreground">Click stars to rate</div>
+                    </div>
                     <Input 
                       type="hidden" 
                       id={`rating-${row.id}`}
