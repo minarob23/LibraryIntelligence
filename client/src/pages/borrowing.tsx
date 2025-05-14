@@ -277,15 +277,9 @@ const BorrowingPage = () => {
                     <div className="flex flex-col items-center gap-2">
                       <StarRating
                         value={row.rating || 0}
-                        onChange={async (newValue) => {
-                          // Update rating in database
-                          await apiRequest(`/api/borrowings/${row.id}`, {
-                            method: 'PATCH',
-                            data: { rating: newValue }
-                          });
-                          
-                          // Update local state
+                        onChange={(newValue) => {
                           row.rating = newValue;
+                          // Force a re-render
                           const newBorrowings = [...borrowings];
                           const index = newBorrowings.findIndex(b => b.id === row.id);
                           if (index !== -1) {

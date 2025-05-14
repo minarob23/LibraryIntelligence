@@ -174,9 +174,9 @@ export class DatabaseStorage implements IStorage {
     const result = await db.insert(borrowings).values(borrowing).returning();
     return result[0];
   }
-  async updateBorrowing(id: number, borrowing: Partial<InsertBorrowing & { rating?: number }>): Promise<Borrowing | undefined> {
+  async updateBorrowing(id: number, borrowing: Partial<InsertBorrowing>): Promise<Borrowing | undefined> {
     const result = await db.update(borrowings)
-      .set({ ...borrowing, rating: borrowing.rating })
+      .set(borrowing)
       .where(eq(borrowings.id, id))
       .returning();
     return result[0];
