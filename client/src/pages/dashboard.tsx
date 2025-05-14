@@ -118,15 +118,9 @@ const Dashboard = () => {
         <TopBorrowers />
       </div>
       
-      {/* Most Borrowed & Categories */}
+      {/* Borrowing Trends & Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartContainer
-          title="Most Borrowed Books"
-          type="bar"
-          data={formatMostBorrowedBooks()}
-          nameKey="name"
-          dataKey="value"
-        />
+        <BorrowingTrends />
         
         <ChartContainer
           title="Borrower Categories"
