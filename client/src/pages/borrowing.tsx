@@ -268,15 +268,20 @@ const BorrowingPage = () => {
                   <div className="py-6">
                     <div className="flex flex-col items-center gap-2">
                       <StarRating
-                        value={row.rating || 8}
+                        value={row.rating || 0}
                         onChange={(newValue) => {
-                          row.rating = newValue;
-                          // Force a re-render
-                          const newBorrowings = [...borrowings];
-                          const index = newBorrowings.findIndex(b => b.id === row.id);
-                          if (index !== -1) {
-                            newBorrowings[index] = { ...row };
-                            queryClient.setQueryData(['/api/borrowings'], newBorrowings);
+                          const currentRating = row.rating || 0;
+                          if (row.status === 'returned' || row.status === 'borrowed') {
+                            row.rating = currentRating;
+                          } else {
+                            row.rating = newValue;
+                            // Force a re-render
+                            const newBorrowings = [...borrowings];
+                            const index = newBorrowings.findIndex(b => b.id === row.id);
+                            if (index !== -1) {
+                              newBorrowings[index] = { ...row };
+                              queryClient.setQueryData(['/api/borrowings'], newBorrowings);
+                            }
                           }
                         }}
                         max={10}

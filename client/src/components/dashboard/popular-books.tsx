@@ -20,6 +20,18 @@ const PopularBooks = () => {
     cacheTime: 0
   });
 
+  const { data: borrowings } = useQuery({
+    queryKey: ['/api/borrowings'],
+  });
+
+  const getAverageRating = (bookId: number) => {
+    if (!borrowings) return null;
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
+    if (bookBorrowings.length === 0) return null;
+    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
+    return (totalRating / bookBorrowings.length).toFixed(1);
+  };
+
   const sortBooks = (books: any[]) => {
     if (!books) return [];
 
@@ -89,20 +101,26 @@ const PopularBooks = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
                   {filter === 'rating' ? (
                     <div className="flex items-center mt-1">
-                      {book.rating ? (
-                        <>
-                          <div className="flex text-yellow-400">
-                            {renderStars(parseFloat(book.rating))}
-                          </div>
-                          <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
-                            {book.rating}/10
+                      {(() => {
+                        const avgRating = getAverageRating(book.id);
+                        if (avgRating) {
+                          return (
+                            <>
+                              <div className="flex text-yellow-400">
+                                {renderStars(parseFloat(avgRating))}
+                              </div>
+                              <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
+                                {avgRating}/10
+                              </span>
+                            </>
+                          );
+                        }
+                        return (
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            Not rated yet
                           </span>
-                        </>
-                      ) : (
-                        <span className="text-xs text-gray-600 dark:text-gray-400">
-                          Not rated yet
-                        </span>
-                      )}
+                        );
+                      })()}
                     </div>
                   ) : (
                     <div className="mt-3">
