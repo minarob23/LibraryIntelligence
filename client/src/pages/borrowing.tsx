@@ -203,6 +203,16 @@ const BorrowingPage = () => {
       header: 'Status',
       cell: (row: any) => getStatusBadge(row.status),
     },
+    {
+      key: 'rating',
+      header: 'Rating',
+      cell: (row: any) => row.rating ? (
+        <div className="flex items-center gap-1">
+          <StarRating value={row.rating} readOnly max={10} />
+          <span className="text-sm text-muted-foreground ml-2">{row.rating}/10</span>
+        </div>
+      ) : '-',
+    },
   ];
 
   const borrowingsWithDetails = mapBorrowingWithDetails();
