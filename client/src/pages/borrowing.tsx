@@ -78,22 +78,20 @@ const BorrowingPage = () => {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      // Ensure rating is a valid number
-      const rating = typeof borrowing.rating === 'number' ? borrowing.rating : 0;
-      
       const updatedBorrowing = {
         ...borrowing,
         returnDate: today,
         status: 'returned',
-        rating: rating
+        rating: Number(borrowing.rating) || 0
       };
       
       const response = await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
       
       // Update local state and cache with server response
-      queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => 
-        oldData?.map(b => b.id === borrowing.id ? response : b) || []
-      );
+      queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => {
+        if (!oldData) return [];
+        return oldData.map(b => b.id === borrowing.id ? {...b, ...response} : b);
+      });
       
       toast({
         title: 'Success',
