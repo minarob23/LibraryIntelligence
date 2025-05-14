@@ -87,14 +87,19 @@ const BorrowingPage = () => {
       
       const response = await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
       
-      // Update local state and cache with server response
+      // Update local state and cache
       queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => {
         if (!oldData) return [];
-        return oldData.map(b => b.id === borrowing.id ? {...b, ...response} : b);
+        return oldData.map(b => b.id === borrowing.id ? response : b);
       });
+
+      // Invalidate and refetch to ensure data consistency
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
       
       toast({
         title: 'Success',
+        description: 'Book returned successfully',
+      });
         description: `Item returned successfully! You rated this ${borrowing.rating}/10`,
         variant: 'default',
       });
