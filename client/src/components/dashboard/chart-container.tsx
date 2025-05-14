@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from '@/lib/hooks/use-theme';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, LineChart, Line } from 'recharts';
 
 type ChartType = 'bar' | 'pie' | 'doughnut' | 'line';
 
@@ -27,7 +27,7 @@ const ChartContainer = ({
   height = 300
 }: ChartContainerProps) => {
   const { theme } = useTheme();
-  
+
   const renderBarChart = () => (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
@@ -99,14 +99,40 @@ const ChartContainer = ({
     </ResponsiveContainer>
   );
 
+  const renderLineChart = () => (
+    <ResponsiveContainer width="100%" height={height}>
+      <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#f1f1f1'} />
+        <XAxis 
+          dataKey={nameKey} 
+          tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280' }} 
+          axisLine={{ stroke: theme === 'dark' ? '#4B5563' : '#E5E7EB' }}
+        />
+        <YAxis 
+          tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280' }} 
+          axisLine={{ stroke: theme === 'dark' ? '#4B5563' : '#E5E7EB' }}
+        />
+        <Tooltip 
+          contentStyle={{ 
+            backgroundColor: theme === 'dark' ? '#1F2937' : '#FFF',
+            borderColor: theme === 'dark' ? '#4B5563' : '#E5E7EB',
+            color: theme === 'dark' ? '#F9FAFB' : '#111827'
+          }} 
+        />
+        <Line type="monotone" dataKey={dataKey} stroke="#3B82F6" strokeWidth={2} dot={{ fill: '#3B82F6' }} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+
   const renderChart = () => {
     switch (type) {
       case 'bar':
         return renderBarChart();
       case 'pie':
-        return renderPieChart();
       case 'doughnut':
-        return renderPieChart(true);
+        return renderPieChart();
+      case 'line':
+        return renderLineChart();
       default:
         return <div>Chart type not supported</div>;
     }
