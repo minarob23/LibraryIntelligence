@@ -85,6 +85,7 @@ const createTables = async () => {
       due_date DATE NOT NULL,
       return_date DATE,
       status TEXT NOT NULL CHECK (status IN ('borrowed', 'returned', 'overdue')),
+      rating INTEGER,
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
       FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
