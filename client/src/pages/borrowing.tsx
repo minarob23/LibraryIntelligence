@@ -261,21 +261,19 @@ const BorrowingPage = () => {
                       <StarRating
                         value={row.rating || 8}
                         onChange={(newValue) => {
-                          const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
-                          if (input) {
-                            input.value = newValue.toString();
-                            row.rating = newValue;
+                          row.rating = newValue;
+                          // Force a re-render
+                          const newBorrowings = [...borrowings];
+                          const index = newBorrowings.findIndex(b => b.id === row.id);
+                          if (index !== -1) {
+                            newBorrowings[index] = { ...row };
+                            queryClient.setQueryData(['/api/borrowings'], newBorrowings);
                           }
                         }}
                         max={10}
                       />
                       <div className="text-sm text-muted-foreground">Click stars to rate</div>
                     </div>
-                    <Input 
-                      type="hidden" 
-                      id={`rating-${row.id}`}
-                      defaultValue="8"
-                    />
                   </div>
                   <DialogFooter>
                     <Button onClick={() => handleReturn(row)}>
