@@ -112,6 +112,11 @@ const Dashboard = () => {
         <TopBorrowers />
       </div>
       
+      {/* Borrowing Trends */}
+      <div className="mb-6">
+        <BorrowingTrends />
+      </div>
+      
       {/* Most Borrowed & Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ChartContainer

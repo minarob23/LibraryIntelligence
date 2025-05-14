@@ -104,18 +104,12 @@ const ResearchPage = () => {
       key: 'status',
       header: 'Status',
       cell: (row: any) => {
-        const availableCopies = row.copies - 0; // This should be calculated based on borrowed copies
+        const isBorrowed = borrowings?.some((b: any) => b.researchId === row.id && b.status === 'borrowed');
         
-        if (availableCopies === 0) {
-          return (
-            <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
-              All Borrowed
-            </Badge>
-          );
-        } else if (availableCopies < row.copies) {
+        if (isBorrowed) {
           return (
             <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-              {availableCopies} Available
+              Borrowed
             </Badge>
           );
         } else {
