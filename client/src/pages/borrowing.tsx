@@ -85,12 +85,15 @@ const BorrowingPage = () => {
         rating: borrowing.rating || 0
       };
       
-      const response = await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
+      await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
       
-      // Update the cache with server response
-      queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => 
-        oldData.map(b => b.id === borrowing.id ? response : b)
-      );
+      // Update local state and cache
+      const newBorrowings = [...borrowings];
+      const index = newBorrowings.findIndex(b => b.id === borrowing.id);
+      if (index !== -1) {
+        newBorrowings[index] = updatedBorrowing;
+        queryClient.setQueryData(['/api/borrowings'], newBorrowings);
+      }
       
       toast({
         title: 'Success',
