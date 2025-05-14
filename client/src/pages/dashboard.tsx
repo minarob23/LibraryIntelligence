@@ -56,6 +56,40 @@ const Dashboard = () => {
     queryKey: ['/api/dashboard/borrower-distribution'],
   });
 
+  const { data: borrowers } = useQuery({
+    queryKey: ['/api/borrowers'],
+  });
+
+  // Format borrower growth data for chart
+  const formatBorrowerGrowth = () => {
+    if (!borrowers) return [];
+    
+    const monthlyGrowth = new Map();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    // Initialize last 6 months with 0
+    const today = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      monthlyGrowth.set(monthKey, 0);
+    }
+
+    // Count borrowers per month based on join date
+    borrowers.forEach((borrower: any) => {
+      const date = new Date(borrower.joinedDate);
+      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      if (monthlyGrowth.has(monthKey)) {
+        monthlyGrowth.set(monthKey, monthlyGrowth.get(monthKey) + 1);
+      }
+    });
+
+    return Array.from(monthlyGrowth.entries()).map(([month, count]) => ({
+      month,
+      count
+    }));
+  };
+
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
@@ -113,10 +147,8 @@ const Dashboard = () => {
         <TopBorrowers />
       </div>
       
-      {/* Borrowing Trends & Categories */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <BorrowingTrends />
-        
+      {/* Categories & Growth */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartContainer
           title="Borrower Categories"
           type="doughnut"
@@ -125,6 +157,19 @@ const Dashboard = () => {
           dataKey="value"
           colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
         />
+
+        <ChartContainer
+          title="Borrower's Growth"
+          type="line"
+          data={formatBorrowerGrowth()}
+          nameKey="month"
+          dataKey="count"
+        />
+      </div>
+
+      {/* Borrowing Trends */}
+      <div>
+        <BorrowingTrends />
       </div>
     </div>
   );
