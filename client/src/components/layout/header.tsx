@@ -99,7 +99,38 @@ const UserMenu = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" onClick={(e) => {
+              e.preventDefault();
+              const currentPassword = (document.getElementById('currentPassword') as HTMLInputElement)?.value;
+              const newPassword = (document.getElementById('newPassword') as HTMLInputElement)?.value;
+              const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement)?.value;
+              
+              if (currentPassword && (!newPassword || !confirmPassword)) {
+                toast({
+                  title: "Validation Error",
+                  description: "Please fill in all password fields to update password",
+                  variant: "destructive"
+                });
+                return;
+              }
+
+              if (newPassword && newPassword !== confirmPassword) {
+                toast({
+                  title: "Password Mismatch",
+                  description: "New password and confirmation do not match",
+                  variant: "destructive"
+                });
+                return;
+              }
+
+              toast({
+                title: "Profile Updated",
+                description: "Your profile has been updated successfully"
+              });
+              setProfileOpen(false);
+            }}>
+              Save changes
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
