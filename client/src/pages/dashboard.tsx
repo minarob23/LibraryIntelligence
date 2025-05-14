@@ -156,10 +156,11 @@ const Dashboard = () => {
 
         <ChartContainer
           title="Borrower's Growth"
-          type="line"
+          type="bar"
           data={formatBorrowerGrowth()}
           nameKey="month"
           dataKey="count"
+          colors={['#3B82F6']}
         />
       </div>
 
