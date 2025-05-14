@@ -89,12 +89,20 @@ const PopularBooks = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
                   {filter === 'rating' ? (
                     <div className="flex items-center mt-1">
-                      <div className="flex text-yellow-400">
-                        {renderStars(parseFloat(book.rating))}
-                      </div>
-                      <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
-                        {book.rating}/10
-                      </span>
+                      {book.rating ? (
+                        <>
+                          <div className="flex text-yellow-400">
+                            {renderStars(parseFloat(book.rating))}
+                          </div>
+                          <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
+                            {book.rating}/10
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          Not rated yet
+                        </span>
+                      )}
                     </div>
                   ) : (
                     <div className="mt-3">

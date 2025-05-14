@@ -207,7 +207,9 @@ const BorrowingPage = () => {
       key: 'rating',
       header: 'Rating',
       cell: (row: any) => (
-        <span className="text-sm">{row.rating ? `${row.rating}/10` : '-'}</span>
+        <span className="text-sm">
+          {row.status === 'returned' ? `${row.rating}/10` : '-'}
+        </span>
       ),
     },
   ];
