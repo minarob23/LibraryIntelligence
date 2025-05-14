@@ -35,23 +35,23 @@ const BorrowingPage = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBorrowing, setEditingBorrowing] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  
+
   const { data: borrowings, isLoading: isLoadingBorrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
   });
-  
+
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
-  
+
   const { data: librarians } = useQuery({ 
     queryKey: ['/api/librarians'],
   });
-  
+
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
   });
-  
+
   const { data: researchPapers } = useQuery({ 
     queryKey: ['/api/research'],
   });
@@ -73,35 +73,33 @@ const BorrowingPage = () => {
       });
     }
   };
-  
+
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
-      
+
       const updatedBorrowing = {
         ...borrowing,
         returnDate: today,
         status: 'returned',
         rating: Number(borrowing.rating) || 0
       };
-      
+
       const response = await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
-      
+
       // Update local state and cache
       queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => {
         if (!oldData) return [];
-        return oldData.map(b => b.id === borrowing.id ? response : b);
+        return oldData.map(b => b.id === borrowing.id ? {...b, ...response} : b);
       });
 
       // Invalidate and refetch to ensure data consistency
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      
+
       toast({
         title: 'Success',
-        description: 'Book returned successfully',
-      });
         description: `Item returned successfully! You rated this ${borrowing.rating}/10`,
-        variant: 'default',
+        variant: 'default'
       });
     } catch (error) {
       console.error('Error returning item:', error);
@@ -145,18 +143,18 @@ const BorrowingPage = () => {
 
   const mapBorrowingWithDetails = () => {
     if (!borrowings || !borrowers || !librarians || !books || !researchPapers) return [];
-    
+
     const borrowersMap = new Map(borrowers.map((b: any) => [b.id, b]));
     const librariansMap = new Map(librarians.map((l: any) => [l.id, l]));
     const booksMap = new Map(books.map((b: any) => [b.id, b]));
     const researchMap = new Map(researchPapers.map((r: any) => [r.id, r]));
-    
+
     return borrowings.map((borrowing: any) => {
       const borrower = borrowersMap.get(borrowing.borrowerId);
       const librarian = librariansMap.get(borrowing.librarianId);
       const book = borrowing.bookId ? booksMap.get(borrowing.bookId) : null;
       const research = borrowing.researchId ? researchMap.get(borrowing.researchId) : null;
-      
+
       return {
         ...borrowing,
         borrowerName: borrower?.name || 'Unknown Borrower',
@@ -250,7 +248,7 @@ const BorrowingPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <DataTable
         data={borrowingsWithDetails}
         columns={columns}
@@ -302,7 +300,7 @@ const BorrowingPage = () => {
                 </DialogContent>
               </Dialog>
             )}
-            
+
             <Dialog open={openEditDialog && editingBorrowing?.id === row.id} onOpenChange={(open) => {
               setOpenEditDialog(open);
               if (!open) setEditingBorrowing(null);
@@ -334,7 +332,7 @@ const BorrowingPage = () => {
                 )}
               </DialogContent>
             </Dialog>
-            
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-2">
