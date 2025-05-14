@@ -258,11 +258,15 @@ const BorrowingPage = () => {
                   </DialogHeader>
                   <div className="py-6">
                     <StarRating
-                      value={8}
+                      value={parseInt((document.getElementById(`rating-${row.id}`) as HTMLInputElement)?.value || '8')}
                       onChange={(value) => {
                         const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
-                        if (input) input.value = value.toString();
+                        if (input) {
+                          input.value = value.toString();
+                          input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
                       }}
+                      max={10}
                     />
                     <Input 
                       type="hidden" 
