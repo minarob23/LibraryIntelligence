@@ -78,20 +78,21 @@ const BorrowingPage = () => {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      const updatedBorrowing = {
+      await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, {
         ...borrowing,
         returnDate: today,
         status: 'returned',
-        rating: borrowing.rating || 0
-      };
-      
-      await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
+      });
       
       // Update local state and cache
       const newBorrowings = [...borrowings];
       const index = newBorrowings.findIndex(b => b.id === borrowing.id);
       if (index !== -1) {
-        newBorrowings[index] = updatedBorrowing;
+        newBorrowings[index] = {
+          ...borrowing,
+          returnDate: today,
+          status: 'returned'
+        };
         queryClient.setQueryData(['/api/borrowings'], newBorrowings);
       }
       
