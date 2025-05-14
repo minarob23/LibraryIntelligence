@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Edit, Trash2, Plus, CheckCircle, CornerDownLeft } from 'lucide-react';
+import { StarRating } from '@/components/ui/star-rating';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -249,15 +250,19 @@ const BorrowingPage = () => {
                   <DialogHeader>
                     <DialogTitle>Rate Book</DialogTitle>
                     <DialogDescription>
-                      Please rate this book before returning (1-10)
+                      Please rate this book before returning
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="py-4">
+                  <div className="py-6">
+                    <StarRating
+                      value={8}
+                      onChange={(value) => {
+                        const input = document.getElementById(`rating-${row.id}`) as HTMLInputElement;
+                        if (input) input.value = value.toString();
+                      }}
+                    />
                     <Input 
-                      type="number" 
-                      min="1" 
-                      max="10" 
-                      placeholder="Rate from 1-10"
+                      type="hidden" 
                       id={`rating-${row.id}`}
                       defaultValue="8"
                     />
