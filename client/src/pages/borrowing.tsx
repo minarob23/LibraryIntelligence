@@ -293,7 +293,17 @@ const BorrowingPage = () => {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button onClick={() => handleReturn(row)}>
+                    <Button onClick={() => {
+                      if (!row.rating) {
+                        toast({
+                          title: "Error",
+                          description: "Please rate the book before returning",
+                          variant: "destructive"
+                        });
+                        return;
+                      }
+                      handleReturn({...row, rating: row.rating});
+                    }}>
                       Submit & Return
                     </Button>
                   </DialogFooter>
