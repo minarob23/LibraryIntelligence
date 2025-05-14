@@ -219,7 +219,7 @@ export class DatabaseStorage implements IStorage {
         : new Date().getTime();
       const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowed) / (1000 * 60 * 60 * 24));
 
-      const popularityScore = Number(((timesBorrowed * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40).toFixed(1));
+      const popularityScore = timesBorrowed === 0 ? 0 : Number((timesBorrowed - (daysSinceLastBorrow / 30)).toFixed(1));
 
       return {
         ...book,
