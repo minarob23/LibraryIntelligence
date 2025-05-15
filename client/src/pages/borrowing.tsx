@@ -77,12 +77,12 @@ const BorrowingPage = () => {
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
-      const localRatings = JSON.parse(localStorage.getItem('bookRatings') || '{}');
-      const itemKey = borrowing.bookId ? `book_${borrowing.bookId}` : `research_${borrowing.researchId}`;
+      const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
+      const ratingKey = `borrowing_${borrowing.id}`;
       
-      // Store rating in localStorage
-      localRatings[itemKey] = borrowing.rating || 0;
-      localStorage.setItem('bookRatings', JSON.stringify(localRatings));
+      // Store rating in localStorage with unique borrowing ID
+      localRatings[ratingKey] = borrowing.rating || 0;
+      localStorage.setItem('borrowingRatings', JSON.stringify(localRatings));
 
       const updatedBorrowing = {
         ...borrowing,
@@ -221,9 +221,9 @@ const BorrowingPage = () => {
       key: 'rating',
       header: 'Rating',
       cell: (row: any) => {
-        const localRatings = JSON.parse(localStorage.getItem('bookRatings') || '{}');
-        const itemKey = row.bookId ? `book_${row.bookId}` : `research_${row.researchId}`;
-        const localRating = localRatings[itemKey];
+        const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
+        const ratingKey = `borrowing_${row.id}`;
+        const localRating = localRatings[ratingKey];
         return (
           <span className="text-sm">
             {localRating ? `${localRating}/10` : row.rating ? `${row.rating}/10` : 'No Rating given'}
