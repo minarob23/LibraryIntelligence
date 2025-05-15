@@ -40,7 +40,7 @@ const PopularBooks = () => {
 
   const sortBooks = (books: any[]) => {
     if (!books) return [];
-    
+
     const booksWithScore = books.map(book => ({
       ...book,
       popularityScore: calculatePopularityScore(book.timesBorrowed, book.lastBorrowedDate)
