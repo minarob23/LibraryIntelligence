@@ -242,7 +242,6 @@ export class DatabaseStorage implements IStorage {
                                      ratingFactor * 0.2 + 
                                      returnFactor * 0.2) / 10).toFixed(1));
 
-      const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
       const averageRating = bookBorrowingsWithRatings.length > 0
         ? (bookBorrowingsWithRatings.reduce((sum, b) => sum + b.rating!, 0) / bookBorrowingsWithRatings.length).toFixed(1)
         : null;
