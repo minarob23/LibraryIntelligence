@@ -58,11 +58,12 @@ const Dashboard = () => {
 
   // Format borrower growth data for chart by category
   const formatBorrowerGrowth = () => {
-    if (!borrowers) return [];
+    if (!borrowers) return { data: [], categories: [] };
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
+    const activeCategories = new Set<string>();
 
     // Initialize last 6 months with 0 for each category
     const today = new Date();
@@ -82,11 +83,18 @@ const Dashboard = () => {
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const monthData = monthlyGrowth.find(data => data.month === monthKey);
       if (monthData && borrower.category) {
-        monthData[borrower.category.toLowerCase()]++;
+        const category = borrower.category.toLowerCase();
+        monthData[category]++;
+        if (monthData[category] > 0) {
+          activeCategories.add(category);
+        }
       }
     });
 
-    return monthlyGrowth;
+    return {
+      data: monthlyGrowth,
+      categories: Array.from(activeCategories)
+    };
   };
 
   // Format borrower distribution data for chart
@@ -172,10 +180,10 @@ const Dashboard = () => {
         <ChartContainer
           title="Member's Growth"
           type="line"
-          data={formatBorrowerGrowth()}
+          data={formatBorrowerGrowth().data}
           nameKey="month"
           dataKey="value"
-          categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
+          categories={formatBorrowerGrowth().categories}
           colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
           height={400}
           showLegend={true}
