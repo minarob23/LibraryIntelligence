@@ -158,35 +158,30 @@ const Dashboard = () => {
           height={400}
           showLegend={true}
           showLabels={true}
-          showPercentages={true}
-          customLabel={(entry: any) => `${entry.name}: ${((entry.value / total) * 100).toFixed(1)}%`}
           labelStyle={{
             fill: '#111827',
-            fontSize: '14px',
-            fontWeight: 'bold'
+            fontSize: '13px',
+            fontWeight: '500'
           }}
           legendStyle={{
-            fontSize: '13px',
-            marginTop: '15px'
+            fontSize: '14px',
+            marginTop: '20px'
           }}
         />
 
         <ChartContainer
           title="Member's Growth"
-          type="area"
+          type="line"
           data={formatBorrowerGrowth()}
           nameKey="month"
+          dataKey="value"
           categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
           colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
           height={400}
           showLegend={true}
           legendStyle={{
-            fontSize: '13px',
-            marginTop: '15px'
-          }}
-          labelStyle={{
-            fontSize: '12px',
-            fill: '#111827'
+            fontSize: '14px',
+            marginTop: '20px'
           }}
         />
       </div>
