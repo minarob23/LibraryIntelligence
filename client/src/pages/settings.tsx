@@ -538,76 +538,116 @@ const Settings = () => {
                 <div className="space-y-6">
                   <div>
                     <h4 className="text-md font-medium mb-4">Import Data</h4>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm">Books Collection</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Import books data</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleImport('books')}
-                        >
-                          Import Books
-                        </Button>
-                      </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-primary" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Books Collection</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import books data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            className="w-full bg-primary/5 hover:bg-primary/10"
+                            onClick={() => handleImport('books')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Books
+                          </Button>
+                        </CardContent>
+                      </Card>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm">Research Papers</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Import research papers data</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleImport('research')}
-                        >
-                          Import Papers
-                        </Button>
-                      </div>
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-blue-500/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-blue-500" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Research Papers</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import research papers data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline"
+                            className="w-full bg-blue-500/5 hover:bg-blue-500/10"
+                            onClick={() => handleImport('research')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Papers
+                          </Button>
+                        </CardContent>
+                      </Card>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm">Borrowers</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Import borrowers data</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleImport('borrowers')}
-                        >
-                          Import Borrowers
-                        </Button>
-                      </div>
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-green-500/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-green-500" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Borrowers</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import borrowers data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline"
+                            className="w-full bg-green-500/5 hover:bg-green-500/10"
+                            onClick={() => handleImport('borrowers')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Borrowers
+                          </Button>
+                        </CardContent>
+                      </Card>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm">Borrowings</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Import borrowing records</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleImport('borrowings')}
-                        >
-                          Import Borrowings
-                        </Button>
-                      </div>
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-orange-500/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-orange-500" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Borrowings</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import borrowing records</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline"
+                            className="w-full bg-orange-500/5 hover:bg-orange-500/10"
+                            onClick={() => handleImport('borrowings')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Borrowings
+                          </Button>
+                        </CardContent>
+                      </Card>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm">Librarians</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Import librarians data</p>
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleImport('librarians')}
-                        >
-                          Import Librarians
-                        </Button>
-                      </div>
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-purple-500/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-purple-500" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Librarians</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import librarians data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline"
+                            className="w-full bg-purple-500/5 hover:bg-purple-500/10"
+                            onClick={() => handleImport('librarians')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Librarians
+                          </Button>
+                        </CardContent>
+                      </Card>
                     </div>
                   </div>
                     <AlertDialog>
