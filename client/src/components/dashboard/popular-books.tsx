@@ -1,4 +1,7 @@
+Modified PopularBooks component to start engagement and popularity scores from a negative base, incorporating negative values for unrated or unreturned books.
+```
 
+```replit_final_file
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -25,13 +28,13 @@ const PopularBooks = () => {
   const calculatePopularityScore = (bookId: number) => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
-    
+
     if (bookBorrowings.length === 0) return 0;
 
     const timesBorrowed = bookBorrowings.length;
     const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
-    
+
     // Calculate engagement based on ratings and return dates
     const completedBorrowings = bookBorrowings.filter(b => b.returnDate && b.rating);
     const avgRating = completedBorrowings.length > 0 
@@ -42,18 +45,20 @@ const PopularBooks = () => {
       ? onTimeBorrowings.length / completedBorrowings.length
       : 0;
 
-    // Weight factors
-    const borrowingFactor = timesBorrowed * 10; // 0-100
-    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // -50-100
-    const ratingFactor = avgRating * 20; // 0-100
-    const returnFactor = returnRate * 50; // 0-50
+    // Weight factors with negative base
+      const baseScore = -100; // Start from more negative base
+      const borrowingFactor = timesBorrowed * 10; // Positive contribution
+      const recencyFactor = 100 - daysSinceLastBorrow; // Can be negative or positive
+      const ratingFactor = avgRating ? avgRating * 20 : -20; // Negative if no rating
+      const returnFactor = returnRate * 50 || -25; // Negative if no returns
 
-    // Combined score with weights
-    const score = (borrowingFactor * 0.3) + 
-                 (recencyFactor * 0.3) + 
-                 (ratingFactor * 0.2) + 
-                 (returnFactor * 0.2);
-    
+      // Combined score starting from negative base
+      const popularityScore = Number((baseScore + 
+                                    (borrowingFactor * 0.3 + 
+                                     recencyFactor * 0.3 + 
+                                     ratingFactor * 0.2 + 
+                                     returnFactor * 0.2)).toFixed(1));
+
     return Math.round(score / 10 * 10) / 10;
   };
 
@@ -69,7 +74,7 @@ const PopularBooks = () => {
     if (!books) return [];
 
     const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
-    
+
     const booksWithScore = books.map(book => {
       // Get all ratings for this book from localStorage
       const bookRatings = Object.entries(localRatings)

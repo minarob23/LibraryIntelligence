@@ -20,11 +20,12 @@ const TopBorrowers = () => {
     const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
 
+    const baseScore = -100; // Start from negative base
     const borrowingFactor = borrowCount * 10;
-    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Cap negative values at -50
+    const recencyFactor = 100 - daysSinceLastBorrow; // Allow full negative range
 
-    let score = Math.round((borrowingFactor + recencyFactor) / 40 * 10) / 10;
-    return isNaN(score) ? 0 : score;
+    let score = Math.round(baseScore + (borrowingFactor + recencyFactor) / 40 * 10) / 10;
+    return isNaN(score) ? -100 : score;
   };
 
   const { data: borrowers, isLoading } = useQuery({
