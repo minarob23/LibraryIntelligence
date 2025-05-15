@@ -119,22 +119,7 @@ const ChartContainer = ({
             color: theme === 'dark' ? '#F9FAFB' : '#111827'
           }} 
         />
-        <Legend 
-          verticalAlign="bottom" 
-          height={36}
-          formatter={(value) => <span style={{ color: theme === 'dark' ? '#E5E7EB' : '#4B5563' }}>{value}</span>}
-        />
-        {categories?.map((category, index) => (
-          <Line
-            key={category}
-            type="monotone"
-            dataKey={category}
-            name={category}
-            stroke={colors?.[index] || '#3B82F6'}
-            strokeWidth={2}
-            dot={{ fill: colors?.[index] || '#3B82F6' }}
-          />
-        ))}
+        <Line type="monotone" dataKey={dataKey} stroke="#3B82F6" strokeWidth={2} dot={{ fill: '#3B82F6' }} />
       </LineChart>
     </ResponsiveContainer>
   );
