@@ -24,19 +24,6 @@ const PopularBooks = () => {
     queryKey: ['/api/borrowings'],
   });
 
-  const getAverageRating = (bookId: number) => {
-    if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter(
-      (b: any) => b.bookId === bookId && b.rating !== null && b.rating !== undefined
-    );
-    if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce(
-      (sum: number, b: any) => sum + parseFloat(b.rating || 0), 
-      0
-    );
-    return (totalRating / bookBorrowings.length).toFixed(1);
-  };
-
   const calculatePopularityScore = (timesBorrowed: number, lastBorrowedDate: string) => {
     if (!timesBorrowed || !lastBorrowedDate) return 0;
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowedDate).getTime()) / (1000 * 3600 * 24));
@@ -81,7 +68,7 @@ const PopularBooks = () => {
             <SelectContent>
               <SelectItem value="popularity">Popularity Score</SelectItem>
               <SelectItem value="borrowed">Times Borrowed</SelectItem>
-              <SelectItem value="rating">Rating</SelectItem>
+              
             </SelectContent>
           </Select>
         </div>
@@ -115,30 +102,7 @@ const PopularBooks = () => {
                 <div>
                   <h4 className="font-medium">{book.name}</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
-                  {filter === 'rating' ? (
-                    <div className="flex items-center mt-1">
-                      {(() => {
-                        const avgRating = getAverageRating(book.id);
-                        if (avgRating) {
-                          return (
-                            <>
-                              <div className="flex text-yellow-400">
-                                {renderStars(parseFloat(avgRating))}
-                              </div>
-                              <span className="text-xs ml-1 text-gray-600 dark:text-gray-400">
-                                {avgRating}/10
-                              </span>
-                            </>
-                          );
-                        }
-                        return (
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
-                            Not rated yet
-                          </span>
-                        );
-                      })()}
-                    </div>
-                  ) : (
+                  {(
                     <div className="mt-3">
                       {filter === 'popularity' && (
                         <div className="flex items-center gap-2">
