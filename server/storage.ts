@@ -221,11 +221,16 @@ export class DatabaseStorage implements IStorage {
 
       const popularityScore = timesBorrowed === 0 ? 0 : Number((timesBorrowed - (daysSinceLastBorrow / 30)).toFixed(1));
 
+      const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
+      const averageRating = bookBorrowingsWithRatings.length > 0
+        ? (bookBorrowingsWithRatings.reduce((sum, b) => sum + b.rating!, 0) / bookBorrowingsWithRatings.length).toFixed(1)
+        : null;
+
       return {
         ...book,
         timesBorrowed,
         popularityScore,
-        rating: (Math.random() * 2 + 3).toFixed(1)
+        rating: averageRating
       };
     });
   }
