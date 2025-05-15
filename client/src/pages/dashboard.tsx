@@ -162,8 +162,10 @@ const Dashboard = () => {
           type="line"
           data={formatBorrowerGrowth()}
           nameKey="month"
+          dataKey="value"
           categories={['Primary', 'Middle', 'Secondary', 'University', 'Graduate']}
           colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
+          height={350}
         />
       </div>
 

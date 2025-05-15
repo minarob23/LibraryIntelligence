@@ -13,9 +13,9 @@ const BorrowingTrends = () => {
     const monthlyData = new Map();
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
-    // Initialize last 12 months with 0
+    // Initialize last 6 months with 0
     const today = new Date();
-    for (let i = 11; i >= 0; i--) {
+    for (let i = 5; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       monthlyData.set(monthKey, 0);
@@ -32,7 +32,8 @@ const BorrowingTrends = () => {
 
     return Array.from(monthlyData.entries()).map(([name, value]) => ({
       name,
-      value
+      value,
+      category: 'Borrowings'
     }));
   };
 
@@ -43,8 +44,9 @@ const BorrowingTrends = () => {
       data={getMonthlyData()}
       nameKey="name"
       dataKey="value"
-      height={350}
+      categories={['Borrowings']}
       colors={['#3B82F6']}
+      height={350}
     />
   );
 };
