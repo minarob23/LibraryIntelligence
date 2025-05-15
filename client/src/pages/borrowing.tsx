@@ -104,7 +104,7 @@ const BorrowingPage = () => {
 
       toast({
         title: 'Success',
-        description: `Item returned successfully! Your rating (${borrowing.rating}/10) has been saved locally`,
+        description: `Item returned successfully! Your rating (${borrowing.rating}/10)`,
         variant: 'default'
       });
     } catch (error) {
@@ -226,7 +226,7 @@ const BorrowingPage = () => {
         const localRating = localRatings[itemKey];
         return (
           <span className="text-sm">
-            {localRating ? `${localRating}/10 (Local)` : row.rating ? `${row.rating}/10` : 'Not rated yet'}
+            {localRating ? `${localRating}/10` : row.rating ? `${row.rating}/10` : 'No Rating given'}
           </span>
         );
       },
