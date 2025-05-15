@@ -160,7 +160,7 @@ const PopularBooks = () => {
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
                           <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
-                            {book.rating ? (
+                            {book.rating !== null ? (
                               <>
                                 <div className="flex items-center justify-between">
                                   <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
