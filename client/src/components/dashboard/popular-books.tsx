@@ -25,12 +25,31 @@ const PopularBooks = () => {
   });
 
   const getAverageRating = (bookId: number) => {
-    if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating !== null && b.rating !== undefined);
-    if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + parseFloat(b.rating), 0);
-    return (totalRating / bookBorrowings.length).toFixed(1);
+    const localRatings = localStorage.getItem(`book-${bookId}-ratings`);
+    if (localRatings) {
+      const ratings = JSON.parse(localRatings);
+      if (ratings.length === 0) return null;
+      const totalRating = ratings.reduce((sum: number, rating: number) => sum + rating, 0);
+      return (totalRating / ratings.length).toFixed(1);
+    }
+    return null;
   };
+
+  // Initialize localStorage with ratings from borrowings when component mounts
+  useEffect(() => {
+    if (borrowings) {
+      borrowings.forEach((b: any) => {
+        if (b.rating !== null && b.rating !== undefined) {
+          const existingRatings = localStorage.getItem(`book-${b.bookId}-ratings`);
+          const ratings = existingRatings ? JSON.parse(existingRatings) : [];
+          if (!ratings.includes(parseFloat(b.rating))) {
+            ratings.push(parseFloat(b.rating));
+            localStorage.setItem(`book-${b.bookId}-ratings`, JSON.stringify(ratings));
+          }
+        }
+      });
+    }
+  }, [borrowings]);
 
   const calculatePopularityScore = (timesBorrowed: number, lastBorrowedDate: string) => {
     if (!timesBorrowed || !lastBorrowedDate) return 0;
