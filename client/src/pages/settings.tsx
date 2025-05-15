@@ -301,7 +301,7 @@ const Settings = () => {
                 const currentPassword = (document.getElementById('currentPassword') as HTMLInputElement)?.value;
                 const newPassword = (document.getElementById('newPassword') as HTMLInputElement)?.value;
                 const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement)?.value;
-                
+
                 if (currentPassword && (!newPassword || !confirmPassword)) {
                   toast({
                     title: "Validation Error",
@@ -438,14 +438,6 @@ const Settings = () => {
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('books', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
-                        </Button>
                       </div>
                     </div>
 
@@ -462,14 +454,6 @@ const Settings = () => {
                           onClick={() => handleExport('research', 'excel')}
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('research', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
                         </Button>
                       </div>
                     </div>
@@ -488,14 +472,6 @@ const Settings = () => {
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('borrowers', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
-                        </Button>
                       </div>
                     </div>
 
@@ -512,14 +488,6 @@ const Settings = () => {
                           onClick={() => handleExport('librarians', 'excel')}
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('librarians', 'notion')}
-                        >
-                          <FileText className="mr-1 h-4 w-4" /> Notion
                         </Button>
                       </div>
                     </div>
