@@ -56,33 +56,38 @@ const Dashboard = () => {
     queryKey: ['/api/dashboard/borrower-distribution'],
   });
 
-  // Format borrower growth data for chart
+  // Format borrower growth data for chart by category
   const formatBorrowerGrowth = () => {
     if (!borrowers) return [];
 
-    const monthlyGrowth = new Map();
+    const monthlyGrowth: { [key: string]: { [category: string]: number } } = {};
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
 
-    // Initialize last 6 months with 0
+    // Initialize last 6 months with 0 for each category
     const today = new Date();
     for (let i = 5; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      monthlyGrowth.set(monthKey, 0);
+      monthlyGrowth[monthKey] = {};
+      categories.forEach(category => {
+        monthlyGrowth[monthKey][category] = 0;
+      });
     }
 
-    // Count borrowers per month based on join date
+    // Count borrowers per month and category based on join date
     borrowers.forEach((borrower: any) => {
       const date = new Date(borrower.joinedDate);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      if (monthlyGrowth.has(monthKey)) {
-        monthlyGrowth.set(monthKey, monthlyGrowth.get(monthKey) + 1);
+      if (monthlyGrowth[monthKey] && borrower.category) {
+        monthlyGrowth[monthKey][borrower.category]++;
       }
     });
 
-    return Array.from(monthlyGrowth.entries()).map(([month, count]) => ({
+    // Convert to array format for chart
+    return Object.entries(monthlyGrowth).map(([month, categoryData]) => ({
       month,
-      count
+      ...categoryData
     }));
   };
 
@@ -155,12 +160,12 @@ const Dashboard = () => {
         />
 
         <ChartContainer
-          title="Borrower's Growth"
-          type="bar"
+          title="Member's Growth"
+          type="line"
           data={formatBorrowerGrowth()}
           nameKey="month"
-          dataKey="count"
-          colors={['#3B82F6']}
+          categories={['Primary', 'Middle', 'Secondary', 'University', 'Graduate']}
+          colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
         />
       </div>
 
