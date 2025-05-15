@@ -32,18 +32,6 @@ const PopularBooks = () => {
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
-  const { data: borrowings } = useQuery({
-    queryKey: ['/api/borrowings'],
-  });
-
-  const getAverageRating = (bookId: number) => {
-    if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
-    if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
-    return (totalRating / bookBorrowings.length).toFixed(1);
-  };
-
   const calculatePopularityScore = (timesBorrowed: number, lastBorrowedDate: string) => {
     if (!timesBorrowed || !lastBorrowedDate) return 0;
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowedDate).getTime()) / (1000 * 3600 * 24));
