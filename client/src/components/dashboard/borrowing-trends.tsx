@@ -43,6 +43,8 @@ const BorrowingTrends = () => {
       data={getMonthlyData()}
       nameKey="name"
       dataKey="value"
+      height={350}
+      colors={['#3B82F6']}
     />
   );
 };

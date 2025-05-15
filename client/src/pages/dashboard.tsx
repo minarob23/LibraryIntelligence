@@ -60,7 +60,7 @@ const Dashboard = () => {
   const formatBorrowerGrowth = () => {
     if (!borrowers) return [];
 
-    const monthlyGrowth: { [key: string]: { [category: string]: number } } = {};
+    const monthlyGrowth = new Map();
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
 
@@ -69,26 +69,24 @@ const Dashboard = () => {
     for (let i = 5; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      monthlyGrowth[monthKey] = {};
+      const categoryData: any = { month: monthKey };
       categories.forEach(category => {
-        monthlyGrowth[monthKey][category] = 0;
+        categoryData[category] = 0;
       });
+      monthlyGrowth.set(monthKey, categoryData);
     }
 
     // Count borrowers per month and category based on join date
     borrowers.forEach((borrower: any) => {
       const date = new Date(borrower.joinedDate);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      if (monthlyGrowth[monthKey] && borrower.category) {
-        monthlyGrowth[monthKey][borrower.category]++;
+      if (monthlyGrowth.has(monthKey) && borrower.category) {
+        const data = monthlyGrowth.get(monthKey);
+        data[borrower.category]++;
       }
     });
 
-    // Convert to array format for chart
-    return Object.entries(monthlyGrowth).map(([month, categoryData]) => ({
-      month,
-      ...categoryData
-    }));
+    return Array.from(monthlyGrowth.values());
   };
 
   // Format borrower distribution data for chart
