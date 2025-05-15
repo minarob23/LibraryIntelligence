@@ -226,7 +226,7 @@ const BorrowingPage = () => {
         const localRating = localRatings[ratingKey];
         return (
           <span className="text-sm">
-            {localRating ? `${localRating}/10` : row.rating ? `${row.rating}/10` : 'No Rating given'}
+            {localRating ? `${localRating}/10` : row.rating ? `${row.rating}/10` : 'not rated yet'}
           </span>
         );
       },
