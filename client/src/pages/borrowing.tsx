@@ -77,6 +77,12 @@ const BorrowingPage = () => {
   const handleReturn = async (borrowing: any) => {
     try {
       const today = new Date().toISOString().split('T')[0];
+      const localRatings = JSON.parse(localStorage.getItem('bookRatings') || '{}');
+      const itemKey = borrowing.bookId ? `book_${borrowing.bookId}` : `research_${borrowing.researchId}`;
+      
+      // Store rating in localStorage
+      localRatings[itemKey] = borrowing.rating || 0;
+      localStorage.setItem('bookRatings', JSON.stringify(localRatings));
 
       const updatedBorrowing = {
         ...borrowing,
@@ -98,7 +104,7 @@ const BorrowingPage = () => {
 
       toast({
         title: 'Success',
-        description: `Item returned successfully! You rated this ${borrowing.rating}/10`,
+        description: `Item returned successfully! Your rating (${borrowing.rating}/10) has been saved locally`,
         variant: 'default'
       });
     } catch (error) {
@@ -214,11 +220,16 @@ const BorrowingPage = () => {
     {
       key: 'rating',
       header: 'Rating',
-      cell: (row: any) => (
-        <span className="text-sm">
-          {row.rating ? `${row.rating}/10` : 'Not rated yet'}
-        </span>
-      ),
+      cell: (row: any) => {
+        const localRatings = JSON.parse(localStorage.getItem('bookRatings') || '{}');
+        const itemKey = row.bookId ? `book_${row.bookId}` : `research_${row.researchId}`;
+        const localRating = localRatings[itemKey];
+        return (
+          <span className="text-sm">
+            {localRating ? `${localRating}/10 (Local)` : row.rating ? `${row.rating}/10` : 'Not rated yet'}
+          </span>
+        );
+      },
     },
   ];
 
