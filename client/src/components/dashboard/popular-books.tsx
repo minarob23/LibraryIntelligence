@@ -1,12 +1,10 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import coverImage1 from '@/assets/book-covers/cover1.svg';
-import coverImage2 from '@/assets/book-covers/cover2.svg';
-import coverImage3 from '@/assets/book-covers/cover3.svg';
-import coverImage4 from '@/assets/book-covers/cover4.svg';
 
 type FilterType = 'rating' | 'random' | 'borrowed' | 'popularity';
 
@@ -30,12 +28,21 @@ const PopularBooks = () => {
     return Math.round(((timesBorrowed * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
   };
 
+  const getAverageRating = (bookId: number) => {
+    if (!borrowings) return null;
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
+    if (bookBorrowings.length === 0) return null;
+    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
+    return (totalRating / bookBorrowings.length).toFixed(1);
+  };
+
   const sortBooks = (books: any[]) => {
     if (!books) return [];
 
     const booksWithScore = books.map(book => ({
       ...book,
-      popularityScore: calculatePopularityScore(book.timesBorrowed, book.lastBorrowedDate)
+      popularityScore: calculatePopularityScore(book.timesBorrowed, book.lastBorrowedDate),
+      rating: getAverageRating(book.id)
     }));
 
     switch (filter) {
@@ -44,7 +51,11 @@ const PopularBooks = () => {
       case 'borrowed':
         return [...booksWithScore].sort((a, b) => (b.timesBorrowed || 0) - (a.timesBorrowed || 0));
       case 'rating':
-        return [...booksWithScore].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        return [...booksWithScore].sort((a, b) => {
+          const ratingA = parseFloat(a.rating || '0');
+          const ratingB = parseFloat(b.rating || '0');
+          return ratingB - ratingA;
+        });
       default:
         return booksWithScore;
     }
@@ -54,6 +65,25 @@ const PopularBooks = () => {
 
   const handleFilterChange = (value: string) => {
     setFilter(value as FilterType);
+  };
+
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const remainingStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<StarFull key={`full-${i}`} />);
+    }
+    if (hasHalfStar) {
+      stars.push(<StarHalf key="half" />);
+    }
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(<StarEmpty key={`empty-${i}`} />);
+    }
+
+    return stars;
   };
 
   return (
@@ -68,7 +98,7 @@ const PopularBooks = () => {
             <SelectContent>
               <SelectItem value="popularity">Popularity Score</SelectItem>
               <SelectItem value="borrowed">Times Borrowed</SelectItem>
-              
+              <SelectItem value="rating">Rating</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -76,7 +106,6 @@ const PopularBooks = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {isLoading ? (
-            // Skeleton loading state
             Array(3).fill(0).map((_, index) => (
               <div key={index} className="flex space-x-3">
                 <Skeleton className="w-16 h-24" />
@@ -131,31 +160,25 @@ const PopularBooks = () => {
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
                           <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
-                            {(() => {
-                              const avgRating = getAverageRating(book.id);
-                              if (avgRating) {
-                                return (
-                                  <>
-                                    <div className="flex items-center justify-between">
-                                      <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
-                                        {avgRating}
-                                      </div>
-                                      <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
-                                        {renderStars(parseFloat(avgRating))}
-                                      </div>
-                                    </div>
-                                    <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
-                                      Rating Score
-                                    </div>
-                                  </>
-                                );
-                              }
-                              return (
-                                <div className="text-sm text-yellow-700/90 dark:text-yellow-300/90 font-medium text-center py-2">
-                                  not rated yet
+                            {book.rating ? (
+                              <>
+                                <div className="flex items-center justify-between">
+                                  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
+                                    {book.rating}
+                                  </div>
+                                  <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
+                                    {renderStars(parseFloat(book.rating) / 2)}
+                                  </div>
                                 </div>
-                              );
-                            })()}
+                                <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
+                                  Rating Score
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-sm text-yellow-700/90 dark:text-yellow-300/90 font-medium text-center py-2">
+                                not rated yet
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -169,31 +192,6 @@ const PopularBooks = () => {
       </CardContent>
     </Card>
   );
-};
-
-// Helper function to render stars based on rating
-const renderStars = (rating: number) => {
-  const stars = [];
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  const remainingStars = 10 - fullStars - (hasHalfStar ? 1 : 0);
-
-  // Full stars
-  for (let i = 0; i < fullStars; i++) {
-    stars.push(<StarFull key={`full-${i}`} />);
-  }
-
-  // Half star if needed
-  if (hasHalfStar) {
-    stars.push(<StarHalf key="half" />);
-  }
-
-  // Empty stars
-  for (let i = 0; i < remainingStars; i++) {
-    stars.push(<StarEmpty key={`empty-${i}`} />);
-  }
-
-  return stars;
 };
 
 const StarFull = () => (
