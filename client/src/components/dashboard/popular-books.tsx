@@ -26,9 +26,9 @@ const PopularBooks = () => {
 
   const getAverageRating = (bookId: number) => {
     if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating !== null && b.rating !== undefined);
     if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
+    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + parseFloat(b.rating), 0);
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
