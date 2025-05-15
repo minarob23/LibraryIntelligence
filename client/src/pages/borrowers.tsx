@@ -258,10 +258,10 @@ const BorrowersPage = () => {
                   nameKey="name"
                   dataKey="value"
                   colors={[
-                    '#22C55E',  // Green for Primary
+                    '#10B981',  // Emerald for Primary
                     '#3B82F6',  // Blue for Middle
-                    '#F59E0B',  // Orange for Secondary
-                    '#A855F7',  // Purple for University
+                    '#F59E0B',  // Amber for Secondary
+                    '#8B5CF6',  // Violet for University
                     '#EC4899'   // Pink for Graduate
                   ]}
                   height={350}
