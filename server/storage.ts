@@ -219,7 +219,28 @@ export class DatabaseStorage implements IStorage {
         : new Date().getTime();
       const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowed) / (1000 * 60 * 60 * 24));
 
-      const popularityScore = timesBorrowed === 0 ? 0 : Number((timesBorrowed - (daysSinceLastBorrow / 30)).toFixed(1));
+      const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
+      const avgRating = bookBorrowingsWithRatings.length > 0
+        ? bookBorrowingsWithRatings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowingsWithRatings.length
+        : 0;
+
+      const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
+      const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
+      const returnRate = completedBorrowings.length > 0 
+        ? onTimeBorrowings.length / completedBorrowings.length
+        : 0;
+
+      // Weight factors
+      const borrowingFactor = timesBorrowed * 10; // 0-100
+      const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // -50-100
+      const ratingFactor = avgRating * 20; // 0-100
+      const returnFactor = returnRate * 50; // 0-50
+
+      // Combined score with weights
+      const popularityScore = Number(((borrowingFactor * 0.3 + 
+                                     recencyFactor * 0.3 + 
+                                     ratingFactor * 0.2 + 
+                                     returnFactor * 0.2) / 10).toFixed(1));
 
       const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
       const averageRating = bookBorrowingsWithRatings.length > 0

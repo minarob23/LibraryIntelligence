@@ -32,10 +32,29 @@ const PopularBooks = () => {
     const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
     
-    const borrowingFactor = timesBorrowed * 10;
-    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Cap negative values at -50
+    // Calculate engagement based on ratings and return dates
+    const completedBorrowings = bookBorrowings.filter(b => b.returnDate && b.rating);
+    const avgRating = completedBorrowings.length > 0 
+      ? completedBorrowings.reduce((sum, b) => sum + (b.rating || 0), 0) / completedBorrowings.length
+      : 0;
+    const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
+    const returnRate = completedBorrowings.length > 0 
+      ? onTimeBorrowings.length / completedBorrowings.length
+      : 0;
+
+    // Weight factors
+    const borrowingFactor = timesBorrowed * 10; // 0-100
+    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // -50-100
+    const ratingFactor = avgRating * 20; // 0-100
+    const returnFactor = returnRate * 50; // 0-50
+
+    // Combined score with weights
+    const score = (borrowingFactor * 0.3) + 
+                 (recencyFactor * 0.3) + 
+                 (ratingFactor * 0.2) + 
+                 (returnFactor * 0.2);
     
-    return Math.round((borrowingFactor + recencyFactor) / 40 * 10) / 10;
+    return Math.round(score / 10 * 10) / 10;
   };
 
   const getAverageRating = (bookId: number) => {
