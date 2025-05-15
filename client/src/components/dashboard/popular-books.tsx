@@ -178,11 +178,23 @@ const PopularBooks = () => {
                     <div className="mt-3">
                       {filter === 'popularity' && (
                         <div className="flex items-center gap-2">
-                          <div className="bg-blue-100 dark:bg-blue-900/50 rounded-lg px-4 py-2">
-                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                          <div className={`${
+                            book.popularityScore >= 0 
+                              ? "bg-blue-100 dark:bg-blue-900/50" 
+                              : "bg-red-100 dark:bg-red-900/50"
+                            } rounded-lg px-4 py-2`}>
+                            <div className={`text-2xl font-bold ${
+                              book.popularityScore >= 0
+                                ? "text-blue-600 dark:text-blue-400"
+                                : "text-red-600 dark:text-red-400"
+                            }`}>
                               {book.popularityScore}
                             </div>
-                            <div className="text-xs text-blue-600/80 dark:text-blue-400/80 font-medium">
+                            <div className={`text-xs font-medium ${
+                              book.popularityScore >= 0
+                                ? "text-blue-600/80 dark:text-blue-400/80"
+                                : "text-red-600/80 dark:text-red-400/80"
+                            }`}>
                               Popularity Score
                             </div>
                           </div>

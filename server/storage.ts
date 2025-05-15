@@ -230,13 +230,13 @@ export class DatabaseStorage implements IStorage {
         ? onTimeBorrowings.length / completedBorrowings.length
         : 0;
 
-      // Weight factors
-      const borrowingFactor = timesBorrowed * 10; // 0-100
-      const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // -50-100
-      const ratingFactor = avgRating * 20; // 0-100
-      const returnFactor = returnRate * 50; // 0-50
+      // Weight factors (allowing negative values)
+      const borrowingFactor = timesBorrowed * 10; // Can be 0 or positive
+      const recencyFactor = 100 - daysSinceLastBorrow; // Can be negative or positive
+      const ratingFactor = avgRating * 20; // Can be 0 or positive
+      const returnFactor = returnRate * 50; // Can be 0 or positive
 
-      // Combined score with weights
+      // Combined score with weights (allowing negative values)
       const popularityScore = Number(((borrowingFactor * 0.3 + 
                                      recencyFactor * 0.3 + 
                                      ratingFactor * 0.2 + 
