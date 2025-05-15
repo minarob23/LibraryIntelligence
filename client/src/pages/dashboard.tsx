@@ -176,7 +176,13 @@ const Dashboard = () => {
           nameKey="month"
           dataKey="value"
           categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
-          colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
+          colors={[
+            '#22C55E',  // Green for Primary
+            '#3B82F6',  // Blue for Middle
+            '#F59E0B',  // Orange for Secondary  
+            '#A855F7',  // Purple for University
+            '#EC4899'   // Pink for Graduate
+          ]}
           height={400}
           showLegend={true}
           legendStyle={{

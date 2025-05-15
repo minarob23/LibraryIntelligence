@@ -257,7 +257,13 @@ const BorrowersPage = () => {
                   data={formatBorrowerDistribution()}
                   nameKey="name"
                   dataKey="value"
-                  colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
+                  colors={[
+                    '#22C55E',  // Green for Primary
+                    '#3B82F6',  // Blue for Middle
+                    '#F59E0B',  // Orange for Secondary
+                    '#A855F7',  // Purple for University
+                    '#EC4899'   // Pink for Graduate
+                  ]}
                   height={350}
                 />
               </div>
