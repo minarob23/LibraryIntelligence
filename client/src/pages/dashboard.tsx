@@ -149,27 +149,45 @@ const Dashboard = () => {
       {/* Categories & Growth */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartContainer
-          title="Borrower Categories Distribution"
+          title="Borrower Categories"
           type="pie"
           data={formatBorrowerDistribution()}
           nameKey="name"
           dataKey="value"
-          colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
-          height={350}
+          colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
+          height={400}
           showLegend={true}
           showLabels={true}
           showPercentages={true}
+          customLabel={(entry: any) => `${entry.name}: ${((entry.value / total) * 100).toFixed(1)}%`}
+          labelStyle={{
+            fill: '#111827',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}
+          legendStyle={{
+            fontSize: '13px',
+            marginTop: '15px'
+          }}
         />
 
         <ChartContainer
           title="Member's Growth"
-          type="line"
+          type="area"
           data={formatBorrowerGrowth()}
           nameKey="month"
-          dataKey="value"
-          categories={['Primary', 'Middle', 'Secondary', 'University', 'Graduate']}
-          colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
-          height={350}
+          categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
+          colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
+          height={400}
+          showLegend={true}
+          legendStyle={{
+            fontSize: '13px',
+            marginTop: '15px'
+          }}
+          labelStyle={{
+            fontSize: '12px',
+            fill: '#111827'
+          }}
         />
       </div>
 

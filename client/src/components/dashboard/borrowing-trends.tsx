@@ -47,8 +47,8 @@ const BorrowingTrends = () => {
       type="line"
       data={getMonthlyData()}
       nameKey="name"
-      categories={['borrowed', 'returned']}
-      colors={['#3B82F6', '#10B981']}
+      categories={['borrowed']}
+      colors={['#3B82F6']}
       height={350}
     />
   );
