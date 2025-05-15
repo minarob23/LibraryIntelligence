@@ -62,6 +62,10 @@ const Settings = () => {
     queryKey: ['/api/librarians'],
   });
 
+  const { data: borrowings } = useQuery({ 
+    queryKey: ['/api/borrowings'],
+  });
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -110,6 +114,10 @@ const Settings = () => {
       case 'librarians':
         dataToExport = Array.isArray(librarians) ? librarians : [];
         fileName = 'librarians_export';
+        break;
+      case 'borrowings':
+        dataToExport = Array.isArray(borrowings) ? borrowings : [];
+        fileName = 'borrowings_export';
         break;
       default:
         break;
@@ -469,6 +477,23 @@ const Settings = () => {
                           size="sm" 
                           className="flex items-center"
                           onClick={() => handleExport('borrowers', 'excel')}
+                        >
+                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm">Borrowings</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all borrowing records</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex items-center"
+                          onClick={() => handleExport('borrowings', 'excel')}
                         >
                           <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
                         </Button>
