@@ -22,10 +22,20 @@ const PopularBooks = () => {
     queryKey: ['/api/borrowings'],
   });
 
-  const calculatePopularityScore = (timesBorrowed: number, lastBorrowedDate: string) => {
-    if (!timesBorrowed || !lastBorrowedDate) return 0;
-    const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowedDate).getTime()) / (1000 * 3600 * 24));
-    return Math.round(((timesBorrowed * 10 + (100 - Math.min(daysSinceLastBorrow, 100))) / 40) * 10) / 10;
+  const calculatePopularityScore = (bookId: number) => {
+    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
+    
+    if (bookBorrowings.length === 0) return 0;
+
+    const timesBorrowed = bookBorrowings.length;
+    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
+    
+    const borrowingFactor = timesBorrowed * 10;
+    const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Cap negative values at -50
+    
+    return Math.round((borrowingFactor + recencyFactor) / 40 * 10) / 10;
   };
 
   const getAverageRating = (bookId: number) => {
