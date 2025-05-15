@@ -20,6 +20,18 @@ const PopularBooks = () => {
     cacheTime: 0
   });
 
+  const { data: borrowings } = useQuery({ 
+    queryKey: ['/api/borrowings'],
+  });
+
+  const getAverageRating = (bookId: number) => {
+    if (!borrowings) return null;
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
+    if (bookBorrowings.length === 0) return null;
+    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
+    return (totalRating / bookBorrowings.length).toFixed(1);
+  };
+
   const { data: borrowings } = useQuery({
     queryKey: ['/api/borrowings'],
   });
@@ -162,17 +174,31 @@ const PopularBooks = () => {
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
                           <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
-                            <div className="flex items-center justify-between">
-                              <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
-                                {book.rating}
-                              </div>
-                              <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
-                                {renderStars(parseFloat(book.rating))}
-                              </div>
-                            </div>
-                            <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
-                              Rating Score
-                            </div>
+                            {(() => {
+                              const avgRating = getAverageRating(book.id);
+                              if (avgRating) {
+                                return (
+                                  <>
+                                    <div className="flex items-center justify-between">
+                                      <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
+                                        {avgRating}
+                                      </div>
+                                      <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
+                                        {renderStars(parseFloat(avgRating))}
+                                      </div>
+                                    </div>
+                                    <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
+                                      Rating Score
+                                    </div>
+                                  </>
+                                );
+                              }
+                              return (
+                                <div className="text-sm text-yellow-700/90 dark:text-yellow-300/90 font-medium text-center py-2">
+                                  not rated yet
+                                </div>
+                              );
+                            })()}
                           </div>
                         </div>
                       )}
