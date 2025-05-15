@@ -5,6 +5,7 @@ export interface Notification {
   message: string;
   time: string;
   read: boolean;
+  type?: 'success' | 'warning' | 'error' | 'info';
 }
 
 const INITIAL_NOTIFICATIONS: Notification[] = [];
@@ -57,10 +58,21 @@ export const useNotifications = () => {
     return savedNotifications ? JSON.parse(savedNotifications) : INITIAL_NOTIFICATIONS;
   });
 
-  // Save notifications to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('libraryms_notifications', JSON.stringify(notifications));
   }, [notifications]);
+
+  const addNotification = (message: string, type: 'success' | 'warning' | 'error' | 'info' = 'info') => {
+    const newNotification: Notification = {
+      id: Date.now(),
+      message,
+      time: new Date().toLocaleTimeString(),
+      read: false,
+      type,
+    };
+
+    setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
+  };
 
   const markAsRead = (id: number) => {
     setNotifications(prevNotifications =>
@@ -74,17 +86,6 @@ export const useNotifications = () => {
     setNotifications(prevNotifications =>
       prevNotifications.map(notification => ({ ...notification, read: true }))
     );
-  };
-
-  const addNotification = (message: string) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      time: 'just now',
-      read: false,
-    };
-    
-    setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
   };
 
   const removeNotification = (id: number) => {
