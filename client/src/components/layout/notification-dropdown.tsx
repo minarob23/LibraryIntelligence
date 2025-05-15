@@ -143,7 +143,12 @@ const NotificationDropdown = () => {
           <DropdownMenuSeparator />
           <Dialog>
             <DialogTrigger asChild>
-              <DropdownMenuItem className="justify-center text-sm text-primary-500 hover:text-primary-600">
+              <DropdownMenuItem 
+                className="justify-center text-sm text-primary-500 hover:text-primary-600"
+                onSelect={(e) => {
+                  e.preventDefault();
+                }}
+              >
                 View all notifications
               </DropdownMenuItem>
             </DialogTrigger>
