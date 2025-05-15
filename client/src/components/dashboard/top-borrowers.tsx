@@ -14,15 +14,15 @@ const TopBorrowers = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
 
-    if (userBorrowings.length === 0) return 0;
+    if (userBorrowings.length === 0) return -150; // Start from lower negative base
 
     const borrowCount = userBorrowings.length;
     const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
 
-    const baseScore = -100; // Start from negative base
+    const baseScore = -150; // Lower negative base
     const borrowingFactor = borrowCount * 10;
-    const recencyFactor = 100 - daysSinceLastBorrow; // Allow full negative range
+    const recencyFactor = Math.min(100 - daysSinceLastBorrow, 50); // Cap positive recency impact
 
     let score = Math.round(baseScore + (borrowingFactor + recencyFactor) / 40 * 10) / 10;
     return isNaN(score) ? -100 : score;

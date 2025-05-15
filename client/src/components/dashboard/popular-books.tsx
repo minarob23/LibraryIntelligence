@@ -25,7 +25,7 @@ const PopularBooks = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return -100; // Start from negative base when no borrowings
+    if (bookBorrowings.length === 0) return -150; // Lower negative base when no borrowings
 
     const timesBorrowed = bookBorrowings.length;
     const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
@@ -34,16 +34,16 @@ const PopularBooks = () => {
     const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
     const avgRating = bookBorrowingsWithRatings.length > 0
       ? bookBorrowingsWithRatings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowingsWithRatings.length
-      : -2; // Negative base for no ratings
+      : -5; // Lower negative base for no ratings
 
     const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
     const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
     const returnRate = completedBorrowings.length > 0
       ? onTimeBorrowings.length / completedBorrowings.length
-      : -0.5; // Negative base for no returns
+      : -2; // Lower negative base for no returns
 
-    // Weight factors starting from negative
-    const baseScore = -100;
+    // Weight factors starting from lower negative
+    const baseScore = -150;
     const borrowingFactor = timesBorrowed * 10;
     const recencyFactor = Math.max(-50, 100 - daysSinceLastBorrow);
     const ratingFactor = avgRating * 20;
