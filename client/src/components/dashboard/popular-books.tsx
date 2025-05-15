@@ -1,7 +1,3 @@
-Modified PopularBooks component to start engagement and popularity scores from a negative base, incorporating negative values for unrated or unreturned books.
-```
-
-```replit_final_file
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -29,37 +25,36 @@ const PopularBooks = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return 0;
+    if (bookBorrowings.length === 0) return -100; // Start from negative base when no borrowings
 
     const timesBorrowed = bookBorrowings.length;
     const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
 
-    // Calculate engagement based on ratings and return dates
-    const completedBorrowings = bookBorrowings.filter(b => b.returnDate && b.rating);
-    const avgRating = completedBorrowings.length > 0 
-      ? completedBorrowings.reduce((sum, b) => sum + (b.rating || 0), 0) / completedBorrowings.length
-      : 0;
+    const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
+    const avgRating = bookBorrowingsWithRatings.length > 0
+      ? bookBorrowingsWithRatings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowingsWithRatings.length
+      : -2; // Negative base for no ratings
+
+    const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
     const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
-    const returnRate = completedBorrowings.length > 0 
+    const returnRate = completedBorrowings.length > 0
       ? onTimeBorrowings.length / completedBorrowings.length
-      : 0;
+      : -0.5; // Negative base for no returns
 
-    // Weight factors with negative base
-      const baseScore = -100; // Start from more negative base
-      const borrowingFactor = timesBorrowed * 10; // Positive contribution
-      const recencyFactor = 100 - daysSinceLastBorrow; // Can be negative or positive
-      const ratingFactor = avgRating ? avgRating * 20 : -20; // Negative if no rating
-      const returnFactor = returnRate * 50 || -25; // Negative if no returns
+    // Weight factors starting from negative
+    const baseScore = -100;
+    const borrowingFactor = timesBorrowed * 10;
+    const recencyFactor = Math.max(-50, 100 - daysSinceLastBorrow);
+    const ratingFactor = avgRating * 20;
+    const returnFactor = returnRate * 50;
 
-      // Combined score starting from negative base
-      const popularityScore = Number((baseScore + 
-                                    (borrowingFactor * 0.3 + 
-                                     recencyFactor * 0.3 + 
-                                     ratingFactor * 0.2 + 
-                                     returnFactor * 0.2)).toFixed(1));
-
-    return Math.round(score / 10 * 10) / 10;
+    // Combined score starting from negative base
+    return Number((baseScore +
+      (borrowingFactor * 0.3 +
+        recencyFactor * 0.3 +
+        ratingFactor * 0.2 +
+        returnFactor * 0.2)).toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
@@ -88,7 +83,7 @@ const PopularBooks = () => {
 
       return {
         ...book,
-        popularityScore: calculatePopularityScore(book.timesBorrowed, book.lastBorrowedDate),
+        popularityScore: calculatePopularityScore(book.id),
         rating: averageRating
       };
     });
