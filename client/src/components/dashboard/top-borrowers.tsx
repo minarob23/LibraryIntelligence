@@ -11,13 +11,18 @@ const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
   const calculateEngagementScore = (borrowCount: number | null | undefined, lastBorrowDate: string | null | undefined): number => {
-    if (!borrowCount || borrowCount === 0) return 0;
-    
+    if (!borrowCount || borrowCount === 0 || !lastBorrowDate) return 0;
+
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - new Date(lastBorrowDate).getTime()) / (1000 * 3600 * 24));
     const borrowingFactor = borrowCount * 10;
     const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Allow negative values but cap at -50
-    
-    const score = Math.round(((borrowingFactor + recencyFactor) / 40) * 10) / 10;
+
+    let score = Math.round(((borrowingFactor + recencyFactor) / 40) * 10) / 10;
+
+    // Handle NaN case
+    if (isNaN(score)) {
+      return 0;
+    }
     return score;
   };
 
@@ -151,7 +156,7 @@ const TopBorrowers = () => {
                         <div className="flex flex-col items-start gap-1">
                           <div className="flex items-center gap-2">
                             <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                              {calculateEngagementScore(borrower.borrowCount || 0, borrower.lastBorrowDate)}
+                              {isNaN(borrower.engagementScore) ? 0 : borrower.engagementScore}
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">engagement score</div>
                           </div>
