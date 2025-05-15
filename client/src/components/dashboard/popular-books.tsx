@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import coverImage1 from '@/assets/book-covers/cover1.svg';
 import coverImage2 from '@/assets/book-covers/cover2.svg';
 import coverImage3 from '@/assets/book-covers/cover3.svg';
