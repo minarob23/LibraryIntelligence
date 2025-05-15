@@ -13,16 +13,16 @@ const TopBorrowers = () => {
   const calculateEngagementScore = (borrowerId: number): number => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-    
+
     if (userBorrowings.length === 0) return 0;
 
     const borrowCount = userBorrowings.length;
     const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-    
+
     const borrowingFactor = borrowCount * 10;
     const recencyFactor = Math.max(100 - daysSinceLastBorrow, -50); // Cap negative values at -50
-    
+
     let score = Math.round((borrowingFactor + recencyFactor) / 40 * 10) / 10;
     return isNaN(score) ? 0 : score;
   };
@@ -162,7 +162,13 @@ const TopBorrowers = () => {
                             <div className="text-sm text-gray-500 dark:text-gray-400">engagement score</div>
                           </div>
                           <div className="text-xs text-gray-400">
-                            Last borrowed: {new Date(userBorrowings[userBorrowings.length - 1]?.borrowDate || '').toLocaleDateString() || 'Never'}
+                            Last borrowed: {(() => {
+                              const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+                              const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrower.id);
+                              return userBorrowings.length > 0
+                                ? new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime()))).toLocaleDateString()
+                                : 'Never';
+                            })()}
                           </div>
                         </div>
                       ) : (
