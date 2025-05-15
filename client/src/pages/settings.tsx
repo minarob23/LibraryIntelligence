@@ -73,25 +73,39 @@ const Settings = () => {
     }
   };
 
-  const handleImport = () => {
-    if (!selectedFile) {
-      toast({
-        title: "No file selected",
-        description: "Please select a file to import",
-        variant: "destructive"
-      });
-      return;
-    }
+  const handleImport = async (dataType: string) => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    
+    fileInput.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
 
-    // Here you would process the file for import
-    // This is a simplified simulation for demonstration
-    setTimeout(() => {
-      toast({
-        title: "Import successful",
-        description: `Data from ${selectedFile.name} has been imported.`
-      });
-      setSelectedFile(null);
-    }, 1000);
+      try {
+        const content = await file.text();
+        const data = JSON.parse(content);
+        
+        // Make API call based on data type
+        await apiRequest('POST', `/api/${dataType}`, data);
+        
+        queryClient.invalidateQueries({ queryKey: [`/api/${dataType}`] });
+        
+        toast({
+          title: "Import successful",
+          description: `${dataType} data has been imported successfully.`
+        });
+      } catch (error) {
+        console.error('Import error:', error);
+        toast({
+          title: "Import failed",
+          description: "Failed to import data. Please check the file format.",
+          variant: "destructive"
+        });
+      }
+    };
+
+    fileInput.click();
   };
 
   const handleExport = (dataType: string, format: 'excel' | 'notion') => {
@@ -522,11 +536,80 @@ const Settings = () => {
 
               <TabsContent value="import">
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-md font-medium">Import Data</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Upload and manage your data</p>
+                  <div>
+                    <h4 className="text-md font-medium mb-4">Import Data</h4>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm">Books Collection</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Import books data</p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleImport('books')}
+                        >
+                          Import Books
+                        </Button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm">Research Papers</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Import research papers data</p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleImport('research')}
+                        >
+                          Import Papers
+                        </Button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm">Borrowers</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Import borrowers data</p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleImport('borrowers')}
+                        >
+                          Import Borrowers
+                        </Button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm">Borrowings</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Import borrowing records</p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleImport('borrowings')}
+                        >
+                          Import Borrowings
+                        </Button>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm">Librarians</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Import librarians data</p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleImport('librarians')}
+                        >
+                          Import Librarians
+                        </Button>
+                      </div>
                     </div>
+                  </div>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button 
