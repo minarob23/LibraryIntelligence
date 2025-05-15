@@ -181,7 +181,7 @@ const PopularBooks = () => {
                                     {Number(book.rating).toFixed(1)}
                                   </div>
                                   <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
-                                    {renderStars(parseFloat(book.rating))}
+                                    {renderStars(parseFloat(book.rating) / 2)}
                                   </div>
                                 </div>
                                 <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">
