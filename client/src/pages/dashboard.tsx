@@ -60,7 +60,7 @@ const Dashboard = () => {
   const formatBorrowerGrowth = () => {
     if (!borrowers) return [];
 
-    const monthlyGrowth = new Map();
+    const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
 
@@ -71,22 +71,22 @@ const Dashboard = () => {
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const categoryData: any = { month: monthKey };
       categories.forEach(category => {
-        categoryData[category] = 0;
+        categoryData[category.toLowerCase()] = 0;
       });
-      monthlyGrowth.set(monthKey, categoryData);
+      monthlyGrowth.push(categoryData);
     }
 
     // Count borrowers per month and category based on join date
     borrowers.forEach((borrower: any) => {
       const date = new Date(borrower.joinedDate);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      if (monthlyGrowth.has(monthKey) && borrower.category) {
-        const data = monthlyGrowth.get(monthKey);
-        data[borrower.category]++;
+      const monthData = monthlyGrowth.find(data => data.month === monthKey);
+      if (monthData && borrower.category) {
+        monthData[borrower.category.toLowerCase()]++;
       }
     });
 
-    return Array.from(monthlyGrowth.values());
+    return monthlyGrowth;
   };
 
   // Format borrower distribution data for chart
@@ -149,12 +149,16 @@ const Dashboard = () => {
       {/* Categories & Growth */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <ChartContainer
-          title="Borrower Categories"
-          type="doughnut"
+          title="Borrower Categories Distribution"
+          type="pie"
           data={formatBorrowerDistribution()}
           nameKey="name"
           dataKey="value"
           colors={['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899']}
+          height={350}
+          showLegend={true}
+          showLabels={true}
+          showPercentages={true}
         />
 
         <ChartContainer

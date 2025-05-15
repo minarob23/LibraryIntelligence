@@ -10,7 +10,7 @@ const BorrowingTrends = () => {
   const getMonthlyData = () => {
     if (!borrowings) return [];
     
-    const monthlyData = new Map();
+    const monthlyData = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
     // Initialize last 6 months with 0
@@ -18,23 +18,27 @@ const BorrowingTrends = () => {
     for (let i = 5; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      monthlyData.set(monthKey, 0);
+      monthlyData.push({
+        name: monthKey,
+        borrowed: 0,
+        returned: 0
+      });
     }
 
     // Count borrowings per month
     borrowings.forEach((borrowing: any) => {
-      const date = new Date(borrowing.borrowDate);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      if (monthlyData.has(monthKey)) {
-        monthlyData.set(monthKey, monthlyData.get(monthKey) + 1);
+      const borrowDate = new Date(borrowing.borrowDate);
+      const monthKey = `${monthNames[borrowDate.getMonth()]} ${borrowDate.getFullYear()}`;
+      const monthData = monthlyData.find(data => data.name === monthKey);
+      if (monthData) {
+        monthData.borrowed++;
+        if (borrowing.returnDate) {
+          monthData.returned++;
+        }
       }
     });
 
-    return Array.from(monthlyData.entries()).map(([name, value]) => ({
-      name,
-      value,
-      category: 'Borrowings'
-    }));
+    return monthlyData;
   };
 
   return (
@@ -43,9 +47,8 @@ const BorrowingTrends = () => {
       type="line"
       data={getMonthlyData()}
       nameKey="name"
-      dataKey="value"
-      categories={['Borrowings']}
-      colors={['#3B82F6']}
+      categories={['borrowed', 'returned']}
+      colors={['#3B82F6', '#10B981']}
       height={350}
     />
   );
