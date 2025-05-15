@@ -162,7 +162,7 @@ const TopBorrowers = () => {
                             <div className="text-sm text-gray-500 dark:text-gray-400">engagement score</div>
                           </div>
                           <div className="text-xs text-gray-400">
-                            Last borrowed: {new Date(borrower.lastBorrowDate).toLocaleDateString()}
+                            Last borrowed: {new Date(userBorrowings[userBorrowings.length - 1]?.borrowDate || '').toLocaleDateString() || 'Never'}
                           </div>
                         </div>
                       ) : (
