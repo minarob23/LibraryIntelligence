@@ -25,16 +25,20 @@ const PopularBooks = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return -150; // Lower negative base when no borrowings
+    if (bookBorrowings.length === 0) return -50; // Reduced negative base when no borrowings
 
     const timesBorrowed = bookBorrowings.length;
-    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
+    // Filter only book borrowings that have been returned
+    const completedBookBorrowings = bookBorrowings.filter(b => b.returnDate);
+    const lastBorrowedDate = completedBookBorrowings.length > 0
+      ? new Date(Math.max(...completedBookBorrowings.map((b: any) => new Date(b.returnDate).getTime())))
+      : new Date();
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
 
     const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
     const avgRating = bookBorrowingsWithRatings.length > 0
       ? bookBorrowingsWithRatings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowingsWithRatings.length
-      : -5; // Lower negative base for no ratings
+      : -3; // Reduced negative base for no ratings
 
     const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
     const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
@@ -42,14 +46,14 @@ const PopularBooks = () => {
       ? onTimeBorrowings.length / completedBorrowings.length
       : -2; // Lower negative base for no returns
 
-    // Weight factors starting from lower negative
-    const baseScore = -150;
+    // Weight factors with reduced negative base
+    const baseScore = -50;
     const borrowingFactor = timesBorrowed * 10;
-    const recencyFactor = Math.max(-50, 100 - daysSinceLastBorrow);
+    const recencyFactor = Math.max(-30, 100 - daysSinceLastBorrow);
     const ratingFactor = avgRating * 20;
     const returnFactor = returnRate * 50;
 
-    // Combined score starting from negative base
+    // Combined score with adjusted weights
     return Number((baseScore +
       (borrowingFactor * 0.3 +
         recencyFactor * 0.3 +
