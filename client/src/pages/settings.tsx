@@ -705,7 +705,6 @@ const Settings = () => {
                     </div>
                   </div>
                 </TabsContent>
-              </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
