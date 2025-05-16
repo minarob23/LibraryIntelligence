@@ -102,16 +102,6 @@ const Dashboard = () => {
     ];
   };
 
-  // Format most borrowed books data for chart
-  const formatMostBorrowedBooks = () => {
-    if (!mostBorrowedBooks) return [];
-
-    return mostBorrowedBooks.map((book: any) => ({
-      name: book.name,
-      value: book.borrowCount,
-    }));
-  };
-
   return (
     <div>
       <div className="mb-6 animate-slide-up">
@@ -156,11 +146,7 @@ const Dashboard = () => {
           dataKey="value"
           colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
           height={400}
-          showLegend={true}
-          showLabels={true}
-          labelStyle={{
-            fill: '#111827',
-            fontSize: '13px',
+        />
 
         <ChartContainer
           title="Member's Growth (Bar View)"
@@ -176,19 +162,6 @@ const Dashboard = () => {
             '#EC4899'   // Pink for Graduate
           ]}
           height={400}
-          showLegend={true}
-          legendStyle={{
-            fontSize: '14px',
-            marginTop: '20px'
-          }}
-        />
-
-            fontWeight: '500'
-          }}
-          legendStyle={{
-            fontSize: '14px',
-            marginTop: '20px'
-          }}
         />
 
         <ChartContainer
@@ -205,11 +178,6 @@ const Dashboard = () => {
             '#EC4899'   // Pink for Graduate
           ]}
           height={400}
-          showLegend={true}
-          legendStyle={{
-            fontSize: '14px',
-            marginTop: '20px'
-          }}
         />
       </div>
 
