@@ -161,6 +161,28 @@ const Dashboard = () => {
           labelStyle={{
             fill: '#111827',
             fontSize: '13px',
+
+        <ChartContainer
+          title="Member's Growth (Bar View)"
+          type="bar"
+          data={formatBorrowerGrowth()}
+          nameKey="month"
+          categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
+          colors={[
+            '#10B981',  // Emerald for Primary
+            '#3B82F6',  // Blue for Middle
+            '#F59E0B',  // Amber for Secondary
+            '#8B5CF6',  // Violet for University  
+            '#EC4899'   // Pink for Graduate
+          ]}
+          height={400}
+          showLegend={true}
+          legendStyle={{
+            fontSize: '14px',
+            marginTop: '20px'
+          }}
+        />
+
             fontWeight: '500'
           }}
           legendStyle={{
