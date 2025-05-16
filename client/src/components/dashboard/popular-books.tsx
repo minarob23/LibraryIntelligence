@@ -22,38 +22,46 @@ const PopularBooks = () => {
   });
 
   const calculatePopularityScore = (bookId: number) => {
+    // Get borrowings from localStorage
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return -50; // Reduced negative base when no borrowings
+    if (bookBorrowings.length === 0) return -50;
 
     const timesBorrowed = bookBorrowings.length;
-    // Filter only book borrowings that have been returned
-    const completedBookBorrowings = bookBorrowings.filter(b => b.returnDate);
-    const lastBorrowedDate = completedBookBorrowings.length > 0
-      ? new Date(Math.max(...completedBookBorrowings.map((b: any) => new Date(b.returnDate).getTime())))
+
+    // Get last borrow date
+    const lastBorrowedDate = bookBorrowings.length > 0
+      ? new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())))
       : new Date();
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
 
-    const bookBorrowingsWithRatings = bookBorrowings.filter(b => b.rating);
-    const avgRating = bookBorrowingsWithRatings.length > 0
-      ? bookBorrowingsWithRatings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowingsWithRatings.length
-      : -3; // Reduced negative base for no ratings
+    // Calculate rating from localStorage
+    const ratings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
+    const bookRatings = Object.entries(ratings)
+      .filter(([key, _]) => key.startsWith(`borrowing_${bookId}_`))
+      .map(([_, rating]) => Number(rating));
+    
+    const avgRating = bookRatings.length > 0
+      ? bookRatings.reduce((sum, rating) => sum + rating, 0) / bookRatings.length
+      : -3;
 
+    // Calculate return rate
     const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
-    const onTimeBorrowings = completedBorrowings.filter(b => new Date(b.returnDate) <= new Date(b.dueDate));
+    const onTimeBorrowings = completedBorrowings.filter(b => 
+      new Date(b.returnDate) <= new Date(b.dueDate)
+    );
     const returnRate = completedBorrowings.length > 0
       ? onTimeBorrowings.length / completedBorrowings.length
-      : -2; // Lower negative base for no returns
+      : -2;
 
-    // Weight factors with reduced negative base
+    // Calculate final score
     const baseScore = -50;
     const borrowingFactor = timesBorrowed * 10;
     const recencyFactor = Math.max(-30, 100 - daysSinceLastBorrow);
     const ratingFactor = avgRating * 20;
     const returnFactor = returnRate * 50;
 
-    // Combined score with adjusted weights
     return Number((baseScore +
       (borrowingFactor * 0.3 +
         recencyFactor * 0.3 +
