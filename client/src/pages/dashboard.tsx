@@ -174,7 +174,6 @@ const Dashboard = () => {
           type="line"
           data={formatBorrowerGrowth()}
           nameKey="month"
-          dataKey="value"
           categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
           colors={[
             '#10B981',  // Emerald for Primary
