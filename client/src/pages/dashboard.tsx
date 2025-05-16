@@ -149,7 +149,7 @@ const Dashboard = () => {
         />
 
         <ChartContainer
-          title="Member's Growth (Bar View)"
+          title="Member's Growth"
           type="bar"
           data={formatBorrowerGrowth()}
           nameKey="month"
