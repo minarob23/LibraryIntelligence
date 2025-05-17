@@ -7,7 +7,7 @@ import {
 } from './db';
 import { sql } from 'drizzle-orm';
 import * as fs from 'fs';
-import { createBackup } from './backup';
+import { setupBackup } from './backup';
 import {
   type InsertBookSchema,
   type InsertBorrowerSchema,
@@ -238,7 +238,7 @@ class Storage {
   async resetDatabase() {
     try {
       // Create a backup before resetting
-      await createBackup();
+      setupBackup();
 
       // Close current database connections
       libraryDb.close();
