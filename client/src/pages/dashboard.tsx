@@ -62,7 +62,7 @@ const Dashboard = () => {
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
+    const categories = ['primary', 'middle', 'secondary', 'university', 'graduate'];
 
     // Initialize last 6 months with 0 for each category
     const today = new Date();
