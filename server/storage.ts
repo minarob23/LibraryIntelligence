@@ -182,17 +182,17 @@ class Storage {
   async getMostBorrowedBooks(limit: number = 5) {
     const result = await this.db.select({
       bookId: borrowings.bookId,
-      count: sql<number>`count(*)`
+      borrowCount: sql<number>`count(*) as borrowCount`
     })
     .from(borrowings)
     .where(sql`${borrowings.bookId} IS NOT NULL`)
     .groupBy(sql`${borrowings.bookId}`)
-    .orderBy(sql`count DESC`)
+    .orderBy(sql`borrowCount DESC`)
     .limit(limit);
 
     return Promise.all(result.map(async row => {
       const book = await this.getBook(row.bookId!);
-      return { ...book, borrowCount: Number(row.count) };
+      return { ...book, borrowCount: Number(row.borrowCount) };
     }));
   }
 
@@ -203,16 +203,16 @@ class Storage {
   async getTopBorrowers(limit: number = 5) {
     const result = await this.db.select({
       borrowerId: borrowings.borrowerId,
-      count: sql<number>`count(*)`
+      borrowCount: sql<number>`count(*) as borrowCount`
     })
     .from(borrowings)
     .groupBy(sql`${borrowings.borrowerId}`)
-    .orderBy(sql`count DESC`)
+    .orderBy(sql`borrowCount DESC`)
     .limit(limit);
 
     return Promise.all(result.map(async row => {
       const borrower = await this.getBorrower(row.borrowerId);
-      return { ...borrower, borrowCount: Number(row.count) };
+      return { ...borrower, borrowCount: Number(row.borrowCount) };
     }));
   }
 
