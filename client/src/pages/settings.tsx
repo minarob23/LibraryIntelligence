@@ -650,52 +650,7 @@ const Settings = () => {
                       </Card>
                     </div>
                   </div>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button 
-                          variant="destructive" 
-                          size="sm"
-                          className="flex items-center"
-                        >
-                          Reset Database
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete all data
-                            and create a new empty database.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={async () => {
-                              try {
-                                await fetch('/api/reset-database', {
-                                  method: 'POST'
-                                });
-                                toast({
-                                  title: "Database Reset",
-                                  description: "Database has been reset successfully.",
-                                });
-                                window.location.reload();
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description: "Failed to reset database.",
-                                  variant: "destructive"
-                                });
-                              }
-                            }}
-                            className="bg-red-500 hover:bg-red-600"
-                          >
-                            Yes, Reset Database
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    
                   </div>
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
                     <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
@@ -857,10 +812,56 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="pt-6">
+              <div className="pt-6 flex space-x-2">
                 <Button onClick={handleSavePreferences}>
                   Save Preferences
                 </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="destructive" 
+                      size="default"
+                      className="flex items-center"
+                    >
+                      Reset Database
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete all data
+                        and create a new empty database.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await fetch('/api/reset-database', {
+                              method: 'POST'
+                            });
+                            toast({
+                              title: "Database Reset",
+                              description: "Database has been reset successfully.",
+                            });
+                            window.location.reload();
+                          } catch (error) {
+                            toast({
+                              title: "Error",
+                              description: "Failed to reset database.",
+                              variant: "destructive"
+                            });
+                          }
+                        }}
+                        className="bg-red-500 hover:bg-red-600"
+                      >
+                        Yes, Reset Database
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </CardContent>
