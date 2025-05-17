@@ -216,7 +216,7 @@ const PopularBooks = () => {
                         <div className="flex items-center gap-2">
                           <div className="bg-purple-100 dark:bg-purple-900/50 rounded-lg px-4 py-2">
                             <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                              {book.timesBorrowed}
+                              {book.timesBorrowed || 0}
                             </div>
                             <div className="text-xs text-purple-600/80 dark:text-purple-400/80 font-medium">
                               Times Borrowed
