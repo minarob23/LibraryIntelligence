@@ -294,7 +294,6 @@ export class DatabaseStorage implements IStorage {
       };
     });
   }
-  }
 
   async getTopBorrowers(limit: number = 5): Promise<any[]> {
     const result = await db.select({
@@ -306,7 +305,7 @@ export class DatabaseStorage implements IStorage {
     .orderBy(sql`count DESC`)
     .limit(limit);
 
-    return Promise.all(result.map(async (row) => {
+    return Promise.all(result.map(async row => {
       const borrower = await this.getBorrower(row.borrowerId);
       return { ...borrower, borrowCount: Number(row.count) };
     }));
