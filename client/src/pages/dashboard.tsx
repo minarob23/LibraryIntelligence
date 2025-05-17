@@ -161,10 +161,10 @@ const Dashboard = () => {
           nameKey="month"
           categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
           colors={[
-            '#10B981',  // Emerald for Primary
+            '#22C55E',  // Green for Primary
             '#3B82F6',  // Blue for Middle
             '#F59E0B',  // Amber for Secondary
-            '#8B5CF6',  // Violet for University  
+            '#A855F7',  // Purple for University  
             '#EC4899'   // Pink for Graduate
           ]}
           height={400}
