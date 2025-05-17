@@ -329,21 +329,17 @@ export class DatabaseStorage implements IStorage {
   async resetDatabase(): Promise<void> {
     try {
       // Close existing database connections
-      db.close();
-      dashboardDb.close();
-
-      // Delete all records from library database
-      await db.delete(books);
-      await db.delete(researchPapers);
-      await db.delete(librarians);
-      await db.delete(borrowers);
-      await db.delete(borrowings);
+      await db.delete(books).execute();
+      await db.delete(researchPapers).execute();
+      await db.delete(librarians).execute();
+      await db.delete(borrowers).execute();
+      await db.delete(borrowings).execute();
 
       // Delete all records from dashboard database
-      await dashboardDb.delete(schema.popularBooks);
-      await dashboardDb.delete(schema.topBorrowers);
-      await dashboardDb.delete(schema.borrowerDistribution);
-      await dashboardDb.delete(schema.mostBorrowedBooks);
+      await dashboardDb.delete(schema.popularBooks).execute();
+      await dashboardDb.delete(schema.topBorrowers).execute();
+      await dashboardDb.delete(schema.borrowerDistribution).execute();
+      await dashboardDb.delete(schema.mostBorrowedBooks).execute();
 
       // Delete the database files if they exist
       if (fs.existsSync('library.db')) {
@@ -351,6 +347,14 @@ export class DatabaseStorage implements IStorage {
       }
       if (fs.existsSync('dashboard.db')) {
         fs.unlinkSync('dashboard.db');
+      }
+
+      // Remove any backup files
+      if (fs.existsSync('backups')) {
+        const backupFiles = fs.readdirSync('backups');
+        for (const file of backupFiles) {
+          fs.unlinkSync(`backups/${file}`);
+        }
       }
 
       // Recreate both databases with fresh connections
