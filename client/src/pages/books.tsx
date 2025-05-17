@@ -136,30 +136,46 @@ const BooksPage = () => {
   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
 
   const filterComponent = (
-    <div className="flex flex-col md:flex-row gap-2">
-      <Select value={selectedPublisher} onValueChange={setSelectedPublisher}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Publisher" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Publishers</SelectItem>
-          {publishers.map(pub => (
-            <SelectItem key={pub} value={pub}>{pub}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
+        <Select value={selectedPublisher} onValueChange={(value) => {
+          setSelectedPublisher(value);
+          // Reset author when publisher changes
+          if (value !== selectedPublisher) {
+            setSelectedAuthor('all');
+          }
+        }}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Publisher" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Publishers</SelectItem>
+            {publishers.map(pub => (
+              <SelectItem key={pub} value={pub}>{pub}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       
-      <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Author" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Authors</SelectItem>
-          {authors.map(author => (
-            <SelectItem key={author} value={author}>{author}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {selectedPublisher && (
+        <div className="flex flex-col md:flex-row gap-2 ml-4">
+          <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Author" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Authors</SelectItem>
+              {authors
+                .filter(author => selectedPublisher === 'all' || 
+                  books?.some(book => book.author === author && book.publisher === selectedPublisher))
+                .map(author => (
+                  <SelectItem key={author} value={author}>{author}</SelectItem>
+                ))
+              }
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       <Select value={selectedAvailability} onValueChange={setSelectedAvailability}>
         <SelectTrigger className="w-[150px]">

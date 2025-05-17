@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, Plus, RefreshCw } from 'lucide-react';
+import { Edit, Trash2, Plus, RefreshCw, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,10 +29,10 @@ import DataTable from '@/components/tables/data-table';
 import BorrowerForm from '@/components/forms/borrower-form';
 import ChartContainer from '@/components/dashboard/chart-container';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { Input } from "@/components/ui/input"
 
 const categories = [
   { value: 'all', label: 'All' },
-  { value: 'expired', label: 'Expired' },
   { value: 'primary', label: 'Primary' },
   { value: 'middle', label: 'Middle' },
   { value: 'secondary', label: 'Secondary' },
@@ -46,21 +46,35 @@ const BorrowersPage = () => {
   const [editingBorrower, setEditingBorrower] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showExpired, setShowExpired] = useState(false);
 
   const { data: allBorrowers, isLoading } = useQuery({ 
     queryKey: ['/api/borrowers'],
     refetchInterval: 1000, // Refetch every 1 second
   });
 
-  // Filter borrowers based on selected category
-  const borrowers = allBorrowers?.filter(borrower => {
-    if (selectedCategory === 'all') return true;
-    if (selectedCategory === 'expired') {
+  // Filter borrowers based on selected category and search term
+  const filteredBorrowers = allBorrowers?.filter(borrower => {
+    const searchTermLower = searchTerm.toLowerCase();
+    const nameLower = borrower.name.toLowerCase();
+
+    const matchesSearchTerm =
+      nameLower.includes(searchTermLower) ||
+      borrower.phone.includes(searchTermLower) ||
+      `BRW-${borrower.id}`.includes(searchTermLower);
+
+    if (!matchesSearchTerm) return false;
+
+    if (showExpired) {
       const daysUntilExpiry = getDaysUntilExpiry(borrower.expiryDate);
       return daysUntilExpiry < 0;
     }
+
+    if (selectedCategory === 'all') return true;
     return borrower.category === selectedCategory;
   });
+  
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
@@ -274,11 +288,32 @@ const BorrowersPage = () => {
                 />
               </div>
             )}
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+              <div className="relative max-w-xs w-full md:w-auto">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search size={16} className="text-gray-400" />
+                </div>
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <Button
+                variant={showExpired ? "secondary" : "outline"}
+                onClick={() => setShowExpired(!showExpired)}
+                className="whitespace-nowrap"
+              >
+                {showExpired ? "Show All" : "Show Expired Only"}
+              </Button>
+            </div>
 
             <DataTable
-              data={borrowers || []}
+              data={filteredBorrowers || []}
               columns={columns}
-              searchable={true}
+              searchable={false}
               loading={isLoading}
               actions={(row) => (
                 <>
@@ -346,7 +381,7 @@ const BorrowersPage = () => {
                 </>
               )}
               pagination={{
-                totalItems: borrowers?.length || 0,
+                totalItems: filteredBorrowers?.length || 0,
                 itemsPerPage: 10,
                 currentPage: 1,
                 onPageChange: () => {},
