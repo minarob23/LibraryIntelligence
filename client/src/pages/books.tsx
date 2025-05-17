@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -40,7 +40,21 @@ const BooksPage = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBook, setEditingBook] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return localStorage.getItem('libraryms_books_category') || 'all';
+  });
+  const [searchTerm, setSearchTerm] = useState(() => {
+    return localStorage.getItem('libraryms_books_search') || '';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('libraryms_books_category', selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    localStorage.setItem('libraryms_books_search', searchTerm);
+  }, [searchTerm]);
+
   const { data: books, isLoading } = useQuery({ 
     queryKey: ['/api/books'],
   });
@@ -109,7 +123,7 @@ const BooksPage = () => {
       header: 'Status',
       cell: (row: any) => {
         const isBorrowed = borrowings?.some((b: any) => b.bookId === row.id && b.status === 'borrowed');
-        
+
         if (isBorrowed) {
           return (
             <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
@@ -156,7 +170,7 @@ const BooksPage = () => {
           </SelectContent>
         </Select>
       </div>
-      
+
       {selectedPublisher && (
         <div className="flex flex-col md:flex-row gap-2 ml-4">
           <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
@@ -198,7 +212,7 @@ const BooksPage = () => {
     const availabilityMatch = selectedAvailability === 'all' || 
       (selectedAvailability === 'borrowed' && isBorrowed) ||
       (selectedAvailability === 'available' && !isBorrowed);
-    
+
     return publisherMatch && authorMatch && availabilityMatch;
   });
 
@@ -237,7 +251,7 @@ const BooksPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <DataTable
         data={filteredBooks || []}
         columns={columns}
@@ -275,7 +289,7 @@ const BooksPage = () => {
                 )}
               </DialogContent>
             </Dialog>
-            
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">

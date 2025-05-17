@@ -53,9 +53,27 @@ const BorrowersPage = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBorrower, setEditingBorrower] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showExpired, setShowExpired] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return localStorage.getItem('libraryms_borrower_category') || 'all';
+  });
+  const [searchTerm, setSearchTerm] = useState(() => {
+    return localStorage.getItem('libraryms_borrower_search') || '';
+  });
+  const [showExpired, setShowExpired] = useState(() => {
+    return localStorage.getItem('libraryms_borrower_expired') === 'true';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('libraryms_borrower_category', selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    localStorage.setItem('libraryms_borrower_search', searchTerm);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    localStorage.setItem('libraryms_borrower_expired', String(showExpired));
+  }, [showExpired]);
 
   const { data: allBorrowers, isLoading } = useQuery({ 
     queryKey: ['/api/borrowers'],

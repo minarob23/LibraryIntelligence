@@ -52,14 +52,22 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
   return notifications;
 };
 
+const LOCAL_STORAGE_KEYS = {
+  NOTIFICATIONS: 'libraryms_notifications',
+  THEME: 'libraryms_theme',
+  AUTH: 'libraryms_auth',
+  BORROWER_FILTERS: 'libraryms_borrower_filters',
+  BOOKS_FILTERS: 'libraryms_books_filters'
+};
+
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>(() => {
-    const savedNotifications = localStorage.getItem('libraryms_notifications');
+    const savedNotifications = localStorage.getItem(LOCAL_STORAGE_KEYS.NOTIFICATIONS);
     return savedNotifications ? JSON.parse(savedNotifications) : INITIAL_NOTIFICATIONS;
   });
 
   useEffect(() => {
-    localStorage.setItem('libraryms_notifications', JSON.stringify(notifications));
+    localStorage.setItem(LOCAL_STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
   }, [notifications]);
 
   const addNotification = (message: string, type: 'success' | 'warning' | 'error' | 'info' = 'info') => {
