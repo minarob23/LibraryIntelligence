@@ -7,7 +7,7 @@ import {
   librarians,
   borrowers,
   borrowings,
-  membershipApplications
+  membershipApplicationSchema
 } from '@shared/schema';
 
 // Initialize SQLite database
@@ -20,8 +20,7 @@ export {
   researchPapers,
   librarians,
   borrowers,
-  borrowings,
-  membershipApplications
+  borrowings
 };
 
 // Create all required tables
