@@ -201,7 +201,20 @@ class Storage {
   }
 
   async getPopularBooks(limit: number = 4) {
-    return this.getMostBorrowedBooks(limit);
+    const result = await this.db.select({
+      bookId: borrowings.bookId,
+      timesBorrowed: sql<number>`count(*) as timesBorrowed`
+    })
+    .from(borrowings)
+    .where(sql`${borrowings.bookId} IS NOT NULL`)
+    .groupBy(sql`${borrowings.bookId}`)
+    .orderBy(sql`timesBorrowed DESC`)
+    .limit(limit);
+
+    return Promise.all(result.map(async row => {
+      const book = await this.getBook(row.bookId!);
+      return { ...book, timesBorrowed: Number(row.timesBorrowed) };
+    }));
   }
 
   async getTopBorrowers(limit: number = 5) {
