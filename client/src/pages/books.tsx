@@ -140,38 +140,6 @@ const BooksPage = () => {
 
   const filterComponent = (
     <div className="flex items-center gap-4">
-      <Select value={filterType} onValueChange={(value) => {
-        setFilterType(value);
-        setFilterValue('all');
-      }}>
-        <SelectTrigger className="w-[150px]">
-          <SelectValue placeholder="Filter by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="publisher">Publisher</SelectItem>
-          <SelectItem value="author">Author</SelectItem>
-          <SelectItem value="code">Book Code</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Select value={filterValue} onValueChange={setFilterValue}>
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder={`Select ${filterType}`} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All {filterType}s</SelectItem>
-          {filterType === 'publisher' && publishers.map(pub => (
-            <SelectItem key={pub} value={pub}>{pub}</SelectItem>
-          ))}
-          {filterType === 'author' && authors.map(author => (
-            <SelectItem key={author} value={author}>{author}</SelectItem>
-          ))}
-          {filterType === 'code' && books?.map(book => (
-            <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
       <Select value={selectedAvailability} onValueChange={setSelectedAvailability}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder="Availability" />
@@ -185,29 +153,12 @@ const BooksPage = () => {
     </div>
   );
 
-  // Filter books based on selections
+  // Filter books based on availability
   const filteredBooks = books?.filter(book => {
     const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
-    const availabilityMatch = selectedAvailability === 'all' || 
+    return selectedAvailability === 'all' || 
       (selectedAvailability === 'borrowed' && isBorrowed) ||
       (selectedAvailability === 'available' && !isBorrowed);
-    
-    let filterMatch = true;
-    if (filterValue !== 'all') {
-      switch (filterType) {
-        case 'publisher':
-          filterMatch = book.publisher === filterValue;
-          break;
-        case 'author':
-          filterMatch = book.author === filterValue;
-          break;
-        case 'code':
-          filterMatch = book.bookCode === filterValue;
-          break;
-      }
-    }
-    
-    return filterMatch && availabilityMatch;
   });
 
   // Custom empty state messages
