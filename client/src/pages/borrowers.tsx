@@ -82,7 +82,7 @@ const BorrowersPage = () => {
     if (selectedCategory === 'all') return true;
     return borrower.category === selectedCategory;
   });
-
+  
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
@@ -137,7 +137,7 @@ const BorrowersPage = () => {
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
-
+    
     const categoryMap = {
       'primary': 'Primary',
       'middle': 'Middle', 
@@ -278,11 +278,17 @@ const BorrowersPage = () => {
               <div className="mb-6">
                 <ChartContainer
                   title="Borrowers Distribution by Category"
-                  type="pie"
+                  type="bar"
                   data={formatBorrowerDistribution()}
                   nameKey="name"
                   dataKey="value"
-                  colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
+                  colors={[
+                    '#22C55E',  // Green for Primary
+                    '#EF4444',  // Red for Middle
+                    '#F59E0B',  // Orange for Secondary
+                    '#6366F1',  // Indigo for University
+                    '#EC4899'   // Pink for Graduate
+                  ]}
                   height={350}
                 />
               </div>
