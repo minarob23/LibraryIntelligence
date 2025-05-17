@@ -36,7 +36,7 @@ export function setupBackup() {
         fs.unlinkSync(path.join(backupDir, oldestBackup));
       }
       
-      log('Database backup completed');
+      log('Successfully created backup copies of library and dashboard databases');
     } catch (error) {
       log('Database backup failed: ' + error);
     }
