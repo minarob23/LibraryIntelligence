@@ -241,7 +241,7 @@ export class DatabaseStorage implements IStorage {
     .orderBy(sql`count DESC`)
     .limit(limit);
 
-    return Promise.all(result.map(async (row) => {
+    return Promise.all(result.map(async row => {
       const book = await this.getBook(row.bookId!);
       return { ...book, borrowCount: Number(row.count) };
     }));
