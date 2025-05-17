@@ -138,10 +138,10 @@ createTables();
 import { sql } from 'drizzle-orm';
 
 // Membership Applications table
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-export const membershipApplications = pgTable("membership_applications", {
-  id: serial("id").primaryKey(),
+export const membershipApplications = sqliteTable("membership_applications", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   stage: text("stage").notNull(),
   birthdate: text("birthdate").notNull(),
@@ -155,5 +155,5 @@ export const membershipApplications = pgTable("membership_applications", {
   job: text("job"),
   hobbies: text("hobbies"),
   favoriteBooks: text("favorite_books"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });

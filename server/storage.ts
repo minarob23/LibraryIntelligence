@@ -1,10 +1,14 @@
-
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { 
-  books, borrowers, librarians, researchPapers, borrowings,
-  membershipApplicationSchema
-} from './db';
+  books,
+  researchPapers,
+  librarians,
+  borrowers,
+  borrowings,
+  membershipApplicationSchema,
+  membershipApplications
+} from '@shared/schema';
 import { sql } from 'drizzle-orm';
 import * as fs from 'fs';
 import { setupBackup } from './backup';
