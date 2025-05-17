@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { 
   books, borrowers, librarians, researchPapers, borrowings,
-  membershipApplications, notifications
+  membershipApplicationSchema
 } from './db';
 import { sql } from 'drizzle-orm';
 import * as fs from 'fs';

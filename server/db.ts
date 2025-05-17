@@ -20,7 +20,8 @@ export {
   researchPapers,
   librarians,
   borrowers,
-  borrowings
+  borrowings,
+  membershipApplicationSchema
 };
 
 // Create all required tables
