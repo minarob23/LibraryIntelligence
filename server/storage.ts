@@ -11,6 +11,8 @@ import { db } from './db';
 import * as schema from '@shared/schema';
 import { eq, sql } from 'drizzle-orm';
 import { books, researchPapers, librarians, borrowers, borrowings } from '@shared/schema';
+import Database from 'better-sqlite3';
+import fs from 'fs';
 
 export interface IStorage {
   // Book CRUD
@@ -60,6 +62,8 @@ export interface IStorage {
 
   // Membership application
   createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian>;
+
+  resetDatabase(): Promise<void>;
 }
 
 
@@ -323,11 +327,148 @@ export class DatabaseStorage implements IStorage {
     }, {} as Record<string, number>);
   }
   async resetDatabase(): Promise<void> {
-    await db.delete(borrowings);
-    await db.delete(borrowers);
-    await db.delete(librarians);
+    // Delete all records from library database
     await db.delete(books);
     await db.delete(researchPapers);
+    await db.delete(librarians);
+    await db.delete(borrowers);
+    await db.delete(borrowings);
+
+    // Delete all records from dashboard database
+    await dashboardDb.delete(schema.popularBooks);
+    await dashboardDb.delete(schema.topBorrowers);
+    await dashboardDb.delete(schema.borrowerDistribution);
+    await dashboardDb.delete(schema.mostBorrowedBooks);
+
+    // Delete the database files
+    fs.unlinkSync('library.db');
+    fs.unlinkSync('dashboard.db');
+
+    // Recreate both databases
+    const sqlite = new Database('library.db');
+    const dashboardSqlite = new Database('dashboard.db');
+
+    // Recreate library tables
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cover_image TEXT NOT NULL,
+        name TEXT NOT NULL,
+        author TEXT NOT NULL,
+        publisher TEXT NOT NULL,
+        book_code TEXT UNIQUE NOT NULL,
+        copies INTEGER NOT NULL DEFAULT 1,
+        description TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS research_papers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cover_image TEXT NOT NULL,
+        name TEXT NOT NULL,
+        author TEXT NOT NULL,
+        publisher TEXT NOT NULL,
+        research_code TEXT UNIQUE NOT NULL,
+        copies INTEGER NOT NULL DEFAULT 1,
+        description TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS librarians (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        appointment_date DATE NOT NULL,
+        membership_status TEXT NOT NULL CHECK (membership_status IN ('active', 'inactive', 'temporary')),
+        email TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS borrowers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        category TEXT NOT NULL CHECK (category IN ('primary', 'middle', 'secondary', 'university', 'graduate')),
+        joined_date DATE NOT NULL,
+        expiry_date DATE NOT NULL,
+        email TEXT,
+        address TEXT,
+        church_name TEXT,
+        father_of_confession TEXT,
+        studies TEXT,
+        job TEXT,
+        hobbies TEXT,
+        favorite_books TEXT,
+        additional_phone TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    sqlite.exec(`
+      CREATE TABLE IF NOT EXISTS borrowings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        borrower_id INTEGER NOT NULL,
+        librarian_id INTEGER NOT NULL,
+        book_id INTEGER,
+        research_id INTEGER,
+        borrow_date DATE NOT NULL,
+        due_date DATE NOT NULL,
+        return_date DATE,
+        status TEXT NOT NULL CHECK (status IN ('borrowed', 'returned', 'overdue')),
+        created_at TEXT DEFAULT (datetime('now')),
+        FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
+        FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
+        FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+        FOREIGN KEY (research_id) REFERENCES research_papers(id) ON DELETE CASCADE,
+        CHECK ((book_id IS NOT NULL AND research_id IS NULL) OR (book_id IS NULL AND research_id IS NOT NULL))
+      )
+    `);
+
+    // Recreate dashboard tables
+    dashboardSqlite.exec(`
+      CREATE TABLE IF NOT EXISTS popular_books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        book_id INTEGER NOT NULL,
+        popularity_score REAL NOT NULL,
+        times_borrowed INTEGER NOT NULL,
+        average_rating REAL,
+        updated_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    dashboardSqlite.exec(`
+      CREATE TABLE IF NOT EXISTS top_borrowers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        borrower_id INTEGER NOT NULL,
+        borrow_count INTEGER NOT NULL,
+        last_borrowed_at TEXT,
+        updated_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    dashboardSqlite.exec(`
+      CREATE TABLE IF NOT EXISTS borrower_distribution (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        category TEXT NOT NULL,
+        count INTEGER NOT NULL,
+        updated_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    dashboardSqlite.exec(`
+      CREATE TABLE IF NOT EXISTS most_borrowed_books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        book_id INTEGER NOT NULL,
+        borrow_count INTEGER NOT NULL,
+        updated_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
   }
 
   async createMembershipApplication(application: MembershipApplication): Promise<Borrower | Librarian> {
