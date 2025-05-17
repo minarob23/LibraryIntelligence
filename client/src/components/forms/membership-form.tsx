@@ -50,7 +50,11 @@ const MembershipForm = () => {
   const onSubmit = async (data: MembershipFormValues) => {
     try {
       setIsSubmitting(true);
-      await apiRequest('POST', '/api/membership-application', data);
+      const response = await apiRequest('POST', '/api/membership-application', data);
+      
+      if (!response) {
+        throw new Error('No response from server');
+      }
       
       toast({
         title: 'Success',
@@ -61,9 +65,17 @@ const MembershipForm = () => {
       form.reset();
     } catch (error) {
       console.error('Error submitting application:', error);
+      let errorMessage = 'Failed to submit membership application. ';
+      
+      if (error instanceof Error) {
+        errorMessage += error.message;
+      } else {
+        errorMessage += 'Please try again later.';
+      }
+      
       toast({
         title: 'Error',
-        description: 'Failed to submit membership application. Please try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
