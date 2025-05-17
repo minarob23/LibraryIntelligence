@@ -119,6 +119,25 @@ export const membershipApplicationSchema = z.object({
   favoriteBooks: z.string().optional()
 });
 
+// Membership Applications table
+export const membershipApplications = pgTable("membership_applications", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  stage: text("stage").notNull(),
+  birthdate: text("birthdate").notNull(),
+  phone: text("phone").notNull(),
+  additionalPhone: text("additional_phone"),
+  email: text("email").notNull(),
+  address: text("address").notNull(),
+  churchName: text("church_name"),
+  fatherOfConfession: text("father_of_confession"),
+  studies: text("studies"),
+  job: text("job"),
+  hobbies: text("hobbies"),
+  favoriteBooks: text("favorite_books"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
 // Types
 export type Book = typeof books.$inferSelect;
 export type InsertBook = z.infer<typeof insertBookSchema>;
