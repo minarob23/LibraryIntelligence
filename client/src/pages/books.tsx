@@ -193,11 +193,10 @@ const BooksPage = () => {
       (selectedAvailability === 'available' && !isBorrowed);
     
     let filterMatch = true;
-    if (filterValue !== 'all') {
+    if (filterValue !== 'all' && filterType === 'publisher' && book.publisher !== 'All Publishers') {
+      filterMatch = book.publisher === filterValue;
+    } else if (filterValue !== 'all') {
       switch (filterType) {
-        case 'publisher':
-          filterMatch = book.publisher === filterValue;
-          break;
         case 'author':
           filterMatch = book.author === filterValue;
           break;
