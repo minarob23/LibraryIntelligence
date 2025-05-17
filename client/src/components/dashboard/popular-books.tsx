@@ -228,7 +228,6 @@ const PopularBooks = () => {
                                 {book.currentlyBorrowed ? 'Currently Borrowed' : 'Available'}
                               </div>
                             </div>
-                            </div>
                           </div>
                         </div>
                       )}
