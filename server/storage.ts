@@ -247,7 +247,7 @@ export class DatabaseStorage implements IStorage {
     }));
   }
 
-  async getPopularBooks(limit: number = 4): Promise<any[]> {
+  async getPopularBooks(limit = 4): Promise<any[]> {
     const books = await db.select().from(schema.books).limit(limit);
     const borrowings = await db.select().from(schema.borrowings);
 
@@ -270,19 +270,17 @@ export class DatabaseStorage implements IStorage {
         ? onTimeBorrowings.length / completedBorrowings.length
         : 0;
 
-      // Weight factors (starting from negative)
-      const baseScore = -50; // Start from negative base
-      const borrowingFactor = timesBorrowed * 10; // Positive contribution
-      const recencyFactor = 100 - daysSinceLastBorrow; // Can be negative or positive
-      const ratingFactor = avgRating * 20; // Positive contribution
-      const returnFactor = returnRate * 50; // Positive contribution
+      const baseScore = -50;
+      const borrowingFactor = timesBorrowed * 10;
+      const recencyFactor = 100 - daysSinceLastBorrow;
+      const ratingFactor = avgRating * 20;
+      const returnFactor = returnRate * 50;
 
-      // Combined score with weights (starting from negative)
       const popularityScore = Number((baseScore + 
-                                    (borrowingFactor * 0.3 + 
-                                     recencyFactor * 0.3 + 
-                                     ratingFactor * 0.2 + 
-                                     returnFactor * 0.2) / 10).toFixed(1));
+        (borrowingFactor * 0.3 + 
+         recencyFactor * 0.3 + 
+         ratingFactor * 0.2 + 
+         returnFactor * 0.2) / 10).toFixed(1));
 
       const averageRating = bookBorrowingsWithRatings.length > 0
         ? (bookBorrowingsWithRatings.reduce((sum, b) => sum + b.rating!, 0) / bookBorrowingsWithRatings.length).toFixed(1)
@@ -295,6 +293,7 @@ export class DatabaseStorage implements IStorage {
         rating: averageRating
       };
     });
+  }
   }
 
   async getTopBorrowers(limit: number = 5): Promise<any[]> {
