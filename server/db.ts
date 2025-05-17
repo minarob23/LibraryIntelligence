@@ -1,10 +1,28 @@
+
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import * as schema from '@shared/schema';
+import { 
+  books,
+  researchPapers,
+  librarians,
+  borrowers,
+  borrowings,
+  membershipApplications
+} from '@shared/schema';
 
 // Initialize SQLite database
 const sqlite = new Database('library.db');
-export const db = drizzle(sqlite, { schema });
+export const db = drizzle(sqlite);
+
+// Export tables
+export {
+  books,
+  researchPapers,
+  librarians,
+  borrowers,
+  borrowings,
+  membershipApplications
+};
 
 // Create all required tables
 const createTables = async () => {
