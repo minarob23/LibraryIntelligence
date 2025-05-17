@@ -217,12 +217,18 @@ class Storage {
   }
 
   async getBorrowerDistribution() {
-    return await this.db.select({
+    const result = await this.db.select({
       category: borrowers.category,
-      count: sql<number>`count(*)`
+      count: sql<number>`count(*) as count`
     })
     .from(borrowers)
     .groupBy(sql`${borrowers.category}`);
+
+    // Transform result to match expected format
+    return result.map(row => ({
+      category: row.category,
+      count: Number(row.count)
+    }));
   }
 
   // Membership Applications
