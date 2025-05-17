@@ -137,14 +137,19 @@ const BorrowersPage = () => {
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
+    
+    const categoryMap = {
+      'primary': 'Primary',
+      'middle': 'Middle', 
+      'secondary': 'Secondary',
+      'university': 'University',
+      'graduate': 'Graduate'
+    };
 
-    return [
-      { name: 'Primary', value: borrowerDistribution.primary || 0 },
-      { name: 'Middle', value: borrowerDistribution.middle || 0 },
-      { name: 'Secondary', value: borrowerDistribution.secondary || 0 },
-      { name: 'University', value: borrowerDistribution.university || 0 },
-      { name: 'Graduate', value: borrowerDistribution.graduate || 0 },
-    ];
+    return borrowerDistribution.map((item: any) => ({
+      name: categoryMap[item.category] || item.category,
+      value: item.count
+    }));
   };
 
   // Get initials from a name
