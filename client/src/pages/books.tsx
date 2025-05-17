@@ -135,42 +135,42 @@ const BooksPage = () => {
   const authors = [...new Set(books?.map(book => book.author) || [])];
   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
 
+  const [filterType, setFilterType] = useState('publisher');
+  const [filterValue, setFilterValue] = useState('all');
+
   const filterComponent = (
     <div className="flex items-center gap-4">
-      <Select value={selectedPublisher} onValueChange={(value) => {
-        setSelectedPublisher(value);
-        if (value !== selectedPublisher) {
-          setSelectedAuthor('all');
-        }
+      <Select value={filterType} onValueChange={(value) => {
+        setFilterType(value);
+        setFilterValue('all');
       }}>
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="Publisher" />
+        <SelectTrigger className="w-[150px]">
+          <SelectValue placeholder="Filter by" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Publishers</SelectItem>
-          {publishers.map(pub => (
-            <SelectItem key={pub} value={pub}>{pub}</SelectItem>
-          ))}
+          <SelectItem value="publisher">Publisher</SelectItem>
+          <SelectItem value="author">Author</SelectItem>
+          <SelectItem value="code">Book Code</SelectItem>
         </SelectContent>
       </Select>
 
-      {selectedPublisher && (
-        <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Author" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Authors</SelectItem>
-            {authors
-              .filter(author => selectedPublisher === 'all' || 
-                books?.some(book => book.author === author && book.publisher === selectedPublisher))
-              .map(author => (
-                <SelectItem key={author} value={author}>{author}</SelectItem>
-              ))
-            }
-          </SelectContent>
-        </Select>
-      )}
+      <Select value={filterValue} onValueChange={setFilterValue}>
+        <SelectTrigger className="w-[200px]">
+          <SelectValue placeholder={`Select ${filterType}`} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All {filterType}s</SelectItem>
+          {filterType === 'publisher' && publishers.map(pub => (
+            <SelectItem key={pub} value={pub}>{pub}</SelectItem>
+          ))}
+          {filterType === 'author' && authors.map(author => (
+            <SelectItem key={author} value={author}>{author}</SelectItem>
+          ))}
+          {filterType === 'code' && books?.map(book => (
+            <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <Select value={selectedAvailability} onValueChange={setSelectedAvailability}>
         <SelectTrigger className="w-[150px]">
@@ -187,14 +187,27 @@ const BooksPage = () => {
 
   // Filter books based on selections
   const filteredBooks = books?.filter(book => {
-    const publisherMatch = selectedPublisher === 'all' || book.publisher === selectedPublisher;
-    const authorMatch = selectedAuthor === 'all' || book.author === selectedAuthor;
     const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
     const availabilityMatch = selectedAvailability === 'all' || 
       (selectedAvailability === 'borrowed' && isBorrowed) ||
       (selectedAvailability === 'available' && !isBorrowed);
     
-    return publisherMatch && authorMatch && availabilityMatch;
+    let filterMatch = true;
+    if (filterValue !== 'all') {
+      switch (filterType) {
+        case 'publisher':
+          filterMatch = book.publisher === filterValue;
+          break;
+        case 'author':
+          filterMatch = book.author === filterValue;
+          break;
+        case 'code':
+          filterMatch = book.bookCode === filterValue;
+          break;
+      }
+    }
+    
+    return filterMatch && availabilityMatch;
   });
 
   // Custom empty state messages
