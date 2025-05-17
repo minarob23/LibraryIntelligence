@@ -1,4 +1,3 @@
-
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { 
@@ -115,3 +114,25 @@ const createTables = async () => {
 
 // Initialize tables
 createTables();
+import { sql } from 'drizzle-orm';
+
+// Membership Applications table
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+
+export const membershipApplications = pgTable("membership_applications", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  stage: text("stage").notNull(),
+  birthdate: text("birthdate").notNull(),
+  phone: text("phone").notNull(),
+  additionalPhone: text("additional_phone"),
+  email: text("email").notNull(),
+  address: text("address").notNull(),
+  churchName: text("church_name"),
+  fatherOfConfession: text("father_of_confession"),
+  studies: text("studies"),
+  job: text("job"),
+  hobbies: text("hobbies"),
+  favoriteBooks: text("favorite_books"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
