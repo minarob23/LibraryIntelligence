@@ -174,14 +174,6 @@ const BorrowersPage = () => {
     }
   };
 
-  // Calculate days until expiry
-  const getDaysUntilExpiry = (expiryDate: string) => {
-    const expiry = new Date(expiryDate);
-    const today = new Date();
-    const diffTime = expiry.getTime() - today.getTime();
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
-
   // Get status badge based on days until expiry
   const getStatusBadge = (expiryDate: string) => {
     const daysUntilExpiry = getDaysUntilExpiry(expiryDate);
