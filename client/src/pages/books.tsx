@@ -160,7 +160,7 @@ const BooksPage = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All {filterType}s</SelectItem>
-          {filterType === 'publisher' && publishers.map(pub => (
+          {filterType === 'publisher' && publishers.filter(pub => pub !== 'All Publishers').map(pub => (
             <SelectItem key={pub} value={pub}>{pub}</SelectItem>
           ))}
           {filterType === 'author' && authors.map(author => (
