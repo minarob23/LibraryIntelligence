@@ -356,7 +356,7 @@ export class DatabaseStorage implements IStorage {
           fs.unlinkSync(`backups/${file}`);
         }
       }
-
+    } finally {
       // Recreate both databases with fresh connections
       const sqlite = new Database('library.db');
       const dashboardSqlite = new Database('dashboard.db');
