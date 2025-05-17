@@ -63,7 +63,43 @@ export interface IStorage {
 }
 
 
+import { dashboardDb } from './dashboard-db';
+
 export class DatabaseStorage implements IStorage {
+  // Helper method to sync dashboard data
+  private async syncDashboardData() {
+    // Sync popular books
+    const popularBooks = await this.getPopularBooks();
+    await dashboardDb.delete(schema.popularBooks);
+    await dashboardDb.insert(schema.popularBooks).values(popularBooks);
+
+    // Sync top borrowers
+    const topBorrowers = await this.getTopBorrowers();
+    await dashboardDb.delete(schema.topBorrowers);
+    await dashboardDb.insert(schema.topBorrowers).values(topBorrowers);
+
+    // Sync borrower distribution
+    const distribution = await this.getBorrowerDistribution();
+    await dashboardDb.delete(schema.borrowerDistribution);
+    await dashboardDb.insert(schema.borrowerDistribution).values(
+      Object.entries(distribution).map(([category, count]) => ({
+        category,
+        count
+      }))
+    );
+
+    // Sync most borrowed books
+    const mostBorrowed = await this.getMostBorrowedBooks();
+    await dashboardDb.delete(schema.mostBorrowedBooks);
+    await dashboardDb.insert(schema.mostBorrowedBooks).values(
+      mostBorrowed.map(book => ({
+        bookId: book.id,
+        borrowCount: book.borrowCount
+      }))
+    );
+  }
+
+  // Main database operations
   async getBooks(): Promise<Book[]> {
     return db.select().from(books);
   }

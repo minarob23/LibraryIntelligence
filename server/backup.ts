@@ -17,9 +17,16 @@ export function setupBackup() {
       }
       
       // Copy the database file
+      // Backup main library database
       fs.copyFileSync(
         path.join(process.cwd(), 'library.db'),
         path.join(backupDir, `library-${timestamp}.db`)
+      );
+
+      // Backup dashboard database
+      fs.copyFileSync(
+        path.join(process.cwd(), 'dashboard.db'),
+        path.join(backupDir, `dashboard-${timestamp}.db`)
       );
       
       // Keep only last 24 backups
