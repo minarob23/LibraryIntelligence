@@ -62,7 +62,7 @@ const Dashboard = () => {
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const categories = ['primary', 'middle', 'secondary', 'university', 'graduate'];
+    const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
 
     // Initialize last 6 months with 0 for each category
     const today = new Date();
@@ -71,7 +71,7 @@ const Dashboard = () => {
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const categoryData: any = { month: monthKey };
       categories.forEach(category => {
-        categoryData[category] = 0;
+        categoryData[category.toLowerCase()] = 0;
       });
       monthlyGrowth.push(categoryData);
     }
@@ -82,7 +82,7 @@ const Dashboard = () => {
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const monthData = monthlyGrowth.find(data => data.month === monthKey);
       if (monthData && borrower.category) {
-        monthData[borrower.category]++;
+        monthData[borrower.category.toLowerCase()]++;
       }
     });
 
