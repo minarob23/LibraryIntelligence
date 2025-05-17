@@ -32,6 +32,7 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 
 const categories = [
   { value: 'all', label: 'All' },
+  { value: 'expired', label: 'Expired' },
   { value: 'primary', label: 'Primary' },
   { value: 'middle', label: 'Middle' },
   { value: 'secondary', label: 'Secondary' },
@@ -52,9 +53,14 @@ const BorrowersPage = () => {
   });
 
   // Filter borrowers based on selected category
-  const borrowers = selectedCategory === 'all' 
-    ? allBorrowers 
-    : allBorrowers?.filter(borrower => borrower.category === selectedCategory);
+  const borrowers = allBorrowers?.filter(borrower => {
+    if (selectedCategory === 'all') return true;
+    if (selectedCategory === 'expired') {
+      const daysUntilExpiry = getDaysUntilExpiry(borrower.expiryDate);
+      return daysUntilExpiry < 0;
+    }
+    return borrower.category === selectedCategory;
+  });
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],

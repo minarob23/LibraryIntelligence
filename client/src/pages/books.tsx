@@ -127,22 +127,41 @@ const BooksPage = () => {
     },
   ];
 
+  const [selectedPublisher, setSelectedPublisher] = useState('all');
+  const [selectedAuthor, setSelectedAuthor] = useState('all');
+  const [selectedAvailability, setSelectedAvailability] = useState('all');
+
+  // Get unique authors from books
+  const authors = [...new Set(books?.map(book => book.author) || [])];
+  const publishers = [...new Set(books?.map(book => book.publisher) || [])];
+
   const filterComponent = (
     <div className="flex flex-col md:flex-row gap-2">
-      <Select>
+      <Select value={selectedPublisher} onValueChange={setSelectedPublisher}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder="Publisher" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All Publishers</SelectItem>
-          <SelectItem value="penguin">Penguin Random House</SelectItem>
-          <SelectItem value="harpercollins">HarperCollins</SelectItem>
-          <SelectItem value="macmillan">Macmillan Publishers</SelectItem>
-          <SelectItem value="simon">Simon & Schuster</SelectItem>
+          {publishers.map(pub => (
+            <SelectItem key={pub} value={pub}>{pub}</SelectItem>
+          ))}
         </SelectContent>
       </Select>
       
-      <Select>
+      <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
+        <SelectTrigger className="w-[150px]">
+          <SelectValue placeholder="Author" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Authors</SelectItem>
+          {authors.map(author => (
+            <SelectItem key={author} value={author}>{author}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select value={selectedAvailability} onValueChange={setSelectedAvailability}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder="Availability" />
         </SelectTrigger>
@@ -150,11 +169,33 @@ const BooksPage = () => {
           <SelectItem value="all">All</SelectItem>
           <SelectItem value="available">Available</SelectItem>
           <SelectItem value="borrowed">Borrowed</SelectItem>
-          <SelectItem value="maintenance">In Maintenance</SelectItem>
         </SelectContent>
       </Select>
     </div>
   );
+
+  // Filter books based on selections
+  const filteredBooks = books?.filter(book => {
+    const publisherMatch = selectedPublisher === 'all' || book.publisher === selectedPublisher;
+    const authorMatch = selectedAuthor === 'all' || book.author === selectedAuthor;
+    const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+    const availabilityMatch = selectedAvailability === 'all' || 
+      (selectedAvailability === 'borrowed' && isBorrowed) ||
+      (selectedAvailability === 'available' && !isBorrowed);
+    
+    return publisherMatch && authorMatch && availabilityMatch;
+  });
+
+  // Custom empty state messages
+  const getEmptyMessage = () => {
+    if (selectedAvailability === 'available' && filteredBooks?.length === 0) {
+      return "All books matching these filters are currently borrowed";
+    }
+    if (selectedAvailability === 'borrowed' && filteredBooks?.length === 0) {
+      return "All books matching these filters are currently available";
+    }
+    return "No books found matching the selected filters";
+  };
 
   return (
     <div className="animate-fade-in">
@@ -182,11 +223,12 @@ const BooksPage = () => {
       </div>
       
       <DataTable
-        data={books || []}
+        data={filteredBooks || []}
         columns={columns}
         searchable={true}
         filterComponent={filterComponent}
         loading={isLoading}
+        emptyMessage={getEmptyMessage()}
         actions={(row) => (
           <>
             <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
