@@ -238,6 +238,28 @@ class Storage {
   // Membership Applications
   async createMembershipApplication(application: MembershipApplicationSchema) {
     const result = await this.db.insert(membershipApplications).values(application);
+    
+    // Create a borrower record from the application
+    const oneYearFromNow = new Date();
+    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+    
+    await this.createBorrower({
+      name: application.name,
+      phone: application.phone,
+      category: application.stage === 'librarian' ? 'graduate' : application.stage,
+      joinedDate: new Date().toISOString().split('T')[0],
+      expiryDate: oneYearFromNow.toISOString().split('T')[0],
+      email: application.email,
+      address: application.address,
+      churchName: application.churchName,
+      fatherOfConfession: application.fatherOfConfession,
+      studies: application.studies,
+      job: application.job,
+      hobbies: application.hobbies,
+      favoriteBooks: application.favoriteBooks,
+      additionalPhone: application.additionalPhone
+    });
+
     return {
       id: Number(result.lastInsertRowid),
       ...application
