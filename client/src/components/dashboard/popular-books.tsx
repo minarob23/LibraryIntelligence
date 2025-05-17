@@ -224,11 +224,6 @@ const PopularBooks = () => {
                           </div>
                         </div>
                       )}
-                      {filter !== 'borrowed' && (
-                        <div className="text-sm font-medium text-purple-600/80 dark:text-purple-400/80 mt-2">
-                          Borrowed {book.timesBorrowed || 0} times
-                        </div>
-                      )}
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
                           <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
