@@ -327,26 +327,35 @@ export class DatabaseStorage implements IStorage {
     }, {} as Record<string, number>);
   }
   async resetDatabase(): Promise<void> {
-    // Delete all records from library database
-    await db.delete(books);
-    await db.delete(researchPapers);
-    await db.delete(librarians);
-    await db.delete(borrowers);
-    await db.delete(borrowings);
+    try {
+      // Close existing database connections
+      db.close();
+      dashboardDb.close();
 
-    // Delete all records from dashboard database
-    await dashboardDb.delete(schema.popularBooks);
-    await dashboardDb.delete(schema.topBorrowers);
-    await dashboardDb.delete(schema.borrowerDistribution);
-    await dashboardDb.delete(schema.mostBorrowedBooks);
+      // Delete all records from library database
+      await db.delete(books);
+      await db.delete(researchPapers);
+      await db.delete(librarians);
+      await db.delete(borrowers);
+      await db.delete(borrowings);
 
-    // Delete the database files
-    fs.unlinkSync('library.db');
-    fs.unlinkSync('dashboard.db');
+      // Delete all records from dashboard database
+      await dashboardDb.delete(schema.popularBooks);
+      await dashboardDb.delete(schema.topBorrowers);
+      await dashboardDb.delete(schema.borrowerDistribution);
+      await dashboardDb.delete(schema.mostBorrowedBooks);
 
-    // Recreate both databases
-    const sqlite = new Database('library.db');
-    const dashboardSqlite = new Database('dashboard.db');
+      // Delete the database files if they exist
+      if (fs.existsSync('library.db')) {
+        fs.unlinkSync('library.db');
+      }
+      if (fs.existsSync('dashboard.db')) {
+        fs.unlinkSync('dashboard.db');
+      }
+
+      // Recreate both databases with fresh connections
+      const sqlite = new Database('library.db');
+      const dashboardSqlite = new Database('dashboard.db');
 
     // Recreate library tables
     sqlite.exec(`

@@ -653,9 +653,9 @@ const Settings = () => {
                     
                   </div>
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
-                    <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop files or click to upload</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">Supported formats: .xlsx, .csv, .json</p>
+                    <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Drag & drop files or click to upload</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mb-6">Supported formats: .xlsx, .csv, .json</p>
 
                     <div className="flex flex-col space-y-4">
                       <input
