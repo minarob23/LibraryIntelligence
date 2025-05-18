@@ -1,10 +1,10 @@
-
 import { Switch, Route, Redirect } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/context/app-context";
+import { CompactViewProvider } from './lib/context/compact-view-context';
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
 import Books from "@/pages/books";
@@ -136,10 +136,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">
+      <CompactViewProvider>
         <TooltipProvider>
           <Toaster />
           <Router />
         </TooltipProvider>
+        </CompactViewProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

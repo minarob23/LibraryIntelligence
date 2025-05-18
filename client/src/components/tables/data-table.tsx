@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useCompactView } from '@/lib/context/compact-view-context';
 import { 
   Table, 
   TableBody, 
@@ -45,13 +46,8 @@ const DataTable = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isCompactView, setIsCompactView] = useState(false);
+  const { isCompactView } = useCompactView();
   const itemsPerPage = pagination?.itemsPerPage || 10;
-
-  useEffect(() => {
-    const compactView = localStorage.getItem('isCompactView') === 'true';
-    setIsCompactView(compactView);
-  }, []);
 
   // Filter data by search term
   const filteredData = searchTerm.trim() !== '' 

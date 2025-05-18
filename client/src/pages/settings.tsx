@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useCompactView } from '@/lib/context/compact-view-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -28,7 +29,7 @@ const Settings = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
-  const [isCompactView, setIsCompactView] = useState(false);
+  const { isCompactView, setIsCompactView } = useCompactView();
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [expiryReminders, setExpiryReminders] = useState(true);
   const [overdueItems, setOverdueItems] = useState(true);
