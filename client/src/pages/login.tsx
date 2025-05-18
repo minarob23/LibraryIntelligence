@@ -20,7 +20,7 @@ const Login = ({ onLogin }: LoginProps) => {
 
   const { toast } = useToast();
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic email validation
