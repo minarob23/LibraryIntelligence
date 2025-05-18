@@ -14,10 +14,12 @@ const TopBorrowers = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
 
-    if (userBorrowings.length === 0) return 0;
+    if (userBorrowings.length === 0) return -150;
 
     const borrowCount = userBorrowings.length;
-    const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
+    const lastBorrowDate = userBorrowings.length > 0 
+      ? new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())))
+      : null;
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
 
     return Number(((borrowCount * 10 + (100 - daysSinceLastBorrow)) / 40).toFixed(1));

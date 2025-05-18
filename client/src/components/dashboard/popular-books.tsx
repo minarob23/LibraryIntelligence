@@ -26,7 +26,7 @@ const PopularBooks = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return 0;
+    if (bookBorrowings.length === 0) return -50;
 
     const timesBorrowed = bookBorrowings.length;
 
