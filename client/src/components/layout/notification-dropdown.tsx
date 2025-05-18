@@ -70,7 +70,6 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
         type: daysOverdue > 30 ? 'error' : daysOverdue > 14 ? 'warning' : 'info'
       });
     } else if (dueDate > today && daysOverdue > -7) {
-      // Alert for items due within the next 7 days
       notifications.push({
         id: Date.now() + Math.random(),
         message: `Due soon: ${borrowing.bookTitle || 'Item'} (${Math.abs(daysOverdue)} days remaining)`,
@@ -149,17 +148,13 @@ const NotificationDropdown = () => {
                         </div>
                       </div>
                       {!notification.read && (
-                        <div className="ml-2 h-2 w-2 bg-primary-500 rounded-full"></div>
+                        <div className="ml-2 h-2 w-2 bg-primary-500 rounded-full" />
                       )}
                     </div>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>
             ) : (
-              <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                No notifications
-              </div>
-            )}
               <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                 No notifications
               </div>
@@ -231,15 +226,11 @@ const NotificationDropdown = () => {
                           </div>
                         </div>
                         {!notification.read && (
-                          <div className="ml-2 h-2 w-2 bg-primary-500 rounded-full"></div>
+                          <div className="ml-2 h-2 w-2 bg-primary-500 rounded-full" />
                         )}
                       </div>
                     </div>
                   ))
-                ) : (
-                  <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                    No notifications
-                  </div>
                 )}
               </div>
             </DialogContent>
