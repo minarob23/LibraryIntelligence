@@ -40,6 +40,7 @@ const borrowingSchema = insertBorrowingSchema.extend({
   status: z.enum(['borrowed', 'returned', 'overdue'], {
     required_error: 'Status is required',
   }),
+  initialRating: z.number().min(0).max(10).optional(),
 });
 
 // We need to add a custom schema validator to ensure either bookId or researchId is provided
@@ -51,7 +52,7 @@ const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
       path: ['itemType'],
     });
   }
-  
+
   if (data.bookId && data.researchId) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -76,7 +77,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [itemType, setItemType] = useState<'book' | 'research'>(borrowing?.bookId ? 'book' : 'research');
   const isEditing = !!borrowing?.id;
-  
+
   // Set default dates if not provided
   const today = new Date().toISOString().split('T')[0];
   const defaultDueDate = new Date();
@@ -87,15 +88,15 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
-  
+
   const { data: librarians } = useQuery({ 
     queryKey: ['/api/librarians'],
   });
-  
+
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
   });
-  
+
   const { data: researchPapers } = useQuery({ 
     queryKey: ['/api/research'],
   });
@@ -110,7 +111,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
       status: borrowing?.status || 'borrowed',
     },
   });
-  
+
   // Update form values when item type changes
   useEffect(() => {
     if (itemType === 'book') {
@@ -123,10 +124,10 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const onSubmit = async (data: BorrowFormValues) => {
     try {
       setIsSubmitting(true);
-      
+
       // Remove the itemType field before sending to the API
       const { itemType: _, ...submitData } = data;
-      
+
       if (isEditing && borrowing) {
         await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, submitData);
         toast({
@@ -140,9 +141,9 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
           description: 'Borrowing record added successfully',
         });
       }
-      
+
       queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      
+
       if (onSuccess) {
         onSuccess();
       }
@@ -157,7 +158,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <Card>
       <CardHeader>
@@ -194,7 +195,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="librarianId"
@@ -222,7 +223,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="itemType"
@@ -252,7 +253,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               {itemType === 'book' ? (
                 <FormField
                   control={form.control}
@@ -310,7 +311,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   )}
                 />
               )}
-              
+
               <FormField
                 control={form.control}
                 name="borrowDate"
@@ -324,7 +325,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="dueDate"
@@ -338,7 +339,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="status"
@@ -361,14 +362,27 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+               <FormField
+                control={form.control}
+                name="initialRating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Initial Interest Rating (0-10)</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {form.formState.errors.itemType && (
                 <div className="col-span-2 text-destructive text-sm">
                   {form.formState.errors.itemType.message}
                 </div>
               )}
             </div>
-            
+
             <div className="flex justify-end space-x-2 pt-4">
               {onCancel && (
                 <Button type="button" variant="outline" onClick={onCancel}>

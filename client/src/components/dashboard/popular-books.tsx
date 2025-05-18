@@ -27,28 +27,47 @@ const PopularBooks = () => {
     
     if (!bookBorrowings.length) return 0;
 
-    // Weights for different factors
-    const BORROW_WEIGHT = 0.4;
-    const RECENCY_WEIGHT = 0.4;
-    const RATING_WEIGHT = 0.2;
+    // New weights for enhanced scoring
+    const INITIAL_INTEREST_WEIGHT = 0.3;
+    const ENGAGEMENT_WEIGHT = 0.3;
+    const FINAL_RATING_WEIGHT = 0.2;
+    const RECENCY_WEIGHT = 0.2;
 
-    // Calculate borrow score (0-1)
-    const maxBorrows = 10; // Cap at 10 borrows
-    const borrowScore = Math.min(bookBorrowings.length / maxBorrows, 1);
+    // Calculate initial interest score
+    const initialRatings = bookBorrowings.map(b => 
+      parseFloat(localStorage.getItem(`borrowing_${b.id}_initial`) || b.initialRating?.toString() || '0')
+    );
+    const avgInitialRating = initialRatings.reduce((a, b) => a + b, 0) / initialRatings.length;
+    const initialInterestScore = avgInitialRating / 10;
 
-    // Calculate recency score (0-1)
+    // Calculate engagement score based on rating changes
+    const engagementScores = bookBorrowings
+      .filter(b => b.rating)
+      .map(b => {
+        const initial = parseFloat(localStorage.getItem(`borrowing_${b.id}_initial`) || b.initialRating?.toString() || '0');
+        const change = Math.abs(b.rating - initial);
+        return Math.min((b.rating + change) / 20, 1); // Normalize to 0-1
+      });
+    const avgEngagement = engagementScores.length ? 
+      engagementScores.reduce((a, b) => a + b, 0) / engagementScores.length : 0;
+
+    // Calculate final rating score
+    const finalRatings = bookBorrowings.filter(b => b.rating).map(b => b.rating / 10);
+    const finalRatingScore = finalRatings.length ? 
+      finalRatings.reduce((a, b) => a + b, 0) / finalRatings.length : 0;
+
+    // Calculate recency score
     const lastBorrowDate = new Date(Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-    const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // 30 days baseline
+    const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30));
 
-    // Calculate rating score (0-1)
-    const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating);
-    const ratingScore = ratings.length ? (Math.min(ratings.reduce((a, b) => a + b, 0) / ratings.length, 5) / 5) : 0.5;
-
-    // Calculate final score (0-10)
-    const score = ((borrowScore * BORROW_WEIGHT) + 
-                  (recencyScore * RECENCY_WEIGHT) + 
-                  (ratingScore * RATING_WEIGHT)) * 10;
+    // Calculate final popularity score (0-10)
+    const score = (
+      (initialInterestScore * INITIAL_INTEREST_WEIGHT) +
+      (avgEngagement * ENGAGEMENT_WEIGHT) +
+      (finalRatingScore * FINAL_RATING_WEIGHT) +
+      (recencyScore * RECENCY_WEIGHT)
+    ) * 10;
 
     return Number(score.toFixed(1));
   };

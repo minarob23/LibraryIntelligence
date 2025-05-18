@@ -305,15 +305,25 @@ const BorrowingPage = () => {
                   </div>
                   <DialogFooter>
                     <Button onClick={() => {
+                      const initialRating = parseFloat(localStorage.getItem(`borrowing_${row.id}_initial`) || row.initialRating?.toString() || '0');
                       if (!row.rating) {
                         toast({
-                          title: "Error",
-                          description: "Please rate the book before returning",
+                          title: "Error", 
+                          description: "Please provide a return rating",
                           variant: "destructive"
                         });
                         return;
                       }
-                      handleReturn({...row, rating: row.rating});
+                      
+                      // Calculate engagement score based on rating change
+                      const ratingChange = Math.abs(row.rating - initialRating);
+                      const normalizedScore = ((row.rating + initialRating) / 2) + (ratingChange / 2);
+                      
+                      handleReturn({
+                        ...row,
+                        rating: row.rating,
+                        engagementScore: normalizedScore
+                      });
                     }}>
                       Submit & Return
                     </Button>
