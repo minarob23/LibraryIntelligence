@@ -102,31 +102,14 @@ const MembershipForm = () => {
   }
   
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Library Hours</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {Object.entries(JSON.parse(localStorage.getItem('libraryHours') || '{}')).map(([day, hours]: [string, any]) => (
-              <div key={day} className="flex justify-between">
-                <span className="capitalize">{day}</span>
-                <span>{hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Membership Registration</CardTitle>
-          <CardDescription>
-            Join our library community by filling out the form below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <Card>
+      <CardHeader>
+        <CardTitle>Membership Registration</CardTitle>
+        <CardDescription>
+          Join our library community by filling out the form below.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Personal Information */}
@@ -388,7 +371,6 @@ const MembershipForm = () => {
         </Form>
       </CardContent>
     </Card>
-    </div>
   );
 };
 
