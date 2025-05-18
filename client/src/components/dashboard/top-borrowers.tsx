@@ -10,47 +10,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
-  const calculateEngagementScore = (borrowerId: number): number => {
-    try {
-      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
-      
-      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-      if (!userBorrowings.length) return 0;
-
-      // Weights for different factors
-      const FREQUENCY_WEIGHT = 0.35;
-      const RECENCY_WEIGHT = 0.35;
-      const RATING_WEIGHT = 0.3;
-
-      // Calculate frequency score (0-1)
-      const daysSinceFirstBorrow = Math.floor(
-        (new Date().getTime() - new Date(Math.min(...userBorrowings.map(b => new Date(b.borrowDate).getTime()))).getTime()) 
-        / (1000 * 3600 * 24)
-      ) + 1;
-      const borrowsPerDay = userBorrowings.length / daysSinceFirstBorrow;
-      const frequencyScore = Math.min(borrowsPerDay * 7, 1); // Cap at ~1 borrow per week
-
-      // Calculate recency score (0-1)
-      const lastBorrowDate = new Date(Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())));
-      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-      const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // 30 days baseline
-
-      // Calculate rating activity score (0-1)
-      const ratedBorrowings = userBorrowings.filter(b => b.rating);
-      const ratingScore = ratedBorrowings.length / userBorrowings.length;
-
-      // Calculate final score (0-10)
-      const score = ((frequencyScore * FREQUENCY_WEIGHT) + 
-                    (recencyScore * RECENCY_WEIGHT) + 
-                    (ratingScore * RATING_WEIGHT)) * 10;
-      
-      return Number(score.toFixed(1));
-    } catch (error) {
-      console.error('Error calculating engagement score:', error);
-      return 0;
-    }
-  };
+  // No need for calculation functions as they're now handled in the backend
 
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],

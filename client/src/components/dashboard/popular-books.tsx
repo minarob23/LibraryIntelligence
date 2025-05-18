@@ -21,45 +21,7 @@ const PopularBooks = () => {
     queryKey: ['/api/borrowings'],
   });
 
-  const calculatePopularityScore = (bookId: number) => {
-    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
-    
-    if (!bookBorrowings.length) return 0;
-
-    // Weights for different factors
-    const BORROW_WEIGHT = 0.4;
-    const RECENCY_WEIGHT = 0.4;
-    const RATING_WEIGHT = 0.2;
-
-    // Calculate borrow score (0-1)
-    const maxBorrows = 10; // Cap at 10 borrows
-    const borrowScore = Math.min(bookBorrowings.length / maxBorrows, 1);
-
-    // Calculate recency score (0-1)
-    const lastBorrowDate = new Date(Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime())));
-    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-    const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // 30 days baseline
-
-    // Calculate rating score (0-1)
-    const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating);
-    const ratingScore = ratings.length ? (Math.min(ratings.reduce((a, b) => a + b, 0) / ratings.length, 5) / 5) : 0.5;
-
-    // Calculate final score (0-10)
-    const score = ((borrowScore * BORROW_WEIGHT) + 
-                  (recencyScore * RECENCY_WEIGHT) + 
-                  (ratingScore * RATING_WEIGHT)) * 10;
-
-    return Number(score.toFixed(1));
-  };
-
-  const getAverageRating = (bookId: number) => {
-    if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
-    if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
-    return (totalRating / bookBorrowings.length).toFixed(1);
-  };
+  // No need for calculation functions as they're now handled in the backend
 
   const sortBooks = (books: any[]) => {
     if (!books) return [];

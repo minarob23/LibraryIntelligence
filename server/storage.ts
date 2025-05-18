@@ -203,18 +203,80 @@ class Storage {
   async getPopularBooks(limit: number = 4) {
     const result = await this.db.select({
       bookId: borrowings.bookId,
-      timesBorrowed: sql<number>`count(*) as timesBorrowed`
+      borrowCount: sql<number>`COUNT(*) as borrowCount`,
+      avgRating: sql<number>`AVG(CAST(rating as FLOAT)) as avgRating`,
+      lastBorrowed: sql<string>`MAX(borrowDate) as lastBorrowed`,
+      returnRate: sql<number>`SUM(CASE WHEN returnDate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as returnRate`
     })
     .from(borrowings)
     .where(sql`${borrowings.bookId} IS NOT NULL`)
-    .groupBy(sql`${borrowings.bookId}`)
-    .orderBy(sql`timesBorrowed DESC`)
-    .limit(limit);
+    .groupBy(sql`${borrowings.bookId}`);
 
-    return Promise.all(result.map(async row => {
+    const booksWithScores = await Promise.all(result.map(async (row) => {
       const book = await this.getBook(row.bookId!);
-      return { ...book, timesBorrowed: Number(row.timesBorrowed) };
+      
+      // Calculate popularity score components
+      const borrowScore = Math.min(row.borrowCount / 10, 1) * 4; // Max 4 points
+      const ratingScore = (row.avgRating || 0) / 2; // Max 5 points
+      const daysSinceLastBorrow = Math.floor((Date.now() - new Date(row.lastBorrowed).getTime()) / (1000 * 3600 * 24));
+      const recencyScore = Math.max(0, 1 - daysSinceLastBorrow / 30) * 1; // Max 1 point
+
+      // Calculate final popularity score
+      const popularityScore = Number((borrowScore + ratingScore + recencyScore).toFixed(1));
+      
+      return { 
+        ...book, 
+        popularityScore,
+        borrowCount: row.borrowCount,
+        avgRating: row.avgRating ? Number(row.avgRating.toFixed(1)) : null,
+        returnRate: Number(row.returnRate.toFixed(1))
+      };
     }));
+
+    return booksWithScores
+      .sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0))
+      .slice(0, limit);
+  }
+
+  async getTopBorrowers(limit: number = 4) {
+    const result = await this.db.select({
+      borrowerId: borrowings.borrowerId,
+      borrowCount: sql<number>`COUNT(*) as borrowCount`,
+      avgRating: sql<number>`AVG(CAST(rating as FLOAT)) as avgRating`,
+      lastBorrowed: sql<string>`MAX(borrowDate) as lastBorrowed`,
+      firstBorrowed: sql<string>`MIN(borrowDate) as firstBorrowed`,
+      returnRate: sql<number>`SUM(CASE WHEN returnDate IS NOT NULL THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as returnRate`
+    })
+    .from(borrowings)
+    .groupBy(sql`${borrowings.borrowerId}`);
+
+    const borrowersWithScores = await Promise.all(result.map(async (row) => {
+      const borrower = await this.getBorrower(row.borrowerId!);
+      
+      // Calculate engagement score components
+      const daysSinceFirstBorrow = Math.floor((Date.now() - new Date(row.firstBorrowed).getTime()) / (1000 * 3600 * 24)) + 1;
+      const frequencyScore = Math.min(row.borrowCount / daysSinceFirstBorrow * 7, 1) * 4; // Max 4 points
+      
+      const daysSinceLastBorrow = Math.floor((Date.now() - new Date(row.lastBorrowed).getTime()) / (1000 * 3600 * 24));
+      const recencyScore = Math.max(0, 1 - daysSinceLastBorrow / 30) * 4; // Max 4 points
+      
+      const returnScore = (row.returnRate / 100) * 2; // Max 2 points
+
+      // Calculate final engagement score
+      const engagementScore = Number((frequencyScore + recencyScore + returnScore).toFixed(1));
+      
+      return { 
+        ...borrower, 
+        engagementScore,
+        borrowCount: row.borrowCount,
+        avgRating: row.avgRating ? Number(row.avgRating.toFixed(1)) : null,
+        returnRate: Number(row.returnRate.toFixed(1))
+      };
+    }));
+
+    return borrowersWithScores
+      .sort((a, b) => (b.engagementScore || 0) - (a.engagementScore || 0))
+      .slice(0, limit);
   }
 
   async getTopBorrowers(limit: number = 5) {
