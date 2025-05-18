@@ -92,16 +92,18 @@ const BorrowersPage = () => {
   const handleDelete = async (id: number) => {
     try {
       await apiRequest('DELETE', `/api/borrowers/${id}`);
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
       toast({
         title: 'Success',
         description: 'Borrower deleted successfully',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting borrower:', error);
       toast({
         title: 'Error',
-        description: 'Failed to delete borrower. Please try again.',
+        description: error?.message || 'Failed to delete borrower. Please try again.',
         variant: 'destructive',
       });
     }

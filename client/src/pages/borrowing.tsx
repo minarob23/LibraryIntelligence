@@ -59,16 +59,18 @@ const BorrowingPage = () => {
   const handleDelete = async (id: number) => {
     try {
       await apiRequest('DELETE', `/api/borrowings/${id}`);
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
       toast({
         title: 'Success',
         description: 'Borrowing record deleted successfully',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting borrowing record:', error);
       toast({
         title: 'Error',
-        description: 'Failed to delete borrowing record. Please try again.',
+        description: error?.message || 'Failed to delete borrowing record. Please try again.',
         variant: 'destructive',
       });
     }

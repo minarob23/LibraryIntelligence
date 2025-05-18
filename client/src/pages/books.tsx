@@ -52,16 +52,18 @@ const BooksPage = () => {
   const handleDelete = async (id: number) => {
     try {
       await apiRequest('DELETE', `/api/books/${id}`);
-      queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
       toast({
         title: 'Success',
         description: 'Book deleted successfully',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting book:', error);
       toast({
         title: 'Error',
-        description: 'Failed to delete book. Please try again.',
+        description: error?.message || 'Failed to delete book. Please try again.',
         variant: 'destructive',
       });
     }
