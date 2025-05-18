@@ -144,23 +144,40 @@ const Dashboard = () => {
 
       {/* Categories & Growth */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <ChartContainer
-          title="Borrower Categories"
-          type="pie"
-          data={formatBorrowerDistribution()}
-          nameKey="name"
-          dataKey="value"
-          colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
-          height={400}
-        />
+        {!borrowerDistribution?.length ? (
+          <Card className="p-6">
+            <CardTitle>Borrower Categories</CardTitle>
+            <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">
+              No category data available
+            </div>
+          </Card>
+        ) : (
+          <ChartContainer
+            title="Borrower Categories"
+            type="pie"
+            data={formatBorrowerDistribution()}
+            nameKey="name"
+            dataKey="value"
+            colors={['#22C55E', '#3B82F6', '#F59E0B', '#A855F7', '#EC4899']}
+            height={400}
+          />
+        )}
 
-        <ChartContainer
-          title="Member's Growth"
-          type="bar"
-          data={formatBorrowerGrowth()}
-          nameKey="month"
-          categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
-          colors={[
+        {!borrowers?.length ? (
+          <Card className="p-6">
+            <CardTitle>Member's Growth</CardTitle>
+            <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">
+              No growth data available
+            </div>
+          </Card>
+        ) : (
+          <ChartContainer
+            title="Member's Growth"
+            type="bar"
+            data={formatBorrowerGrowth()}
+            nameKey="month"
+            categories={['primary', 'middle', 'secondary', 'university', 'graduate']}
+            colors={[
             '#22C55E',  // Green for Primary
             '#3B82F6',  // Blue for Middle
             '#F59E0B',  // Amber for Secondary

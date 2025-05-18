@@ -139,6 +139,12 @@ const TopBorrowers = () => {
                   <TableCell><Skeleton className="h-6 w-16 rounded-full" /></TableCell>
                 </TableRow>
               ))
+            ) : !borrowers?.length ? (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  No borrowers data available
+                </TableCell>
+              </TableRow>
             ) : (
               borrowers?.map((borrower: any) => {
                 const daysUntilExpiry = getDaysUntilExpiry(borrower.expiryDate);

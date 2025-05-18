@@ -142,6 +142,10 @@ const PopularBooks = () => {
                 </div>
               </div>
             ))
+          ) : !sortedBooks?.length ? (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              No books data available
+            </div>
           ) : (
             sortedBooks?.map((book: any) => (
               <div key={book.id} className="flex space-x-3">

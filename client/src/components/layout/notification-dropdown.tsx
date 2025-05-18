@@ -198,7 +198,11 @@ const NotificationDropdown = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="max-h-[60vh] overflow-y-auto">
-                {notifications.length > 0 ? (
+                {notifications.length === 0 ? (
+                  <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+                    No notifications available
+                  </div>
+                ) : (
                   notifications.map((notification) => (
                     <div
                       key={notification.id}

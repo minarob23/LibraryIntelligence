@@ -41,11 +41,20 @@ const BorrowingTrends = () => {
     return monthlyData;
   };
 
-  return (
+  const monthlyData = getMonthlyData();
+  
+  return !borrowings?.length ? (
+    <Card className="p-6">
+      <CardTitle>Borrowing Trends</CardTitle>
+      <div className="flex items-center justify-center h-[350px] text-gray-500 dark:text-gray-400">
+        No borrowing data available
+      </div>
+    </Card>
+  ) : (
     <ChartContainer
       title="Borrowing Trends"
       type="line"
-      data={getMonthlyData()}
+      data={monthlyData}
       nameKey="name"
       categories={['borrowed']}
       colors={['#3B82F6']}
