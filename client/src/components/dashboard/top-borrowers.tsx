@@ -68,30 +68,7 @@ const TopBorrowers = () => {
       return Number(Math.min(totalScore, 10).toFixed(1));
       
       // Calculate activity frequency
-      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
-      const lastActivityDate = new Date(Math.max(...borrowDates));
-      const daysSinceLastActivity = Math.floor((new Date().getTime() - lastActivityDate.getTime()) / (1000 * 3600 * 24));
-
-      // Store engagement data in localStorage
-      const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
-      engagementData[borrowerId] = {
-        totalBorrowings,
-        activeBorrowings,
-        ratedBorrowings,
-        onTimeBorrowings,
-        lastActivityDate: lastActivityDate.toISOString(),
-        updated: new Date().toISOString()
-      };
-      localStorage.setItem('borrowerEngagement', JSON.stringify(engagementData));
-
-      // Calculate weighted score components
-      const activityScore = Math.min(totalBorrowings / 5, 1) * 3; // Max 3 points for 5+ borrows
-      const timelinessScore = returnedBorrowings.length ? (onTimeBorrowings / returnedBorrowings.length) * 2.5 : 0; // Max 2.5 points
-      const participationScore = Math.min((ratedBorrowings / totalBorrowings) * 2, 2); // Max 2 points
-      const recencyScore = Math.max(0, 2.5 - (daysSinceLastActivity / 30) * 0.5); // Max 2.5 points
-
       // Calculate total score
-      const totalScore = activityScore + timelinessScore + participationScore + recencyScore;
       return Number(Math.min(totalScore, 10).toFixed(1));
     } catch (error) {
       console.error('Error calculating engagement score:', error);
