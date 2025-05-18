@@ -69,11 +69,9 @@ const TopBorrowers = () => {
       };
       localStorage.setItem('borrowerEngagement', JSON.stringify(engagementData));
       
-      return Number(Math.min(totalScore, 10).toFixed(1));
-      
-      // Calculate activity frequency
-      // Calculate total score
-      return Number(Math.min(totalScore, 10).toFixed(1));
+      const finalScore = Math.min(totalScore, 10);
+      // Return score with 2 decimal places
+      return Number(finalScore.toFixed(2));
     } catch (error) {
       console.error('Error calculating engagement score:', error);
       return 0;
