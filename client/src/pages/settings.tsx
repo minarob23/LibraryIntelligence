@@ -78,7 +78,7 @@ const Settings = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = '.json';
-    
+
     fileInput.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
@@ -86,12 +86,12 @@ const Settings = () => {
       try {
         const content = await file.text();
         const data = JSON.parse(content);
-        
+
         // Make API call based on data type
         await apiRequest('POST', `/api/${dataType}`, data);
-        
+
         queryClient.invalidateQueries({ queryKey: [`/api/${dataType}`] });
-        
+
         toast({
           title: "Import successful",
           description: `${dataType} data has been imported successfully.`
@@ -651,7 +651,7 @@ const Settings = () => {
                       </Card>
                     </div>
                   </div>
-                    
+
                   </div>
                   <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
                     <Upload className="h-12 w-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
@@ -823,19 +823,18 @@ const Settings = () => {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button 
-                      variant="destructive" 
-                      size="default"
-                      className="flex items-center"
-                    >
-                      Reset Database
-                    </Button>
+                        variant="destructive" 
+                        size="default"
+                        className="flex items-center"
+                      >
+                        Reset All Systems
+                      </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete all data
-                        and create a new empty database.
+                        This action cannot be undone. This will reset all systems and databases to become clear.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
