@@ -52,8 +52,12 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  // Setup database backup
-  setupBackup();
+  // Setup database backup with frequency from settings
+  const backupConfig = {
+    frequency: 'daily' as const, // Can be 'daily', 'weekly', or 'monthly'
+    enabled: true
+  };
+  setupBackup(backupConfig);
 
   if (app.get("env") === "development") {
     await setupVite(app, server);

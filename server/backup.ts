@@ -3,8 +3,24 @@ import fs from 'fs';
 import path from 'path';
 import { log } from './vite';
 
-export function setupBackup() {
-  const backupInterval = 60000; // 1 minute (60 * 1000 ms)
+interface BackupConfig {
+  frequency: 'daily' | 'weekly' | 'monthly';
+  enabled: boolean;
+}
+
+export function setupBackup(config: BackupConfig = { frequency: 'daily', enabled: true }) {
+  if (!config.enabled) {
+    return;
+  }
+
+  // Calculate interval based on frequency
+  const intervals = {
+    daily: 24 * 60 * 60 * 1000, // 24 hours
+    weekly: 7 * 24 * 60 * 60 * 1000, // 7 days
+    monthly: 30 * 24 * 60 * 60 * 1000 // 30 days (approximate)
+  };
+
+  const backupInterval = intervals[config.frequency];
   
   const performBackup = () => {
     try {
@@ -16,7 +32,6 @@ export function setupBackup() {
         fs.mkdirSync(backupDir);
       }
       
-      // Copy the database file
       // Backup main library database
       fs.copyFileSync(
         path.join(process.cwd(), 'library.db'),
@@ -30,13 +45,16 @@ export function setupBackup() {
       );
       
       // Keep only last 24 backups
+      const maxBackups = config.frequency === 'daily' ? 24 : config.frequency === 'weekly' ? 12 : 6;
       const backups = fs.readdirSync(backupDir);
-      if (backups.length > 24) {
-        const oldestBackup = backups.sort()[0];
-        fs.unlinkSync(path.join(backupDir, oldestBackup));
+      if (backups.length > maxBackups) {
+        const oldestBackups = backups.sort().slice(0, backups.length - maxBackups);
+        oldestBackups.forEach(backup => {
+          fs.unlinkSync(path.join(backupDir, backup));
+        });
       }
       
-      log('Successfully created backup copies of library and dashboard databases');
+      log(`Successfully created backup copies of library and dashboard databases (${config.frequency} backup)`);
     } catch (error) {
       log('Database backup failed: ' + error);
     }
