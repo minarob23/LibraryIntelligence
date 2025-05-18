@@ -11,6 +11,10 @@ const TopBorrowers = () => {
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState('engagement');
 
+  const { data: borrowings } = useQuery({
+    queryKey: ['/api/borrowings'],
+  });
+
   const calculateEngagementScore = (borrowerId: number): number => {
     try {
       // Get all borrowings
