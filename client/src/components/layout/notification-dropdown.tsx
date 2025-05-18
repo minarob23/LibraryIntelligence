@@ -60,12 +60,23 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
   // Check overdue items
   borrowings?.forEach(borrowing => {
     const dueDate = new Date(borrowing.dueDate);
+    const daysOverdue = Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
     if (dueDate < today && borrowing.status !== 'returned') {
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `Overdue: ${borrowing.bookTitle || 'Item'} (${Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))} days)`,
+        message: `Overdue: ${borrowing.bookTitle || 'Item'} (${daysOverdue} days)`,
         time: 'Today',
         read: false,
+        type: daysOverdue > 30 ? 'error' : daysOverdue > 14 ? 'warning' : 'info'
+      });
+    } else if (dueDate > today && daysOverdue > -7) {
+      // Alert for items due within the next 7 days
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `Due soon: ${borrowing.bookTitle || 'Item'} (${Math.abs(daysOverdue)} days remaining)`,
+        time: 'Today',
+        read: false,
+        type: 'info'
       });
     }
   });
