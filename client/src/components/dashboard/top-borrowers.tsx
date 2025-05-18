@@ -18,19 +18,34 @@ const TopBorrowers = () => {
       const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
       if (!userBorrowings.length) return 0;
 
-      // Calculate total books borrowed
-      const totalBooksBorrowed = userBorrowings.length;
+      // Weights for different factors
+      const FREQUENCY_WEIGHT = 0.35;
+      const RECENCY_WEIGHT = 0.35;
+      const RATING_WEIGHT = 0.3;
 
-      // Get last borrow date
-      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
-      const lastBorrowDate = new Date(Math.max(...borrowDates));
+      // Calculate frequency score (0-1)
+      const daysSinceFirstBorrow = Math.floor(
+        (new Date().getTime() - new Date(Math.min(...userBorrowings.map(b => new Date(b.borrowDate).getTime()))).getTime()) 
+        / (1000 * 3600 * 24)
+      ) + 1;
+      const borrowsPerDay = userBorrowings.length / daysSinceFirstBorrow;
+      const frequencyScore = Math.min(borrowsPerDay * 7, 1); // Cap at ~1 borrow per week
+
+      // Calculate recency score (0-1)
+      const lastBorrowDate = new Date(Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())));
       const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+      const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // 30 days baseline
 
-      // Calculate engagement score using the formula:
-      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
-      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
+      // Calculate rating activity score (0-1)
+      const ratedBorrowings = userBorrowings.filter(b => b.rating);
+      const ratingScore = ratedBorrowings.length / userBorrowings.length;
+
+      // Calculate final score (0-10)
+      const score = ((frequencyScore * FREQUENCY_WEIGHT) + 
+                    (recencyScore * RECENCY_WEIGHT) + 
+                    (ratingScore * RATING_WEIGHT)) * 10;
       
-      return Math.max(0, Number(score.toFixed(1)));
+      return Number(score.toFixed(1));
     } catch (error) {
       console.error('Error calculating engagement score:', error);
       return 0;
