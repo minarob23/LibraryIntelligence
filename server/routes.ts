@@ -411,12 +411,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/reset-database', async (req, res) => {
+  app.post('/api/reset-ui', async (req, res) => {
     try {
-      await storage.resetDatabase();
-      res.json({ message: 'All systems and databases have been reset successfully' });
+      // Only clear UI state, keep databases
+      res.json({ message: 'UI has been reset successfully' });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to reset database' });
+      res.status(500).json({ error: 'Failed to reset UI' });
+    }
+  });
+
+  app.post('/api/restore-database', async (req, res) => {
+    try {
+      // Restore data from backup
+      await storage.restoreDatabase();
+      res.json({ message: 'Database restored successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to restore database' });
     }
   });
 

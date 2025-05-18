@@ -42,7 +42,22 @@ const Login = ({ onLogin }: LoginProps) => {
         duration: 3000
       });
       onLogin();
-      setTimeout(() => setLocation('/dashboard'), 1000);
+      const restore = await fetch('/api/restore-database', { method: 'POST' });
+      if (restore.ok) {
+        toast({
+          title: "Data Restored",
+          description: "System data has been restored successfully",
+          className: "bg-green-500 text-white",
+          duration: 3000
+        });
+        setTimeout(() => setLocation('/dashboard'), 1500);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to restore system data"
+        });
+      }
     } else {
       toast({
         variant: "destructive",

@@ -842,14 +842,16 @@ const Settings = () => {
                       <AlertDialogAction
                         onClick={async () => {
                           try {
-                            await fetch('/api/reset-database', {
+                            await fetch('/api/reset-ui', {
                               method: 'POST'
                             });
                             toast({
-                              title: "Database Reset",
-                              description: "Database has been reset successfully.",
+                              title: "System Reset",
+                              description: "Interface has been reset. Redirecting to login...",
                             });
-                            window.location.reload();
+                            setTimeout(() => {
+                              window.location.href = '/login';
+                            }, 1500);
                           } catch (error) {
                             toast({
                               title: "Error",
@@ -860,7 +862,7 @@ const Settings = () => {
                         }}
                         className="bg-red-500 hover:bg-red-600"
                       >
-                        Yes, Reset Database
+                        Yes, Reset all Systems
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

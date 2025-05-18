@@ -326,6 +326,23 @@ class Storage {
       this.db = drizzle(newLibraryDb);
       this.dashboardDb = drizzle(newDashboardDb);
     }
+  async restoreDatabase() {
+    try {
+      // Get latest backup files
+      const backupDir = 'backups';
+      const backupFiles = fs.readdirSync(backupDir)
+        .filter(file => file.startsWith('library-'))
+        .sort()
+        .reverse();
+
+      if (backupFiles.length > 0) {
+        const latestBackup = backupFiles[0];
+        fs.copyFileSync(`${backupDir}/${latestBackup}`, 'library.db');
+      }
+    } catch (error) {
+      console.error('Error restoring database:', error);
+      throw error;
+    }
   }
 }
 
