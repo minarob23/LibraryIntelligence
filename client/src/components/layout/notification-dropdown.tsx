@@ -160,6 +160,10 @@ const NotificationDropdown = () => {
                 No notifications
               </div>
             )}
+              <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                No notifications
+              </div>
+            )}
           </div>
           <DropdownMenuSeparator />
           <Dialog>
