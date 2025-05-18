@@ -177,14 +177,24 @@ const NotificationDropdown = () => {
               <DialogHeader>
                 <DialogTitle className="flex justify-between items-center">
                   <span>All Notifications</span>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-xs text-primary-500 hover:text-primary-600"
-                    onClick={() => markAllAsRead()}
-                  >
-                    Mark all as read
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-xs text-primary-500 hover:text-primary-600"
+                      onClick={() => markAllAsRead()}
+                    >
+                      Mark all as read
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      className="text-xs"
+                      onClick={() => clearAllNotifications()}
+                    >
+                      Delete all
+                    </Button>
+                  </div>
                 </DialogTitle>
               </DialogHeader>
               <div className="max-h-[60vh] overflow-y-auto">
