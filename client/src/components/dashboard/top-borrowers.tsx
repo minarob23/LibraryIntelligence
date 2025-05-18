@@ -13,18 +13,24 @@ const TopBorrowers = () => {
   const calculateEngagementScore = (borrowerId: number): number => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-
-    if (userBorrowings.length === 0) return 0;
-
+    
     const borrowCount = userBorrowings.length;
+    if (borrowCount === 0) return 0;
+
+    // Calculate recency score
     const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-
-    // Calculate score based on borrowing frequency and recency
-    const borrowScore = borrowCount * 10;
-    const recencyScore = Math.max(0, 100 - daysSinceLastBorrow);
     
-    return Number(((borrowScore + recencyScore) / 20).toFixed(1));
+    // Calculate ratings influence
+    const ratings = userBorrowings.filter(b => b.rating).map(b => b.rating);
+    const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 5;
+    
+    // Calculate scores - more balanced approach
+    const frequencyScore = borrowCount * 20; // Base score from number of borrows
+    const recencyScore = Math.max(0, 40 - daysSinceLastBorrow); // Recency bonus
+    const ratingBonus = avgRating * 2; // Small bonus for good ratings
+    
+    return Number((frequencyScore + recencyScore + ratingBonus).toFixed(1));
   };
 
   const { data: borrowers, isLoading } = useQuery({

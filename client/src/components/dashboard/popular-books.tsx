@@ -25,20 +25,19 @@ const PopularBooks = () => {
     // Get borrowings from localStorage
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
-
-    if (bookBorrowings.length === 0) return 0;
-
+    
     const timesBorrowed = bookBorrowings.length;
-    const lastBorrowedDate = bookBorrowings.length > 0
-      ? new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())))
-      : new Date();
+    if (timesBorrowed === 0) return 0;
+
+    // Calculate recency score
+    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
-
-    // Calculate score based on borrowing frequency and recency
-    const borrowScore = timesBorrowed * 10;
-    const recencyScore = Math.max(0, 100 - daysSinceLastBorrow);
-
-    return Number(((borrowScore + recencyScore) / 20).toFixed(1));
+    
+    // Calculate scores - weight recent borrows more heavily
+    const frequencyScore = timesBorrowed * 15; // More weight on frequency
+    const recencyScore = Math.max(0, 50 - daysSinceLastBorrow); // Less penalty for time
+    
+    return Number((frequencyScore + recencyScore).toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
