@@ -86,7 +86,7 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
 
 const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
-  const { notifications, markAsRead, markAllAsRead, unreadCount, addNotification } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, unreadCount, addNotification, clearAllNotifications } = useNotifications();
   
   const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
   const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
