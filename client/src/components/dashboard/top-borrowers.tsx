@@ -20,7 +20,7 @@ const TopBorrowers = () => {
       // Get all borrowings
       const allBorrowings = borrowings || [];
       const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
-      
+
       if (!userBorrowings.length) return 0;
 
       // Calculate basic metrics
@@ -28,7 +28,7 @@ const TopBorrowers = () => {
       const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
       const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
       const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
-      
+
       // Calculate return timeliness
       const onTimeBorrowings = returnedBorrowings.filter(b => {
         const returnDate = new Date(b.returnDate);
@@ -38,21 +38,21 @@ const TopBorrowers = () => {
 
       // Calculate frequency score (max 3 points)
       const frequencyScore = Math.min(totalBorrowings / 3, 1) * 3;
-      
+
       // Calculate timeliness score (max 3 points)
       const timelinessScore = returnedBorrowings.length > 0 
         ? (onTimeBorrowings / returnedBorrowings.length) * 3 
         : 0;
-      
+
       // Calculate rating participation (max 2 points)
       const ratingScore = (ratedBorrowings / totalBorrowings) * 2;
-      
+
       // Calculate activity score (max 2 points)
       const activityScore = (activeBorrowings / Math.max(1, totalBorrowings)) * 2;
-      
+
       // Calculate total score (max 10 points)
       const totalScore = frequencyScore + timelinessScore + ratingScore + activityScore;
-      
+
       // Store in localStorage for persistence
       const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
       engagementData[borrowerId] = {
@@ -68,7 +68,7 @@ const TopBorrowers = () => {
         updated: new Date().toISOString()
       };
       localStorage.setItem('borrowerEngagement', JSON.stringify(engagementData));
-      
+
       const finalScore = Math.min(totalScore, 10);
       // Return score with 2 decimal places
       return Number(finalScore.toFixed(2));
@@ -224,9 +224,28 @@ const TopBorrowers = () => {
                           <div className="text-xs text-gray-400">
                             Last borrowed: {(() => {
                               const userBorrowings = borrowings?.filter((b: any) => b.borrowerId === borrower.id) || [];
-                              if (userBorrowings.length === 0) return 'Never';
-                              const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
-                              return lastBorrowDate.toLocaleDateString();
+                              const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
+                              const borrowerData = engagementData[borrower.id];
+
+                              if (!userBorrowings.length && (!borrowerData || !borrowerData.updated)) {
+                                return 'Never';
+                              }
+
+                              const latestBorrowing = userBorrowings.length ? 
+                                Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())) :
+                                new Date(borrowerData?.updated || 0).getTime();
+
+                              if (!latestBorrowing) return 'Never';
+
+                              const date = new Date(latestBorrowing);
+                              const today = new Date();
+                              const diffDays = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+                              if (diffDays === 0) return 'Today';
+                              if (diffDays === 1) return 'Yesterday';
+                              if (diffDays < 7) return `${diffDays} days ago`;
+                              if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+                              return date.toLocaleDateString();
                             })()}
                           </div>
                         </div>
