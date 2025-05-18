@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const TopBorrowers = () => {
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState('engagement');
 
   const calculateEngagementScore = (borrowerId: number): number => {
@@ -65,6 +66,9 @@ const TopBorrowers = () => {
 
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+    },
     select: (data) => data?.map((borrower: any) => ({
       ...borrower,
       engagementScore: calculateEngagementScore(borrower.id)

@@ -8,6 +8,7 @@ import coverImage1 from '@/assets/book-covers/cover1.svg';
 type FilterType = 'rating' | 'random' | 'borrowed' | 'popularity';
 
 const PopularBooks = () => {
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState<FilterType>('popularity');
 
   const { data: books, isLoading } = useQuery({
@@ -19,6 +20,9 @@ const PopularBooks = () => {
 
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+    }
   });
 
   const calculatePopularityScore = (bookId: number) => {
