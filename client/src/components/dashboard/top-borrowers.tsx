@@ -10,38 +10,37 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
-  const calculateEngagementScore = (borrowerId: number): number => {
-    try {
-      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
-      
-      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-      if (!userBorrowings.length) return 0;
+  const calculateEngagementScore = (borrowCount: number, lastBorrowedAt: string | null): number => {
+    if (!borrowCount || !lastBorrowedAt) return 0;
 
-      // Calculate total books borrowed
-      const totalBooksBorrowed = userBorrowings.length;
+    const daysSinceLastBorrow = Math.floor(
+      (new Date().getTime() - new Date(lastBorrowedAt).getTime()) / (1000 * 3600 * 24)
+    );
 
-      // Get last borrow date
-      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
-      const lastBorrowDate = new Date(Math.max(...borrowDates));
-      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+    // New formula components:
+    // 1. Frequency: How often they borrow (borrowCount relative to time)
+    // 2. Recency: How recently they borrowed
+    // 3. Volume: Total number of items borrowed
 
-      // Calculate engagement score using the formula:
-      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
-      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
-      
-      return Math.max(0, Number(score.toFixed(1)));
-    } catch (error) {
-      console.error('Error calculating engagement score:', error);
-      return 0;
-    }
+    const recencyScore = Math.max(0, 100 - daysSinceLastBorrow) / 100; // 0-1
+    const volumeScore = Math.min(borrowCount / 20, 1); // Cap at 20 borrows
+    const frequencyScore = borrowCount / (daysSinceLastBorrow + 1); // Borrows per day
+
+    // Weighted average of components
+    const score = (
+      (recencyScore * 0.4) + 
+      (volumeScore * 0.3) + 
+      (Math.min(frequencyScore, 1) * 0.3)
+    ) * 10;
+
+    return Number(score.toFixed(1));
   };
 
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
     select: (data) => data?.map((borrower: any) => ({
       ...borrower,
-      engagementScore: calculateEngagementScore(borrower.id)
+      engagementScore: calculateEngagementScore(borrower.borrowCount, borrower.lastBorrowedAt)
     }))
   });
 
