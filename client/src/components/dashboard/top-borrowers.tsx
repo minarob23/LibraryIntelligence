@@ -14,7 +14,7 @@ const TopBorrowers = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
 
-    if (userBorrowings.length === 0) return -150; // Start from lower negative base
+    if (userBorrowings.length === 0) return 0;
 
     const borrowCount = userBorrowings.length;
     const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
