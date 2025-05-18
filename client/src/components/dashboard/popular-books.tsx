@@ -26,37 +26,19 @@ const PopularBooks = () => {
     const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
     const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
 
-    if (bookBorrowings.length === 0) return -50;
+    if (bookBorrowings.length === 0) return 0;
 
     const timesBorrowed = bookBorrowings.length;
-
-    // Get last borrow date
     const lastBorrowedDate = bookBorrowings.length > 0
       ? new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())))
       : new Date();
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
 
-    // Calculate rating from localStorage
-    const ratings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
-    const bookRatings = Object.entries(ratings)
-      .filter(([key, _]) => key.startsWith(`borrowing_${bookId}_`))
-      .map(([_, rating]) => Number(rating));
-    
-    const avgRating = bookRatings.length > 0
-      ? bookRatings.reduce((sum, rating) => sum + rating, 0) / bookRatings.length
-      : -3;
+    // Calculate score based on borrowing frequency and recency
+    const borrowScore = timesBorrowed * 10;
+    const recencyScore = Math.max(0, 100 - daysSinceLastBorrow);
 
-    // Calculate return rate
-    const completedBorrowings = bookBorrowings.filter(b => b.returnDate);
-    const onTimeBorrowings = completedBorrowings.filter(b => 
-      new Date(b.returnDate) <= new Date(b.dueDate)
-    );
-    const returnRate = completedBorrowings.length > 0
-      ? onTimeBorrowings.length / completedBorrowings.length
-      : -2;
-
-    // Calculate final score
-    return Number(((timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40).toFixed(1));
+    return Number(((borrowScore + recencyScore) / 20).toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
