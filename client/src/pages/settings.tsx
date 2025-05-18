@@ -725,7 +725,6 @@ const Settings = () => {
                       onCheckedChange={(checked) => {
                         setIsCompactView(checked);
                         localStorage.setItem('isCompactView', checked.toString());
-                        window.location.reload();
                       }}
                     />
                   </div>
