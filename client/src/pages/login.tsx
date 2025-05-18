@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -17,13 +18,11 @@ const Login = ({ onLogin }: LoginProps) => {
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const { toast } = useToast();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic email validation
     if (!email.includes('@')) {
       toast({
         variant: "destructive",
@@ -33,7 +32,6 @@ const Login = ({ onLogin }: LoginProps) => {
       return;
     }
 
-    // Check default password
     if (password === '123') {
       toast({
         title: "Success!",
@@ -42,6 +40,7 @@ const Login = ({ onLogin }: LoginProps) => {
         duration: 3000
       });
       onLogin();
+      
       const shouldRestore = localStorage.getItem('shouldRestoreAfterReset') === 'true';
       if (shouldRestore) {
         const restore = await fetch('/api/restore-database', { method: 'POST' });
@@ -53,13 +52,16 @@ const Login = ({ onLogin }: LoginProps) => {
             className: "bg-green-500 text-white",
             duration: 3000
           });
-        setTimeout(() => setLocation('/dashboard'), 1500);
+          setTimeout(() => setLocation('/dashboard'), 1500);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to restore system data"
+          });
+        }
       } else {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to restore system data"
-        });
+        setTimeout(() => setLocation('/dashboard'), 1500);
       }
     } else {
       toast({
