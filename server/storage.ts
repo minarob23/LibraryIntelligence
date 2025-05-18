@@ -282,8 +282,21 @@ class Storage {
   // Database Management
   async resetDatabase() {
     try {
-      // Create a backup before resetting
-      setupBackup();
+      // Create a final backup before resetting
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const backupDir = 'backups';
+      
+      if (!fs.existsSync(backupDir)) {
+        fs.mkdirSync(backupDir);
+      }
+      
+      // Backup both databases with final timestamp
+      if (fs.existsSync('library.db')) {
+        fs.copyFileSync('library.db', `${backupDir}/library-final-${timestamp}.db`);
+      }
+      if (fs.existsSync('dashboard.db')) {
+        fs.copyFileSync('dashboard.db', `${backupDir}/dashboard-final-${timestamp}.db`);
+      }
 
       // Close current database connections
       libraryDb.close();

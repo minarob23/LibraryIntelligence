@@ -414,7 +414,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/reset-database', async (req, res) => {
     try {
       await storage.resetDatabase();
-      res.json({ message: 'Database reset successfully' });
+      res.json({ message: 'All systems and databases have been reset successfully' });
     } catch (error) {
       res.status(500).json({ error: 'Failed to reset database' });
     }
