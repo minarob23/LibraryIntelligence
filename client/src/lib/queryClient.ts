@@ -22,6 +22,11 @@ export const apiRequest = async (method: string, url: string, data?: any) => {
       throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
     }
 
+    // For 204 No Content, return null instead of trying to parse JSON
+    if (response.status === 204) {
+      return null;
+    }
+
     return await response.json();
   } catch (error) {
     console.error('API Request Error:', error);
