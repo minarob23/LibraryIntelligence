@@ -22,22 +22,45 @@ const PopularBooks = () => {
   });
 
   const calculatePopularityScore = (bookId: number) => {
-    // Get borrowings from localStorage
-    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
-    
-    const timesBorrowed = bookBorrowings.length;
-    if (timesBorrowed === 0) return 0;
+    try {
+      // Get all borrowings
+      const allBorrowings = borrowings || [];
+      const bookBorrowings = allBorrowings.filter((b: any) => b.bookId === bookId);
+      
+      if (!bookBorrowings.length) return 0;
 
-    // Calculate last borrowed date
-    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
-    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
-    
-    // Calculate popularity score using the formula:
-    // (Times Borrowed * 10 + (100 - days since last borrow)) / 40
-    const score = (timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
-    
-    return Number(score.toFixed(1));
+      // Calculate base metrics
+      const timesBorrowed = bookBorrowings.length;
+      const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating);
+      const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+      
+      // Get latest borrow date
+      const borrowDates = bookBorrowings.map(b => new Date(b.borrowDate).getTime());
+      const lastBorrowedDate = new Date(Math.max(...borrowDates));
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
+
+      // Store in localStorage
+      const popularityData = JSON.parse(localStorage.getItem('bookPopularity') || '{}');
+      popularityData[bookId] = {
+        timesBorrowed,
+        lastBorrowedDate: lastBorrowedDate.toISOString(),
+        avgRating,
+        updated: new Date().toISOString()
+      };
+      localStorage.setItem('bookPopularity', JSON.stringify(popularityData));
+
+      // Calculate weighted score
+      // 40% for borrow frequency, 30% for recency, 30% for ratings
+      const borrowScore = Math.min(timesBorrowed / 5, 1) * 4; // Max 4 points for 5+ borrows
+      const recencyScore = Math.max(0, 3 - (daysSinceLastBorrow / 30)); // Max 3 points, decreases over time
+      const ratingScore = (avgRating / 5) * 3; // Max 3 points for 5-star rating
+
+      const totalScore = borrowScore + recencyScore + ratingScore;
+      return Number(Math.min(totalScore, 10).toFixed(1));
+    } catch (error) {
+      console.error('Error calculating popularity score:', error);
+      return 0;
+    }
   };
 
   const getAverageRating = (bookId: number) => {

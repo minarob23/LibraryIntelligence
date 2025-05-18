@@ -12,25 +12,51 @@ const TopBorrowers = () => {
 
   const calculateEngagementScore = (borrowerId: number): number => {
     try {
-      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
+      // Get all borrowings
+      const allBorrowings = borrowings || [];
+      const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
       
-      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
       if (!userBorrowings.length) return 0;
 
-      // Calculate total books borrowed
-      const totalBooksBorrowed = userBorrowings.length;
-
-      // Get last borrow date
-      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
-      const lastBorrowDate = new Date(Math.max(...borrowDates));
-      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-
-      // Calculate engagement score using the formula:
-      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
-      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
+      // Calculate metrics
+      const totalBorrowings = userBorrowings.length;
+      const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
+      const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
+      const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
       
-      return Math.max(0, Number(score.toFixed(1)));
+      // Calculate return timeliness
+      const onTimeBorrowings = returnedBorrowings.filter(b => {
+        const returnDate = new Date(b.returnDate);
+        const dueDate = new Date(b.dueDate);
+        return returnDate <= dueDate;
+      }).length;
+      
+      // Calculate activity frequency
+      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
+      const lastActivityDate = new Date(Math.max(...borrowDates));
+      const daysSinceLastActivity = Math.floor((new Date().getTime() - lastActivityDate.getTime()) / (1000 * 3600 * 24));
+
+      // Store engagement data in localStorage
+      const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
+      engagementData[borrowerId] = {
+        totalBorrowings,
+        activeBorrowings,
+        ratedBorrowings,
+        onTimeBorrowings,
+        lastActivityDate: lastActivityDate.toISOString(),
+        updated: new Date().toISOString()
+      };
+      localStorage.setItem('borrowerEngagement', JSON.stringify(engagementData));
+
+      // Calculate weighted score components
+      const activityScore = Math.min(totalBorrowings / 5, 1) * 3; // Max 3 points for 5+ borrows
+      const timelinessScore = returnedBorrowings.length ? (onTimeBorrowings / returnedBorrowings.length) * 2.5 : 0; // Max 2.5 points
+      const participationScore = Math.min((ratedBorrowings / totalBorrowings) * 2, 2); // Max 2 points
+      const recencyScore = Math.max(0, 2.5 - (daysSinceLastActivity / 30) * 0.5); // Max 2.5 points
+
+      // Calculate total score
+      const totalScore = activityScore + timelinessScore + participationScore + recencyScore;
+      return Number(Math.min(totalScore, 10).toFixed(1));
     } catch (error) {
       console.error('Error calculating engagement score:', error);
       return 0;
