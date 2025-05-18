@@ -22,22 +22,27 @@ const PopularBooks = () => {
   });
 
   const calculatePopularityScore = (bookId: number) => {
-    // Get borrowings from localStorage
-    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
+    if (!borrowings) return 0;
     
-    const timesBorrowed = bookBorrowings.length;
-    if (timesBorrowed === 0) return 0;
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.status !== 'cancelled');
+    if (!bookBorrowings.length) return 0;
 
-    // Calculate last borrowed date
-    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
-    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
-    
-    // Calculate popularity score using the formula:
-    // (Times Borrowed * 10 + (100 - days since last borrow)) / 40
-    const score = (timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
-    
-    return Number(score.toFixed(1));
+    // Calculate base score from number of borrows (40%)
+    const borrowCount = bookBorrowings.length;
+    const borrowScore = Math.min(borrowCount / 5, 1) * 4; // Max 4 points for up to 5 borrows
+
+    // Calculate recency score (30%)
+    const mostRecentBorrow = new Date(Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime())));
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - mostRecentBorrow.getTime()) / (1000 * 3600 * 24));
+    const recencyScore = Math.max(0, 3 - (daysSinceLastBorrow / 30)); // Max 3 points, decreases over 90 days
+
+    // Calculate rating score (30%)
+    const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating);
+    const ratingScore = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) / 2 : 1.5;
+
+    // Calculate final score (max 10)
+    const totalScore = borrowScore + recencyScore + ratingScore;
+    return Number(Math.min(totalScore, 10).toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
