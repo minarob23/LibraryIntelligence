@@ -37,7 +37,7 @@ const TopBorrowers = () => {
     queryKey: ['/api/dashboard/top-borrowers'],
     select: (data) => data?.map((borrower: any) => ({
       ...borrower,
-      engagementScore: calculateEngagementScore(borrower.totalBooksBorrowed, borrower.lastBorrowDate)
+      engagementScore: calculateEngagementScore(borrower.id)
     }))
   });
 
@@ -171,9 +171,9 @@ const TopBorrowers = () => {
                             Last borrowed: {(() => {
                               const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
                               const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrower.id);
-                              return userBorrowings.length > 0
-                                ? new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime()))).toLocaleDateString()
-                                : 'Never';
+                              if (userBorrowings.length === 0) return 'Never';
+                              const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
+                              return lastBorrowDate.toLocaleDateString();
                             })()}
                           </div>
                         </div>
