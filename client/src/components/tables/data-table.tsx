@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Table, 
   TableBody, 
@@ -44,6 +44,14 @@ const DataTable = ({
 }: DataTableProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCompactView, setIsCompactView] = useState(false);
+  const itemsPerPage = pagination?.itemsPerPage || 10;
+
+  useEffect(() => {
+    const compactView = localStorage.getItem('isCompactView') === 'true';
+    setIsCompactView(compactView);
+  }, []);
 
   // Filter data by search term
   const filteredData = searchTerm.trim() !== '' 
@@ -97,11 +105,11 @@ const DataTable = ({
       )}
 
       <div className="overflow-x-auto">
-        <Table className={localStorage.getItem('isCompactView') === 'true' ? 'compact' : ''}>
+        <Table className={isCompactView ? 'compact' : ''}>
           <TableHeader>
             <TableRow className="bg-gray-50 dark:bg-gray-700">
               {columns.map((column) => (
-                <TableHead key={column.key} className={`text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${localStorage.getItem('isCompactView') === 'true' ? 'px-2 py-2' : 'px-4 py-3'}`}>
+                <TableHead key={column.key} className={`text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${isCompactView ? 'px-2 py-2' : 'px-4 py-3'}`}>
                   {column.header}
                 </TableHead>
               ))}
