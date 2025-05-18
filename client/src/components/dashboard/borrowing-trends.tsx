@@ -1,6 +1,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import ChartContainer from './chart-container';
+import { Card, CardTitle } from '@/components/ui/card';
 
 const BorrowingTrends = () => {
   const { data: borrowings } = useQuery({ 
