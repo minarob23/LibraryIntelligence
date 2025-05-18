@@ -842,13 +842,18 @@ const Settings = () => {
                       <AlertDialogAction
                         onClick={async () => {
                           try {
-                            await fetch('/api/reset-ui', {
+                            const reset = await fetch('/api/reset-ui', {
                               method: 'POST'
                             });
+                            if (!reset.ok) {
+                              throw new Error('Failed to reset UI');
+                            }
                             toast({
                               title: "System Reset",
                               description: "Interface has been reset. Redirecting to login...",
                             });
+                            // Store flag in localStorage to trigger restore after login
+                            localStorage.setItem('shouldRestoreAfterReset', 'true');
                             setTimeout(() => {
                               window.location.href = '/login';
                             }, 1500);

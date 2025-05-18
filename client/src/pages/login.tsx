@@ -42,14 +42,17 @@ const Login = ({ onLogin }: LoginProps) => {
         duration: 3000
       });
       onLogin();
-      const restore = await fetch('/api/restore-database', { method: 'POST' });
-      if (restore.ok) {
-        toast({
-          title: "Data Restored",
-          description: "System data has been restored successfully",
-          className: "bg-green-500 text-white",
-          duration: 3000
-        });
+      const shouldRestore = localStorage.getItem('shouldRestoreAfterReset') === 'true';
+      if (shouldRestore) {
+        const restore = await fetch('/api/restore-database', { method: 'POST' });
+        if (restore.ok) {
+          localStorage.removeItem('shouldRestoreAfterReset');
+          toast({
+            title: "Data Restored",
+            description: "System data has been restored successfully",
+            className: "bg-green-500 text-white",
+            duration: 3000
+          });
         setTimeout(() => setLocation('/dashboard'), 1500);
       } else {
         toast({
