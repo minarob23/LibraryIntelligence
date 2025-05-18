@@ -56,17 +56,7 @@ const PopularBooks = () => {
       : -2;
 
     // Calculate final score
-    const baseScore = -50;
-    const borrowingFactor = timesBorrowed * 10;
-    const recencyFactor = Math.max(-30, 100 - daysSinceLastBorrow);
-    const ratingFactor = avgRating * 20;
-    const returnFactor = returnRate * 50;
-
-    return Number((baseScore +
-      (borrowingFactor * 0.3 +
-        recencyFactor * 0.3 +
-        ratingFactor * 0.2 +
-        returnFactor * 0.2)).toFixed(1));
+    return Number(((timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40).toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
