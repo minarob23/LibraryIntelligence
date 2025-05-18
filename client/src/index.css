@@ -201,6 +201,15 @@
   @apply bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden;
 }
 
+/* Compact view styles */
+.compact td {
+  @apply px-2 py-2;
+}
+
+.compact .data-table-container {
+  @apply space-y-2;
+}
+
 .table-header {
   @apply bg-gray-50 dark:bg-gray-700;
 }

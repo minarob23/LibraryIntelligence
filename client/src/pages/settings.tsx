@@ -722,7 +722,11 @@ const Settings = () => {
                     </div>
                     <Switch
                       checked={isCompactView}
-                      onCheckedChange={setIsCompactView}
+                      onCheckedChange={(checked) => {
+                        setIsCompactView(checked);
+                        localStorage.setItem('isCompactView', checked.toString());
+                        window.location.reload();
+                      }}
                     />
                   </div>
                 </div>

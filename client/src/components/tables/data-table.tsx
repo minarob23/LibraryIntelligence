@@ -74,7 +74,7 @@ const DataTable = ({
               />
             </div>
           )}
-          
+
           {filterComponent && (
             <div className="flex items-center">
               <Button
@@ -95,13 +95,13 @@ const DataTable = ({
           )}
         </div>
       )}
-      
+
       <div className="overflow-x-auto">
-        <Table>
+        <Table className={localStorage.getItem('isCompactView') === 'true' ? 'compact' : ''}>
           <TableHeader>
             <TableRow className="bg-gray-50 dark:bg-gray-700">
               {columns.map((column) => (
-                <TableHead key={column.key} className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <TableHead key={column.key} className={`text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${localStorage.getItem('isCompactView') === 'true' ? 'px-2 py-2' : 'px-4 py-3'}`}>
                   {column.header}
                 </TableHead>
               ))}
@@ -147,7 +147,7 @@ const DataTable = ({
           </TableBody>
         </Table>
       </div>
-      
+
       {pagination && (
         <TablePagination
           totalItems={pagination.totalItems}
