@@ -326,6 +326,8 @@ class Storage {
       this.db = drizzle(newLibraryDb);
       this.dashboardDb = drizzle(newDashboardDb);
     }
+  }
+
   async restoreDatabase() {
     try {
       // Get latest backup files
