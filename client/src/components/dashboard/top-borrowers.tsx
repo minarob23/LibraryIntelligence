@@ -11,26 +11,35 @@ const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
   const calculateEngagementScore = (borrowerId: number): number => {
-    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-    const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-    
-    const borrowCount = userBorrowings.length;
-    if (borrowCount === 0) return 0;
+    try {
+      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
+      
+      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
+      if (!userBorrowings.length) return 0;
 
-    // Calculate recency score
-    const lastBorrowDate = new Date(Math.max(...userBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
-    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-    
-    // Calculate ratings influence
-    const ratings = userBorrowings.filter(b => b.rating).map(b => b.rating);
-    const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 5;
-    
-    // Calculate scores - more balanced approach
-    const frequencyScore = borrowCount * 20; // Base score from number of borrows
-    const recencyScore = Math.max(0, 40 - daysSinceLastBorrow); // Recency bonus
-    const ratingBonus = avgRating * 2; // Small bonus for good ratings
-    
-    return Number((frequencyScore + recencyScore + ratingBonus).toFixed(1));
+      // Calculate recency score
+      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime()).filter(date => !isNaN(date));
+      if (!borrowDates.length) return 0;
+      
+      const lastBorrowDate = new Date(Math.max(...borrowDates));
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+      
+      // Calculate ratings influence
+      const ratings = userBorrowings.filter(b => b.rating && !isNaN(b.rating)).map(b => Number(b.rating));
+      const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 5;
+      
+      // Calculate scores with validation
+      const borrowCount = userBorrowings.length;
+      const frequencyScore = borrowCount * 20;
+      const recencyScore = Math.max(0, 40 - (isNaN(daysSinceLastBorrow) ? 0 : daysSinceLastBorrow));
+      const ratingBonus = !isNaN(avgRating) ? avgRating * 2 : 0;
+      
+      return Math.max(0, Number((frequencyScore + recencyScore + ratingBonus).toFixed(1)));
+    } catch (error) {
+      console.error('Error calculating engagement score:', error);
+      return 0;
+    }
   };
 
   const { data: borrowers, isLoading } = useQuery({
