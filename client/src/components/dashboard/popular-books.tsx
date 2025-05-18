@@ -21,18 +21,22 @@ const PopularBooks = () => {
     queryKey: ['/api/borrowings'],
   });
 
-  const calculatePopularityScore = (timesBorrowed: number, lastBorrowDate: string | null) => {
-    if (!timesBorrowed || !lastBorrowDate) return 0;
+  const calculatePopularityScore = (bookId: number) => {
+    // Get borrowings from localStorage
+    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
+    
+    const timesBorrowed = bookBorrowings.length;
+    if (timesBorrowed === 0) return 0;
 
-    const daysSinceLastBorrow = Math.floor(
-      (new Date().getTime() - new Date(lastBorrowDate).getTime()) / (1000 * 3600 * 24)
-    );
+    // Calculate last borrowed date
+    const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
     
-    // New formula: (Recent Activity Factor * 0.7) + (Volume Factor * 0.3)
-    const recentActivityFactor = Math.max(0, 100 - daysSinceLastBorrow) / 100; // Normalized 0-1
-    const volumeFactor = Math.min(timesBorrowed / 10, 1); // Cap at 10 borrows
+    // Calculate popularity score using the formula:
+    // (Times Borrowed * 10 + (100 - days since last borrow)) / 40
+    const score = (timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
     
-    const score = (recentActivityFactor * 0.7 + volumeFactor * 0.3) * 10;
     return Number(score.toFixed(1));
   };
 
