@@ -36,6 +36,7 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
         message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
         time: 'Today',
         read: false,
+        type: 'warning',
       });
     } else if (daysUntilExpiry <= 0) {
       notifications.push({
@@ -43,6 +44,15 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
         message: `${borrower.name}'s membership has expired`,
         time: 'Today',
         read: false,
+        type: 'error',
+      });
+    } else if (daysUntilExpiry <= 60) {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
+        time: 'Today',
+        read: false,
+        type: 'info',
       });
     }
   });
@@ -173,7 +183,11 @@ const NotificationDropdown = () => {
                       key={notification.id}
                       className={`p-4 mb-2 rounded-lg cursor-pointer transition duration-150 ease-in-out ${
                         !notification.read
-                          ? 'bg-blue-50 dark:bg-blue-900/20'
+                          ? notification.type === 'error' 
+                            ? 'bg-red-50 dark:bg-red-900/20'
+                            : notification.type === 'warning'
+                            ? 'bg-yellow-50 dark:bg-yellow-900/20'
+                            : 'bg-blue-50 dark:bg-blue-900/20'
                           : 'bg-gray-50 dark:bg-gray-900/20'
                       }`}
                       onClick={() => markAsRead(notification.id)}
