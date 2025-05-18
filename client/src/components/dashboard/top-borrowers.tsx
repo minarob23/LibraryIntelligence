@@ -69,6 +69,42 @@ const TopBorrowers = () => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
+  const calculateEngagementScore = (borrowerId: string) => {
+      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+
+      // Get or initialize engagement scores from localStorage
+      const engagementScores = JSON.parse(localStorage.getItem('engagementScores') || '{}');
+
+      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
+      if (!userBorrowings.length) {
+        engagementScores[borrowerId] = 0;
+        localStorage.setItem('engagementScores', JSON.stringify(engagementScores));
+        return 0;
+      }
+
+      // Calculate key metrics
+      const totalBorrowings = userBorrowings.length;
+      const completedReturns = userBorrowings.filter(b => b.status === 'returned').length;
+      const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
+      const lastBorrowDate = new Date(Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())));
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+
+      // Calculate engagement components
+      const activityScore = Math.min(totalBorrowings / 10, 1) * 4; // Max 4 points for activity
+      const returnScore = (completedReturns / totalBorrowings) * 3; // Max 3 points for returns
+      const ratingScore = (ratedBorrowings / totalBorrowings) * 2; // Max 2 points for ratings
+      const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // Max 1 point for recency
+
+      // Calculate final score
+      const score = activityScore + returnScore + ratingScore + recencyScore;
+      const finalScore = Number(Math.min(score, 10).toFixed(1));
+
+      // Store and return score
+      engagementScores[borrowerId] = finalScore;
+      localStorage.setItem('engagementScores', JSON.stringify(engagementScores));
+      return finalScore;
+  }
+
   return (
     <Card className="border-none shadow-lg bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
       <CardHeader className="pb-2">

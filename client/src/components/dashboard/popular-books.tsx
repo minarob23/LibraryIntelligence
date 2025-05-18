@@ -87,6 +87,42 @@ const PopularBooks = () => {
     return stars;
   };
 
+  const calculatePopularityScore = (bookId: number) => {
+    // Get or initialize popularity scores from localStorage
+    const popularityScores = JSON.parse(localStorage.getItem('popularityScores') || '{}');
+
+    // Get borrowings and ratings
+    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+    const ratings = JSON.parse(localStorage.getItem('bookRatings') || '{}');
+
+    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId);
+    const bookRating = ratings[bookId] || { count: 0, total: 0 };
+
+    if (!bookBorrowings.length) {
+      popularityScores[bookId] = 0;
+      localStorage.setItem('popularityScores', JSON.stringify(popularityScores));
+      return 0;
+    }
+
+    // Calculate score components
+    const borrowCount = bookBorrowings.length;
+    const lastBorrowDate = new Date(Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime())));
+    const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+    const averageRating = bookRating.count > 0 ? bookRating.total / bookRating.count : 3;
+
+    // Calculate weighted score
+    const score = (
+      (Math.min(borrowCount, 10) * 0.5) +  // Borrow weight: 50%
+      (Math.max(0, 10 - daysSinceLastBorrow) * 0.3) +  // Recency weight: 30%
+      (averageRating * 0.2)  // Rating weight: 20%
+    );
+
+    // Store and return score
+    popularityScores[bookId] = Number(score.toFixed(1));
+    localStorage.setItem('popularityScores', JSON.stringify(popularityScores));
+    return popularityScores[bookId];
+  };
+
   return (
     <Card>
       <CardHeader className="pb-2">
