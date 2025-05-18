@@ -10,41 +10,31 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
-  const calculateEngagementScore = (borrowerId: number) => {
-    const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-    if (!borrowings) return 0;
+  const calculateEngagementScore = (borrowerId: number): number => {
+    try {
+      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
+      
+      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
+      if (!userBorrowings.length) return 0;
 
-    const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-    if (!userBorrowings.length) return 0;
+      // Calculate total books borrowed
+      const totalBooksBorrowed = userBorrowings.length;
 
-    // Active Borrowing Score (30%)
-    const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
-    const activeScore = Math.min(activeBorrowings, 3) * 1; // Up to 3 points
+      // Get last borrow date
+      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
+      const lastBorrowDate = new Date(Math.max(...borrowDates));
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
 
-    // Return History Score (30%)
-    const completedBorrowings = userBorrowings.filter(b => b.status === 'returned');
-    const returnedOnTime = completedBorrowings.filter(b => {
-      const returnDate = new Date(b.returnDate);
-      const dueDate = new Date(b.dueDate);
-      return returnDate <= dueDate;
-    }).length;
-    const returnScore = completedBorrowings.length ? 
-      (returnedOnTime / completedBorrowings.length) * 3 : 0; // Up to 3 points
-
-    // Rating Participation Score (20%)
-    const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
-    const ratingScore = Math.min(ratedBorrowings / userBorrowings.length * 2, 2); // Up to 2 points
-
-    // Recency Score (20%)
-    const lastActivity = new Date(Math.max(
-      ...userBorrowings.map(b => new Date(b.borrowDate).getTime())
-    ));
-    const daysSinceLastActivity = Math.floor((new Date().getTime() - lastActivity.getTime()) / (1000 * 3600 * 24));
-    const recencyScore = Math.max(0, 2 - (daysSinceLastActivity / 30)); // Up to 2 points
-
-    // Calculate total score
-    const totalScore = activeScore + returnScore + ratingScore + recencyScore;
-    return Number(Math.min(totalScore, 10).toFixed(1));
+      // Calculate engagement score using the formula:
+      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
+      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
+      
+      return Math.max(0, Number(score.toFixed(1)));
+    } catch (error) {
+      console.error('Error calculating engagement score:', error);
+      return 0;
+    }
   };
 
   const { data: borrowers, isLoading } = useQuery({
