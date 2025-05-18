@@ -18,24 +18,19 @@ const TopBorrowers = () => {
       const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
       if (!userBorrowings.length) return 0;
 
-      // Calculate recency score
-      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime()).filter(date => !isNaN(date));
-      if (!borrowDates.length) return 0;
-      
+      // Calculate total books borrowed
+      const totalBooksBorrowed = userBorrowings.length;
+
+      // Get last borrow date
+      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
       const lastBorrowDate = new Date(Math.max(...borrowDates));
       const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+
+      // Calculate engagement score using the formula:
+      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
+      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
       
-      // Calculate ratings influence
-      const ratings = userBorrowings.filter(b => b.rating && !isNaN(b.rating)).map(b => Number(b.rating));
-      const avgRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 5;
-      
-      // Calculate scores with validation
-      const borrowCount = userBorrowings.length;
-      const frequencyScore = borrowCount * 20;
-      const recencyScore = Math.max(0, 40 - (isNaN(daysSinceLastBorrow) ? 0 : daysSinceLastBorrow));
-      const ratingBonus = !isNaN(avgRating) ? avgRating * 2 : 0;
-      
-      return Math.max(0, Number((frequencyScore + recencyScore + ratingBonus).toFixed(1)));
+      return Math.max(0, Number(score.toFixed(1)));
     } catch (error) {
       console.error('Error calculating engagement score:', error);
       return 0;

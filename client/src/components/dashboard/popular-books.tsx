@@ -29,15 +29,15 @@ const PopularBooks = () => {
     const timesBorrowed = bookBorrowings.length;
     if (timesBorrowed === 0) return 0;
 
-    // Calculate recency score
+    // Calculate last borrowed date
     const lastBorrowedDate = new Date(Math.max(...bookBorrowings.map((b: any) => new Date(b.borrowDate).getTime())));
     const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
     
-    // Calculate scores - weight recent borrows more heavily
-    const frequencyScore = timesBorrowed * 15; // More weight on frequency
-    const recencyScore = Math.max(0, 50 - daysSinceLastBorrow); // Less penalty for time
+    // Calculate popularity score using the formula:
+    // (Times Borrowed * 10 + (100 - days since last borrow)) / 40
+    const score = (timesBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
     
-    return Number((frequencyScore + recencyScore).toFixed(1));
+    return Number(score.toFixed(1));
   };
 
   const getAverageRating = (bookId: number) => {
