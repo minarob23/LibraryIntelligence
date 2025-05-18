@@ -10,7 +10,32 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const TopBorrowers = () => {
   const [filter, setFilter] = useState('engagement');
 
-  // No need for calculation functions as they're now handled in the backend
+  const calculateEngagementScore = (borrowerId: number): number => {
+    try {
+      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+      if (!Array.isArray(borrowings) || !borrowings.length) return 0;
+      
+      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
+      if (!userBorrowings.length) return 0;
+
+      // Calculate total books borrowed
+      const totalBooksBorrowed = userBorrowings.length;
+
+      // Get last borrow date
+      const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
+      const lastBorrowDate = new Date(Math.max(...borrowDates));
+      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
+
+      // Calculate engagement score using the formula:
+      // (Total Books Borrowed * 10 + (100 - days since last borrow)) / 40
+      const score = (totalBooksBorrowed * 10 + (100 - daysSinceLastBorrow)) / 40;
+      
+      return Math.max(0, Number(score.toFixed(1)));
+    } catch (error) {
+      console.error('Error calculating engagement score:', error);
+      return 0;
+    }
+  };
 
   const { data: borrowers, isLoading } = useQuery({
     queryKey: ['/api/dashboard/top-borrowers'],
@@ -68,42 +93,6 @@ const TopBorrowers = () => {
     const diffTime = expiry.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
-
-  const calculateEngagementScore = (borrowerId: string) => {
-      const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-
-      // Get or initialize engagement scores from localStorage
-      const engagementScores = JSON.parse(localStorage.getItem('engagementScores') || '{}');
-
-      const userBorrowings = borrowings.filter((b: any) => b.borrowerId === borrowerId);
-      if (!userBorrowings.length) {
-        engagementScores[borrowerId] = 0;
-        localStorage.setItem('engagementScores', JSON.stringify(engagementScores));
-        return 0;
-      }
-
-      // Calculate key metrics
-      const totalBorrowings = userBorrowings.length;
-      const completedReturns = userBorrowings.filter(b => b.status === 'returned').length;
-      const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
-      const lastBorrowDate = new Date(Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())));
-      const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowDate.getTime()) / (1000 * 3600 * 24));
-
-      // Calculate engagement components
-      const activityScore = Math.min(totalBorrowings / 10, 1) * 4; // Max 4 points for activity
-      const returnScore = (completedReturns / totalBorrowings) * 3; // Max 3 points for returns
-      const ratingScore = (ratedBorrowings / totalBorrowings) * 2; // Max 2 points for ratings
-      const recencyScore = Math.max(0, 1 - (daysSinceLastBorrow / 30)); // Max 1 point for recency
-
-      // Calculate final score
-      const score = activityScore + returnScore + ratingScore + recencyScore;
-      const finalScore = Number(Math.min(score, 10).toFixed(1));
-
-      // Store and return score
-      engagementScores[borrowerId] = finalScore;
-      localStorage.setItem('engagementScores', JSON.stringify(engagementScores));
-      return finalScore;
-  }
 
   return (
     <Card className="border-none shadow-lg bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
