@@ -19,7 +19,7 @@ const TopBorrowers = () => {
       
       if (!userBorrowings.length) return 0;
 
-      // Calculate metrics
+      // Calculate basic metrics
       const totalBorrowings = userBorrowings.length;
       const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
       const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
@@ -31,6 +31,41 @@ const TopBorrowers = () => {
         const dueDate = new Date(b.dueDate);
         return returnDate <= dueDate;
       }).length;
+
+      // Calculate frequency score (max 3 points)
+      const frequencyScore = Math.min(totalBorrowings / 3, 1) * 3;
+      
+      // Calculate timeliness score (max 3 points)
+      const timelinessScore = returnedBorrowings.length > 0 
+        ? (onTimeBorrowings / returnedBorrowings.length) * 3 
+        : 0;
+      
+      // Calculate rating participation (max 2 points)
+      const ratingScore = (ratedBorrowings / totalBorrowings) * 2;
+      
+      // Calculate activity score (max 2 points)
+      const activityScore = (activeBorrowings / Math.max(1, totalBorrowings)) * 2;
+      
+      // Calculate total score (max 10 points)
+      const totalScore = frequencyScore + timelinessScore + ratingScore + activityScore;
+      
+      // Store in localStorage for persistence
+      const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
+      engagementData[borrowerId] = {
+        totalBorrowings,
+        activeBorrowings,
+        onTimeBorrowings,
+        ratedBorrowings,
+        frequencyScore,
+        timelinessScore,
+        ratingScore,
+        activityScore,
+        totalScore: Math.min(totalScore, 10),
+        updated: new Date().toISOString()
+      };
+      localStorage.setItem('borrowerEngagement', JSON.stringify(engagementData));
+      
+      return Number(Math.min(totalScore, 10).toFixed(1));
       
       // Calculate activity frequency
       const borrowDates = userBorrowings.map(b => new Date(b.borrowDate).getTime());
