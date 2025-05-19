@@ -238,27 +238,6 @@ const TopBorrowers = () => {
                                 month: 'short',
                                 day: 'numeric'
                               });
-                              const borrowerData = engagementData[borrower.id];
-
-                              if (!userBorrowings.length && (!borrowerData || !borrowerData.updated)) {
-                                return 'Never';
-                              }
-
-                              const latestBorrowing = userBorrowings.length ? 
-                                Math.max(...userBorrowings.map(b => new Date(b.borrowDate).getTime())) :
-                                new Date(borrowerData?.updated || 0).getTime();
-
-                              if (!latestBorrowing) return 'Never';
-
-                              const date = new Date(latestBorrowing);
-                              const today = new Date();
-                              const diffDays = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-
-                              if (diffDays === 0) return 'Today';
-                              if (diffDays === 1) return 'Yesterday';
-                              if (diffDays < 7) return `${diffDays} days ago`;
-                              if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-                              return date.toLocaleDateString();
                             })()}
                           </div>
                         </div>
