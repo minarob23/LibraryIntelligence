@@ -224,7 +224,20 @@ const TopBorrowers = () => {
                           <div className="text-xs text-gray-400">
                             Last borrowed: {(() => {
                               const userBorrowings = borrowings?.filter((b: any) => b.borrowerId === borrower.id) || [];
-                              const engagementData = JSON.parse(localStorage.getItem('borrowerEngagement') || '{}');
+                              const latestBorrowing = userBorrowings.reduce((latest: any, current: any) => {
+                                if (!latest || new Date(current.borrowDate) > new Date(latest.borrowDate)) {
+                                  return current;
+                                }
+                                return latest;
+                              }, null);
+                              
+                              if (!latestBorrowing) return 'Never borrowed';
+                              const borrowDate = new Date(latestBorrowing.borrowDate);
+                              return borrowDate.toLocaleDateString('en-US', { 
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              });
                               const borrowerData = engagementData[borrower.id];
 
                               if (!userBorrowings.length && (!borrowerData || !borrowerData.updated)) {
