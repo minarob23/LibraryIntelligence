@@ -152,7 +152,7 @@ const Dashboard = () => {
                   New Member
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[700px]">
+              <DialogContent className="sm:max-w-[800px] max-h-[90vh]">
                 <DialogHeader>
                   <DialogTitle>Membership Registration</DialogTitle>
                 </DialogHeader>
