@@ -2,7 +2,6 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { 
   books,
-  researchPapers,
   librarians,
   borrowers,
   borrowings,
@@ -14,9 +13,8 @@ import * as fs from 'fs';
 import { setupBackup } from './backup';
 import {
   type InsertBookSchema,
-  type InsertBorrowerSchema,
   type InsertLibrarianSchema,
-  type InsertResearchPaperSchema,
+  type InsertBorrowerSchema,
   type InsertBorrowingSchema,
   type MembershipApplicationSchema
 } from '@shared/schema';
@@ -53,34 +51,6 @@ class Storage {
 
   async deleteBook(id: number) {
     const result = await this.db.delete(books).where(sql`${books.id} = ${id}`);
-    return result.changes > 0;
-  }
-
-  // Research Papers
-  async getResearchPapers() {
-    return await this.db.select().from(researchPapers);
-  }
-
-  async getResearchPaper(id: number) {
-    const results = await this.db
-      .select()
-      .from(researchPapers)
-      .where(sql`${researchPapers.id} = ${id}`);
-    return results[0];
-  }
-
-  async createResearchPaper(paper: InsertResearchPaperSchema) {
-    const result = await this.db.insert(researchPapers).values(paper);
-    return this.getResearchPaper(Number(result.lastInsertRowid));
-  }
-
-  async updateResearchPaper(id: number, paper: Partial<InsertResearchPaperSchema>) {
-    await this.db.update(researchPapers).set(paper).where(sql`${researchPapers.id} = ${id}`);
-    return this.getResearchPaper(id);
-  }
-
-  async deleteResearchPaper(id: number) {
-    const result = await this.db.delete(researchPapers).where(sql`${researchPapers.id} = ${id}`);
     return result.changes > 0;
   }
 
@@ -251,11 +221,11 @@ class Storage {
   // Membership Applications
   async createMembershipApplication(application: MembershipApplicationSchema) {
     const result = await this.db.insert(membershipApplications).values(application);
-    
+
     // Create a borrower record from the application
     const oneYearFromNow = new Date();
     oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-    
+
     await this.createBorrower({
       name: application.name,
       phone: application.phone,
@@ -285,11 +255,11 @@ class Storage {
       // Create a final backup before resetting
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const backupDir = 'backups';
-      
+
       if (!fs.existsSync(backupDir)) {
         fs.mkdirSync(backupDir);
       }
-      
+
       // Backup both databases with final timestamp
       if (fs.existsSync('library.db')) {
         fs.copyFileSync('library.db', `${backupDir}/library-final-${timestamp}.db`);

@@ -51,7 +51,7 @@ const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
       path: ['itemType'],
     });
   }
-  
+
   if (data.bookId && data.researchId) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -74,9 +74,8 @@ interface BorrowFormProps {
 const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [itemType, setItemType] = useState<'book' | 'research'>(borrowing?.bookId ? 'book' : 'research');
   const isEditing = !!borrowing?.id;
-  
+
   // Set default dates if not provided
   const today = new Date().toISOString().split('T')[0];
   const defaultDueDate = new Date();
@@ -87,46 +86,32 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
-  
+
   const { data: librarians } = useQuery({ 
     queryKey: ['/api/librarians'],
   });
-  
+
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
-  });
-  
-  const { data: researchPapers } = useQuery({ 
-    queryKey: ['/api/research'],
   });
 
   const form = useForm<BorrowFormValues>({
     resolver: zodResolver(borrowSchema),
     defaultValues: {
       ...borrowing,
-      itemType: borrowing?.bookId ? 'book' : 'research',
       borrowDate: borrowing?.borrowDate || today,
       dueDate: borrowing?.dueDate || twoWeeksFromNow,
       status: borrowing?.status || 'borrowed',
     },
   });
-  
-  // Update form values when item type changes
-  useEffect(() => {
-    if (itemType === 'book') {
-      form.setValue('researchId', undefined);
-    } else {
-      form.setValue('bookId', undefined);
-    }
-  }, [itemType, form]);
 
   const onSubmit = async (data: BorrowFormValues) => {
     try {
       setIsSubmitting(true);
-      
+
       // Remove the itemType field before sending to the API
       const { itemType: _, ...submitData } = data;
-      
+
       if (isEditing && borrowing) {
         await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, submitData);
         toast({
@@ -140,9 +125,9 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
           description: 'Borrowing record added successfully',
         });
       }
-      
+
       queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      
+
       if (onSuccess) {
         onSuccess();
       }
@@ -157,7 +142,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <Card>
       <CardHeader>
@@ -194,7 +179,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="librarianId"
@@ -222,95 +207,35 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
-                name="itemType"
+                name="bookId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Item Type</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          setItemType(value as 'book' | 'research');
-                        }}
-                        defaultValue={field.value}
-                        className="flex space-x-4"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="book" id="book" />
-                          <Label htmlFor="book">Book</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="research" id="research" />
-                          <Label htmlFor="research">Research Paper</Label>
-                        </div>
-                      </RadioGroup>
-                    </FormControl>
+                    <FormLabel>Book</FormLabel>
+                    <Select
+                      onValueChange={(value) => field.onChange(parseInt(value))}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select book" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {books?.map((book: any) => (
+                          <SelectItem key={book.id} value={book.id.toString()}>
+                            {book.name} by {book.author}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
-              {itemType === 'book' ? (
-                <FormField
-                  control={form.control}
-                  name="bookId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Book</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(parseInt(value))}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select book" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {books?.map((book: any) => (
-                            <SelectItem key={book.id} value={book.id.toString()}>
-                              {book.name} by {book.author}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : (
-                <FormField
-                  control={form.control}
-                  name="researchId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Research Paper</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(parseInt(value))}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select research paper" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {researchPapers?.map((paper: any) => (
-                            <SelectItem key={paper.id} value={paper.id.toString()}>
-                              {paper.name} by {paper.author}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-              
+
               <FormField
                 control={form.control}
                 name="borrowDate"
@@ -324,7 +249,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="dueDate"
@@ -338,7 +263,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="status"
@@ -361,14 +286,14 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               {form.formState.errors.itemType && (
                 <div className="col-span-2 text-destructive text-sm">
                   {form.formState.errors.itemType.message}
                 </div>
               )}
             </div>
-            
+
             <div className="flex justify-end space-x-2 pt-4">
               {onCancel && (
                 <Button type="button" variant="outline" onClick={onCancel}>

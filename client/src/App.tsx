@@ -8,7 +8,6 @@ import { CompactViewProvider } from './lib/context/compact-view-context';
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
 import Books from "@/pages/books";
-import Research from "@/pages/research";
 import Borrowers from "@/pages/borrowers";
 import Librarians from "@/pages/librarians";
 import Borrowing from "@/pages/borrowing";
@@ -60,15 +59,6 @@ function Router() {
           <PrivateRoute>
             <Layout>
               <Books />
-            </Layout>
-          </PrivateRoute>
-        )}
-      </Route>
-      <Route path="/research">
-        {() => (
-          <PrivateRoute>
-            <Layout>
-              <Research />
             </Layout>
           </PrivateRoute>
         )}

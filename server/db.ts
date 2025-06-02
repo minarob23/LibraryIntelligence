@@ -2,7 +2,6 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { 
   books,
-  researchPapers,
   librarians,
   borrowers,
   borrowings,
@@ -16,7 +15,6 @@ export const db = drizzle(sqlite);
 // Export tables
 export {
   books,
-  researchPapers,
   librarians,
   borrowers,
   borrowings,
@@ -69,21 +67,6 @@ const createTables = () => {
     )
   `);
 
-  // Research papers table
-  sqlite.exec(`
-    CREATE TABLE IF NOT EXISTS research_papers (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      cover_image TEXT NOT NULL,
-      name TEXT NOT NULL,
-      author TEXT NOT NULL,
-      publisher TEXT NOT NULL,
-      research_code TEXT UNIQUE NOT NULL,
-      copies INTEGER NOT NULL DEFAULT 1,
-      description TEXT,
-      created_at TEXT DEFAULT (datetime('now'))
-    )
-  `);
-
   // Librarians table
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS librarians (
@@ -119,14 +102,12 @@ const createTables = () => {
     )
   `);
 
-  // Borrowings table with foreign key constraints
+  // Borrowings table
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS borrowings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       borrower_id INTEGER NOT NULL,
-      librarian_id INTEGER NOT NULL,
-      book_id INTEGER,
-      research_id INTEGER,
+      book_id INTEGER NOT NULL,
       borrow_date DATE NOT NULL,
       due_date DATE NOT NULL,
       return_date DATE,
@@ -134,10 +115,7 @@ const createTables = () => {
       rating INTEGER CHECK (rating >= 1 AND rating <= 5),
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
-      FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
-      FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
-      FOREIGN KEY (research_id) REFERENCES research_papers(id) ON DELETE CASCADE,
-      CHECK ((book_id IS NOT NULL AND research_id IS NULL) OR (book_id IS NULL AND research_id IS NOT NULL))
+      FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
     )
   `);
 };

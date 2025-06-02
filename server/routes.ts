@@ -3,7 +3,6 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
   insertBookSchema, 
-  insertResearchPaperSchema, 
   insertLibrarianSchema, 
   insertBorrowerSchema, 
   insertBorrowingSchema,
@@ -90,68 +89,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Research Papers Routes
-  app.get('/api/research', async (req, res) => {
-    try {
-      const papers = await storage.getResearchPapers();
-      res.json(papers);
-    } catch (err) {
-      console.error('Error fetching research papers:', err);
-      res.status(500).json({ message: 'Error fetching research papers' });
-    }
-  });
-
-  app.get('/api/research/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const paper = await storage.getResearchPaper(id);
-      if (!paper) {
-        return res.status(404).json({ message: 'Research paper not found' });
-      }
-      res.json(paper);
-    } catch (err) {
-      console.error('Error fetching research paper:', err);
-      res.status(500).json({ message: 'Error fetching research paper' });
-    }
-  });
-
-  app.post('/api/research', async (req, res) => {
-    try {
-      const paperData = insertResearchPaperSchema.parse(req.body);
-      const paper = await storage.createResearchPaper(paperData);
-      res.status(201).json(paper);
-    } catch (err) {
-      return handleZodError(err, res);
-    }
-  });
-
-  app.put('/api/research/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const paperData = insertResearchPaperSchema.partial().parse(req.body);
-      const paper = await storage.updateResearchPaper(id, paperData);
-      if (!paper) {
-        return res.status(404).json({ message: 'Research paper not found' });
-      }
-      res.json(paper);
-    } catch (err) {
-      return handleZodError(err, res);
-    }
-  });
-
-  app.delete('/api/research/:id', async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const success = await storage.deleteResearchPaper(id);
-      if (!success) {
-        return res.status(404).json({ message: 'Research paper not found' });
-      }
-      res.status(204).end();
-    } catch (err) {
-      console.error('Error deleting research paper:', err);
-      res.status(500).json({ message: 'Error deleting research paper' });
-    }
-  });
+  
 
   // Librarians Routes
   app.get('/api/librarians', async (req, res) => {
@@ -324,11 +262,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const borrowingData = insertBorrowingSchema.parse(req.body);
 
-      // Validate that either bookId or researchId is provided, but not both
-      if ((!borrowingData.bookId && !borrowingData.researchId) || 
-          (borrowingData.bookId && borrowingData.researchId)) {
+      // Validate that bookId is provided
+      if (!borrowingData.bookId) {
         return res.status(400).json({ 
-          message: 'Either bookId or researchId must be provided, but not both' 
+          message: 'bookId must be provided' 
         });
       }
 

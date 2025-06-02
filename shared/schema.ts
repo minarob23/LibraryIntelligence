@@ -33,24 +33,6 @@ export const insertBookSchema = createInsertSchema(books).omit({
   createdAt: true,
 });
 
-// Research papers table
-export const researchPapers = pgTable("research_papers", {
-  id: serial("id").primaryKey(),
-  coverImage: text("cover_image").notNull(),
-  name: text("name").notNull(),
-  author: text("author").notNull(),
-  publisher: text("publisher").notNull(),
-  researchCode: text("research_code").notNull().unique(),
-  copies: integer("copies").notNull().default(1),
-  description: text("description"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-export const insertResearchPaperSchema = createInsertSchema(researchPapers).omit({
-  id: true,
-  createdAt: true,
-});
-
 // Librarians table
 export const librarians = pgTable("librarians", {
   id: serial("id").primaryKey(),
@@ -92,13 +74,12 @@ export const insertBorrowerSchema = createInsertSchema(borrowers).omit({
   createdAt: true,
 });
 
-// Borrowing table - connects books, research papers, librarians, and borrowers
+// Borrowing table - connects books, librarians, and borrowers
 export const borrowings = pgTable("borrowings", {
   id: serial("id").primaryKey(),
   borrowerId: integer("borrower_id").notNull(),
   librarianId: integer("librarian_id").notNull(),
   bookId: integer("book_id"),
-  researchId: integer("research_id"),
   borrowDate: date("borrow_date").notNull(),
   dueDate: date("due_date").notNull(),
   returnDate: date("return_date"),
@@ -150,9 +131,6 @@ export const membershipApplications = pgTable("membership_applications", {
 // Types
 export type Book = typeof books.$inferSelect;
 export type InsertBook = z.infer<typeof insertBookSchema>;
-
-export type ResearchPaper = typeof researchPapers.$inferSelect;
-export type InsertResearchPaper = z.infer<typeof insertResearchPaperSchema>;
 
 export type Librarian = typeof librarians.$inferSelect;
 export type InsertLibrarian = z.infer<typeof insertLibrarianSchema>;

@@ -47,7 +47,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header sidebarOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-      
+
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside
@@ -62,7 +62,7 @@ const Layout = ({ children }: LayoutProps) => {
               <h2 className="text-lg font-semibold">Library MS</h2>
             </div>
           </div>
-          
+
           <nav className="flex-1 overflow-y-auto py-4">
             <ul className="space-y-1">
               <li>
@@ -79,14 +79,6 @@ const Layout = ({ children }: LayoutProps) => {
                   label="Books"
                   to="/books"
                   active={location === '/books'}
-                />
-              </li>
-              <li>
-                <SidebarItem
-                  icon={<FileText size={20} />}
-                  label="Research"
-                  to="/research"
-                  active={location === '/research'}
                 />
               </li>
               <li>
@@ -132,7 +124,7 @@ const Layout = ({ children }: LayoutProps) => {
             </ul>
           </nav>
         </aside>
-        
+
         {/* Main Content */}
         <main 
           className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900"
