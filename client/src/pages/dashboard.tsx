@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Users, Repeat } from 'lucide-react';
+import { Users, Repeat, Plus } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatsCard from '@/components/dashboard/stats-card';
 import ChartContainer from '@/components/dashboard/chart-container';
@@ -111,8 +112,28 @@ const Dashboard = () => {
   return (
     <div>
       <div className="mb-6 animate-slide-up">
-        <h2 className="text-2xl font-bold">Dashboard</h2>
-        <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h2 className="text-2xl font-bold">Dashboard</h2>
+            <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              onClick={() => window.location.href = '/borrowing'}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              New Borrow
+            </Button>
+            <Button 
+              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              onClick={() => window.location.href = '/borrowers'}
+            >
+              <Users className="mr-2 h-4 w-4" />
+              New Member
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Statistics Cards */}

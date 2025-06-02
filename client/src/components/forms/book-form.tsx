@@ -240,9 +240,9 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                 name="bookCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Book Code (Auto-generated)</FormLabel>
+                    <FormLabel>Book Code</FormLabel>
                     <FormControl>
-                      <Input placeholder="Generated from Cabinet/Shelf/Num" {...field} readOnly />
+                      <Input placeholder="Book code" {...field} readOnly />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
