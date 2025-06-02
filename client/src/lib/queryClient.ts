@@ -1,33 +1,119 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-async function throwIfResNotOk(res: Response) {
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
+import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { localStorage_storage } from './localStorage';
+
+// Mock API responses using localStorage
+const mockApiResponse = async (endpoint: string, options?: any): Promise<any> => {
+  const [path, queryString] = endpoint.split('?');
+  const params = new URLSearchParams(queryString || '');
+  
+  switch (true) {
+    case path === '/api/books':
+      if (options?.method === 'POST') {
+        return localStorage_storage.createBook(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateBook(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteBook(id);
+      }
+      return localStorage_storage.getBooks();
+      
+    case path.startsWith('/api/books/'):
+      const bookId = parseInt(path.split('/')[3]);
+      return localStorage_storage.getBook(bookId);
+      
+    case path === '/api/borrowers':
+      const category = params.get('category');
+      if (options?.method === 'POST') {
+        return localStorage_storage.createBorrower(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateBorrower(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteBorrower(id);
+      }
+      return category ? localStorage_storage.getBorrowersByCategory(category) : localStorage_storage.getBorrowers();
+      
+    case path.startsWith('/api/borrowers/'):
+      const borrowerId = parseInt(path.split('/')[3]);
+      return localStorage_storage.getBorrower(borrowerId);
+      
+    case path === '/api/librarians':
+      if (options?.method === 'POST') {
+        return localStorage_storage.createLibrarian(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateLibrarian(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteLibrarian(id);
+      }
+      return localStorage_storage.getLibrarians();
+      
+    case path.startsWith('/api/librarians/'):
+      const librarianId = parseInt(path.split('/')[3]);
+      return localStorage_storage.getLibrarian(librarianId);
+      
+    case path === '/api/borrowings':
+      const borrowerIdParam = params.get('borrowerId');
+      if (options?.method === 'POST') {
+        return localStorage_storage.createBorrowing(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateBorrowing(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteBorrowing(id);
+      }
+      return borrowerIdParam ? localStorage_storage.getBorrowingsByBorrowerId(parseInt(borrowerIdParam)) : localStorage_storage.getBorrowings();
+      
+    case path.startsWith('/api/borrowings/'):
+      const borrowingId = parseInt(path.split('/')[3]);
+      return localStorage_storage.getBorrowing(borrowingId);
+      
+    case path === '/api/dashboard/most-borrowed-books':
+      const limit1 = parseInt(params.get('limit') || '5');
+      return localStorage_storage.getMostBorrowedBooks(limit1);
+      
+    case path === '/api/dashboard/popular-books':
+      const limit2 = parseInt(params.get('limit') || '4');
+      return localStorage_storage.getPopularBooks(limit2);
+      
+    case path === '/api/dashboard/top-borrowers':
+      const limit3 = parseInt(params.get('limit') || '5');
+      return localStorage_storage.getTopBorrowers(limit3);
+      
+    case path === '/api/dashboard/borrower-distribution':
+      return localStorage_storage.getBorrowerDistribution();
+      
+    case path === '/api/membership-application':
+      if (options?.method === 'POST') {
+        return localStorage_storage.createMembershipApplication(options.body);
+      }
+      break;
+      
+    case path === '/api/reset-ui':
+      return { message: 'UI has been reset successfully' };
+      
+    case path === '/api/restore-database':
+      return { message: 'Database restored successfully' };
+      
+    default:
+      throw new Error(`Unknown endpoint: ${endpoint}`);
   }
-}
+};
 
 export const apiRequest = async (method: string, url: string, data?: any) => {
   try {
-    const response = await fetch(url, {
+    const response = await mockApiResponse(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data ? JSON.stringify(data) : undefined,
+      body: data
     });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
-    }
-
-    // For 204 No Content, return null instead of trying to parse JSON
-    if (response.status === 204) {
-      return null;
-    }
-
-    return await response.json();
+    return response;
   } catch (error) {
     console.error('API Request Error:', error);
     throw error;
@@ -40,16 +126,15 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    try {
+      const response = await mockApiResponse(queryKey[0] as string);
+      return response;
+    } catch (error: any) {
+      if (unauthorizedBehavior === "returnNull" && error.status === 401) {
+        return null;
+      }
+      throw error;
     }
-
-    await throwIfResNotOk(res);
-    return await res.json();
   };
 
 export const queryClient = new QueryClient({

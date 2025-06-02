@@ -24,7 +24,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 type MembershipFormValues = z.infer<typeof membershipApplicationSchema>;
 
-const MembershipForm = () => {
+interface MembershipFormProps {
+  onSubmit?: (data: any) => void;
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+
+const MembershipForm: React.FC<MembershipFormProps> = ({ onSubmit, onSuccess, onCancel }) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -64,6 +70,7 @@ const MembershipForm = () => {
 
       setIsSuccess(true);
       form.reset();
+      onSuccess?.();
     } catch (error) {
       console.error('Error submitting application:', error);
       let errorMessage = 'Failed to submit membership application. ';
@@ -365,7 +372,7 @@ const MembershipForm = () => {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => window.location.href = '/dashboard'}
+                onClick={onCancel}
               >
                 Cancel
               </Button>

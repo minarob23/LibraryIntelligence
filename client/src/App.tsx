@@ -17,6 +17,7 @@ import Layout from "@/components/layout/sidebar";
 import Login from "@/pages/login";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { initializeSampleData } from "./lib/sampleData";
 
 function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('isAuthenticated'));
@@ -123,6 +124,11 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    // Initialize sample data on first load
+    initializeSampleData();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">

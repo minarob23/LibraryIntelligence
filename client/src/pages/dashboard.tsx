@@ -152,11 +152,16 @@ const Dashboard = () => {
                   New Member
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[800px] max-h-[90vh]">
-                <DialogHeader>
+              <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden flex flex-col">
+                <DialogHeader className="flex-shrink-0">
                   <DialogTitle>Membership Registration</DialogTitle>
                 </DialogHeader>
-                <MembershipForm />
+                <div className="flex-1 overflow-y-auto pr-2">
+                  <MembershipForm 
+                    onSuccess={() => setOpenMemberDialog(false)} 
+                    onCancel={() => setOpenMemberDialog(false)} 
+                  />
+                </div>
               </DialogContent>
             </Dialog>
           </div>
