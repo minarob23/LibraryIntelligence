@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Edit, Trash2, Plus, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,8 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -49,6 +51,56 @@ const BooksPage = () => {
     queryKey: ['/api/borrowings'],
   });
 
+  // Helper functions
+  const getBookBorrowings = (bookId: number) => {
+    return borrowings?.filter((b: any) => b.bookId === bookId) || [];
+  };
+
+  const getTimesBorrowed = (bookId: number) => {
+    return getBookBorrowings(bookId).length;
+  };
+
+  const getLastBorrowedDate = (bookId: number) => {
+    const bookBorrowings = getBookBorrowings(bookId);
+    if (bookBorrowings.length === 0) return null;
+    
+    const dates = bookBorrowings.map((b: any) => new Date(b.borrowDate));
+    return new Date(Math.max(...dates.map(d => d.getTime())));
+  };
+
+  const getAverageRating = (bookId: number) => {
+    const bookBorrowings = getBookBorrowings(bookId).filter((b: any) => b.rating);
+    if (bookBorrowings.length === 0) return null;
+    
+    const sum = bookBorrowings.reduce((acc: number, b: any) => acc + b.rating, 0);
+    return (sum / bookBorrowings.length).toFixed(1);
+  };
+
+  const getPopularityScore = (bookId: number) => {
+    const timesBorrowed = getTimesBorrowed(bookId);
+    const avgRating = getAverageRating(bookId);
+    const lastBorrowed = getLastBorrowedDate(bookId);
+    
+    if (timesBorrowed === 0) return 0;
+    
+    // Base score from borrowing frequency (max 50 points)
+    let score = Math.min(timesBorrowed * 10, 50);
+    
+    // Add rating bonus (max 30 points)
+    if (avgRating) {
+      score += parseFloat(avgRating) * 6;
+    }
+    
+    // Add recency bonus (max 20 points)
+    if (lastBorrowed) {
+      const daysSince = Math.floor((new Date().getTime() - lastBorrowed.getTime()) / (1000 * 60 * 60 * 24));
+      const recencyBonus = Math.max(0, 20 - (daysSince / 7));
+      score += recencyBonus;
+    }
+    
+    return Math.round(score);
+  };
+
   const handleDelete = async (id: number) => {
     try {
       await apiRequest('DELETE', `/api/books/${id}`);
@@ -82,6 +134,7 @@ const BooksPage = () => {
           />
           <div>
             <div className="text-sm font-medium">{row.name}</div>
+            <div className="text-xs text-gray-500">{row.genres}</div>
           </div>
         </div>
       ),
@@ -92,40 +145,72 @@ const BooksPage = () => {
       cell: (row: any) => row.author,
     },
     {
-      key: 'publisher',
-      header: 'Publisher',
-      cell: (row: any) => row.publisher,
-    },
-    {
       key: 'bookCode',
-      header: 'Code',
-      cell: (row: any) => row.bookCode,
-    },
-    {
-      key: 'copies',
-      header: 'Copies',
-      cell: (row: any) => row.copies,
+      header: 'Location',
+      cell: (row: any) => (
+        <div>
+          <div className="font-mono text-sm">{row.bookCode}</div>
+          <div className="text-xs text-gray-500">
+            {row.totalPages ? `${row.totalPages} pages` : 'N/A'}
+          </div>
+        </div>
+      ),
     },
     {
       key: 'status',
       header: 'Status',
       cell: (row: any) => {
         const isBorrowed = borrowings?.some((b: any) => b.bookId === row.id && b.status === 'borrowed');
+        const timesBorrowed = getTimesBorrowed(row.id);
+        const lastBorrowed = getLastBorrowedDate(row.id);
         
-        if (isBorrowed) {
-          return (
-            <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-              Borrowed
-            </Badge>
-          );
-        } else {
-          return (
-            <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              Available
-            </Badge>
-          );
-        }
+        return (
+          <div className="space-y-1">
+            {isBorrowed ? (
+              <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                Borrowed
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                Available
+              </Badge>
+            )}
+            <div className="text-xs text-gray-500">
+              Times borrowed: {timesBorrowed}
+            </div>
+            {lastBorrowed && (
+              <div className="text-xs text-gray-500">
+                Last: {lastBorrowed.toLocaleDateString()}
+              </div>
+            )}
+          </div>
+        );
       },
+    },
+    {
+      key: 'rating',
+      header: 'Rating & Score',
+      cell: (row: any) => {
+        const avgRating = getAverageRating(row.id);
+        const popularityScore = getPopularityScore(row.id);
+        
+        return (
+          <div className="space-y-1">
+            <div className="flex items-center">
+              <Star className="h-3 w-3 text-yellow-400 mr-1" />
+              <span className="text-sm">{avgRating || 'N/A'}</span>
+            </div>
+            <div className="text-xs text-gray-500">
+              Score: {popularityScore}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'copies',
+      header: 'Copies',
+      cell: (row: any) => row.copies,
     },
   ];
 
@@ -222,6 +307,26 @@ const BooksPage = () => {
     return "No books found matching the selected filters";
   };
 
+  // Get filtered books for different sections
+  const borrowedBooks = filteredBooks?.filter(book => 
+    borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+  ) || [];
+
+  const mostBorrowedBooks = [...(books || [])]
+    .sort((a, b) => getTimesBorrowed(b.id) - getTimesBorrowed(a.id))
+    .filter(book => getTimesBorrowed(book.id) > 0)
+    .slice(0, 20);
+
+  const popularBooks = [...(books || [])]
+    .sort((a, b) => getPopularityScore(b.id) - getPopularityScore(a.id))
+    .filter(book => getPopularityScore(book.id) > 0)
+    .slice(0, 20);
+
+  const topRatedBooks = [...(books || [])]
+    .filter(book => getAverageRating(book.id) !== null)
+    .sort((a, b) => parseFloat(getAverageRating(b.id) || '0') - parseFloat(getAverageRating(a.id) || '0'))
+    .slice(0, 20);
+
   return (
     <div className="animate-fade-in">
       <div className="mb-6 flex justify-between items-center animate-slide-up">
@@ -235,7 +340,7 @@ const BooksPage = () => {
               <Plus className="mr-2 h-4 w-4" /> Add New Book
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px]">
+          <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
             <DialogHeader>
               <DialogTitle>Add New Book</DialogTitle>
               <DialogDescription>
@@ -246,76 +351,190 @@ const BooksPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
-      <DataTable
-        data={filteredBooks || []}
-        columns={columns}
-        searchable={true}
-        filterComponent={filterComponent}
-        loading={isLoading}
-        emptyMessage={getEmptyMessage()}
-        actions={(row) => (
-          <>
-            <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
-              setOpenEditDialog(open);
-              if (!open) setEditingBook(null);
-            }}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                  setEditingBook(row);
-                  setOpenEditDialog(true);
+
+      <Tabs defaultValue="all" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
+          <TabsTrigger value="borrowed">Borrowed ({borrowedBooks.length})</TabsTrigger>
+          <TabsTrigger value="most-borrowed">Most Borrowed ({mostBorrowedBooks.length})</TabsTrigger>
+          <TabsTrigger value="popular">Popular ({popularBooks.length})</TabsTrigger>
+          <TabsTrigger value="top-rated">Top Rated ({topRatedBooks.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all" className="space-y-4">
+          <div className="flex items-center gap-4 mb-4">
+            {filterComponent}
+          </div>
+          <DataTable
+            data={filteredBooks || []}
+            columns={columns}
+            searchable={true}
+            loading={isLoading}
+            emptyMessage={getEmptyMessage()}
+            actions={(row) => (
+              <>
+                <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
+                  setOpenEditDialog(open);
+                  if (!open) setEditingBook(null);
                 }}>
-                  <Edit size={16} className="mr-1" /> Edit
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[700px]">
-                <DialogHeader>
-                  <DialogTitle>Edit Book</DialogTitle>
-                  <DialogDescription>
-                    Update the book details. Fill out the form below with the updated information.
-                  </DialogDescription>
-                </DialogHeader>
-                {editingBook && (
-                  <BookForm 
-                    book={editingBook} 
-                    onSuccess={() => setOpenEditDialog(false)} 
-                    onCancel={() => setOpenEditDialog(false)} 
-                  />
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                      setEditingBook(row);
+                      setOpenEditDialog(true);
+                    }}>
+                      <Edit size={16} className="mr-1" /> Edit
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+                    <DialogHeader>
+                      <DialogTitle>Edit Book</DialogTitle>
+                      <DialogDescription>
+                        Update the book details. Fill out the form below with the updated information.
+                      </DialogDescription>
+                    </DialogHeader>
+                    {editingBook && (
+                      <BookForm 
+                        book={editingBook} 
+                        onSuccess={() => setOpenEditDialog(false)} 
+                        onCancel={() => setOpenEditDialog(false)} 
+                      />
+                    )}
+                  </DialogContent>
+                </Dialog>
+                
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">
+                      <Trash2 size={16} className="mr-1" /> Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the book
+                        "{row.name}" from the library collection.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(row.id)} className="bg-red-500 hover:bg-red-600">
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            )}
+            pagination={{
+              totalItems: filteredBooks?.length || 0,
+              itemsPerPage: 10,
+              currentPage: 1,
+              onPageChange: () => {},
+            }}
+          />
+        </TabsContent>
+
+        <TabsContent value="borrowed" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Currently Borrowed Books</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={borrowedBooks}
+                columns={columns}
+                searchable={true}
+                loading={isLoading}
+                emptyMessage="No books are currently borrowed"
+                actions={(row) => (
+                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                    setEditingBook(row);
+                    setOpenEditDialog(true);
+                  }}>
+                    <Edit size={16} className="mr-1" /> Edit
+                  </Button>
                 )}
-              </DialogContent>
-            </Dialog>
-            
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">
-                  <Trash2 size={16} className="mr-1" /> Delete
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the book
-                    "{row.name}" from the library collection.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleDelete(row.id)} className="bg-red-500 hover:bg-red-600">
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </>
-        )}
-        pagination={{
-          totalItems: books?.length || 0,
-          itemsPerPage: 10,
-          currentPage: 1,
-          onPageChange: () => {},
-        }}
-      />
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="most-borrowed" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Most Borrowed Books</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={mostBorrowedBooks}
+                columns={columns}
+                searchable={true}
+                loading={isLoading}
+                emptyMessage="No borrowing data available"
+                actions={(row) => (
+                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                    setEditingBook(row);
+                    setOpenEditDialog(true);
+                  }}>
+                    <Edit size={16} className="mr-1" /> Edit
+                  </Button>
+                )}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="popular" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Popular Books by Score</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={popularBooks}
+                columns={columns}
+                searchable={true}
+                loading={isLoading}
+                emptyMessage="No popularity data available"
+                actions={(row) => (
+                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                    setEditingBook(row);
+                    setOpenEditDialog(true);
+                  }}>
+                    <Edit size={16} className="mr-1" /> Edit
+                  </Button>
+                )}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="top-rated" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Top Rated Books</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={topRatedBooks}
+                columns={columns}
+                searchable={true}
+                loading={isLoading}
+                emptyMessage="No rating data available"
+                actions={(row) => (
+                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                    setEditingBook(row);
+                    setOpenEditDialog(true);
+                  }}>
+                    <Edit size={16} className="mr-1" /> Edit
+                  </Button>
+                )}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

@@ -17,6 +17,14 @@ export const books = pgTable("books", {
   bookCode: text("book_code").notNull().unique(),
   copies: integer("copies").notNull().default(1),
   description: text("description"),
+  totalPages: integer("total_pages"),
+  cabinet: text("cabinet"),
+  shelf: text("shelf"),
+  num: text("num"),
+  addedDate: date("added_date").default(sql`CURRENT_DATE`),
+  publishedDate: date("published_date"),
+  genres: text("genres"),
+  comments: text("comments"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
@@ -95,6 +103,7 @@ export const borrowings = pgTable("borrowings", {
   dueDate: date("due_date").notNull(),
   returnDate: date("return_date"),
   status: text("status").notNull().$type<'borrowed' | 'returned' | 'overdue'>(),
+  rating: integer("rating"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 

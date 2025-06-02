@@ -30,6 +30,14 @@ const bookSchema = insertBookSchema.extend({
   copies: z.number().min(1, 'Number of copies must be at least 1'),
   description: z.string().optional(),
   coverImage: z.string().min(1, 'Cover image is required'),
+  totalPages: z.number().min(1, 'Total pages must be at least 1').optional(),
+  cabinet: z.string().min(1, 'Cabinet is required'),
+  shelf: z.string().min(1, 'Shelf is required'),
+  num: z.string().min(1, 'Number is required'),
+  addedDate: z.string().optional(),
+  publishedDate: z.string().optional(),
+  genres: z.string().optional(),
+  comments: z.string().optional(),
 });
 
 type BookFormValues = z.infer<typeof bookSchema>;
@@ -55,8 +63,27 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
       copies: 1,
       description: '',
       coverImage: '',
+      totalPages: undefined,
+      cabinet: '',
+      shelf: '',
+      num: '',
+      addedDate: new Date().toISOString().split('T')[0],
+      publishedDate: '',
+      genres: '',
+      comments: '',
     },
   });
+  
+  const updateBookCode = () => {
+    const cabinet = form.getValues('cabinet');
+    const shelf = form.getValues('shelf');
+    const num = form.getValues('num');
+    
+    if (cabinet && shelf && num) {
+      const bookCode = `${cabinet}/${shelf}/${num}`;
+      form.setValue('bookCode', bookCode);
+    }
+  };
   
   const onSubmit = async (data: BookFormValues) => {
     try {
@@ -147,12 +174,75 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
               
               <FormField
                 control={form.control}
+                name="cabinet"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cabinet</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="e.g., A" 
+                        {...field} 
+                        onChange={(e) => {
+                          field.onChange(e);
+                          updateBookCode();
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="shelf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Shelf</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="e.g., 01" 
+                        {...field} 
+                        onChange={(e) => {
+                          field.onChange(e);
+                          updateBookCode();
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="num"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Number</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="e.g., 001" 
+                        {...field} 
+                        onChange={(e) => {
+                          field.onChange(e);
+                          updateBookCode();
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
                 name="bookCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Book Code</FormLabel>
+                    <FormLabel>Book Code (Auto-generated)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter book code" {...field} />
+                      <Input placeholder="Generated from Cabinet/Shelf/Num" {...field} readOnly />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,6 +262,67 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                         {...field} 
                         onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="totalPages"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Pages</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min="1" 
+                        {...field} 
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="addedDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Added Date</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="publishedDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Published Date</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="genres"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Genres</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Fiction, Mystery, Romance" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -206,6 +357,24 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                     <Textarea 
                       placeholder="Enter book description" 
                       className="min-h-[100px]" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="comments"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Comments</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Enter any additional comments about the book" 
+                      className="min-h-[80px]" 
                       {...field} 
                     />
                   </FormControl>

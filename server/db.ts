@@ -57,6 +57,14 @@ const createTables = () => {
       book_code TEXT UNIQUE NOT NULL,
       copies INTEGER NOT NULL DEFAULT 1,
       description TEXT,
+      total_pages INTEGER,
+      cabinet TEXT,
+      shelf TEXT,
+      num TEXT,
+      added_date DATE DEFAULT (date('now')),
+      published_date DATE,
+      genres TEXT,
+      comments TEXT,
       created_at TEXT DEFAULT (datetime('now'))
     )
   `);
@@ -123,6 +131,7 @@ const createTables = () => {
       due_date DATE NOT NULL,
       return_date DATE,
       status TEXT NOT NULL CHECK (status IN ('borrowed', 'returned', 'overdue')),
+      rating INTEGER CHECK (rating >= 1 AND rating <= 5),
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (borrower_id) REFERENCES borrowers(id) ON DELETE CASCADE,
       FOREIGN KEY (librarian_id) REFERENCES librarians(id) ON DELETE CASCADE,
