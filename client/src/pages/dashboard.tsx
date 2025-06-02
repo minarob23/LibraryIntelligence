@@ -1,16 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Users, Repeat, Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import StatsCard from '@/components/dashboard/stats-card';
 import ChartContainer from '@/components/dashboard/chart-container';
 import PopularBooks from '@/components/dashboard/popular-books';
 import TopBorrowers from '@/components/dashboard/top-borrowers';
 import BorrowingTrends from '@/components/dashboard/borrowing-trends';
+import BorrowForm from '@/components/forms/borrow-form';
+import MembershipForm from '@/components/forms/membership-form';
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
+  const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
+  const [openMemberDialog, setOpenMemberDialog] = useState(false);
 
   // Refresh data every 30 seconds
   useEffect(() => {
@@ -118,20 +123,42 @@ const Dashboard = () => {
             <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
           </div>
           <div className="flex gap-3">
-            <Button 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-              onClick={() => window.location.href = '/borrowing'}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              New Borrow
-            </Button>
-            <Button 
-              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-              onClick={() => window.location.href = '/borrowers'}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              New Member
-            </Button>
+            <Dialog open={openBorrowDialog} onOpenChange={setOpenBorrowDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Borrow
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[700px]">
+                <DialogHeader>
+                  <DialogTitle>New Borrowing Record</DialogTitle>
+                </DialogHeader>
+                <BorrowForm 
+                  onSuccess={() => setOpenBorrowDialog(false)} 
+                  onCancel={() => setOpenBorrowDialog(false)} 
+                />
+              </DialogContent>
+            </Dialog>
+            
+            <Dialog open={openMemberDialog} onOpenChange={setOpenMemberDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  New Member
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[700px]">
+                <DialogHeader>
+                  <DialogTitle>Membership Registration</DialogTitle>
+                </DialogHeader>
+                <MembershipForm />
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
