@@ -73,22 +73,22 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
       comments: '',
     },
   });
-  
+
   const updateBookCode = () => {
     const cabinet = form.getValues('cabinet');
     const shelf = form.getValues('shelf');
     const num = form.getValues('num');
-    
+
     if (cabinet && shelf && num) {
       const bookCode = `${cabinet}/${shelf}/${num}`;
       form.setValue('bookCode', bookCode);
     }
   };
-  
+
   const onSubmit = async (data: BookFormValues) => {
     try {
       setIsSubmitting(true);
-      
+
       if (isEditing && book) {
         await apiRequest('PUT', `/api/books/${book.id}`, data);
         toast({
@@ -102,9 +102,9 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
           description: 'Book added successfully',
         });
       }
-      
+
       queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-      
+
       if (onSuccess) {
         onSuccess();
       }
@@ -119,7 +119,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <ScrollArea className="h-[80vh]">
     <Card>
@@ -143,7 +143,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="author"
@@ -157,7 +157,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="publisher"
@@ -171,7 +171,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="cabinet"
@@ -192,7 +192,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="shelf"
@@ -213,7 +213,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="num"
@@ -234,7 +234,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="bookCode"
@@ -248,7 +248,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="copies"
@@ -267,68 +267,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
-              
-              <FormField
-                control={form.control}
-                name="totalPages"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Pages</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        min="1" 
-                        {...field} 
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="addedDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Added Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="publishedDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Published Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="genres"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Genres</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Fiction, Mystery, Romance" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
+
               <FormField
                 control={form.control}
                 name="coverImage"
@@ -346,7 +285,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                 )}
               />
             </div>
-            
+
             <FormField
               control={form.control}
               name="description"
@@ -364,7 +303,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="comments"
@@ -382,7 +321,7 @@ const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
                 </FormItem>
               )}
             />
-            
+
             <div className="flex justify-end space-x-2 pt-4">
               {onCancel && (
                 <Button type="button" variant="outline" onClick={onCancel}>
