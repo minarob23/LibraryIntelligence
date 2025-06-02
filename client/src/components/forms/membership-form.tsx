@@ -25,12 +25,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 type MembershipFormValues = z.infer<typeof membershipApplicationSchema>;
 
 interface MembershipFormProps {
-  onSubmit?: (data: any) => void;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-const MembershipForm: React.FC<MembershipFormProps> = ({ onSubmit, onSuccess, onCancel }) => {
+const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
