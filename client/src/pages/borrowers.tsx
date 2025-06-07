@@ -299,7 +299,11 @@ const BorrowersPage = () => {
             </DialogHeader>
             <div className="flex-1 overflow-y-auto pr-2">
               <BorrowerForm 
-                onSuccess={() => setOpenAddDialog(false)} 
+                onSuccess={async () => {
+                  setOpenAddDialog(false);
+                  // Force a manual refetch of borrowers data
+                  await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
+                }} 
                 onCancel={() => setOpenAddDialog(false)} 
               />
             </div>
@@ -397,8 +401,16 @@ const BorrowersPage = () => {
                       <div className="flex-1 overflow-y-auto pr-2">
                         <BorrowerForm 
                           borrower={editingBorrower}
-                          onSuccess={() => setOpenEditDialog(false)}
-                          onCancel={() => setOpenEditDialog(false)}
+                          onSuccess={async () => {
+                            setOpenEditDialog(false);
+                            setEditingBorrower(null);
+                            // Force a manual refetch of borrowers data
+                            await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
+                          }}
+                          onCancel={() => {
+                            setOpenEditDialog(false);
+                            setEditingBorrower(null);
+                          }}
                         />
                       </div>
                     </DialogContent>

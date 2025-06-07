@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -101,12 +100,13 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       if (isEditing && borrower?.id) {
         const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
 
-        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+        // Invalidate and immediately refetch all related queries
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
 
         // Force immediate refetch to ensure UI updates
-        queryClient.refetchQueries({ queryKey: ['/api/borrowers'], type: 'active' });
+        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
 
         toast({
           title: 'Success',
@@ -119,12 +119,13 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       } else {
         const response = await apiRequest('POST', '/api/borrowers', data);
 
-        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+        // Invalidate and immediately refetch all related queries
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
 
         // Force immediate refetch to ensure UI updates
-        queryClient.refetchQueries({ queryKey: ['/api/borrowers'], type: 'active' });
+        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
 
         toast({
           title: 'Success',
