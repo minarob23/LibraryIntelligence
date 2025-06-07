@@ -320,11 +320,11 @@ class LocalStorage {
   }
 
   // Research methods
-  getResearchPapers: () => {
+  getResearchPapers() {
     return JSON.parse(localStorage.getItem('research_papers') || '[]');
-  },
+  }
 
-  createResearchPaper: (data: any) => {
+  createResearchPaper(data: any) {
     const papers = this.getResearchPapers();
     const newPaper = {
       id: Date.now(),
@@ -334,9 +334,9 @@ class LocalStorage {
     papers.push(newPaper);
     localStorage.setItem('research_papers', JSON.stringify(papers));
     return newPaper;
-  },
+  }
 
-  updateResearchPaper: (id: number, data: any) => {
+  updateResearchPaper(id: number, data: any) {
     const papers = this.getResearchPapers();
     const index = papers.findIndex((p: any) => p.id === id);
     if (index !== -1) {
@@ -345,17 +345,17 @@ class LocalStorage {
       return papers[index];
     }
     throw new Error('Research paper not found');
-  },
+  }
 
-  deleteResearchPaper: (id: number) => {
+  deleteResearchPaper(id: number) {
     const papers = this.getResearchPapers();
     const filtered = papers.filter((p: any) => p.id !== id);
     localStorage.setItem('research_papers', JSON.stringify(filtered));
     return { success: true };
-  },
+  }
 
   // Dashboard methods
-  getDashboardStats: () => {
+  getDashboardStats() {
     const books = this.getBooks();
     const borrowers = this.getBorrowers();
     const borrowings = this.getBorrowings();
@@ -375,7 +375,7 @@ class LocalStorage {
       activeBorrowings,
       overdueBorrowings
     };
-  },
+  }
 
   getMostBorrowedBooks(limit: number = 5) {
     const data = this.getData();
