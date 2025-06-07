@@ -1,31 +1,54 @@
-import { useState } from 'react';
-import { useCompactView } from '@/lib/context/compact-view-context';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, Filter } from 'lucide-react';
-import TablePagination from './table-pagination';
 
-interface Column {
-  key: string;
-  header: string;
-  cell?: (row: any) => React.ReactNode;
-}
+import React from 'react';
+import { ChevronDown, MoreHorizontal, Trash2 } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface DataTableProps {
   data: any[];
-  columns: Column[];
-  searchable?: boolean;
-  filterComponent?: React.ReactNode;
-  actions?: (row: any) => React.ReactNode;
-  loading?: boolean;
+  columns: Array<{
+    key?: string;
+    id?: string;
+    header: string;
+    cell: (row: any, index?: number) => React.ReactNode;
+  }>;
+  isLoading?: boolean;
+  emptyMessage?: string;
+  actions?: Array<{
+    label: string;
+    icon?: React.ReactNode;
+    onClick: (row: any) => void;
+    show?: (row: any) => boolean;
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+    requireConfirm?: boolean;
+    confirmTitle?: string;
+    confirmDescription?: string;
+  }>;
   pagination?: {
     totalItems: number;
     itemsPerPage: number;
@@ -34,135 +57,192 @@ interface DataTableProps {
   };
 }
 
-const DataTable = ({
-  data,
-  columns,
-  searchable = false,
-  filterComponent,
-  actions,
-  loading = false,
-  pagination
-}: DataTableProps) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const { isCompactView } = useCompactView();
-  const itemsPerPage = pagination?.itemsPerPage || 10;
+const DataTable: React.FC<DataTableProps> = ({
+  data = [],
+  columns = [],
+  isLoading = false,
+  emptyMessage = 'No data available',
+  actions = [],
+  pagination,
+}) => {
+  // Safe data array with fallback
+  const safeData = Array.isArray(data) ? data : [];
+  const safeColumns = Array.isArray(columns) ? columns : [];
+  const safeActions = Array.isArray(actions) ? actions : [];
 
-  // Filter data by search term
-  const filteredData = searchTerm.trim() !== '' 
-    ? data.filter(item => 
-        Object.values(item).some(
-          val => 
-            val && 
-            val.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      )
-    : data;
-
-  return (
-    <div className="data-table-container">
-      {(searchable || filterComponent) && (
-        <div className="px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between border-b dark:border-gray-700 space-y-2 md:space-y-0">
-          {searchable && (
-            <div className="relative max-w-xs w-full md:w-auto">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={16} className="text-gray-400" />
-              </div>
-              <Input
-                type="text"
-                placeholder="Search..."
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          )}
-
-          {filterComponent && (
-            <div className="flex items-center">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowFilters(!showFilters)}
-                className="md:mr-2"
-              >
-                <Filter size={16} className="mr-1" />
-                Filters
-              </Button>
-              {showFilters && (
-                <div className="ml-2">
-                  {filterComponent}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="overflow-x-auto">
-        <Table className={isCompactView ? 'compact' : ''}>
+  if (isLoading) {
+    return (
+      <div className="rounded-md border">
+        <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50 dark:bg-gray-700">
-              {columns.map((column) => (
-                <TableHead key={column.key} className={`text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider ${isCompactView ? 'px-2 py-2' : 'px-4 py-3'}`}>
+            <TableRow>
+              {safeColumns.map((column, columnIndex) => (
+                <TableHead key={`header-${column.key || column.id || columnIndex}`}>
                   {column.header}
                 </TableHead>
               ))}
-              {actions && (
-                <TableHead className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Actions
-                </TableHead>
+              {safeActions.length > 0 && (
+                <TableHead key="actions-header">Actions</TableHead>
               )}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length + (actions ? 1 : 0)} className="py-16 text-center">
-                  <div className="flex justify-center">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div>
-                  </div>
-                  <div className="mt-4 text-gray-500 dark:text-gray-400">Loading data...</div>
-                </TableCell>
+            {Array.from({ length: 5 }).map((_, rowIndex) => (
+              <TableRow key={`skeleton-row-${rowIndex}`}>
+                {safeColumns.map((_, columnIndex) => (
+                  <TableCell key={`skeleton-cell-${rowIndex}-${columnIndex}`}>
+                    <Skeleton className="h-4 w-full" />
+                  </TableCell>
+                ))}
+                {safeActions.length > 0 && (
+                  <TableCell key={`skeleton-actions-${rowIndex}`}>
+                    <Skeleton className="h-8 w-8" />
+                  </TableCell>
+                )}
               </TableRow>
-            ) : filteredData.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={columns.length + (actions ? 1 : 0)} className="py-16 text-center">
-                  <div className="text-gray-500 dark:text-gray-400">No data found</div>
-                </TableCell>
-              </TableRow>
-            ) : (
-              filteredData.map((row) => (
-                <TableRow 
-                  key={`${row.id || 'row'}-${index}-${Date.now()}`}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                >
-                  {columns.map((column, colIndex) => (
-                    <TableCell key={`${column.key || column.id || colIndex}-${row.id || index}`} className="px-4 py-3 whitespace-nowrap text-sm">
-                      {column.cell ? column.cell(row) : row[column.key]}
-                    </TableCell>
-                  ))}
-                  {actions && (
-                    <TableCell className="px-4 py-3 whitespace-nowrap text-right text-sm">
-                      {actions(row)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
+    );
+  }
 
-      {pagination && (
-        <TablePagination
-          totalItems={pagination.totalItems}
-          itemsPerPage={pagination.itemsPerPage}
-          currentPage={pagination.currentPage}
-          onPageChange={pagination.onPageChange}
-        />
-      )}
+  if (safeData.length === 0) {
+    return (
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {safeColumns.map((column, columnIndex) => (
+                <TableHead key={`empty-header-${column.key || column.id || columnIndex}`}>
+                  {column.header}
+                </TableHead>
+              ))}
+              {safeActions.length > 0 && (
+                <TableHead key="empty-actions-header">Actions</TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell 
+                colSpan={safeColumns.length + (safeActions.length > 0 ? 1 : 0)} 
+                className="h-24 text-center text-muted-foreground"
+              >
+                {emptyMessage}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {safeColumns.map((column, columnIndex) => (
+              <TableHead key={`header-${column.key || column.id || columnIndex}`}>
+                {column.header}
+              </TableHead>
+            ))}
+            {safeActions.length > 0 && (
+              <TableHead key="actions-header">Actions</TableHead>
+            )}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {safeData.map((row, rowIndex) => {
+            // Create a unique key for each row
+            const rowKey = row.id ? `row-${row.id}` : `row-${rowIndex}-${Date.now()}`;
+            
+            return (
+              <TableRow key={rowKey}>
+                {safeColumns.map((column, columnIndex) => {
+                  const cellKey = `cell-${rowKey}-${column.key || column.id || columnIndex}`;
+                  
+                  return (
+                    <TableCell key={cellKey}>
+                      {typeof column.cell === 'function' 
+                        ? column.cell(row, rowIndex) 
+                        : row[column.key || column.id || '']
+                      }
+                    </TableCell>
+                  );
+                })}
+                
+                {safeActions.length > 0 && (
+                  <TableCell key={`actions-${rowKey}`}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {safeActions.map((action, actionIndex) => {
+                          // Check if action should be shown for this row
+                          if (action.show && !action.show(row)) {
+                            return null;
+                          }
+
+                          const actionKey = `action-${rowKey}-${actionIndex}`;
+
+                          if (action.requireConfirm) {
+                            return (
+                              <AlertDialog key={actionKey}>
+                                <AlertDialogTrigger asChild>
+                                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    {action.icon}
+                                    <span className="ml-2">{action.label}</span>
+                                  </DropdownMenuItem>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      {action.confirmTitle || 'Are you sure?'}
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      {action.confirmDescription || 'This action cannot be undone.'}
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction 
+                                      onClick={() => action.onClick(row)}
+                                      className={action.variant === 'destructive' ? 'bg-red-500 hover:bg-red-600' : ''}
+                                    >
+                                      {action.label}
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            );
+                          }
+
+                          return (
+                            <DropdownMenuItem
+                              key={actionKey}
+                              onClick={() => action.onClick(row)}
+                              className={action.variant === 'destructive' ? 'text-red-600 dark:text-red-400' : ''}
+                            >
+                              {action.icon}
+                              <span className="ml-2">{action.label}</span>
+                            </DropdownMenuItem>
+                          );
+                        })}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                )}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 };

@@ -328,76 +328,33 @@ const BorrowersPage = () => {
             <DataTable
               data={filteredBorrowers || []}
               columns={columns}
-              searchable={false}
-              loading={isLoading}
-              actions={(row) => (
-                <>
-                  <Dialog open={openEditDialog && editingBorrower?.id === row.id} onOpenChange={(open) => {
-                    setOpenEditDialog(open);
-                    if (!open) setEditingBorrower(null);
-                  }}>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                        setEditingBorrower(row);
-                        setOpenEditDialog(true);
-                      }}>
-                        <Edit size={16} className="mr-1" /> Edit
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[900px] max-h-[85vh] overflow-hidden flex flex-col">
-                      <DialogHeader className="flex-shrink-0 pb-2">
-                        <DialogTitle>Edit Borrower</DialogTitle>
-                      </DialogHeader>
-                      <div className="flex-1 overflow-y-auto pr-2">
-                        <BorrowerForm 
-                          borrower={editingBorrower}
-                          onSuccess={() => setOpenEditDialog(false)}
-                          onCancel={() => setOpenEditDialog(false)}
-                        />
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-
-                  {getDaysUntilExpiry(row.expiryDate) < 0 && (
-                    <Button 
-                      variant="ghost" 
-                      className="text-green-500 hover:text-green-600 ml-3"
-                      onClick={() => renewMembership(row)}
-                    >
-                      <RefreshCw size={16} className="mr-1" /> Renew
-                    </Button>
-                  )}
-
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">
-                        <Trash2 size={16} className="mr-1" /> Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete borrower
-                          "{row.name}" from the library records.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDelete(row.id)} className="bg-red-500 hover:bg-red-600">
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </>
-              )}
-              pagination={{
-                totalItems: filteredBorrowers?.length || 0,
-                itemsPerPage: 10,
-                currentPage: 1,
-                onPageChange: () => {},
-              }}
+              isLoading={isLoading}
+              emptyMessage="No borrowers found"
+              actions={[
+                {
+                  label: 'Edit',
+                  icon: <Edit size={16} />,
+                  onClick: (row: any) => {
+                    setEditingBorrower(row);
+                    setOpenEditDialog(true);
+                  },
+                },
+                {
+                  label: 'Delete',
+                  icon: <Trash2 size={16} />,
+                  onClick: (row: any) => handleDelete(row.id),
+                  variant: 'destructive' as const,
+                  requireConfirm: true,
+                  confirmTitle: 'Delete Borrower',
+                  confirmDescription: `Are you sure you want to delete "${row.name}"? This action cannot be undone.`,
+                },
+                {
+                  label: 'Renew Membership',
+                  icon: <RefreshCw size={16} />,
+                  onClick: (row: any) => renewMembership(row),
+                  show: (row: any) => getDaysUntilExpiry(row.expiryDate) < 30,
+                },
+              ]}
             />
           </TabsContent>
         ))}

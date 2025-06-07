@@ -347,7 +347,7 @@ const BorrowingManagement = () => {
         {statusTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
             <DataTable
-              data={filteredBorrowings}
+              data={filteredBorrowings || []}
               columns={columns}
               isLoading={isLoading}
               emptyMessage="No borrowing records found"
