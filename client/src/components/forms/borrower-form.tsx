@@ -1,7 +1,4 @@
-The code is modified to ensure proper query invalidation and refetching for both books and borrowers after add/update operations.
-```
 
-```replit_final_file
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
