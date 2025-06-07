@@ -63,6 +63,8 @@ const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
 
 type BorrowFormValues = z.infer<typeof borrowSchema> & {
   itemType: 'book' | 'research';
+  rating?: number;
+  review?: string;
 };
 
 interface BorrowFormProps {

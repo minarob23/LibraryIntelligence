@@ -27,6 +27,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTable from '@/components/tables/data-table';
 import BorrowForm from '@/components/forms/borrow-form';
+import ReturnBookForm from '@/components/forms/return-book-form';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { Input } from "@/components/ui/input";
 
@@ -210,6 +211,21 @@ const BorrowingManagement = () => {
       cell: (row: any) => getStatusBadge(row),
     },
     {
+      key: 'rating',
+      header: 'Rating',
+      cell: (row: any) => {
+        if (row.returnDate && row.rating) {
+          return (
+            <div className="flex items-center gap-1">
+              <span className="text-yellow-500">★</span>
+              <span className="text-sm font-medium">{row.rating}/10</span>
+            </div>
+          );
+        }
+        return <span className="text-gray-400 text-sm">-</span>;
+      },
+    },
+    {
       id: 'actions',
       header: 'Actions',
       cell: ({ row }: any) => (
@@ -235,6 +251,30 @@ const BorrowingManagement = () => {
               />
             </DialogContent>
           </Dialog>
+
+          {!row.returnDate && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700">
+                  <BookOpen size={16} className="mr-1" /> Return
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>Return Book</DialogTitle>
+                  <DialogDescription>
+                    Return the book and rate your reading experience.
+                  </DialogDescription>
+                </DialogHeader>
+                <ReturnBookForm 
+                  borrowing={row}
+                  onSuccess={() => {
+                    queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+                  }}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
 
           <AlertDialog>
             <AlertDialogTrigger asChild>

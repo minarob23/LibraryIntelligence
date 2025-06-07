@@ -1,4 +1,3 @@
-
 interface StorageData {
   books: any[];
   borrowers: any[];
