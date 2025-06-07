@@ -11,17 +11,18 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/books':
       if (options?.method === 'POST') {
         return localStorage_storage.createBook(options.body);
-      } else if (options?.method === 'PUT') {
-        const id = parseInt(path.split('/').pop() || '0');
-        return localStorage_storage.updateBook(id, options.body);
-      } else if (options?.method === 'DELETE') {
-        const id = parseInt(path.split('/').pop() || '0');
-        return localStorage_storage.deleteBook(id);
       }
       return localStorage_storage.getBooks();
 
     case path.startsWith('/api/books/'):
       const bookId = parseInt(path.split('/')[3]);
+      
+      if (options?.method === 'PUT') {
+        return localStorage_storage.updateBook(bookId, options.body);
+      } else if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBook(bookId);
+      }
+      
       return localStorage_storage.getBook(bookId);
 
     case path === '/api/borrowers':
