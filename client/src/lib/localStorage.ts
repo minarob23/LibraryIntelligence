@@ -121,7 +121,6 @@ class LocalStorage {
     const newBorrower = {
       ...borrower,
       id: this.generateId(),
-      memberId: borrower.memberId || `BRW-${this.generateId()}`,
       createdAt: new Date().toISOString()
     };
     data.borrowers.push(newBorrower);

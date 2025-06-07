@@ -84,7 +84,6 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
       queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
 
       toast({
         title: 'Success',

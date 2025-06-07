@@ -72,16 +72,12 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
       
       if (isEditing && librarian) {
         await apiRequest('PUT', `/api/librarians/${librarian.id}`, JSON.stringify(data));
-        // Invalidate queries to refresh the table
-        queryClient.invalidateQueries({ queryKey: ['/api/librarians'] });
         toast({
           title: 'Success',
           description: 'Librarian updated successfully',
         });
       } else {
         await apiRequest('POST', '/api/librarians', JSON.stringify(data));
-        // Invalidate queries to refresh the table
-        queryClient.invalidateQueries({ queryKey: ['/api/librarians'] });
         toast({
           title: 'Success',
           description: 'Librarian added successfully',

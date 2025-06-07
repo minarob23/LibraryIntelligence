@@ -70,7 +70,6 @@ const BorrowersPage = () => {
     const matchesSearchTerm =
       nameLower.includes(searchTermLower) ||
       borrower.phone.includes(searchTermLower) ||
-      (borrower.memberId && borrower.memberId.toLowerCase().includes(searchTermLower)) ||
       `BRW-${borrower.id}`.includes(searchTermLower);
 
     if (!matchesSearchTerm) return false;
@@ -233,7 +232,7 @@ const BorrowersPage = () => {
     {
       key: 'id',
       header: 'ID',
-      cell: (row: any) => row.memberId || `BRW-${row.id}`,
+      cell: (row: any) => `BRW-${row.id}`,
     },
     {
       key: 'name',

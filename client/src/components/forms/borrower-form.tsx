@@ -62,7 +62,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
   const form = useForm<BorrowerFormValues>({
     resolver: zodResolver(borrowerSchema),
     defaultValues: borrower ? {
-      id: borrower.memberId || '',
+      id: borrower.id?.toString() || '',
       name: borrower.name || '',
       phone: borrower.phone || '',
       category: borrower.category || 'primary',
@@ -100,12 +100,8 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
     try {
       setIsSubmitting(true);
 
-      // Store the custom ID as memberId and remove it from the main data
-      const { id: memberId, ...borrowerData } = data;
-      const submissionData = { ...borrowerData, memberId };
-
       if (isEditing && borrower?.id) {
-        const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, submissionData);
+        const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
 
         toast({
           title: 'Success',
@@ -121,7 +117,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           onSuccess();
         }
       } else {
-        const response = await apiRequest('POST', '/api/borrowers', submissionData);
+        const response = await apiRequest('POST', '/api/borrowers', data);
 
         toast({
           title: 'Success',
