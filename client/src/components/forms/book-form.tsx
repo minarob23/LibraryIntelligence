@@ -104,7 +104,12 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
       if (onSuccess) {
         onSuccess();

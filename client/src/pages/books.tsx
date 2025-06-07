@@ -401,8 +401,14 @@ const BooksPage = () => {
                     {editingBook && (
                       <BookForm 
                         book={editingBook} 
-                        onSuccess={() => setOpenEditDialog(false)} 
-                        onCancel={() => setOpenEditDialog(false)} 
+                        onSuccess={() => {
+                          setOpenEditDialog(false);
+                          setEditingBook(null);
+                        }} 
+                        onCancel={() => {
+                          setOpenEditDialog(false);
+                          setEditingBook(null);
+                        }} 
                       />
                     )}
                   </DialogContent>
