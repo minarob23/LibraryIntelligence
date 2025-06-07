@@ -54,16 +54,16 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
 
     case path.startsWith('/api/librarians/'):
       const librarianId = parseInt(path.split('/')[3]);
-      
+
       if (options?.method === 'PUT') {
         const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
         return localStorage_storage.updateLibrarian(librarianId, data);
       }
-      
+
       if (options?.method === 'DELETE') {
         return localStorage_storage.deleteLibrarian(librarianId);
       }
-      
+
       return localStorage_storage.getLibrarian(librarianId);
 
     case path === '/api/borrowings':

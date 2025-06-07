@@ -25,9 +25,9 @@ class LocalStorage {
       if (!stored) {
         return this.getDefaultData();
       }
-      
+
       const data = JSON.parse(stored);
-      
+
       // Ensure all required arrays exist
       return {
         books: Array.isArray(data.books) ? data.books : [],
