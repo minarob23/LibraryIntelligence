@@ -134,9 +134,12 @@ const DataTable = ({
               </TableRow>
             ) : (
               filteredData.map((row) => (
-                <TableRow key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  {columns.map((column) => (
-                    <TableCell key={`${row.id}-${column.key}`} className="px-4 py-3 whitespace-nowrap text-sm">
+                <TableRow 
+                  key={`${row.id || 'row'}-${index}-${Date.now()}`}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                >
+                  {columns.map((column, colIndex) => (
+                    <TableCell key={`${column.key || column.id || colIndex}-${row.id || index}`} className="px-4 py-3 whitespace-nowrap text-sm">
                       {column.cell ? column.cell(row) : row[column.key]}
                     </TableCell>
                   ))}

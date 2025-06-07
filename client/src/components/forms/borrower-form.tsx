@@ -106,9 +106,13 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           body: JSON.stringify(data),
         });
 
+        // Invalidate all related queries
         await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
         await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
         await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
+        // Refresh the page data
+        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
 
         toast({
           title: 'Success',
@@ -127,9 +131,13 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           body: JSON.stringify(data),
         });
 
+        // Invalidate all related queries
         await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
         await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
         await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
+        // Refresh the page data
+        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
 
         toast({
           title: 'Success',

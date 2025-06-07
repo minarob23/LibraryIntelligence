@@ -39,7 +39,8 @@ class LocalStorage {
   }
 
   private generateId(): number {
-    return Date.now() + Math.floor(Math.random() * 1000);
+    // Use timestamp with a larger random component to prevent duplicates
+    return Date.now() + Math.floor(Math.random() * 10000);
   }
 
   // Books
