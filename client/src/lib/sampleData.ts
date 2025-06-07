@@ -1,7 +1,23 @@
 import { localStorage_storage } from './localStorage';
 
 export const initializeSampleData = () => {
-  // Force complete reset to fix corrupted data
+  // Run aggressive cleanup first
+  localStorage_storage.aggressiveDataCleanup();
+  
+  // Check if we already have valid data
+  const existingBooks = localStorage_storage.getBooks();
+  const existingBorrowers = localStorage_storage.getBorrowers();
+  
+  // If we have valid data with proper objects, don't reinitialize
+  if (existingBooks.length > 0 && 
+      existingBorrowers.length > 0 && 
+      existingBooks.every(book => book && typeof book === 'object' && book.id && book.name) &&
+      existingBorrowers.every(borrower => borrower && typeof borrower === 'object' && borrower.id && borrower.name)) {
+    console.log('Valid data already exists, skipping initialization');
+    return;
+  }
+
+  // Force complete reset if data is invalid or missing
   console.log('Forcing complete data reset due to corruption...');
   localStorage_storage.forceResetData();
   return; // Exit early since forceResetData handles everything

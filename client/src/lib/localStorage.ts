@@ -21,10 +21,11 @@ class LocalStorage {
 
   private getData(): StorageData {
     try {
-      const data = localStorage.getItem(this.storageKey);
-      return data ? JSON.parse(data) : this.getDefaultData();
+      // Use aggressive cleanup before returning data
+      return this.aggressiveDataCleanup();
     } catch (error) {
       console.error('Error reading from localStorage:', error);
+      localStorage.removeItem(this.storageKey);
       return this.getDefaultData();
     }
   }
@@ -319,6 +320,50 @@ class LocalStorage {
     localStorage.removeItem(this.storageKey);
   }
 
+  aggressiveDataCleanup() {
+    console.log('Running aggressive data cleanup...');
+    
+    try {
+      const rawData = localStorage.getItem(this.storageKey);
+      if (!rawData) {
+        console.log('No data found, initializing fresh...');
+        return this.getDefaultData();
+      }
+
+      let parsedData;
+      try {
+        parsedData = JSON.parse(rawData);
+      } catch (e) {
+        console.log('JSON parse failed, clearing storage...');
+        localStorage.removeItem(this.storageKey);
+        return this.getDefaultData();
+      }
+
+      // Check if any array contains corrupted data (objects with numeric keys)
+      const hasCorruption = Object.values(parsedData).some((arr: any) => {
+        if (!Array.isArray(arr)) return false;
+        return arr.some((item: any) => {
+          if (!item || typeof item !== 'object') return true;
+          const keys = Object.keys(item);
+          return keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+        });
+      });
+
+      if (hasCorruption) {
+        console.log('Corruption detected, forcing complete reset...');
+        localStorage.removeItem(this.storageKey);
+        return this.getDefaultData();
+      }
+
+      console.log('Aggressive data cleanup complete.');
+      return parsedData;
+    } catch (error) {
+      console.error('Error during aggressive cleanup:', error);
+      localStorage.removeItem(this.storageKey);
+      return this.getDefaultData();
+    }
+  }
+
   exportData() {
     return this.getData();
   }
@@ -420,8 +465,14 @@ class LocalStorage {
   // Force reset all data and reinitialize
   forceResetData() {
     console.log('Force resetting all data...');
-    this.clearAllData();
-
+    
+    // Clear everything multiple times to ensure it's gone
+    localStorage.removeItem(this.storageKey);
+    localStorage.clear();
+    
+    // Generate completely new IDs
+    const baseId = Date.now();
+    
     // Initialize with clean sample data
     const sampleData = {
       books: [
@@ -440,7 +491,7 @@ class LocalStorage {
           publishedDate: "1925-04-10",
           genres: "Fiction, Classic",
           comments: "Popular among students",
-          id: Date.now() + 1,
+          id: baseId,
           createdAt: new Date().toISOString(),
           addedDate: new Date().toISOString().split('T')[0]
         },
@@ -459,7 +510,7 @@ class LocalStorage {
           publishedDate: "1960-07-11",
           genres: "Fiction, Drama",
           comments: "Award-winning novel",
-          id: Date.now() + 2,
+          id: baseId + 1,
           createdAt: new Date().toISOString(),
           addedDate: new Date().toISOString().split('T')[0]
         }
@@ -480,7 +531,7 @@ class LocalStorage {
           hobbies: "Reading, Programming",
           favoriteBooks: "Science Fiction",
           additionalPhone: "+1234567891",
-          id: Date.now() + 3,
+          id: baseId + 2,
           createdAt: new Date().toISOString()
         },
         {
@@ -497,26 +548,32 @@ class LocalStorage {
           job: "Teacher",
           hobbies: "Writing, Reading",
           favoriteBooks: "Classic Literature",
-          id: Date.now() + 4,
+          id: baseId + 3,
           createdAt: new Date().toISOString()
         }
       ],
       librarians: [],
       borrowings: [
         {
-          borrowerId: Date.now() + 3,
-          bookId: Date.now() + 1,
+          borrowerId: baseId + 2,
+          bookId: baseId,
           borrowDate: new Date().toISOString().split('T')[0],
           dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           status: "borrowed",
-          id: Date.now() + 5,
+          id: baseId + 4,
           createdAt: new Date().toISOString()
         }
       ],
       membershipApplications: []
     };
 
-    this.saveData(sampleData);
+    // Save directly without validation to avoid recursion
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(sampleData));
+    } catch (error) {
+      console.error('Error saving reset data:', error);
+    }
+    
     console.log('Data reset complete with clean sample data');
   }
 
