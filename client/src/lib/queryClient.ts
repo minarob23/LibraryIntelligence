@@ -137,6 +137,10 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/dashboard/borrower-distribution':
       return localStorage_storage.getBorrowerDistribution();
 
+    case path === '/api/dashboard/member-growth':
+      // Return borrowers data for member growth calculation
+      return localStorage_storage.getBorrowers();
+
     case path === '/api/membership-application':
       if (options?.method === 'POST') {
         return localStorage_storage.createMembershipApplication(options.body);

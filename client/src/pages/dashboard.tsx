@@ -22,6 +22,7 @@ const Dashboard = () => {
     const interval = setInterval(() => {
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
     }, 30000);
@@ -36,6 +37,7 @@ const Dashboard = () => {
     queryClient.invalidateQueries({ queryKey: ['/api/research'] });
     queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
     queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
   };
 
   // Fetch dashboard statistics
@@ -45,6 +47,10 @@ const Dashboard = () => {
 
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
+  });
+
+  const { data: memberGrowthData } = useQuery({ 
+    queryKey: ['/api/dashboard/member-growth'],
   });
 
   const { data: borrowings } = useQuery({ 
@@ -65,7 +71,8 @@ const Dashboard = () => {
 
   // Format borrower growth data for chart by category
   const formatBorrowerGrowth = () => {
-    if (!borrowers) return [];
+    const growthBorrowers = memberGrowthData || borrowers;
+    if (!growthBorrowers) return [];
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -84,7 +91,7 @@ const Dashboard = () => {
     }
 
     // Count borrowers per month and category based on join date
-    borrowers.forEach((borrower: any) => {
+    growthBorrowers.forEach((borrower: any) => {
       const date = new Date(borrower.joinedDate);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const monthData = monthlyGrowth.find(data => data.month === monthKey);
@@ -220,7 +227,7 @@ const Dashboard = () => {
           />
         )}
 
-        {!borrowers?.length ? (
+        {!memberGrowthData?.length && !borrowers?.length ? (
           <Card className="p-6">
             <CardTitle>Member's Growth</CardTitle>
             <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">

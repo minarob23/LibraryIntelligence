@@ -97,11 +97,11 @@ const LibrariansPage = () => {
 
   const columns = [
     {
-      key: 'id',
+      key: 'librarianId',
       header: 'Librarian ID',
       cell: (row: any) => (
         <div className="font-mono text-sm font-medium">
-          LIB-{row.id.toString().padStart(3, '0')}
+          {row.librarianId || `LIB-${row.id.toString().padStart(3, '0')}`}
         </div>
       ),
     },
