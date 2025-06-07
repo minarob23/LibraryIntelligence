@@ -332,13 +332,25 @@ class LocalStorage {
     
     // Clean borrowings array - remove any string objects or corrupted entries
     data.borrowings = data.borrowings.filter(borrowing => {
-      return borrowing && 
-             typeof borrowing === 'object' && 
-             !Array.isArray(borrowing) &&
-             borrowing.hasOwnProperty('borrowerId') &&
-             borrowing.hasOwnProperty('bookId');
+      // Remove null, undefined, or non-object items
+      if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+        return false;
+      }
+      
+      // Check if it's a stringified object (has numeric keys like array)
+      const keys = Object.keys(borrowing);
+      const isStringified = keys.length > 0 && keys.every(key => /^\d+$/.test(key));
+      if (isStringified) {
+        return false;
+      }
+      
+      // Must have required properties
+      return borrowing.hasOwnProperty('borrowerId') && 
+             borrowing.hasOwnProperty('bookId') &&
+             borrowing.hasOwnProperty('id');
     });
     
+    console.log('Cleaned borrowings data:', data.borrowings);
     this.saveData(data);
   }
 

@@ -56,14 +56,25 @@ const BorrowingManagement = () => {
 
   // Clean corrupted data on mount
   React.useEffect(() => {
-    if (borrowings) {
-      const hasCorruptedData = borrowings.some((item: any) => 
-        typeof item === 'string' || !item || typeof item !== 'object'
-      );
+    if (borrowings && borrowings.length > 0) {
+      const hasCorruptedData = borrowings.some((item: any) => {
+        if (!item || typeof item !== 'object' || Array.isArray(item)) {
+          return true;
+        }
+        // Check for stringified objects (has numeric keys)
+        const keys = Object.keys(item);
+        const isStringified = keys.length > 0 && keys.every(key => /^\d+$/.test(key));
+        return isStringified || !item.hasOwnProperty('borrowerId') || !item.hasOwnProperty('bookId');
+      });
+      
       if (hasCorruptedData) {
         console.log('Detected corrupted data, cleaning...');
         localStorage_storage.cleanCorruptedData();
-        queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+        // Force a complete refresh
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+          window.location.reload();
+        }, 100);
       }
     }
   }, [borrowings]);
@@ -446,11 +457,14 @@ const BorrowingManagement = () => {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            onClick={() => queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] })}
+            onClick={() => {
+              localStorage_storage.cleanCorruptedData();
+              queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+            }}
             className="flex items-center gap-2"
           >
             <RefreshCw size={16} />
-            Refresh
+            Clean & Refresh
           </Button>
 
           <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
