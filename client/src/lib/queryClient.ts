@@ -137,15 +137,20 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
   }
 };
 
-export const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
+export const apiRequest = async (method: string, endpoint: string, data?: any) => {
   try {
-    const response = await mockApiResponse(endpoint, {
-      ...options,
+    const options: any = {
+      method,
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers,
       },
-    });
+    };
+
+    if (data && (method === 'POST' || method === 'PUT')) {
+      options.body = data;
+    }
+
+    const response = await mockApiResponse(endpoint, options);
 
     // Since mockApiResponse returns data directly, not a response object, just return it
     return response;
@@ -156,14 +161,12 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
     if (endpoint.includes('/api/borrowings')) {
       const { localStorage_storage } = await import('./localStorage');
 
-      if (options.method === 'POST') {
-        const body = JSON.parse(options.body as string);
-        return localStorage_storage.createBorrowing(body);
-      } else if (options.method === 'PUT') {
+      if (method === 'POST') {
+        return localStorage_storage.createBorrowing(data);
+      } else if (method === 'PUT') {
         const id = parseInt(endpoint.split('/').pop() || '0');
-        const body = JSON.parse(options.body as string);
-        return localStorage_storage.updateBorrowing(id, body);
-      } else if (options.method === 'DELETE') {
+        return localStorage_storage.updateBorrowing(id, data);
+      } else if (method === 'DELETE') {
         const id = parseInt(endpoint.split('/').pop() || '0');
         return localStorage_storage.deleteBorrowing(id);
       } else {

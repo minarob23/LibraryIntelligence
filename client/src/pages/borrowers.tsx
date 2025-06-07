@@ -115,15 +115,9 @@ const BorrowersPage = () => {
       const oneYearFromNow = new Date();
       oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
-      await apiRequest(`/api/borrowers/${borrower.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...borrower,
-          expiryDate: oneYearFromNow.toISOString().split('T')[0],
-        }),
+      await apiRequest('PUT', `/api/borrowers/${borrower.id}`, {
+        ...borrower,
+        expiryDate: oneYearFromNow.toISOString().split('T')[0],
       });
 
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
