@@ -1,0 +1,29 @@
+[vite] connecting...
+DOMException {}
+
+Running immediate corruption cleanup...
+Valid data already exists, skipping initialization
+API Request Error: 
+Error {}
+
+at t.value (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Error submitting form: 
+Error {}
+
+at t.value (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+API Request Error: 
+Error {}
+
+Error submitting application: 
+Error {}
+message: "Unknown endpoint: POST"
+stack: "Error: Unknown endpoint: POST↵ at mockApiResponse (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/src/lib/queryClient.ts:102:13)↵ at apiRequest (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/src/lib/queryClient.ts:107:28)↵ at onSubmit (https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/src/components/forms/membership-form.tsx:66:30)↵ at https://2bded6d8-fee1-45be-9da1-c1f396f980f7-00-2s3kwlq282zgn.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-JFSDM4CS.js?v=175856fc:1459:15"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
