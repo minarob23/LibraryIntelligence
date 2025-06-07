@@ -141,7 +141,7 @@ const BorrowersPage = () => {
     if (!borrowerDistribution || !Array.isArray(borrowerDistribution)) {
       // Fallback: calculate distribution from current borrowers if API data is not available
       if (!allBorrowers || !Array.isArray(allBorrowers)) return [];
-      
+
       const categoryCount = allBorrowers.reduce((acc: any, borrower: any) => {
         const category = borrower.category || 'unknown';
         acc[category] = (acc[category] || 0) + 1;
@@ -231,8 +231,8 @@ const BorrowersPage = () => {
   const columns = [
     {
       key: 'id',
-      header: 'ID',
-      cell: (row: any) => `BRW-${row.id}`,
+      header: 'Member ID',
+      cell: (row: any) => row.memberId || row.id || `BRW-${row.id}`,
     },
     {
       key: 'name',
@@ -319,7 +319,7 @@ const BorrowersPage = () => {
             const count = category.value === 'all' 
               ? allBorrowers?.length || 0
               : allBorrowers?.filter(borrower => borrower.category === category.value).length || 0;
-            
+
             return (
               <TabsTrigger key={category.value} value={category.value}>
                 {category.label} ({count})
@@ -439,7 +439,7 @@ const BorrowersPage = () => {
                 onPageChange: () => {},
               }}
             />
-            
+
             {category.value === 'all' && (
               <div className="mt-6">
                 {formatBorrowerDistribution().length > 0 ? (

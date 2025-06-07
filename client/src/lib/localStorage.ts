@@ -118,10 +118,11 @@ class LocalStorage {
 
   createBorrower(borrower: any) {
     const data = this.getData();
+    const newId = this.generateId();
     const newBorrower = {
       ...borrower,
-      id: this.generateId(),
-      memberId: borrower.memberId || `BRW-${this.generateId()}`,
+      id: newId,
+      memberId: borrower.memberId || borrower.id || `BRW-${newId}`,
       createdAt: new Date().toISOString(),
       joinedDate: borrower.joinedDate || new Date().toISOString().split('T')[0]
     };
@@ -140,7 +141,7 @@ class LocalStorage {
         // Preserve the original id
         id: data.borrowers[index].id
       };
-      this.setData(data);
+      this.saveData(data);
       return data.borrowers[index];
     }
     throw new Error('Borrower not found');
