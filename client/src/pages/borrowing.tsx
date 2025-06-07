@@ -54,6 +54,11 @@ const BorrowingManagement = () => {
 
   // Filter borrowings based on search and status
   const filteredBorrowings = borrowings.filter((borrowing: any) => {
+    // Skip if borrowing data is completely invalid
+    if (!borrowing || (!borrowing.borrowerId && !borrowing.bookId)) {
+      return false;
+    }
+
     // Try both string and number comparison for ID matching
     const borrower = borrowing.borrowerId ? borrowers.find((b: any) => 
       b.id === borrowing.borrowerId || 
@@ -67,8 +72,8 @@ const BorrowingManagement = () => {
     ) : null;
 
     const matchesSearch = !searchTerm || 
-      borrower?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      borrower?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (borrowing.id && borrowing.id.toString().includes(searchTerm)) ||
       (borrowing.borrowerId && borrowing.borrowerId.toString().includes(searchTerm)) ||
       (borrowing.bookId && borrowing.bookId.toString().includes(searchTerm));
@@ -76,25 +81,37 @@ const BorrowingManagement = () => {
     const matchesStatus = selectedStatus === 'all' || 
       (selectedStatus === 'active' && !borrowing.returnDate) ||
       (selectedStatus === 'returned' && borrowing.returnDate) ||
-      (selectedStatus === 'overdue' && !borrowing.returnDate && new Date(borrowing.dueDate) < new Date());
+      (selectedStatus === 'overdue' && !borrowing.returnDate && borrowing.dueDate && new Date(borrowing.dueDate) < new Date());
 
     return matchesSearch && matchesStatus;
   });
 
   // Get status badge
   const getStatusBadge = (borrowing: any) => {
+    if (!borrowing) {
+      return <Badge variant="secondary" className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300">Unknown</Badge>;
+    }
+
     if (borrowing.returnDate) {
       return <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Returned</Badge>;
     }
 
-    const dueDate = new Date(borrowing.dueDate);
-    const today = new Date();
-
-    if (dueDate < today) {
-      return <Badge variant="destructive">Overdue</Badge>;
+    if (!borrowing.dueDate) {
+      return <Badge variant="secondary" className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300">No Due Date</Badge>;
     }
 
-    return <Badge variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">Active</Badge>;
+    try {
+      const dueDate = new Date(borrowing.dueDate);
+      const today = new Date();
+
+      if (dueDate < today) {
+        return <Badge variant="destructive">Overdue</Badge>;
+      }
+
+      return <Badge variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">Active</Badge>;
+    } catch {
+      return <Badge variant="secondary" className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300">Invalid Date</Badge>;
+    }
   };
 
   // Get initials from a name
@@ -230,17 +247,38 @@ const BorrowingManagement = () => {
     {
       key: 'borrowDate',
       header: 'Borrow Date',
-      cell: ({ row }: any) => row?.borrowDate ? new Date(row.borrowDate).toLocaleDateString() : '-',
+      cell: ({ row }: any) => {
+        if (!row?.borrowDate) return '-';
+        try {
+          return new Date(row.borrowDate).toLocaleDateString();
+        } catch {
+          return '-';
+        }
+      },
     },
     {
       key: 'dueDate',
       header: 'Due Date',
-      cell: ({ row }: any) => row?.dueDate ? new Date(row.dueDate).toLocaleDateString() : '-',
+      cell: ({ row }: any) => {
+        if (!row?.dueDate) return '-';
+        try {
+          return new Date(row.dueDate).toLocaleDateString();
+        } catch {
+          return '-';
+        }
+      },
     },
     {
       key: 'returnDate',
       header: 'Return Date',
-      cell: ({ row }: any) => row?.returnDate ? new Date(row.returnDate).toLocaleDateString() : '-',
+      cell: ({ row }: any) => {
+        if (!row?.returnDate) return '-';
+        try {
+          return new Date(row.returnDate).toLocaleDateString();
+        } catch {
+          return '-';
+        }
+      },
     },
     {
       key: 'status',
