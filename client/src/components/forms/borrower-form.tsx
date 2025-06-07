@@ -21,6 +21,7 @@ import { queryClient } from '@/lib/queryClient';
 
 // Extend the schema to add validation messages
 const borrowerSchema = insertBorrowerSchema.extend({
+  id: z.string().min(1, 'ID is required'),
   name: z.string().min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(8, 'Phone number must be at least 8 characters'),
   category: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate'], {
@@ -61,6 +62,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
   const form = useForm<BorrowerFormValues>({
     resolver: zodResolver(borrowerSchema),
     defaultValues: borrower ? {
+      id: borrower.id?.toString() || '',
       name: borrower.name || '',
       phone: borrower.phone || '',
       category: borrower.category || 'primary',
@@ -76,6 +78,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       favoriteBooks: borrower.favoriteBooks || '',
       additionalPhone: borrower.additionalPhone || '',
     } : {
+      id: '',
       name: '',
       phone: '',
       category: 'primary' as const,
@@ -153,6 +156,20 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Personal Information */}
+              <FormField
+                control={form.control}
+                name="id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Member ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter member ID" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="name"

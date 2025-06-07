@@ -52,6 +52,7 @@ export const insertLibrarianSchema = createInsertSchema(librarians).omit({
 // Borrowers table
 export const borrowers = pgTable("borrowers", {
   id: serial("id").primaryKey(),
+  memberId: text("member_id").notNull(),
   name: text("name").notNull(),
   phone: text("phone").notNull(),
   category: text("category").notNull().$type<'primary' | 'middle' | 'secondary' | 'university' | 'graduate'>(),
