@@ -319,7 +319,64 @@ class LocalStorage {
     return newApplication;
   }
 
+  // Research methods
+  getResearchPapers: () => {
+    return JSON.parse(localStorage.getItem('research_papers') || '[]');
+  },
+
+  createResearchPaper: (data: any) => {
+    const papers = this.getResearchPapers();
+    const newPaper = {
+      id: Date.now(),
+      ...data,
+      createdAt: new Date().toISOString()
+    };
+    papers.push(newPaper);
+    localStorage.setItem('research_papers', JSON.stringify(papers));
+    return newPaper;
+  },
+
+  updateResearchPaper: (id: number, data: any) => {
+    const papers = this.getResearchPapers();
+    const index = papers.findIndex((p: any) => p.id === id);
+    if (index !== -1) {
+      papers[index] = { ...papers[index], ...data };
+      localStorage.setItem('research_papers', JSON.stringify(papers));
+      return papers[index];
+    }
+    throw new Error('Research paper not found');
+  },
+
+  deleteResearchPaper: (id: number) => {
+    const papers = this.getResearchPapers();
+    const filtered = papers.filter((p: any) => p.id !== id);
+    localStorage.setItem('research_papers', JSON.stringify(filtered));
+    return { success: true };
+  },
+
   // Dashboard methods
+  getDashboardStats: () => {
+    const books = this.getBooks();
+    const borrowers = this.getBorrowers();
+    const borrowings = this.getBorrowings();
+    const librarians = this.getLibrarians();
+
+    const totalBooks = books.length;
+    const totalBorrowers = borrowers.length;
+    const totalLibrarians = librarians.length;
+
+    const activeBorrowings = borrowings.filter(b => b.status === 'borrowed').length;
+    const overdueBorrowings = borrowings.filter(b => b.status === 'overdue').length;
+
+    return {
+      totalBooks,
+      totalBorrowers,
+      totalLibrarians,
+      activeBorrowings,
+      overdueBorrowings
+    };
+  },
+
   getMostBorrowedBooks(limit: number = 5) {
     const data = this.getData();
     const borrowingCounts = data.borrowings.reduce((acc: any, borrowing: any) => {

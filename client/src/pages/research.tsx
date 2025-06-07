@@ -45,6 +45,10 @@ const ResearchPage = () => {
     queryKey: ['/api/research'],
   });
 
+  const { data: borrowings } = useQuery({ 
+    queryKey: ['/api/borrowings'],
+  });
+
   const handleDelete = async (id: number) => {
     try {
       await apiRequest('DELETE', `/api/research/${id}`);

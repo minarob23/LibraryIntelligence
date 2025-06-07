@@ -168,3 +168,66 @@ export const initializeSampleData = () => {
 
   console.log('Sample data initialized in localStorage');
 };
+  // Initialize sample librarians if none exist
+  if (!localStorage.getItem('librarians')) {
+    const sampleLibrarians = [
+      {
+        id: 1,
+        librarianId: 'LIB001',
+        name: 'Sarah Johnson',
+        phone: '+1234567890',
+        appointmentDate: '2023-01-15',
+        membershipStatus: 'active',
+        email: 'sarah@library.com',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 2,
+        librarianId: 'LIB002',
+        name: 'Michael Chen',
+        phone: '+1234567891',
+        appointmentDate: '2023-02-20',
+        membershipStatus: 'active',
+        email: 'michael@library.com',
+        createdAt: new Date().toISOString()
+      }
+    ];
+    localStorage.setItem('librarians', JSON.stringify(sampleLibrarians));
+  }
+
+  // Initialize sample research papers if none exist
+  if (!localStorage.getItem('research_papers')) {
+    const sampleResearch = [
+      {
+        id: 1,
+        name: 'Machine Learning in Library Systems',
+        author: 'Dr. Jane Smith',
+        publisher: 'Academic Press',
+        researchCode: 'RES001',
+        copies: 5,
+        coverImage: '/src/assets/book-covers/cover1.svg',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 2,
+        name: 'Digital Transformation in Libraries',
+        author: 'Prof. John Doe',
+        publisher: 'Tech Publishers',
+        researchCode: 'RES002',
+        copies: 3,
+        coverImage: '/src/assets/book-covers/cover2.svg',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 3,
+        name: 'Information Science and Modern Society',
+        author: 'Dr. Alice Brown',
+        publisher: 'Knowledge House',
+        researchCode: 'RES003',
+        copies: 7,
+        coverImage: '/src/assets/book-covers/cover3.svg',
+        createdAt: new Date().toISOString()
+      }
+    ];
+    localStorage.setItem('research_papers', JSON.stringify(sampleResearch));
+  }
