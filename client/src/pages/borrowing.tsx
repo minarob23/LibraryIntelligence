@@ -54,13 +54,24 @@ const BorrowingManagement = () => {
 
   // Filter borrowings based on search and status
   const filteredBorrowings = borrowings.filter((borrowing: any) => {
-    const borrower = borrowers.find((b: any) => b.id === borrowing.borrowerId);
-    const book = books.find((b: any) => b.id === borrowing.bookId);
+    // Try both string and number comparison for ID matching
+    const borrower = borrowers.find((b: any) => 
+      b.id === borrowing.borrowerId || 
+      b.id === parseInt(borrowing.borrowerId) || 
+      b.id.toString() === borrowing.borrowerId.toString()
+    );
+    const book = books.find((b: any) => 
+      b.id === borrowing.bookId || 
+      b.id === parseInt(borrowing.bookId) || 
+      b.id.toString() === borrowing.bookId.toString()
+    );
 
     const matchesSearch = !searchTerm || 
       borrower?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       book?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      borrowing.id.toString().includes(searchTerm);
+      borrowing.id.toString().includes(searchTerm) ||
+      (borrowing.borrowerId && borrowing.borrowerId.toString().includes(searchTerm)) ||
+      (borrowing.bookId && borrowing.bookId.toString().includes(searchTerm));
 
     const matchesStatus = selectedStatus === 'all' || 
       (selectedStatus === 'active' && !borrowing.returnDate) ||
@@ -163,7 +174,13 @@ const BorrowingManagement = () => {
       cell: ({ row }: any) => {
         if (!row) return 'Unknown';
         
-        const borrower = borrowers.find((b: any) => b.id === row.borrowerId);
+        // Try both string and number comparison for ID matching
+        const borrower = borrowers.find((b: any) => 
+          b.id === row.borrowerId || 
+          b.id === parseInt(row.borrowerId) || 
+          b.id.toString() === row.borrowerId.toString()
+        );
+        
         return borrower ? (
           <div className="flex items-center">
             <Avatar className="h-8 w-8">
@@ -176,7 +193,12 @@ const BorrowingManagement = () => {
               <div className="text-xs text-gray-500">{borrower.category}</div>
             </div>
           </div>
-        ) : 'Unknown';
+        ) : (
+          <div className="flex items-center text-red-500">
+            <span className="text-sm">Unknown Borrower</span>
+            <span className="text-xs text-gray-400 ml-1">(ID: {row.borrowerId})</span>
+          </div>
+        );
       },
     },
     {
@@ -185,13 +207,24 @@ const BorrowingManagement = () => {
       cell: ({ row }: any) => {
         if (!row) return 'Unknown';
         
-        const book = books.find((b: any) => b.id === row.bookId);
+        // Try both string and number comparison for ID matching
+        const book = books.find((b: any) => 
+          b.id === row.bookId || 
+          b.id === parseInt(row.bookId) || 
+          b.id.toString() === row.bookId.toString()
+        );
+        
         return book ? (
           <div>
             <div className="text-sm font-medium">{book.title}</div>
             <div className="text-xs text-gray-500">{book.author}</div>
           </div>
-        ) : 'Unknown';
+        ) : (
+          <div className="text-red-500">
+            <div className="text-sm font-medium">Unknown Book</div>
+            <div className="text-xs text-gray-400">(ID: {row.bookId})</div>
+          </div>
+        );
       },
     },
     {
