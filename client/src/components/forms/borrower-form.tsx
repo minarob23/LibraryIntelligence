@@ -60,7 +60,22 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
 
   const form = useForm<BorrowerFormValues>({
     resolver: zodResolver(borrowerSchema),
-    defaultValues: borrower || {
+    defaultValues: borrower ? {
+      name: borrower.name || '',
+      phone: borrower.phone || '',
+      category: borrower.category || 'primary',
+      joinedDate: borrower.joinedDate || today,
+      expiryDate: borrower.expiryDate || oneYearFromNow,
+      email: borrower.email || '',
+      address: borrower.address || '',
+      churchName: borrower.churchName || '',
+      fatherOfConfession: borrower.fatherOfConfession || '',
+      studies: borrower.studies || '',
+      job: borrower.job || '',
+      hobbies: borrower.hobbies || '',
+      favoriteBooks: borrower.favoriteBooks || '',
+      additionalPhone: borrower.additionalPhone || '',
+    } : {
       name: '',
       phone: '',
       category: 'primary' as const,
@@ -82,21 +97,38 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
     try {
       setIsSubmitting(true);
       
-      if (isEditing && borrower) {
-        await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
+      if (isEditing && borrower?.id) {
+        const response = await apiRequest(`/api/borrowers/${borrower.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
         toast({
           title: 'Success',
           description: 'Borrower updated successfully',
         });
       } else {
-        await apiRequest('POST', '/api/borrowers', data);
+        const response = await apiRequest('/api/borrowers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        
         toast({
           title: 'Success',
           description: 'Borrower added successfully',
         });
       }
       
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      // Invalidate all related queries
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
       
       if (onSuccess) {
         onSuccess();

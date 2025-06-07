@@ -1,4 +1,3 @@
-
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 import { localStorage_storage } from './localStorage';
 
@@ -6,7 +5,7 @@ import { localStorage_storage } from './localStorage';
 const mockApiResponse = async (endpoint: string, options?: any): Promise<any> => {
   const [path, queryString] = endpoint.split('?');
   const params = new URLSearchParams(queryString || '');
-  
+
   switch (true) {
     case path === '/api/books':
       if (options?.method === 'POST') {
@@ -19,11 +18,11 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
         return localStorage_storage.deleteBook(id);
       }
       return localStorage_storage.getBooks();
-      
+
     case path.startsWith('/api/books/'):
       const bookId = parseInt(path.split('/')[3]);
       return localStorage_storage.getBook(bookId);
-      
+
     case path === '/api/borrowers':
       const category = params.get('category');
       if (options?.method === 'POST') {
@@ -36,11 +35,11 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
         return localStorage_storage.deleteBorrower(id);
       }
       return category ? localStorage_storage.getBorrowersByCategory(category) : localStorage_storage.getBorrowers();
-      
+
     case path.startsWith('/api/borrowers/'):
       const borrowerId = parseInt(path.split('/')[3]);
       return localStorage_storage.getBorrower(borrowerId);
-      
+
     case path === '/api/librarians':
       if (options?.method === 'POST') {
         return localStorage_storage.createLibrarian(options.body);
@@ -52,11 +51,11 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
         return localStorage_storage.deleteLibrarian(id);
       }
       return localStorage_storage.getLibrarians();
-      
+
     case path.startsWith('/api/librarians/'):
       const librarianId = parseInt(path.split('/')[3]);
       return localStorage_storage.getLibrarian(librarianId);
-      
+
     case path === '/api/borrowings':
       const borrowerIdParam = params.get('borrowerId');
       if (options?.method === 'POST') {
@@ -69,38 +68,38 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
         return localStorage_storage.deleteBorrowing(id);
       }
       return borrowerIdParam ? localStorage_storage.getBorrowingsByBorrowerId(parseInt(borrowerIdParam)) : localStorage_storage.getBorrowings();
-      
+
     case path.startsWith('/api/borrowings/'):
       const borrowingId = parseInt(path.split('/')[3]);
       return localStorage_storage.getBorrowing(borrowingId);
-      
+
     case path === '/api/dashboard/most-borrowed-books':
       const limit1 = parseInt(params.get('limit') || '5');
       return localStorage_storage.getMostBorrowedBooks(limit1);
-      
+
     case path === '/api/dashboard/popular-books':
       const limit2 = parseInt(params.get('limit') || '4');
       return localStorage_storage.getPopularBooks(limit2);
-      
+
     case path === '/api/dashboard/top-borrowers':
       const limit3 = parseInt(params.get('limit') || '5');
       return localStorage_storage.getTopBorrowers(limit3);
-      
+
     case path === '/api/dashboard/borrower-distribution':
       return localStorage_storage.getBorrowerDistribution();
-      
+
     case path === '/api/membership-application':
       if (options?.method === 'POST') {
         return localStorage_storage.createMembershipApplication(options.body);
       }
       break;
-      
+
     case path === '/api/reset-ui':
       return { message: 'UI has been reset successfully' };
-      
+
     case path === '/api/restore-database':
       return { message: 'Database restored successfully' };
-      
+
     default:
       throw new Error(`Unknown endpoint: ${endpoint}`);
   }
