@@ -1,3 +1,7 @@
+The code is modified to ensure proper query invalidation and refetching for both books and borrowers after add/update operations.
+```
+
+```replit_final_file
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -106,9 +110,12 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           body: JSON.stringify(data),
         });
 
-        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
+        // Force immediate refetch to ensure UI updates
+        queryClient.refetchQueries({ queryKey: ['/api/borrowers'], type: 'active' });
 
         toast({
           title: 'Success',
@@ -127,9 +134,12 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           body: JSON.stringify(data),
         });
 
-        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
+        // Force immediate refetch to ensure UI updates
+        queryClient.refetchQueries({ queryKey: ['/api/borrowers'], type: 'active' });
 
         toast({
           title: 'Success',

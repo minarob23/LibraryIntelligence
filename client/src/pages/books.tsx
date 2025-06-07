@@ -45,10 +45,12 @@ const BooksPage = () => {
 
   const { data: books, isLoading } = useQuery({ 
     queryKey: ['/api/books'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
   });
 
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
   });
 
   // Helper functions

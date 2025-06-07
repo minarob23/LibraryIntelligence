@@ -59,7 +59,7 @@ const BorrowersPage = () => {
 
   const { data: allBorrowers, isLoading } = useQuery({ 
     queryKey: ['/api/borrowers'],
-    refetchInterval: 1000, // Refetch every 1 second
+    refetchInterval: 2000, // Refetch every 2 seconds for consistency
   });
 
   // Filter borrowers based on selected category and search term
