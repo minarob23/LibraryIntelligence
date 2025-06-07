@@ -180,7 +180,7 @@ const PopularBooks = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
                   <div className="flex items-center mt-1">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      Rating: {book.rating ? `${book.rating}/10` : 'Not rated'}
+                      {book.rating ? `${book.rating}/10` : 'Not rated'}
                     </span>
                   </div>
                   {(
