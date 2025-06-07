@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Edit, Trash2, Plus, RefreshCw, Search, Calendar, User, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +30,7 @@ import DataTable from '@/components/tables/data-table';
 import BorrowForm from '@/components/forms/borrow-form';
 import ReturnBookForm from '@/components/forms/return-book-form';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { localStorage_storage } from '@/lib/localStorage';
 import { Input } from "@/components/ui/input";
 
 const BorrowingManagement = () => {
@@ -51,6 +53,20 @@ const BorrowingManagement = () => {
   const { data: books = [] } = useQuery({ 
     queryKey: ['/api/books'],
   });
+
+  // Clean corrupted data on mount
+  React.useEffect(() => {
+    if (borrowings) {
+      const hasCorruptedData = borrowings.some((item: any) => 
+        typeof item === 'string' || !item || typeof item !== 'object'
+      );
+      if (hasCorruptedData) {
+        console.log('Detected corrupted data, cleaning...');
+        localStorage_storage.cleanCorruptedData();
+        queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      }
+    }
+  }, [borrowings]);
 
   // Debug logging
   console.log('Borrowings data:', borrowings);

@@ -1,6 +1,8 @@
 import { localStorage_storage } from './localStorage';
 
 export const initializeSampleData = () => {
+  // Clean any corrupted data first
+  localStorage_storage.cleanCorruptedData();
   // Check if data already exists
   const existingBooks = localStorage_storage.getBooks();
   if (existingBooks.length > 0) {
