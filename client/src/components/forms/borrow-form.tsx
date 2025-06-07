@@ -48,7 +48,7 @@ const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: 'Either a book or research paper must be selected',
-      path: ['itemType'],
+      path: ['bookId'],
     });
   }
 
@@ -56,7 +56,7 @@ const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: 'Cannot borrow both a book and research paper at once',
-      path: ['itemType'],
+      path: ['bookId'],
     });
   }
 });
@@ -97,24 +97,55 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
     queryKey: ['/api/books'],
   });
 
+  const { data: researchPapers } = useQuery({ 
+    queryKey: ['/api/research-papers'],
+  });
+
   const form = useForm<BorrowFormValues>({
     resolver: zodResolver(borrowSchema),
     defaultValues: {
-      ...borrowing,
+      borrowerId: borrowing?.borrowerId || undefined,
+      librarianId: borrowing?.librarianId || undefined,
+      bookId: borrowing?.bookId || undefined,
+      researchId: borrowing?.researchId || undefined,
       borrowDate: borrowing?.borrowDate || today,
       dueDate: borrowing?.dueDate || twoWeeksFromNow,
       status: borrowing?.status || 'borrowed',
+      rating: borrowing?.rating || undefined,
+      review: borrowing?.review || undefined,
     },
   });
 
   const onSubmit = async (values: BorrowFormValues) => {
     setIsSubmitting(true);
     try {
+      // Clean and prepare the data
+      const submitData = {
+        borrowerId: values.borrowerId,
+        librarianId: values.librarianId,
+        bookId: values.bookId || null,
+        researchId: values.researchId || null,
+        borrowDate: values.borrowDate,
+        dueDate: values.dueDate,
+        status: values.status,
+        rating: values.rating || null,
+        review: values.review || null,
+      };
+
+      // Remove undefined values
+      Object.keys(submitData).forEach(key => {
+        if (submitData[key] === undefined) {
+          delete submitData[key];
+        }
+      });
+
+      console.log('Submitting borrowing data:', submitData);
+
       if (isEditing) {
         await apiRequest(`/api/borrowings/${borrowing.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
+          body: JSON.stringify(submitData),
         });
         toast({
           title: 'Success',
@@ -124,7 +155,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
         await apiRequest('/api/borrowings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
+          body: JSON.stringify(submitData),
         });
         toast({
           title: 'Success',
@@ -221,18 +252,60 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                   <FormItem>
                     <FormLabel>Book</FormLabel>
                     <Select
-                      onValueChange={(value) => field.onChange(parseInt(value))}
+                      onValueChange={(value) => {
+                        field.onChange(value ? parseInt(value) : undefined);
+                        // Clear research paper when book is selected
+                        if (value) {
+                          form.setValue('researchId', undefined);
+                        }
+                      }}
                       defaultValue={field.value?.toString()}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select book" />
+                          <SelectValue placeholder="Select book (optional)" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
+                        <SelectItem value="">None</SelectItem>
                         {books?.map((book: any) => (
                           <SelectItem key={book.id} value={book.id.toString()}>
                             {book.title || book.name} by {book.author}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="researchId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Research Paper</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value ? parseInt(value) : undefined);
+                        // Clear book when research paper is selected
+                        if (value) {
+                          form.setValue('bookId', undefined);
+                        }
+                      }}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select research paper (optional)" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="">None</SelectItem>
+                        {researchPapers?.map((paper: any) => (
+                          <SelectItem key={paper.id} value={paper.id.toString()}>
+                            {paper.name} by {paper.author}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -293,9 +366,9 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                 )}
               />
 
-              {form.formState.errors.itemType && (
+              {(form.formState.errors.bookId || form.formState.errors.researchId) && (
                 <div className="col-span-2 text-destructive text-sm">
-                  {form.formState.errors.itemType.message}
+                  {form.formState.errors.bookId?.message || form.formState.errors.researchId?.message}
                 </div>
               )}
             </div>
