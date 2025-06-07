@@ -40,7 +40,9 @@ const LibrariansPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest('DELETE', `/api/librarians/${id}`);
+      await apiRequest(`/api/librarians/${id}`, {
+        method: 'DELETE',
+      });
       queryClient.invalidateQueries({ queryKey: ['/api/librarians'] });
       toast({
         title: 'Success',
