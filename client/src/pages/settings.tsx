@@ -51,10 +51,6 @@ const Settings = () => {
     queryKey: ['/api/books'],
   });
 
-  const { data: research } = useQuery({ 
-    queryKey: ['/api/research'],
-  });
-
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
@@ -118,10 +114,6 @@ const Settings = () => {
         dataToExport = Array.isArray(books) ? books : [];
         fileName = 'books_export';
         break;
-      case 'research':
-        dataToExport = Array.isArray(research) ? research : [];
-        fileName = 'research_papers_export';
-        break;
       case 'borrowers':
         dataToExport = Array.isArray(borrowers) ? borrowers : [];
         fileName = 'borrowers_export';
@@ -175,7 +167,6 @@ const Settings = () => {
     const exportData = {
       libraryHours,
       books,
-      research,
       borrowers,
       librarians
     };
@@ -429,23 +420,6 @@ const Settings = () => {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm">Research Papers</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Export all research papers data</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex items-center"
-                          onClick={() => handleExport('research', 'excel')}
-                        >
-                          <FileSpreadsheet className="mr-1 h-4 w-4" /> Excel
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div>
                         <p className="text-sm">Borrowers</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">Export all borrowers data</p>
                       </div>
@@ -521,28 +495,6 @@ const Settings = () => {
                           >
                             <Upload className="mr-2 h-4 w-4" />
                             Import Books
-                          </Button>
-                        </CardContent>
-                      </Card>
-
-                      <Card className="border border-gray-200 dark:border-gray-800">
-                        <CardContent className="pt-6">
-                          <div className="flex items-center space-x-4 mb-4">
-                            <div className="p-2 bg-blue-500/10 rounded-lg">
-                              <FileText className="h-6 w-6 text-blue-500" />
-                            </div>
-                            <div>
-                              <h5 className="font-medium">Research Papers</h5>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">Import research papers data</p>
-                            </div>
-                          </div>
-                          <Button 
-                            variant="outline"
-                            className="w-full bg-blue-500/5 hover:bg-blue-500/10"
-                            onClick={() => handleImport('research')}
-                          >
-                            <Upload className="mr-2 h-4 w-4" />
-                            Import Papers
                           </Button>
                         </CardContent>
                       </Card>

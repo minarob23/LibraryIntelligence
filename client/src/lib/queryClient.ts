@@ -106,6 +106,15 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       const pathParts = path.split('/');
       const borrowingId = parseInt(pathParts[3]);
 
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(borrowingId, data);
+      }
+
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBorrowing(borrowingId);
+      }
+
       if (pathParts[4] === 'return' && options?.method === 'PUT') {
         const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
         return localStorage_storage.updateBorrowing(borrowingId, data);
