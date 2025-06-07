@@ -82,7 +82,7 @@ const BorrowersPage = () => {
     if (selectedCategory === 'all') return true;
     return borrower.category === selectedCategory;
   });
-  
+
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
@@ -139,7 +139,7 @@ const BorrowersPage = () => {
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
     if (!borrowerDistribution) return [];
-    
+
     const categoryMap = {
       'primary': 'Primary',
       'middle': 'Middle', 
@@ -336,20 +336,17 @@ const BorrowersPage = () => {
                         <Edit size={16} className="mr-1" /> Edit
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[700px]">
-                      <DialogHeader>
+                    <DialogContent className="sm:max-w-[900px] max-h-[85vh] overflow-hidden flex flex-col">
+                      <DialogHeader className="flex-shrink-0 pb-2">
                         <DialogTitle>Edit Borrower</DialogTitle>
-                        <DialogDescription>
-                          Update the borrower details. Fill out the form below with the updated information.
-                        </DialogDescription>
                       </DialogHeader>
-                      {editingBorrower && (
+                      <div className="flex-1 overflow-y-auto pr-2">
                         <BorrowerForm 
-                          borrower={editingBorrower} 
-                          onSuccess={() => setOpenEditDialog(false)} 
-                          onCancel={() => setOpenEditDialog(false)} 
+                          borrower={editingBorrower}
+                          onSuccess={() => setOpenEditDialog(false)}
+                          onCancel={() => setOpenEditDialog(false)}
                         />
-                      )}
+                      </div>
                     </DialogContent>
                   </Dialog>
 
