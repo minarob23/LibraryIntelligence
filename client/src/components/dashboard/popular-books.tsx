@@ -178,11 +178,6 @@ const PopularBooks = () => {
                 <div>
                   <h4 className="font-medium">{book.name}</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
-                  <div className="flex items-center mt-1">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {book.rating ? book.rating : 'Not rated'}
-                    </span>
-                  </div>
                   {(
                     <div className="mt-3">
                       {filter === 'popularity' && (
