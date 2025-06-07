@@ -1,0 +1,79 @@
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749327181498
+Book cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749327182174
+Borrower cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749327182016
+Book cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749327182113
+Borrowings raw data: 
+(2) [{…}, {…}]
+Borrowers raw data: 
+(2) [{…}, {…}]
+Books raw data: 
+(3) [{…}, {…}, {…}]
+Borrower cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749327181498
+Book cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749327182174
+Borrower cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749327182016
+Book cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749327182113
+Borrowings raw data: 
+(2) [{…}, {…}]
+Borrowers raw data: 
+(2) [{…}, {…}]
+Books raw data: 
+(3) [{…}, {…}, {…}]
+API Request Error: 
+TypeError {}
+
+API Request Error: 
+TypeError {}
+
+Error returning book: 
+TypeError {}
+
+Borrower cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749327181498
+Book cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749327182174
+Borrower cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749327182016
+Book cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749327182113
