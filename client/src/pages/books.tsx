@@ -484,11 +484,9 @@ const BooksPage = () => {
                       {editingBook && (
                         <BookForm 
                           book={editingBook} 
-                          onSuccess={async () => {
+                          onSuccess={() => {
                             setOpenEditDialog(false);
                             setEditingBook(null);
-                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
                           }} 
                           onCancel={() => {
                             setOpenEditDialog(false);
@@ -541,11 +539,9 @@ const BooksPage = () => {
                       {editingBook && (
                         <BookForm 
                           book={editingBook} 
-                          onSuccess={async () => {
+                          onSuccess={() => {
                             setOpenEditDialog(false);
                             setEditingBook(null);
-                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
                           }} 
                           onCancel={() => {
                             setOpenEditDialog(false);
@@ -598,11 +594,9 @@ const BooksPage = () => {
                       {editingBook && (
                         <BookForm 
                           book={editingBook} 
-                          onSuccess={async () => {
+                          onSuccess={() => {
                             setOpenEditDialog(false);
                             setEditingBook(null);
-                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
                           }} 
                           onCancel={() => {
                             setOpenEditDialog(false);
@@ -655,11 +649,9 @@ const BooksPage = () => {
                       {editingBook && (
                         <BookForm 
                           book={editingBook} 
-                          onSuccess={async () => {
+                          onSuccess={() => {
                             setOpenEditDialog(false);
                             setEditingBook(null);
-                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
                           }} 
                           onCancel={() => {
                             setOpenEditDialog(false);

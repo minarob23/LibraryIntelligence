@@ -112,8 +112,9 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
       
-      // Force immediate refetch to ensure UI updates
+      // Force immediate refetch to ensure UI updates immediately
       await queryClient.refetchQueries({ queryKey: ['/api/books'] });
+      await queryClient.refetchQueries({ queryKey: ['/api/borrowings'] });
 
       if (onSuccess) {
         onSuccess();
