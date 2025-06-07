@@ -333,16 +333,60 @@ class LocalStorage {
     // Only remove clearly corrupted entries, keep valid data
     const originalLength = data.borrowings.length;
     data.borrowings = data.borrowings.filter(borrowing => {
-      // Keep objects that have the basic required structure
-      return borrowing && 
-             typeof borrowing === 'object' && 
-             !Array.isArray(borrowing) &&
-             (borrowing.borrowerId || borrowing.borrowerId === 0) &&
-             (borrowing.bookId || borrowing.bookId === 0);
+      // Check if borrowing is a proper object with required fields
+      if (!borrowing || typeof borrowing !== 'object') {
+        return false;
+      }
+
+      // Check if it's an array-like object (corrupted JSON string)
+      if (Array.isArray(borrowing) || (typeof borrowing === 'object' && '0' in borrowing)) {
+        return false;
+      }
+
+      // Check if it has required fields
+      return borrowing.id && 
+             borrowing.borrowerId && 
+             borrowing.bookId &&
+             typeof borrowing.id === 'number' &&
+             typeof borrowing.borrowerId === 'number' &&
+             typeof borrowing.bookId === 'number';
     });
 
     if (data.borrowings.length !== originalLength) {
       console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted entries`);
+      this.saveData(data);
+    }
+
+    // Also clean other data types
+    const borrowers = data.borrowers;
+    const cleanBorrowers = borrowers.filter(borrower => 
+      borrower && 
+      typeof borrower === 'object' && 
+      !Array.isArray(borrower) &&
+      !('0' in borrower) &&
+      borrower.id &&
+      borrower.name &&
+      typeof borrower.id === 'number'
+    );
+
+    if (cleanBorrowers.length !== borrowers.length) {
+      console.log(`Cleaned ${borrowers.length - cleanBorrowers.length} corrupted borrower entries`);
+      this.saveData(data);
+    }
+
+    const books = data.books;
+    const cleanBooks = books.filter(book => 
+      book && 
+      typeof book === 'object' && 
+      !Array.isArray(book) &&
+      !('0' in book) &&
+      book.id &&
+      book.name &&
+      typeof book.id === 'number'
+    );
+
+    if (cleanBooks.length !== books.length) {
+      console.log(`Cleaned ${books.length - cleanBooks.length} corrupted book entries`);
       this.saveData(data);
     }
   }

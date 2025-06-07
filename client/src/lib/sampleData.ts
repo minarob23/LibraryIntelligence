@@ -3,16 +3,25 @@ import { localStorage_storage } from './localStorage';
 export const initializeSampleData = () => {
   // Clean any corrupted data first
   localStorage_storage.cleanCorruptedData();
-  // Check if data already exists
+  
+  // Check if data already exists and is valid
   const existingBooks = localStorage_storage.getBooks();
-  if (existingBooks.length > 0) {
-    return; // Data already exists, don't overwrite
+  const existingBorrowers = localStorage_storage.getBorrowers();
+  const existingBorrowings = localStorage_storage.getBorrowings();
+  
+  // Check if we have valid data
+  const hasValidBooks = existingBooks.length > 0 && existingBooks.every(b => b && b.id && (b.title || b.name));
+  const hasValidBorrowers = existingBorrowers.length > 0 && existingBorrowers.every(b => b && b.id && b.name);
+  
+  if (hasValidBooks && hasValidBorrowers) {
+    return; // Valid data already exists, don't overwrite
   }
 
   // Sample Books
   const sampleBooks = [
     {
       coverImage: '/src/assets/book-covers/cover1.svg',
+      title: 'The Great Gatsby',
       name: 'The Great Gatsby',
       author: 'F. Scott Fitzgerald',
       publisher: 'Scribner',
@@ -29,6 +38,7 @@ export const initializeSampleData = () => {
     },
     {
       coverImage: '/src/assets/book-covers/cover2.svg',
+      title: 'To Kill a Mockingbird',
       name: 'To Kill a Mockingbird',
       author: 'Harper Lee',
       publisher: 'J.B. Lippincott & Co.',
@@ -45,6 +55,7 @@ export const initializeSampleData = () => {
     },
     {
       coverImage: '/src/assets/book-covers/cover3.svg',
+      title: '1984',
       name: '1984',
       author: 'George Orwell',
       publisher: 'Secker & Warburg',

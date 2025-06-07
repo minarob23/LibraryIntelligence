@@ -232,7 +232,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                       <SelectContent>
                         {books?.map((book: any) => (
                           <SelectItem key={book.id} value={book.id.toString()}>
-                            {book.name} by {book.author}
+                            {book.title || book.name} by {book.author}
                           </SelectItem>
                         ))}
                       </SelectContent>
