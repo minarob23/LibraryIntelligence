@@ -121,30 +121,29 @@ class LocalStorage {
     const newBorrower = {
       ...borrower,
       id: this.generateId(),
-      createdAt: new Date().toISOString()
+      memberId: borrower.memberId || `BRW-${this.generateId()}`,
+      createdAt: new Date().toISOString(),
+      joinedDate: borrower.joinedDate || new Date().toISOString().split('T')[0]
     };
     data.borrowers.push(newBorrower);
     this.saveData(data);
     return newBorrower;
   }
 
-  updateBorrower(id: number, borrowerUpdate: any) {
+  updateBorrower(id: number, updates: any): any {
     const data = this.getData();
-    const index = data.borrowers.findIndex(borrower => borrower.id === id);
+    const index = data.borrowers.findIndex((b: any) => b.id === id);
     if (index !== -1) {
-      // Ensure we preserve the ID and merge all other fields
-      const updatedBorrower = { 
+      data.borrowers[index] = { 
         ...data.borrowers[index], 
-        ...borrowerUpdate,
-        id: id // Preserve the original ID
+        ...updates,
+        // Preserve the original id
+        id: data.borrowers[index].id
       };
-      data.borrowers[index] = updatedBorrower;
-      this.saveData(data);
-      console.log('Borrower updated successfully:', updatedBorrower);
-      return updatedBorrower;
+      this.setData(data);
+      return data.borrowers[index];
     }
-    console.error('Borrower not found for update:', id);
-    return null;
+    throw new Error('Borrower not found');
   }
 
   deleteBorrower(id: number) {

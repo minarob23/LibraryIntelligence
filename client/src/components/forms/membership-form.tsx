@@ -69,13 +69,21 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
       expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
       const borrowerData = {
+        memberId: data.id, // Store the custom Member ID
         name: data.name,
         category: data.stage,
         phone: data.phone,
         email: data.email,
         address: data.address,
         joinedDate: joinedDate,
-        expiryDate: expiryDate.toISOString().split('T')[0]
+        expiryDate: expiryDate.toISOString().split('T')[0],
+        churchName: data.churchName,
+        fatherOfConfession: data.fatherOfConfession,
+        studies: data.studies,
+        job: data.job,
+        hobbies: data.hobbies,
+        favoriteBooks: data.favoriteBooks,
+        additionalPhone: data.additionalPhone
       };
 
       await apiRequest('POST', '/api/borrowers', borrowerData);

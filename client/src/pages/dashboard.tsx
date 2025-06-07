@@ -90,19 +90,35 @@ const Dashboard = () => {
       monthlyGrowth.push(categoryData);
     }
 
-    // Count borrowers per month and category based on join date
-    growthBorrowers.forEach((borrower: any) => {
-      const date = new Date(borrower.joinedDate);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      const monthData = monthlyGrowth.find(data => data.month === monthKey);
-      if (monthData && borrower.category) {
-        // Capitalize the category to match chart format
-        const capitalizedCategory = borrower.category.charAt(0).toUpperCase() + borrower.category.slice(1);
-        if (categories.includes(capitalizedCategory)) {
-          monthData[capitalizedCategory]++;
+    // Count new borrowers by category for each month
+    if (growthBorrowers && Array.isArray(growthBorrowers)) {
+      growthBorrowers.forEach((borrower: any) => {
+        if (borrower.joinedDate) {
+          const joinedDate = new Date(borrower.joinedDate);
+          const borrowerMonth = joinedDate.getMonth();
+          const borrowerYear = joinedDate.getFullYear();
+
+          // Only count borrowers from the last 6 months
+          const cutoffDate = new Date();
+          cutoffDate.setMonth(cutoffDate.getMonth() - 5);
+          cutoffDate.setDate(1);
+
+          if (joinedDate >= cutoffDate) {
+            // Find the matching month in our data
+            const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
+            const monthData = monthlyGrowth.find(m => m.month === monthKey);
+
+            if (monthData) {
+              const category = borrower.category || 'primary';
+              const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
+              if (categories.includes(categoryKey)) {
+                monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
+              }
+            }
+          }
         }
-      }
-    });
+      });
+    }
 
     return monthlyGrowth;
   };
@@ -153,7 +169,7 @@ const Dashboard = () => {
                 />
               </DialogContent>
             </Dialog>
-            
+
             <Dialog open={openMemberDialog} onOpenChange={setOpenMemberDialog}>
               <DialogTrigger asChild>
                 <Button 

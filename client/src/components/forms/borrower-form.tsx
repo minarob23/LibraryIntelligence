@@ -21,7 +21,7 @@ import { queryClient } from '@/lib/queryClient';
 
 // Extend the schema to add validation messages
 const borrowerSchema = insertBorrowerSchema.extend({
-  id: z.string().min(1, 'ID is required'),
+  memberId: z.string().min(1, 'Member ID is required'), // Changed id to memberId
   name: z.string().min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(8, 'Phone number must be at least 8 characters'),
   category: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate'], {
@@ -62,7 +62,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
   const form = useForm<BorrowerFormValues>({
     resolver: zodResolver(borrowerSchema),
     defaultValues: borrower ? {
-      id: borrower.id?.toString() || '',
+      memberId: borrower.memberId?.toString() || '', // Changed id to memberId
       name: borrower.name || '',
       phone: borrower.phone || '',
       category: borrower.category || 'primary',
@@ -78,7 +78,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       favoriteBooks: borrower.favoriteBooks || '',
       additionalPhone: borrower.additionalPhone || '',
     } : {
-      id: '',
+      memberId: '', // Changed id to memberId
       name: '',
       phone: '',
       category: 'primary' as const,
@@ -100,8 +100,12 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
     try {
       setIsSubmitting(true);
 
+      // Store the custom ID as memberId and remove it from the main data
+      const { memberId, ...borrowerData } = data; // Changed id to memberId
+      const submissionData = { ...borrowerData, memberId };
+
       if (isEditing && borrower?.id) {
-        const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
+        const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, submissionData);
 
         toast({
           title: 'Success',
@@ -117,7 +121,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           onSuccess();
         }
       } else {
-        const response = await apiRequest('POST', '/api/borrowers', data);
+        const response = await apiRequest('POST', '/api/borrowers', submissionData);
 
         toast({
           title: 'Success',
@@ -158,7 +162,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
               {/* Personal Information */}
               <FormField
                 control={form.control}
-                name="id"
+                name="memberId" // Changed id to memberId
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Member ID</FormLabel>
