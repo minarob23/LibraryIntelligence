@@ -203,13 +203,37 @@ class LocalStorage {
     return data.borrowings.filter(borrowing => borrowing.borrowerId === borrowerId);
   }
 
-  createBorrowing(borrowing: any) {
+  addBorrowing(borrowing: any) {
     const data = this.getData();
+
+    // Validate and clean the input
+    if (!borrowing || typeof borrowing !== 'object') {
+      throw new Error('Invalid borrowing data');
+    }
+
+    // Create clean borrowing object with only expected properties
     const newBorrowing = {
-      ...borrowing,
-      id: this.generateId(),
-      createdAt: new Date().toISOString()
+      id: Date.now(),
+      borrowerId: typeof borrowing.borrowerId === 'number' ? borrowing.borrowerId : parseInt(borrowing.borrowerId),
+      librarianId: typeof borrowing.librarianId === 'number' ? borrowing.librarianId : parseInt(borrowing.librarianId),
+      bookId: typeof borrowing.bookId === 'number' ? borrowing.bookId : parseInt(borrowing.bookId),
+      borrowDate: String(borrowing.borrowDate),
+      dueDate: String(borrowing.dueDate),
+      status: String(borrowing.status),
+      createdAt: new Date().toISOString(),
     };
+
+    // Add optional fields if they exist
+    if (borrowing.returnDate) {
+      newBorrowing.returnDate = String(borrowing.returnDate);
+    }
+    if (borrowing.rating) {
+      newBorrowing.rating = typeof borrowing.rating === 'number' ? borrowing.rating : parseInt(borrowing.rating);
+    }
+    if (borrowing.review) {
+      newBorrowing.review = String(borrowing.review);
+    }
+
     data.borrowings.push(newBorrowing);
     this.saveData(data);
     return newBorrowing;
@@ -374,7 +398,7 @@ class LocalStorage {
       if (!borrower || typeof borrower !== 'object' || Array.isArray(borrower)) {
         return false;
       }
-      
+
       const keys = Object.keys(borrower);
       const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
       if (hasNumericKeys) {
@@ -398,7 +422,7 @@ class LocalStorage {
       if (!book || typeof book !== 'object' || Array.isArray(book)) {
         return false;
       }
-      
+
       const keys = Object.keys(book);
       const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
       if (hasNumericKeys) {
@@ -608,6 +632,108 @@ class LocalStorage {
     if (data.books.length === 0) {
       // Will be initialized by sampleData.ts
     }
+  }
+
+  // Clean corrupted data automatically on startup
+  constructor() {
+    this.aggressiveCleanup();
+  }
+
+  // Aggressive data cleanup
+  private aggressiveCleanup(): void {
+    console.log('Running aggressive data cleanup...');
+    let data = this.getData();
+
+    // Start with borrowings
+    data.borrowings = this.cleanBorrowings(data.borrowings);
+
+    // Clean borrowers
+    data.borrowers = this.cleanBorrowers(data.borrowers);
+
+    // Clean books
+    data.books = this.cleanBooks(data.books);
+
+    // Clean librarians
+    data.librarians = this.cleanLibrarians(data.librarians);
+
+    // Clean membership applications
+    data.membershipApplications = this.cleanMembershipApplications(data.membershipApplications);
+
+    this.saveData(data);
+    console.log('Aggressive data cleanup complete.');
+  }
+
+  // Helper cleaning functions
+  private cleanBorrowings(borrowings: any[]): any[] {
+    return borrowings.filter(borrowing => {
+      if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+        return false;
+      }
+      const keys = Object.keys(borrowing);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+      return typeof borrowing.id === 'number' &&
+        typeof borrowing.borrowerId === 'number' &&
+        typeof borrowing.bookId === 'number';
+    });
+  }
+
+  private cleanBorrowers(borrowers: any[]): any[] {
+    return borrowers.filter(borrower => {
+      if (!borrower || typeof borrower !== 'object' || Array.isArray(borrower)) {
+        return false;
+      }
+      const keys = Object.keys(borrower);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+      return typeof borrower.id === 'number' && typeof borrower.name === 'string';
+    });
+  }
+
+  private cleanBooks(books: any[]): any[] {
+    return books.filter(book => {
+      if (!book || typeof book !== 'object' || Array.isArray(book)) {
+        return false;
+      }
+      const keys = Object.keys(book);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+      return typeof book.id === 'number' && (typeof book.name === 'string' || typeof book.title === 'string');
+    });
+  }
+
+  private cleanLibrarians(librarians: any[]): any[] {
+    return librarians.filter(librarian => {
+      if (!librarian || typeof librarian !== 'object' || Array.isArray(librarian)) {
+        return false;
+      }
+      const keys = Object.keys(librarian);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+      return typeof librarian.id === 'number';
+    });
+  }
+
+  private cleanMembershipApplications(membershipApplications: any[]): any[] {
+    return membershipApplications.filter(app => {
+      if (!app || typeof app !== 'object' || Array.isArray(app)) {
+        return false;
+      }
+      const keys = Object.keys(app);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+      return typeof app.id === 'number';
+    });
   }
 }
 
