@@ -138,7 +138,29 @@ const BorrowersPage = () => {
 
   // Format borrower distribution data for chart
   const formatBorrowerDistribution = () => {
-    if (!borrowerDistribution) return [];
+    if (!borrowerDistribution || !Array.isArray(borrowerDistribution)) {
+      // Fallback: calculate distribution from current borrowers if API data is not available
+      if (!allBorrowers || !Array.isArray(allBorrowers)) return [];
+      
+      const categoryCount = allBorrowers.reduce((acc: any, borrower: any) => {
+        const category = borrower.category || 'unknown';
+        acc[category] = (acc[category] || 0) + 1;
+        return acc;
+      }, {});
+
+      const categoryMap = {
+        'primary': 'Primary',
+        'middle': 'Middle', 
+        'secondary': 'Secondary',
+        'university': 'University',
+        'graduate': 'Graduate'
+      };
+
+      return Object.entries(categoryCount).map(([category, count]) => ({
+        name: categoryMap[category] || category,
+        value: count
+      }));
+    }
 
     const categoryMap = {
       'primary': 'Primary',
@@ -301,21 +323,30 @@ const BorrowersPage = () => {
             </h3>
             {category.value === 'all' && (
               <div className="mb-6">
-                <ChartContainer
-                  title="Borrowers Distribution by Category"
-                  type="bar"
-                  data={formatBorrowerDistribution()}
-                  nameKey="name"
-                  dataKey="value"
-                  colors={[
-                    '#22C55E',  // Green for Primary
-                    '#EF4444',  // Red for Middle
-                    '#F59E0B',  // Orange for Secondary
-                    '#6366F1',  // Indigo for University
-                    '#EC4899'   // Pink for Graduate
-                  ]}
-                  height={350}
-                />
+                {formatBorrowerDistribution().length > 0 ? (
+                  <ChartContainer
+                    title="Borrowers Distribution by Category"
+                    type="bar"
+                    data={formatBorrowerDistribution()}
+                    nameKey="name"
+                    dataKey="value"
+                    colors={[
+                      '#22C55E',  // Green for Primary
+                      '#EF4444',  // Red for Middle
+                      '#F59E0B',  // Orange for Secondary
+                      '#6366F1',  // Indigo for University
+                      '#EC4899'   // Pink for Graduate
+                    ]}
+                    height={350}
+                  />
+                ) : (
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border p-6 h-[350px] flex items-center justify-center">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold mb-2">Borrowers Distribution by Category</h3>
+                      <p className="text-gray-500 dark:text-gray-400">No borrower data available for chart display</p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             <div className="flex flex-col md:flex-row gap-4 mb-4">
