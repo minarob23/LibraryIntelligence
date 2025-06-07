@@ -141,12 +141,8 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    // Since mockApiResponse returns data directly, not a response object, just return it
+    return response;
   } catch (error) {
     console.error('API Request Error:', error);
 
