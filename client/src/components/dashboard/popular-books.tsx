@@ -78,18 +78,8 @@ const PopularBooks = () => {
   const sortBooks = (books: any[]) => {
     if (!books) return [];
 
-    const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
-
     const booksWithScore = books.map(book => {
-      // Get all ratings for this book from localStorage
-      const bookRatings = Object.entries(localRatings)
-        .filter(([key, _]) => key.startsWith('borrowing_'))
-        .map(([_, rating]) => Number(rating))
-        .filter(rating => rating > 0);
-
-      const averageRating = bookRatings.length > 0
-        ? (bookRatings.reduce((sum, rating) => sum + rating, 0) / bookRatings.length).toFixed(1)
-        : null;
+      const averageRating = getAverageRating(book.id);
 
       return {
         ...book,
