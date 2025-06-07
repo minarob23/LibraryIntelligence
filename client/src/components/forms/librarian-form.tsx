@@ -71,19 +71,13 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
       setIsSubmitting(true);
       
       if (isEditing && librarian) {
-        await apiRequest(`/api/librarians/${librarian.id}`, {
-          method: 'PUT',
-          body: JSON.stringify(data),
-        });
+        await apiRequest('PUT', `/api/librarians/${librarian.id}`, JSON.stringify(data));
         toast({
           title: 'Success',
           description: 'Librarian updated successfully',
         });
       } else {
-        await apiRequest('/api/librarians', {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
+        await apiRequest('POST', '/api/librarians', JSON.stringify(data));
         toast({
           title: 'Success',
           description: 'Librarian added successfully',
