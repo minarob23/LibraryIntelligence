@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, Plus, CheckCircle, CornerDownLeft } from 'lucide-react';
-import { StarRating } from '@/components/ui/star-rating';
+import { Edit, Trash2, Plus, RefreshCw, Search, Calendar, User, BookOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -26,152 +24,131 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTable from '@/components/tables/data-table';
 import BorrowForm from '@/components/forms/borrow-form';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { Input } from "@/components/ui/input";
 
-const BorrowingPage = () => {
+const BorrowingManagement = () => {
   const { toast } = useToast();
   const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [editingBorrowing, setEditingBorrowing] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [editingBorrowing, setEditingBorrowing] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('all');
 
-  const { data: borrowings, isLoading: isLoadingBorrowings } = useQuery({ 
+  // Fetch borrowings data
+  const { data: borrowings = [], isLoading } = useQuery({ 
     queryKey: ['/api/borrowings'],
   });
 
-  const { data: borrowers } = useQuery({ 
+  const { data: borrowers = [] } = useQuery({ 
     queryKey: ['/api/borrowers'],
   });
 
-  const { data: librarians } = useQuery({ 
-    queryKey: ['/api/librarians'],
-  });
-
-  const { data: books } = useQuery({ 
+  const { data: books = [] } = useQuery({ 
     queryKey: ['/api/books'],
   });
 
-  const { data: researchPapers } = useQuery({ 
-    queryKey: ['/api/research'],
+  // Filter borrowings based on search and status
+  const filteredBorrowings = borrowings.filter((borrowing: any) => {
+    const borrower = borrowers.find((b: any) => b.id === borrowing.borrowerId);
+    const book = books.find((b: any) => b.id === borrowing.bookId);
+
+    const matchesSearch = !searchTerm || 
+      borrower?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      borrowing.id.toString().includes(searchTerm);
+
+    const matchesStatus = selectedStatus === 'all' || 
+      (selectedStatus === 'active' && !borrowing.returnDate) ||
+      (selectedStatus === 'returned' && borrowing.returnDate) ||
+      (selectedStatus === 'overdue' && !borrowing.returnDate && new Date(borrowing.dueDate) < new Date());
+
+    return matchesSearch && matchesStatus;
   });
 
+  // Get status badge
+  const getStatusBadge = (borrowing: any) => {
+    if (borrowing.returnDate) {
+      return <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">Returned</Badge>;
+    }
+
+    const dueDate = new Date(borrowing.dueDate);
+    const today = new Date();
+
+    if (dueDate < today) {
+      return <Badge variant="destructive">Overdue</Badge>;
+    }
+
+    return <Badge variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">Active</Badge>;
+  };
+
+  // Get initials from a name
+  const getInitials = (name: string) => {
+    if (!name) return 'N/A';
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase();
+  };
+
+  // Delete borrowing record
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest('DELETE', `/api/borrowings/${id}`);
+      await apiRequest(`/api/borrowings/${id}`, {
+        method: 'DELETE',
+      });
+
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
-      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+
       toast({
         title: 'Success',
         description: 'Borrowing record deleted successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error deleting borrowing record:', error);
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to delete borrowing record. Please try again.',
+        description: 'Failed to delete borrowing record. Please try again.',
         variant: 'destructive',
       });
     }
   };
 
-  const handleReturn = async (borrowing: any) => {
+  // Return book
+  const handleReturn = async (id: number) => {
     try {
-      const today = new Date().toISOString().split('T')[0];
-      const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
-      const ratingKey = `borrowing_${borrowing.id}`;
-      
-      // Store rating in localStorage with unique borrowing ID
-      localRatings[ratingKey] = borrowing.rating || 0;
-      localStorage.setItem('borrowingRatings', JSON.stringify(localRatings));
-
-      const updatedBorrowing = {
-        ...borrowing,
-        returnDate: today,
-        status: 'returned',
-        rating: Number(borrowing.rating) || 0
-      };
-
-      const response = await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, updatedBorrowing);
-
-      // Update local state and cache
-      queryClient.setQueryData(['/api/borrowings'], (oldData: any[]) => {
-        if (!oldData) return [];
-        return oldData.map(b => b.id === borrowing.id ? {...b, ...response} : b);
+      await apiRequest(`/api/borrowings/${id}/return`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ returnDate: new Date().toISOString() }),
       });
 
-      // Invalidate and refetch to ensure data consistency
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
       toast({
         title: 'Success',
-        description: `Item returned successfully! Your rating (${borrowing.rating}/10)`,
-        variant: 'default'
+        description: 'Book returned successfully',
       });
     } catch (error) {
-      console.error('Error returning item:', error);
+      console.error('Error returning book:', error);
       toast({
         title: 'Error',
-        description: 'Failed to return item. Please try again.',
+        description: 'Failed to return book. Please try again.',
         variant: 'destructive',
       });
     }
   };
 
-  // Get status badge based on borrowing status
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'borrowed':
-        return (
-          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-            Borrowed
-          </Badge>
-        );
-      case 'returned':
-        return (
-          <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-            Returned
-          </Badge>
-        );
-      case 'overdue':
-        return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
-            Overdue
-          </Badge>
-        );
-      default:
-        return (
-          <Badge variant="outline" className="bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400">
-            Unknown
-          </Badge>
-        );
-    }
-  };
-
-  const mapBorrowingWithDetails = () => {
-    if (!borrowings || !borrowers || !librarians || !books || !researchPapers) return [];
-
-    const borrowersMap = new Map(borrowers.map((b: any) => [b.id, b]));
-    const librariansMap = new Map(librarians.map((l: any) => [l.id, l]));
-    const booksMap = new Map(books.map((b: any) => [b.id, b]));
-    const researchMap = new Map(researchPapers.map((r: any) => [r.id, r]));
-
-    return borrowings.map((borrowing: any) => {
-      const borrower = borrowersMap.get(borrowing.borrowerId);
-      const librarian = librariansMap.get(borrowing.librarianId);
-      const book = borrowing.bookId ? booksMap.get(borrowing.bookId) : null;
-      const research = borrowing.researchId ? researchMap.get(borrowing.researchId) : null;
-
-      return {
-        ...borrowing,
-        borrowerName: borrower?.name || 'Unknown Borrower',
-        librarianName: librarian?.name || 'Unknown Librarian',
-        itemName: book?.name || research?.name || 'Unknown Item',
-        itemType: book ? 'Book' : research ? 'Research' : 'Unknown',
-      };
-    });
-  };
+  const statusTabs = [
+    { value: 'all', label: 'All', count: borrowings.length },
+    { value: 'active', label: 'Active', count: borrowings.filter((b: any) => !b.returnDate).length },
+    { value: 'returned', label: 'Returned', count: borrowings.filter((b: any) => b.returnDate).length },
+    { value: 'overdue', label: 'Overdue', count: borrowings.filter((b: any) => !b.returnDate && new Date(b.dueDate) < new Date()).length },
+  ];
 
   const columns = [
     {
@@ -180,24 +157,37 @@ const BorrowingPage = () => {
       cell: (row: any) => `BRW-${row.id}`,
     },
     {
-      key: 'borrowerName',
+      key: 'borrower',
       header: 'Borrower',
-      cell: (row: any) => row.borrowerName,
+      cell: (row: any) => {
+        const borrower = borrowers.find((b: any) => b.id === row.borrowerId);
+        return borrower ? (
+          <div className="flex items-center">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                {getInitials(borrower.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="ml-3">
+              <div className="text-sm font-medium">{borrower.name}</div>
+              <div className="text-xs text-gray-500">{borrower.category}</div>
+            </div>
+          </div>
+        ) : 'Unknown';
+      },
     },
     {
-      key: 'librarianName',
-      header: 'Librarian',
-      cell: (row: any) => row.librarianName,
-    },
-    {
-      key: 'itemType',
-      header: 'Item Type',
-      cell: (row: any) => row.itemType,
-    },
-    {
-      key: 'itemName',
-      header: 'Item Name',
-      cell: (row: any) => row.itemName,
+      key: 'book',
+      header: 'Book',
+      cell: (row: any) => {
+        const book = books.find((b: any) => b.id === row.bookId);
+        return book ? (
+          <div>
+            <div className="text-sm font-medium">{book.title}</div>
+            <div className="text-xs text-gray-500">{book.author}</div>
+          </div>
+        ) : 'Unknown';
+      },
     },
     {
       key: 'borrowDate',
@@ -212,182 +202,111 @@ const BorrowingPage = () => {
     {
       key: 'returnDate',
       header: 'Return Date',
-      cell: (row: any) => row.returnDate ? new Date(row.returnDate).toLocaleDateString() : 'Not returned',
+      cell: (row: any) => row.returnDate ? new Date(row.returnDate).toLocaleDateString() : '-',
     },
     {
       key: 'status',
       header: 'Status',
-      cell: (row: any) => getStatusBadge(row.status),
-    },
-    {
-      key: 'rating',
-      header: 'Rating',
-      cell: (row: any) => {
-        const localRatings = JSON.parse(localStorage.getItem('borrowingRatings') || '{}');
-        const ratingKey = `borrowing_${row.id}`;
-        const localRating = localRatings[ratingKey];
-        return (
-          <span className="text-sm">
-            {localRating ? `${localRating}/10` : row.rating ? `${row.rating}/10` : 'not rated yet'}
-          </span>
-        );
-      },
+      cell: (row: any) => getStatusBadge(row),
     },
   ];
 
-  const borrowingsWithDetails = mapBorrowingWithDetails();
+  const actions = [
+    {
+      label: 'Return Book',
+      icon: <BookOpen size={16} />,
+      onClick: (row: any) => handleReturn(row.id),
+      show: (row: any) => !row.returnDate,
+      variant: 'default' as const,
+    },
+    {
+      label: 'Delete',
+      icon: <Trash2 size={16} />,
+      onClick: (row: any) => handleDelete(row.id),
+      variant: 'destructive' as const,
+      requireConfirm: true,
+      confirmTitle: 'Delete Borrowing Record',
+      confirmDescription: 'Are you sure you want to delete this borrowing record? This action cannot be undone.',
+    },
+  ];
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-6 flex justify-between items-center animate-slide-up">
-        <div>
-          <h2 className="text-2xl font-bold">Borrowing Management</h2>
-          <p className="text-gray-600 dark:text-gray-400">Track borrowed books and research papers</p>
-        </div>
-        <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" /> New Borrowing
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px]">
-            <DialogHeader>
-              <DialogTitle>New Borrowing Record</DialogTitle>
-              <DialogDescription>
-                Create a new borrowing record. Fill out the form below with the borrowing details.
-              </DialogDescription>
-            </DialogHeader>
-            <BorrowForm onSuccess={() => setOpenAddDialog(false)} onCancel={() => setOpenAddDialog(false)} />
-          </DialogContent>
-        </Dialog>
+      <div className="mb-6 animate-slide-up">
+        <h2 className="text-2xl font-bold">Borrowing Management</h2>
+        <p className="text-gray-600 dark:text-gray-400">Track and manage book borrowings</p>
       </div>
 
-      <DataTable
-        data={borrowingsWithDetails}
-        columns={columns}
-        searchable={true}
-        loading={isLoadingBorrowings}
-        actions={(row) => (
-          <>
-            {row.status === 'borrowed' && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-green-500 hover:text-green-600"
-                  >
-                    <CheckCircle size={16} className="mr-1" /> Return
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Rate Book</DialogTitle>
-                    <DialogDescription>
-                      Please rate this book before returning
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <div className="flex flex-col items-center gap-2">
-                      <StarRating
-                        value={row.rating || 0}
-                        onChange={(newValue) => {
-                          row.rating = newValue;
-                          // Force a re-render
-                          const newBorrowings = [...borrowings];
-                          const index = newBorrowings.findIndex(b => b.id === row.id);
-                          if (index !== -1) {
-                            newBorrowings[index] = { ...row };
-                            queryClient.setQueryData(['/api/borrowings'], newBorrowings);
-                          }
-                        }}
-                        max={10}
-                      />
-                      <div className="text-sm text-muted-foreground">Click stars to rate</div>
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button onClick={() => {
-                      if (!row.rating) {
-                        toast({
-                          title: "Error",
-                          description: "Please rate the book before returning",
-                          variant: "destructive"
-                        });
-                        return;
-                      }
-                      handleReturn({...row, rating: row.rating});
-                    }}>
-                      Submit & Return
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            )}
+      <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-3 flex-1">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+            <Input
+              placeholder="Search borrowings..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 w-full sm:w-64"
+            />
+          </div>
+        </div>
 
-            <Dialog open={openEditDialog && editingBorrowing?.id === row.id} onOpenChange={(open) => {
-              setOpenEditDialog(open);
-              if (!open) setEditingBorrowing(null);
-            }}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" className="text-primary-500 hover:text-primary-600 ml-2" onClick={() => {
-                  setEditingBorrowing(row);
-                  setOpenEditDialog(true);
-                }}>
-                  <Edit size={16} className="mr-1" /> Edit
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[700px]">
-                <DialogHeader>
-                  <DialogTitle>Edit Borrowing Record</DialogTitle>
-                  <DialogDescription>
-                    Update the borrowing details. Fill out the form below with the updated information.
-                  </DialogDescription>
-                </DialogHeader>
-                {editingBorrowing && (
-                  <BorrowForm 
-                    borrowing={{
-                      ...editingBorrowing,
-                      itemType: editingBorrowing.bookId ? 'book' : 'research',
-                    }}
-                    onSuccess={() => setOpenEditDialog(false)} 
-                    onCancel={() => setOpenEditDialog(false)} 
-                  />
-                )}
-              </DialogContent>
-            </Dialog>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] })}
+            className="flex items-center gap-2"
+          >
+            <RefreshCw size={16} />
+            Refresh
+          </Button>
 
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-2">
-                  <Trash2 size={16} className="mr-1" /> Delete
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete this borrowing record.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleDelete(row.id)} className="bg-red-500 hover:bg-red-600">
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </>
-        )}
-        pagination={{
-          totalItems: borrowingsWithDetails.length,
-          itemsPerPage: 10,
-          currentPage: 1,
-          onPageChange: () => {},
-        }}
-      />
+          <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2">
+                <Plus size={16} />
+                New Borrowing
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[700px]">
+              <DialogHeader>
+                <DialogTitle>New Borrowing Record</DialogTitle>
+                <DialogDescription>
+                  Create a new borrowing record. Fill out the form below.
+                </DialogDescription>
+              </DialogHeader>
+              <BorrowForm 
+                onSuccess={() => setOpenAddDialog(false)} 
+                onCancel={() => setOpenAddDialog(false)} 
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+
+      <Tabs value={selectedStatus} onValueChange={setSelectedStatus} className="mb-6">
+        <TabsList className="grid w-full grid-cols-4">
+          {statusTabs.map((tab) => (
+            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-2">
+              {tab.label}
+              <Badge variant="secondary" className="ml-1">{tab.count}</Badge>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {statusTabs.map((tab) => (
+          <TabsContent key={tab.value} value={tab.value}>
+            <DataTable
+              data={filteredBorrowings}
+              columns={columns}
+              actions={actions}
+              isLoading={isLoading}
+              emptyMessage="No borrowing records found"
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };
 
-export default BorrowingPage;
+export default BorrowingManagement;
