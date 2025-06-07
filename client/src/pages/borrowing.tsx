@@ -169,18 +169,22 @@ const BorrowingManagement = () => {
   // Return book
   const handleReturn = async (id: number) => {
     try {
-      await apiRequest(`/api/borrowings/${id}/return`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ returnDate: new Date().toISOString() }),
+      // Update the borrowing record with return date directly in localStorage
+      const updatedBorrowing = localStorage_storage.updateBorrowing(id, {
+        returnDate: new Date().toISOString(),
+        status: 'returned'
       });
 
-      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      if (updatedBorrowing) {
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
-      toast({
-        title: 'Success',
-        description: 'Book returned successfully',
-      });
+        toast({
+          title: 'Success',
+          description: 'Book returned successfully',
+        });
+      } else {
+        throw new Error('Borrowing record not found');
+      }
     } catch (error) {
       console.error('Error returning book:', error);
       toast({

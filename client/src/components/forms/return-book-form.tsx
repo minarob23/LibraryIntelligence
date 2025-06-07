@@ -41,27 +41,30 @@ const ReturnBookForm = ({ borrowing, onSuccess, onCancel }: ReturnBookFormProps)
   const onSubmit = async (data: ReturnBookFormValues) => {
     setIsSubmitting(true);
     try {
+      // Import localStorage storage
+      const { localStorage_storage } = await import('@/lib/localStorage');
+      
       // Update the borrowing record with return date and rating
-      await apiRequest(`/api/borrowings/${borrowing.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...borrowing,
-          returnDate: new Date().toISOString(),
-          rating: data.rating,
-          review: data.review || '',
-        }),
+      const updatedBorrowing = localStorage_storage.updateBorrowing(borrowing.id, {
+        returnDate: new Date().toISOString(),
+        rating: data.rating,
+        review: data.review || '',
+        status: 'returned'
       });
 
-      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+      if (updatedBorrowing) {
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
 
-      toast({
-        title: 'Success',
-        description: 'Book returned successfully and rating submitted!',
-      });
+        toast({
+          title: 'Success',
+          description: 'Book returned successfully and rating submitted!',
+        });
 
-      onSuccess?.();
+        onSuccess?.();
+      } else {
+        throw new Error('Borrowing record not found');
+      }
     } catch (error) {
       console.error('Error returning book:', error);
       toast({
