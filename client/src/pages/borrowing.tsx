@@ -436,22 +436,6 @@ const BorrowingManagement = () => {
         </div>
 
         <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            onClick={() => {
-              console.log('Manual cleanup triggered');
-              localStorage_storage.cleanCorruptedData();
-              queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-              toast({
-                title: 'Cleanup Complete',
-                description: 'Corrupted borrowing data has been cleaned',
-              });
-            }}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw size={16} />
-            Clean Data
-          </Button>
           <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
             <DialogTrigger asChild>
               <Button className="flex items-center gap-2">

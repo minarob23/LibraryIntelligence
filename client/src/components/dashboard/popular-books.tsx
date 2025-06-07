@@ -188,6 +188,16 @@ const PopularBooks = () => {
                 <div>
                   <h4 className="font-medium">{book.name}</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
+                  {book.rating && (
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="flex text-yellow-500 text-xs">
+                        {renderStars(parseFloat(book.rating))}
+                      </div>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {Number(book.rating).toFixed(1)} avg
+                      </span>
+                    </div>
+                  )}
                   {(
                     <div className="mt-3">
                       {filter === 'popularity' && (

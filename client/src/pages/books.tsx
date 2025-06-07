@@ -135,6 +135,14 @@ const BooksPage = () => {
           <div>
             <div className="text-sm font-medium">{row.name}</div>
             <div className="text-xs text-gray-500">{row.genres}</div>
+            {getAverageRating(row.id) && (
+              <div className="flex items-center gap-1 mt-1">
+                <Star className="h-3 w-3 text-yellow-400" />
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {getAverageRating(row.id)} avg
+                </span>
+              </div>
+            )}
           </div>
         </div>
       ),
