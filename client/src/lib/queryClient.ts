@@ -33,16 +33,16 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
 
     case path.startsWith('/api/borrowers/'):
       const borrowerId = parseInt(path.split('/')[3]);
-      
+
       if (options?.method === 'PUT') {
         const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
         return localStorage_storage.updateBorrower(borrowerId, data);
       }
-      
+
       if (options?.method === 'DELETE') {
         return localStorage_storage.deleteBorrower(borrowerId);
       }
-      
+
       return localStorage_storage.getBorrower(borrowerId);
 
     case path === '/api/librarians':
@@ -77,21 +77,21 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path.startsWith('/api/borrowings/'):
       const pathParts = path.split('/');
       const borrowingId = parseInt(pathParts[3]);
-      
+
       if (pathParts[4] === 'return' && options?.method === 'PUT') {
         const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
         return localStorage_storage.updateBorrowing(borrowingId, data);
       }
-      
+
       if (options?.method === 'PUT') {
         const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
         return localStorage_storage.updateBorrowing(borrowingId, data);
       }
-      
+
       if (options?.method === 'DELETE') {
         return localStorage_storage.deleteBorrowing(borrowingId);
       }
-      
+
       return localStorage_storage.getBorrowing(borrowingId);
 
     case path === '/api/dashboard/most-borrowed-books':
@@ -126,12 +126,44 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
   }
 };
 
-export const apiRequest = async (url: string, options?: any) => {
+export const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
   try {
-    const response = await mockApiResponse(url, options);
-    return response;
+    const response = await mockApiResponse(endpoint, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('API Request Error:', error);
+
+    // Fallback to localStorage for borrowings endpoints
+    if (endpoint.includes('/api/borrowings')) {
+      const { localStorage_storage } = await import('./localStorage');
+
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body as string);
+        return localStorage_storage.createBorrowing(body);
+      } else if (options.method === 'PUT') {
+        const id = parseInt(endpoint.split('/').pop() || '0');
+        const body = JSON.parse(options.body as string);
+        return localStorage_storage.updateBorrowing(id, body);
+      } else if (options.method === 'DELETE') {
+        const id = parseInt(endpoint.split('/').pop() || '0');
+        return localStorage_storage.deleteBorrowing(id);
+      } else {
+        return localStorage_storage.getBorrowings();
+      }
+    }
+
     throw error;
   }
 };
