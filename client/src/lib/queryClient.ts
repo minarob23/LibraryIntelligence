@@ -130,16 +130,15 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       const limit2 = parseInt(params.get('limit') || '4');
       return localStorage_storage.getPopularBooks(limit2);
 
-    case path === '/api/dashboard/top-borrowers':
-      const limit3 = parseInt(params.get('limit') || '5');
-      return localStorage_storage.getTopBorrowers(limit3);
-
     case path === '/api/dashboard/borrower-distribution':
       return localStorage_storage.getBorrowerDistribution();
 
     case path === '/api/dashboard/member-growth':
-      // Return borrowers data for member growth calculation
+      // Return borrower data for member growth analysis
       return localStorage_storage.getBorrowers();
+
+    case path === '/api/dashboard/top-borrowers':
+      return localStorage_storage.getTopBorrowers(limit3);
 
     case path === '/api/membership-application':
       if (options?.method === 'POST') {
