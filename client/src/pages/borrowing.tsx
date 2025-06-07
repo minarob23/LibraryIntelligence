@@ -54,35 +54,14 @@ const BorrowingManagement = () => {
     queryKey: ['/api/books'],
   });
 
-  // Clean corrupted data on mount
-  React.useEffect(() => {
-    if (borrowings && borrowings.length > 0) {
-      const hasCorruptedData = borrowings.some((item: any) => {
-        if (!item || typeof item !== 'object' || Array.isArray(item)) {
-          return true;
-        }
-        // Check for stringified objects (has numeric keys)
-        const keys = Object.keys(item);
-        const isStringified = keys.length > 0 && keys.every(key => /^\d+$/.test(key));
-        return isStringified || !item.hasOwnProperty('borrowerId') || !item.hasOwnProperty('bookId');
-      });
-      
-      if (hasCorruptedData) {
-        console.log('Detected corrupted data, cleaning...');
-        localStorage_storage.cleanCorruptedData();
-        // Force a complete refresh
-        setTimeout(() => {
-          queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-          window.location.reload();
-        }, 100);
-      }
-    }
-  }, [borrowings]);
-
   // Debug logging
-  console.log('Borrowings data:', borrowings);
-  console.log('Borrowers data:', borrowers);
-  console.log('Books data:', books);
+  React.useEffect(() => {
+    console.log('Borrowings raw data:', borrowings);
+    console.log('Borrowers raw data:', borrowers);
+    console.log('Books raw data:', books);
+  }, [borrowings, borrowers, books]);
+
+  
 
   // Filter borrowings based on search and status
   const filteredBorrowings = borrowings.filter((borrowing: any) => {
@@ -455,35 +434,6 @@ const BorrowingManagement = () => {
         </div>
 
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => {
-              localStorage_storage.cleanCorruptedData();
-              queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-              queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-              queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-            }}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw size={16} />
-            Clean & Refresh
-          </Button>
-
-          <Button
-            variant="outline"
-            onClick={() => {
-              localStorage_storage.forceResetData();
-              queryClient.invalidateQueries();
-              setTimeout(() => {
-                window.location.reload();
-              }, 500);
-            }}
-            className="flex items-center gap-2 bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
-          >
-            <RefreshCw size={16} />
-            Force Reset Data
-          </Button>
-
           <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
             <DialogTrigger asChild>
               <Button className="flex items-center gap-2">

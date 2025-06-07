@@ -329,43 +329,21 @@ class LocalStorage {
   // Clean and initialize data
   cleanCorruptedData() {
     const data = this.getData();
-    let hasCorruption = false;
-    
-    // Clean borrowings array - remove any string objects or corrupted entries
+
+    // Only remove clearly corrupted entries, keep valid data
     const originalLength = data.borrowings.length;
     data.borrowings = data.borrowings.filter(borrowing => {
-      // Remove null, undefined, or non-object items
-      if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
-        hasCorruption = true;
-        return false;
-      }
-      
-      // Check if it's a stringified object (has numeric keys like array)
-      const keys = Object.keys(borrowing);
-      const isStringified = keys.length > 0 && keys.every(key => /^\d+$/.test(key));
-      if (isStringified) {
-        hasCorruption = true;
-        return false;
-      }
-      
-      // Must have required properties
-      const isValid = borrowing.hasOwnProperty('borrowerId') && 
-                     borrowing.hasOwnProperty('bookId') &&
-                     borrowing.hasOwnProperty('id');
-      
-      if (!isValid) {
-        hasCorruption = true;
-      }
-      
-      return isValid;
+      // Keep objects that have the basic required structure
+      return borrowing && 
+             typeof borrowing === 'object' && 
+             !Array.isArray(borrowing) &&
+             (borrowing.borrowerId || borrowing.borrowerId === 0) &&
+             (borrowing.bookId || borrowing.bookId === 0);
     });
-    
-    if (hasCorruption || data.borrowings.length !== originalLength) {
-      console.log('Cleaned borrowings data:', data.borrowings);
+
+    if (data.borrowings.length !== originalLength) {
+      console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted entries`);
       this.saveData(data);
-      // Force multiple saves to ensure persistence
-      setTimeout(() => this.saveData(data), 100);
-      setTimeout(() => this.saveData(data), 200);
     }
   }
 
@@ -373,7 +351,7 @@ class LocalStorage {
   forceResetData() {
     console.log('Force resetting all data...');
     this.clearAllData();
-    
+
     // Initialize with clean sample data
     const sampleData = {
       books: [
@@ -467,7 +445,7 @@ class LocalStorage {
       ],
       membershipApplications: []
     };
-    
+
     this.saveData(sampleData);
     console.log('Data reset complete with clean sample data');
   }
@@ -476,7 +454,7 @@ class LocalStorage {
   private initializeSampleData() {
     // First clean any corrupted data
     this.cleanCorruptedData();
-    
+
     const data = this.getData();
     if (data.books.length === 0) {
       // Will be initialized by sampleData.ts
