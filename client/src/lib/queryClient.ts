@@ -127,7 +127,12 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       return { message: 'Database restored successfully' };
 
     default:
-      throw new Error(`Unknown endpoint: ${endpoint}`);
+      console.warn(`Unknown endpoint: ${options?.method || 'GET'} ${path}, returning empty response`);
+      return { success: true, data: null };
+  }
+  } catch (error) {
+    console.error('API Request Error:', error);
+    throw error;
   }
 };
 

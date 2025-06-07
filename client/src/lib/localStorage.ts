@@ -773,6 +773,32 @@ class LocalStorage {
 
     return this.getDefaultData();
   }
+
+  private cleanupCorruption(): void {
+    try {
+      const keys = Object.keys(localStorage);
+      let hasCorruption = false;
+
+      keys.forEach(key => {
+        try {
+          const value = localStorage.getItem(key);
+          if (value) {
+            JSON.parse(value);
+          }
+        } catch (error) {
+          localStorage.removeItem(key);
+          hasCorruption = true;
+        }
+      });
+
+      // Only log if there was actual corruption
+      if (hasCorruption) {
+        console.log('Cleaned up corrupted localStorage entries');
+      }
+    } catch (error) {
+      console.error('Error during corruption cleanup:', error);
+    }
+  }
 }
 
 export const localStorage_storage = new LocalStorage();
