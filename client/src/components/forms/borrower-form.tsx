@@ -99,13 +99,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       setIsSubmitting(true);
 
       if (isEditing && borrower?.id) {
-        const response = await apiRequest(`/api/borrowers/${borrower.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
 
         queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
         queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
@@ -123,13 +117,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           onSuccess();
         }
       } else {
-        const response = await apiRequest('/api/borrowers', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await apiRequest('POST', '/api/borrowers', data);
 
         queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
         queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });

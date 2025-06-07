@@ -91,9 +91,7 @@ const BorrowersPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest(`/api/borrowers/${id}`, {
-        method: 'DELETE',
-      });
+      await apiRequest('DELETE', `/api/borrowers/${id}`);
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
       await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
       await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
@@ -265,9 +263,32 @@ const BorrowersPage = () => {
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-6 animate-slide-up">
-        <h2 className="text-2xl font-bold">Borrowers Management</h2>
-        <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
+      <div className="mb-6 flex justify-between items-center animate-slide-up">
+        <div>
+          <h2 className="text-2xl font-bold">Borrowers Management</h2>
+          <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
+        </div>
+        <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" /> Add New Borrower
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[900px] max-h-[85vh] overflow-hidden flex flex-col">
+            <DialogHeader className="flex-shrink-0 pb-2">
+              <DialogTitle>Add New Borrower</DialogTitle>
+              <DialogDescription>
+                Add a new borrower to the library system. Fill out the form below with the borrower details.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex-1 overflow-y-auto pr-2">
+              <BorrowerForm 
+                onSuccess={() => setOpenAddDialog(false)} 
+                onCancel={() => setOpenAddDialog(false)} 
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
