@@ -1,4 +1,3 @@
-
 import { localStorage_storage } from './localStorage';
 
 export const initializeSampleData = () => {
@@ -114,7 +113,7 @@ export const initializeSampleData = () => {
   // Create some sample borrowings
   const books = localStorage_storage.getBooks();
   const borrowers = localStorage_storage.getBorrowers();
-  
+
   if (books.length > 0 && borrowers.length > 0) {
     const borrowDate = new Date();
     const dueDate = new Date();

@@ -325,6 +325,22 @@ class LocalStorage {
   importData(data: StorageData) {
     this.saveData(data);
   }
+
+  // Initialize with sample data if empty
+  private initializeSampleData() {
+    if (this.getData('books').length === 0) {
+      this.setData('books', sampleData.books);
+    }
+    if (this.getData('borrowers').length === 0) {
+      this.setData('borrowers', sampleData.borrowers);
+    }
+    if (this.getData('librarians').length === 0) {
+      this.setData('librarians', sampleData.librarians);
+    }
+    if (this.getData('borrowings').length === 0) {
+      this.setData('borrowings', sampleData.borrowings || []);
+    }
+  }
 }
 
 export const localStorage_storage = new LocalStorage();

@@ -52,6 +52,11 @@ const BorrowingManagement = () => {
     queryKey: ['/api/books'],
   });
 
+  // Debug logging
+  console.log('Borrowings data:', borrowings);
+  console.log('Borrowers data:', borrowers);
+  console.log('Books data:', books);
+
   // Filter borrowings based on search and status
   const filteredBorrowings = borrowings.filter((borrowing: any) => {
     // Skip if borrowing data is completely invalid
