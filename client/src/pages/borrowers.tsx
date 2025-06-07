@@ -315,11 +315,17 @@ const BorrowersPage = () => {
 
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
         <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
-          {categories.map((category) => (
-            <TabsTrigger key={category.value} value={category.value}>
-              {category.label}
-            </TabsTrigger>
-          ))}
+          {categories.map((category) => {
+            const count = category.value === 'all' 
+              ? allBorrowers?.length || 0
+              : allBorrowers?.filter(borrower => borrower.category === category.value).length || 0;
+            
+            return (
+              <TabsTrigger key={category.value} value={category.value}>
+                {category.label} ({count})
+              </TabsTrigger>
+            );
+          })}
         </TabsList>
 
         {categories.map((category) => (
@@ -327,34 +333,6 @@ const BorrowersPage = () => {
             <h3 className="text-lg font-semibold mb-4 capitalize">
               {category.value === 'all' ? 'All Categories' : `${category.value} Stage`}
             </h3>
-            {category.value === 'all' && (
-              <div className="mb-6">
-                {formatBorrowerDistribution().length > 0 ? (
-                  <ChartContainer
-                    title="Borrowers Distribution by Category"
-                    type="bar"
-                    data={formatBorrowerDistribution()}
-                    nameKey="name"
-                    dataKey="value"
-                    colors={[
-                      '#22C55E',  // Green for Primary
-                      '#EF4444',  // Red for Middle
-                      '#F59E0B',  // Orange for Secondary
-                      '#6366F1',  // Indigo for University
-                      '#EC4899'   // Pink for Graduate
-                    ]}
-                    height={350}
-                  />
-                ) : (
-                  <div className="bg-white dark:bg-gray-800 rounded-lg border p-6 h-[350px] flex items-center justify-center">
-                    <div className="text-center">
-                      <h3 className="text-lg font-semibold mb-2">Borrowers Distribution by Category</h3>
-                      <p className="text-gray-500 dark:text-gray-400">No borrower data available for chart display</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
             <div className="flex flex-col md:flex-row gap-4 mb-4">
               <div className="relative max-w-xs w-full md:w-auto">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -461,6 +439,35 @@ const BorrowersPage = () => {
                 onPageChange: () => {},
               }}
             />
+            
+            {category.value === 'all' && (
+              <div className="mt-6">
+                {formatBorrowerDistribution().length > 0 ? (
+                  <ChartContainer
+                    title="Borrowers Distribution by Category"
+                    type="bar"
+                    data={formatBorrowerDistribution()}
+                    nameKey="name"
+                    dataKey="value"
+                    colors={[
+                      '#22C55E',  // Green for Primary
+                      '#EF4444',  // Red for Middle
+                      '#F59E0B',  // Orange for Secondary
+                      '#6366F1',  // Indigo for University
+                      '#EC4899'   // Pink for Graduate
+                    ]}
+                    height={350}
+                  />
+                ) : (
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border p-6 h-[350px] flex items-center justify-center">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold mb-2">Borrowers Distribution by Category</h3>
+                      <p className="text-gray-500 dark:text-gray-400">No borrower data available for chart display</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </TabsContent>
         ))}
       </Tabs>

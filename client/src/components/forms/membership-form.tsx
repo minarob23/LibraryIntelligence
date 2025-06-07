@@ -86,7 +86,7 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
 
       toast({
         title: 'Success',
-        description: 'Your membership application has been submitted successfully and you have been added as a borrower.',
+        description: 'Your membership application has been submitted successfully.',
       });
 
       setIsSuccess(true);
