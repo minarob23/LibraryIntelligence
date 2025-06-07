@@ -1,21 +1,10 @@
 import { localStorage_storage } from './localStorage';
 
 export const initializeSampleData = () => {
-  // Clean any corrupted data first
-  localStorage_storage.cleanCorruptedData();
-  
-  // Check if data already exists and is valid
-  const existingBooks = localStorage_storage.getBooks();
-  const existingBorrowers = localStorage_storage.getBorrowers();
-  const existingBorrowings = localStorage_storage.getBorrowings();
-  
-  // Check if we have valid data
-  const hasValidBooks = existingBooks.length > 0 && existingBooks.every(b => b && b.id && (b.title || b.name));
-  const hasValidBorrowers = existingBorrowers.length > 0 && existingBorrowers.every(b => b && b.id && b.name);
-  
-  if (hasValidBooks && hasValidBorrowers) {
-    return; // Valid data already exists, don't overwrite
-  }
+  // Force complete reset to fix corrupted data
+  console.log('Forcing complete data reset due to corruption...');
+  localStorage_storage.forceResetData();
+  return; // Exit early since forceResetData handles everything
 
   // Sample Books
   const sampleBooks = [

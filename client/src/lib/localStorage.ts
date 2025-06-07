@@ -31,7 +31,8 @@ class LocalStorage {
 
   private saveData(data: StorageData): void {
     try {
-      localStorage.setItem(this.storageKey, JSON.stringify(data));
+      const cleanData = this.validateAndCleanData(data);
+      localStorage.setItem(this.storageKey, JSON.stringify(cleanData));
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
@@ -517,6 +518,85 @@ class LocalStorage {
 
     this.saveData(sampleData);
     console.log('Data reset complete with clean sample data');
+  }
+
+  // Validate data structure before saving
+  private validateAndCleanData(data: StorageData): StorageData {
+    const cleanData = {
+      books: [],
+      borrowers: [],
+      librarians: [],
+      borrowings: [],
+      membershipApplications: []
+    };
+
+    // Clean books
+    if (Array.isArray(data.books)) {
+      cleanData.books = data.books.filter(book => 
+        book && 
+        typeof book === 'object' && 
+        !Array.isArray(book) &&
+        typeof book.id === 'number' &&
+        (typeof book.name === 'string' || typeof book.title === 'string')
+      );
+    }
+
+    // Clean borrowers
+    if (Array.isArray(data.borrowers)) {
+      cleanData.borrowers = data.borrowers.filter(borrower => 
+        borrower && 
+        typeof borrower === 'object' && 
+        !Array.isArray(borrower) &&
+        typeof borrower.id === 'number' &&
+        typeof borrower.name === 'string'
+      );
+    }
+
+    // Clean librarians
+    if (Array.isArray(data.librarians)) {
+      cleanData.librarians = data.librarians.filter(librarian => 
+        librarian && 
+        typeof librarian === 'object' && 
+        !Array.isArray(librarian) &&
+        typeof librarian.id === 'number'
+      );
+    }
+
+    // Clean borrowings - be very strict here
+    if (Array.isArray(data.borrowings)) {
+      cleanData.borrowings = data.borrowings.filter(borrowing => {
+        if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+          return false;
+        }
+
+        // Check for numeric keys which indicate corrupted data
+        const keys = Object.keys(borrowing);
+        const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+        if (hasNumericKeys) {
+          return false;
+        }
+
+        // Must have valid structure
+        return typeof borrowing.id === 'number' &&
+               typeof borrowing.borrowerId === 'number' &&
+               typeof borrowing.bookId === 'number' &&
+               typeof borrowing.borrowDate === 'string' &&
+               typeof borrowing.dueDate === 'string' &&
+               typeof borrowing.status === 'string';
+      });
+    }
+
+    // Clean membership applications
+    if (Array.isArray(data.membershipApplications)) {
+      cleanData.membershipApplications = data.membershipApplications.filter(app => 
+        app && 
+        typeof app === 'object' && 
+        !Array.isArray(app) &&
+        typeof app.id === 'number'
+      );
+    }
+
+    return cleanData;
   }
 
   // Initialize with sample data if empty
