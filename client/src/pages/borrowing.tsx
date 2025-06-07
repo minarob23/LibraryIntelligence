@@ -460,11 +460,28 @@ const BorrowingManagement = () => {
             onClick={() => {
               localStorage_storage.cleanCorruptedData();
               queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+              queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+              queryClient.invalidateQueries({ queryKey: ['/api/books'] });
             }}
             className="flex items-center gap-2"
           >
             <RefreshCw size={16} />
             Clean & Refresh
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => {
+              localStorage_storage.forceResetData();
+              queryClient.invalidateQueries();
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
+            }}
+            className="flex items-center gap-2 bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
+          >
+            <RefreshCw size={16} />
+            Force Reset Data
           </Button>
 
           <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>

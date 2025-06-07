@@ -329,11 +329,14 @@ class LocalStorage {
   // Clean and initialize data
   cleanCorruptedData() {
     const data = this.getData();
+    let hasCorruption = false;
     
     // Clean borrowings array - remove any string objects or corrupted entries
+    const originalLength = data.borrowings.length;
     data.borrowings = data.borrowings.filter(borrowing => {
       // Remove null, undefined, or non-object items
       if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+        hasCorruption = true;
         return false;
       }
       
@@ -341,17 +344,132 @@ class LocalStorage {
       const keys = Object.keys(borrowing);
       const isStringified = keys.length > 0 && keys.every(key => /^\d+$/.test(key));
       if (isStringified) {
+        hasCorruption = true;
         return false;
       }
       
       // Must have required properties
-      return borrowing.hasOwnProperty('borrowerId') && 
-             borrowing.hasOwnProperty('bookId') &&
-             borrowing.hasOwnProperty('id');
+      const isValid = borrowing.hasOwnProperty('borrowerId') && 
+                     borrowing.hasOwnProperty('bookId') &&
+                     borrowing.hasOwnProperty('id');
+      
+      if (!isValid) {
+        hasCorruption = true;
+      }
+      
+      return isValid;
     });
     
-    console.log('Cleaned borrowings data:', data.borrowings);
-    this.saveData(data);
+    if (hasCorruption || data.borrowings.length !== originalLength) {
+      console.log('Cleaned borrowings data:', data.borrowings);
+      this.saveData(data);
+      // Force multiple saves to ensure persistence
+      setTimeout(() => this.saveData(data), 100);
+      setTimeout(() => this.saveData(data), 200);
+    }
+  }
+
+  // Force reset all data and reinitialize
+  forceResetData() {
+    console.log('Force resetting all data...');
+    this.clearAllData();
+    
+    // Initialize with clean sample data
+    const sampleData = {
+      books: [
+        {
+          coverImage: "/src/assets/book-covers/cover1.svg",
+          name: "The Great Gatsby",
+          author: "F. Scott Fitzgerald",
+          publisher: "Scribner",
+          bookCode: "TGG001",
+          copies: 3,
+          description: "A classic American novel set in the Jazz Age.",
+          totalPages: 180,
+          cabinet: "A",
+          shelf: "1",
+          num: "001",
+          publishedDate: "1925-04-10",
+          genres: "Fiction, Classic",
+          comments: "Popular among students",
+          id: Date.now() + 1,
+          createdAt: new Date().toISOString(),
+          addedDate: new Date().toISOString().split('T')[0]
+        },
+        {
+          coverImage: "/src/assets/book-covers/cover2.svg",
+          name: "To Kill a Mockingbird",
+          author: "Harper Lee",
+          publisher: "J.B. Lippincott & Co.",
+          bookCode: "TKM002",
+          copies: 2,
+          description: "A gripping tale of racial injustice and childhood innocence.",
+          totalPages: 281,
+          cabinet: "A",
+          shelf: "1",
+          num: "002",
+          publishedDate: "1960-07-11",
+          genres: "Fiction, Drama",
+          comments: "Award-winning novel",
+          id: Date.now() + 2,
+          createdAt: new Date().toISOString(),
+          addedDate: new Date().toISOString().split('T')[0]
+        }
+      ],
+      borrowers: [
+        {
+          name: "John Smith",
+          phone: "+1234567890",
+          category: "university",
+          joinedDate: "2024-01-15",
+          expiryDate: "2025-01-15",
+          email: "john.smith@email.com",
+          address: "123 Main St, City",
+          churchName: "St. Mary Church",
+          fatherOfConfession: "Father Michael",
+          studies: "Computer Science",
+          job: "Student",
+          hobbies: "Reading, Programming",
+          favoriteBooks: "Science Fiction",
+          additionalPhone: "+1234567891",
+          id: Date.now() + 3,
+          createdAt: new Date().toISOString()
+        },
+        {
+          name: "Emily Johnson",
+          phone: "+1234567892",
+          category: "graduate",
+          joinedDate: "2024-02-20",
+          expiryDate: "2025-02-20",
+          email: "emily.johnson@email.com",
+          address: "456 Oak Ave, City",
+          churchName: "Holy Trinity Church",
+          fatherOfConfession: "Father John",
+          studies: "Literature",
+          job: "Teacher",
+          hobbies: "Writing, Reading",
+          favoriteBooks: "Classic Literature",
+          id: Date.now() + 4,
+          createdAt: new Date().toISOString()
+        }
+      ],
+      librarians: [],
+      borrowings: [
+        {
+          borrowerId: Date.now() + 3,
+          bookId: Date.now() + 1,
+          borrowDate: new Date().toISOString().split('T')[0],
+          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          status: "borrowed",
+          id: Date.now() + 5,
+          createdAt: new Date().toISOString()
+        }
+      ],
+      membershipApplications: []
+    };
+    
+    this.saveData(sampleData);
+    console.log('Data reset complete with clean sample data');
   }
 
   // Initialize with sample data if empty
