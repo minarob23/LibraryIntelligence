@@ -184,10 +184,18 @@ class LocalStorage {
     const data = this.getData();
     const index = data.librarians.findIndex(librarian => librarian.id === id);
     if (index !== -1) {
-      data.librarians[index] = { ...data.librarians[index], ...librarianUpdate };
+      // Ensure we preserve the ID and merge all other fields including librarianId
+      const updatedLibrarian = { 
+        ...data.librarians[index], 
+        ...librarianUpdate,
+        id: id // Preserve the original ID
+      };
+      data.librarians[index] = updatedLibrarian;
       this.saveData(data);
-      return data.librarians[index];
+      console.log('Librarian updated successfully:', updatedLibrarian);
+      return updatedLibrarian;
     }
+    console.error('Librarian not found for update:', id);
     return null;
   }
 

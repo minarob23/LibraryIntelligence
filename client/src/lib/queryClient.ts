@@ -16,13 +16,13 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
 
     case path.startsWith('/api/books/'):
       const bookId = parseInt(path.split('/')[3]);
-      
+
       if (options?.method === 'PUT') {
         return localStorage_storage.updateBook(bookId, options.body);
       } else if (options?.method === 'DELETE') {
         return localStorage_storage.deleteBook(bookId);
       }
-      
+
       return localStorage_storage.getBook(bookId);
 
     case path === '/api/borrowers':
