@@ -1,0 +1,49 @@
+[vite] connecting...
+DOMException {}
+
+Cannot read properties of undefined (reading 'toString')
+Cannot read properties of undefined (reading 'toString')
+The above error occurred in the <BorrowingManagement> component:
+
+    at BorrowingManagement (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/pages/borrowing.tsx:52:21)
+    at main
+    at div
+    at div
+    at Layout (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/components/layout/sidebar.tsx:62:19)
+    at PrivateRoute (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:47:27)
+    at Route (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:338:16)
+    at Switch (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:394:17)
+    at Router (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:41:49)
+    at Provider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+    at TooltipProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=175856fc:63:5)
+    at CompactViewProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/lib/context/compact-view-context.tsx:20:39)
+    at ThemeProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=175856fc:2875:3)
+    at App (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at BorrowingManagement (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/pages/borrowing.tsx:52:21)
+at main
+at div
+at div
+at Layout (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/components/layout/sidebar.tsx:62:19)
+at PrivateRoute (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:47:27)
+at Route (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:338:16)
+at Switch (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:394:17)
+at Router (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:41:49)
+at Provider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+at TooltipProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=175856fc:63:5)
+at CompactViewProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/lib/context/compact-view-context.tsx:20:39)
+at ThemeProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/lib/context/app-context.tsx:21:3)
+at QueryClientProvider (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=175856fc:2875:3)
+at App (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/src/App.tsx?v=lizmDRaWs1u96M1oyQvp:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://7e543215-6e02-4737-980f-d53f9e788986-00-3kn4k1s4oxny.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Cannot read properties of undefined (reading 'toString')
