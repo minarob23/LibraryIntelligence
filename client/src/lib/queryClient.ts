@@ -68,6 +68,27 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
 
       return localStorage_storage.getLibrarian(librarianId);
 
+    case path === '/api/research':
+      if (options?.method === 'POST') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createResearchPaper(data);
+      }
+      return localStorage_storage.getResearchPapers();
+
+    case path.startsWith('/api/research/'):
+      const researchId = parseInt(path.split('/')[3]);
+
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateResearchPaper(researchId, data);
+      }
+
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteResearchPaper(researchId);
+      }
+
+      return localStorage_storage.getResearchPapers().find((p: any) => p.id === researchId);
+
     case path === '/api/borrowings':
       const borrowerIdParam = params.get('borrowerId');
       if (options?.method === 'POST') {

@@ -51,7 +51,9 @@ const ResearchPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest('DELETE', `/api/research/${id}`);
+      await apiRequest(`/api/research/${id}`, {
+        method: 'DELETE',
+      });
       queryClient.invalidateQueries({ queryKey: ['/api/research'] });
       toast({
         title: 'Success',
