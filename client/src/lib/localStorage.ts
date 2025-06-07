@@ -21,8 +21,21 @@ class LocalStorage {
 
   private getData(): StorageData {
     try {
-      // Use aggressive cleanup before returning data
-      return this.aggressiveDataCleanup();
+      const stored = localStorage.getItem(this.storageKey);
+      if (!stored) {
+        return this.getDefaultData();
+      }
+      
+      const data = JSON.parse(stored);
+      
+      // Ensure all required arrays exist
+      return {
+        books: Array.isArray(data.books) ? data.books : [],
+        borrowers: Array.isArray(data.borrowers) ? data.borrowers : [],
+        librarians: Array.isArray(data.librarians) ? data.librarians : [],
+        borrowings: Array.isArray(data.borrowings) ? data.borrowings : [],
+        membershipApplications: Array.isArray(data.membershipApplications) ? data.membershipApplications : []
+      };
     } catch (error) {
       console.error('Error reading from localStorage:', error);
       localStorage.removeItem(this.storageKey);
