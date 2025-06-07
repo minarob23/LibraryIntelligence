@@ -209,6 +209,57 @@ const BorrowingManagement = () => {
       header: 'Status',
       cell: (row: any) => getStatusBadge(row),
     },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }: any) => (
+        <div className="flex items-center gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-primary-500 hover:text-primary-600">
+                <Edit size={16} className="mr-1" /> Edit
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Edit Borrowing</DialogTitle>
+                <DialogDescription>
+                  Update the borrowing details.
+                </DialogDescription>
+              </DialogHeader>
+              <BorrowForm 
+                borrowing={row}
+                onSuccess={() => {
+                  queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
+                <Trash2 size={16} className="mr-1" /> Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the borrowing record.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDelete(row.id)}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      ),
+    },
   ];
 
   const actions = [
@@ -298,7 +349,6 @@ const BorrowingManagement = () => {
             <DataTable
               data={filteredBorrowings}
               columns={columns}
-              actions={actions}
               isLoading={isLoading}
               emptyMessage="No borrowing records found"
             />
