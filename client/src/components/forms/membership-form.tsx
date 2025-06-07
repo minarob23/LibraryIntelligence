@@ -296,11 +296,6 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                                 <RadioGroupItem value="graduate" id="graduate" />
                                 <Label htmlFor="graduate">Graduate</Label>
                               </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="librarian" id="librarian" />
-                                <Label htmlFor="librarian">Librarian</Label>
-                              </div>
                             </RadioGroup>
                           </FormControl>
                           <FormMessage />

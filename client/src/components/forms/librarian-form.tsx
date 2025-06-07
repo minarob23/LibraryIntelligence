@@ -21,6 +21,7 @@ import { queryClient } from '@/lib/queryClient';
 
 // Extend the schema to add validation messages
 const librarianSchema = insertLibrarianSchema.extend({
+  librarianId: z.string().min(1, 'Librarian ID is required'),
   name: z.string().min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(8, 'Phone number must be at least 8 characters'),
   appointmentDate: z.string().min(1, 'Appointment date is required'),
@@ -48,7 +49,15 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
 
   const form = useForm<LibrarianFormValues>({
     resolver: zodResolver(librarianSchema),
-    defaultValues: librarian || {
+    defaultValues: librarian ? {
+      librarianId: librarian.librarianId || '',
+      name: librarian.name || '',
+      phone: librarian.phone || '',
+      appointmentDate: librarian.appointmentDate || today,
+      membershipStatus: librarian.membershipStatus || 'active' as const,
+      email: librarian.email || '',
+    } : {
+      librarianId: '',
       name: '',
       phone: '',
       appointmentDate: today,
@@ -107,6 +116,20 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="librarianId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Librarian ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter librarian ID" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="name"

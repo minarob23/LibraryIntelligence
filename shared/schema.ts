@@ -36,6 +36,7 @@ export const insertBookSchema = createInsertSchema(books).omit({
 // Librarians table
 export const librarians = pgTable("librarians", {
   id: serial("id").primaryKey(),
+  librarianId: text("librarian_id").notNull(),
   name: text("name").notNull(),
   phone: text("phone").notNull(),
   appointmentDate: date("appointment_date").notNull(),
@@ -97,7 +98,7 @@ export const insertBorrowingSchema = createInsertSchema(borrowings).omit({
 export const membershipApplicationSchema = z.object({
   id: z.string().min(1, "ID is required"),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  stage: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate', 'librarian']),
+  stage: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate']),
   birthdate: z.string(),
   phone: z.string().min(10, "Phone number must be at least 10 characters"),
   additionalPhone: z.string().optional(),
