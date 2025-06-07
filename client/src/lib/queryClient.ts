@@ -146,6 +146,21 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/dashboard/borrower-distribution':
       return localStorage_storage.getBorrowerDistribution();
 
+    case path === '/api/research-papers':
+      if (options?.method === 'POST') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createResearchPaper(data);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(endpoint.split('/').pop() || '0');
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateResearchPaper(id, data);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(endpoint.split('/').pop() || '0');
+        return localStorage_storage.deleteResearchPaper(id);
+      } else {
+        return localStorage_storage.getResearchPapers();
+      }
+
     case path === '/api/dashboard/member-growth':
       // Return borrowers data for member growth calculation
       return localStorage_storage.getBorrowers();

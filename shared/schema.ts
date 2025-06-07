@@ -82,11 +82,13 @@ export const borrowings = pgTable("borrowings", {
   borrowerId: integer("borrower_id").notNull(),
   librarianId: integer("librarian_id").notNull(),
   bookId: integer("book_id"),
+  researchId: integer("research_id"),
   borrowDate: date("borrow_date").notNull(),
   dueDate: date("due_date").notNull(),
   returnDate: date("return_date"),
   status: text("status").notNull().$type<'borrowed' | 'returned' | 'overdue'>(),
   rating: integer("rating"),
+  review: text("review"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 

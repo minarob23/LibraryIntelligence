@@ -253,9 +253,9 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                     <FormLabel>Book</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(value ? parseInt(value) : undefined);
-                        // Clear research paper when book is selected
                         if (value) {
+                          field.onChange(parseInt(value));
+                          // Clear research paper when book is selected
                           form.setValue('researchId', undefined);
                         }
                       }}
@@ -267,7 +267,6 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
                         {books?.map((book: any) => (
                           <SelectItem key={book.id} value={book.id.toString()}>
                             {book.title || book.name} by {book.author}
@@ -288,9 +287,9 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                     <FormLabel>Research Paper</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(value ? parseInt(value) : undefined);
-                        // Clear book when research paper is selected
                         if (value) {
+                          field.onChange(parseInt(value));
+                          // Clear book when research paper is selected
                           form.setValue('bookId', undefined);
                         }
                       }}
@@ -302,7 +301,6 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
                         {researchPapers?.map((paper: any) => (
                           <SelectItem key={paper.id} value={paper.id.toString()}>
                             {paper.name} by {paper.author}
