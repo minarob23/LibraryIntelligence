@@ -37,6 +37,7 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
   const form = useForm<MembershipFormValues>({
     resolver: zodResolver(membershipApplicationSchema),
     defaultValues: {
+      id: '',
       name: '',
       stage: 'primary',
       birthdate: '',
@@ -150,6 +151,20 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                     Personal Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Member ID</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your member ID" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
                     <FormField
                       control={form.control}
                       name="name"

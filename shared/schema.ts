@@ -94,6 +94,7 @@ export const insertBorrowingSchema = createInsertSchema(borrowings).omit({
 });
 
 export const membershipApplicationSchema = z.object({
+  id: z.string().min(1, "ID is required"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   stage: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate', 'librarian']),
   birthdate: z.string(),
@@ -112,6 +113,7 @@ export const membershipApplicationSchema = z.object({
 // Membership Applications table
 export const membershipApplications = pgTable("membership_applications", {
   id: serial("id").primaryKey(),
+  memberId: text("member_id").notNull(),
   name: text("name").notNull(),
   stage: text("stage").notNull(),
   birthdate: text("birthdate").notNull(),
