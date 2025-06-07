@@ -198,7 +198,9 @@ const BooksPage = () => {
           <div className="space-y-1">
             <div className="flex items-center">
               <Star className="h-3 w-3 text-yellow-400 mr-1" />
-              <span className="text-sm">{avgRating || 'N/A'}</span>
+              <span className="text-sm">
+                {avgRating ? `${avgRating}/10` : 'Not rated'}
+              </span>
             </div>
             <div className="text-xs text-gray-500">
               Score: {popularityScore}

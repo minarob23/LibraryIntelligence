@@ -100,44 +100,84 @@ const LibrariansPage = () => {
   const columns = [
     {
       key: 'id',
-      header: 'ID',
-      cell: (row: any) => `LIB-${row.id}`,
+      header: 'Librarian ID',
+      cell: (row: any) => (
+        <div className="font-mono text-sm font-medium">
+          LIB-{row.id.toString().padStart(3, '0')}
+        </div>
+      ),
     },
     {
       key: 'name',
-      header: 'Name',
+      header: 'Librarian Details',
       cell: (row: any) => (
         <div className="flex items-center">
-          <Avatar>
-            <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
+          <Avatar className="h-10 w-10">
+            <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-800 dark:from-blue-900 dark:to-indigo-900 dark:text-blue-100 font-semibold">
               {getInitials(row.name)}
             </AvatarFallback>
           </Avatar>
           <div className="ml-3">
-            <div className="text-sm font-medium">{row.name}</div>
+            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{row.name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {row.email || 'No email provided'}
+            </div>
           </div>
         </div>
       ),
     },
     {
-      key: 'phone',
-      header: 'Phone',
-      cell: (row: any) => row.phone,
-    },
-    {
-      key: 'email',
-      header: 'Email',
-      cell: (row: any) => row.email || 'N/A',
+      key: 'contact',
+      header: 'Contact Information',
+      cell: (row: any) => (
+        <div className="space-y-1">
+          <div className="flex items-center text-sm">
+            <span className="text-gray-600 dark:text-gray-400">📞</span>
+            <span className="ml-2 font-mono">{row.phone}</span>
+          </div>
+          {row.email && (
+            <div className="flex items-center text-sm">
+              <span className="text-gray-600 dark:text-gray-400">✉️</span>
+              <span className="ml-2 text-blue-600 dark:text-blue-400 truncate max-w-[200px]">
+                {row.email}
+              </span>
+            </div>
+          )}
+        </div>
+      ),
     },
     {
       key: 'appointmentDate',
-      header: 'Appointment Date',
-      cell: (row: any) => new Date(row.appointmentDate).toLocaleDateString(),
+      header: 'Service Details',
+      cell: (row: any) => {
+        const appointmentDate = new Date(row.appointmentDate);
+        const yearsOfService = Math.floor((new Date().getTime() - appointmentDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+        
+        return (
+          <div className="space-y-1">
+            <div className="text-sm font-medium">
+              Appointed: {appointmentDate.toLocaleDateString()}
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {yearsOfService > 0 ? `${yearsOfService} year${yearsOfService !== 1 ? 's' : ''} of service` : 'Less than 1 year'}
+            </div>
+          </div>
+        );
+      },
     },
     {
       key: 'membershipStatus',
-      header: 'Status',
-      cell: (row: any) => getStatusBadge(row.membershipStatus),
+      header: 'Employment Status',
+      cell: (row: any) => (
+        <div className="space-y-2">
+          {getStatusBadge(row.membershipStatus)}
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {row.membershipStatus === 'active' ? 'Full-time staff' : 
+             row.membershipStatus === 'temporary' ? 'Contract basis' : 
+             'Not currently active'}
+          </div>
+        </div>
+      ),
     },
   ];
 
