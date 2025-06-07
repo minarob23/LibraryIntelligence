@@ -190,8 +190,38 @@ class LocalStorage {
   }
 
   // Borrowings
-  getBorrowings() {
-    return this.getData().borrowings;
+  getBorrowings(): any[] {
+    const data = this.getData();
+    let borrowings = data.borrowings || [];
+
+    // Filter out corrupted entries immediately
+    borrowings = borrowings.filter(borrowing => {
+      // Check if borrowing is corrupted (has numeric keys)
+      if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+        return false;
+      }
+
+      const keys = Object.keys(borrowing);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+
+      if (hasNumericKeys) {
+        console.log('Found corrupted borrowing entry, removing:', borrowing);
+        return false;
+      }
+
+      // Ensure essential fields exist
+      return typeof borrowing.id === 'number' &&
+             typeof borrowing.borrowerId === 'number' &&
+             typeof borrowing.bookId === 'number';
+    });
+
+    // If we filtered out corrupted data, save the clean data immediately
+    if (borrowings.length !== (data.borrowings || []).length) {
+      console.log('Saving cleaned borrowings data...');
+      this.saveData({ ...data, borrowings });
+    }
+
+    return borrowings;
   }
 
   getBorrowing(id: number) {
@@ -204,15 +234,40 @@ class LocalStorage {
     return data.borrowings.filter(borrowing => borrowing.borrowerId === borrowerId);
   }
 
-  createBorrowing(borrowing: any) {
+  createBorrowing(borrowingData: any): any {
     const data = this.getData();
+
+    // Parse the data if it's a string
+    let parsedData = borrowingData;
+    if (typeof borrowingData === 'string') {
+      try {
+        parsedData = JSON.parse(borrowingData);
+      } catch (error) {
+        console.error('Failed to parse borrowing data:', error);
+        throw new Error('Invalid borrowing data format');
+      }
+    }
+
+    // Validate the parsed data
+    if (!parsedData || typeof parsedData !== 'object' || Array.isArray(parsedData)) {
+      throw new Error('Invalid borrowing data structure');
+    }
+
+    // Ensure required fields are present and valid
+    if (!parsedData.borrowerId || !parsedData.bookId) {
+      throw new Error('Missing required borrowing fields');
+    }
+
     const newBorrowing = {
-      ...borrowing,
+      ...parsedData,
       id: this.generateId(),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
+
+    data.borrowings = data.borrowings || [];
     data.borrowings.push(newBorrowing);
     this.saveData(data);
+
     return newBorrowing;
   }
 
@@ -322,7 +377,7 @@ class LocalStorage {
 
   aggressiveDataCleanup() {
     console.log('Running aggressive data cleanup...');
-    
+
     try {
       const rawData = localStorage.getItem(this.storageKey);
       if (!rawData) {
@@ -419,7 +474,7 @@ class LocalStorage {
       if (!borrower || typeof borrower !== 'object' || Array.isArray(borrower)) {
         return false;
       }
-      
+
       const keys = Object.keys(borrower);
       const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
       if (hasNumericKeys) {
@@ -443,7 +498,7 @@ class LocalStorage {
       if (!book || typeof book !== 'object' || Array.isArray(book)) {
         return false;
       }
-      
+
       const keys = Object.keys(book);
       const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
       if (hasNumericKeys) {
@@ -465,14 +520,14 @@ class LocalStorage {
   // Force reset all data and reinitialize
   forceResetData() {
     console.log('Force resetting all data...');
-    
+
     // Clear everything multiple times to ensure it's gone
     localStorage.removeItem(this.storageKey);
     localStorage.clear();
-    
+
     // Generate completely new IDs
     const baseId = Date.now();
-    
+
     // Initialize with clean sample data
     const sampleData = {
       books: [
@@ -573,7 +628,7 @@ class LocalStorage {
     } catch (error) {
       console.error('Error saving reset data:', error);
     }
-    
+
     console.log('Data reset complete with clean sample data');
   }
 
@@ -665,6 +720,45 @@ class LocalStorage {
     if (data.books.length === 0) {
       // Will be initialized by sampleData.ts
     }
+  }
+
+  private loadData(): StorageData {
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      if (stored) {
+        const data = JSON.parse(stored);
+
+        // Immediately clean corrupted borrowings if found
+        if (data.borrowings && Array.isArray(data.borrowings)) {
+          const originalLength = data.borrowings.length;
+          data.borrowings = data.borrowings.filter(borrowing => {
+            if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+              return false;
+            }
+
+            const keys = Object.keys(borrowing);
+            const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+
+            return !hasNumericKeys && 
+                   typeof borrowing.id === 'number' &&
+                   typeof borrowing.borrowerId === 'number' &&
+                   typeof borrowing.bookId === 'number';
+          });
+
+          // If we cleaned data, save it immediately
+          if (data.borrowings.length !== originalLength) {
+            console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted borrowing entries`);
+            localStorage.setItem(this.storageKey, JSON.stringify(data));
+          }
+        }
+
+        return data;
+      }
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
+    }
+
+    return this.getDefaultData();
   }
 }
 

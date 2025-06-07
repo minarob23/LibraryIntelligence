@@ -1,26 +1,36 @@
 import { localStorage_storage } from './localStorage';
 
 export const initializeSampleData = () => {
-  // Run aggressive cleanup first
-  localStorage_storage.aggressiveDataCleanup();
-  
-  // Check if we already have valid data
-  const existingBooks = localStorage_storage.getBooks();
-  const existingBorrowers = localStorage_storage.getBorrowers();
-  
-  // If we have valid data with proper objects, don't reinitialize
-  if (existingBooks.length > 0 && 
-      existingBorrowers.length > 0 && 
-      existingBooks.every(book => book && typeof book === 'object' && book.id && book.name) &&
-      existingBorrowers.every(borrower => borrower && typeof borrower === 'object' && borrower.id && borrower.name)) {
-    console.log('Valid data already exists, skipping initialization');
+  // First, aggressively clean any corrupted data
+  console.log('Running immediate corruption cleanup...');
+  localStorage_storage.cleanCorruptedData();
+
+  // Check if we still have corrupted data after cleanup
+  const borrowings = localStorage_storage.getBorrowings();
+  const hasCorruption = borrowings.some(b => {
+    if (!b || typeof b !== 'object') return true;
+    const keys = Object.keys(b);
+    return keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+  });
+
+  if (hasCorruption) {
+    console.log('Corruption detected, forcing complete reset...');
+    localStorage_storage.forceResetData();
     return;
   }
 
-  // Force complete reset if data is invalid or missing
-  console.log('Forcing complete data reset due to corruption...');
-  localStorage_storage.forceResetData();
-  return; // Exit early since forceResetData handles everything
+  // Check if data already exists and is valid
+  const existingBooks = localStorage_storage.getBooks();
+  const existingBorrowers = localStorage_storage.getBorrowers();
+
+  // Check if we have valid data
+  const hasValidBooks = existingBooks.length > 0 && existingBooks.every(b => b && b.id && (b.title || b.name));
+  const hasValidBorrowers = existingBorrowers.length > 0 && existingBorrowers.every(b => b && b.id && b.name);
+
+  if (hasValidBooks && hasValidBorrowers) {
+    console.log('Valid data already exists, skipping initialization');
+    return; // Valid data already exists, don't overwrite
+  }
 
   // Sample Books
   const sampleBooks = [
