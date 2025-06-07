@@ -104,12 +104,16 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         });
       }
 
+      // Invalidate and refetch all related queries
       await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      
+      // Force immediate refetch to ensure UI updates
+      await queryClient.refetchQueries({ queryKey: ['/api/books'] });
 
       if (onSuccess) {
         onSuccess();

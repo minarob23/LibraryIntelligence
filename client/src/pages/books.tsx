@@ -42,7 +42,7 @@ const BooksPage = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBook, setEditingBook] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  
+
   const { data: books, isLoading } = useQuery({ 
     queryKey: ['/api/books'],
   });
@@ -63,7 +63,7 @@ const BooksPage = () => {
   const getLastBorrowedDate = (bookId: number) => {
     const bookBorrowings = getBookBorrowings(bookId);
     if (bookBorrowings.length === 0) return null;
-    
+
     const dates = bookBorrowings.map((b: any) => new Date(b.borrowDate));
     return new Date(Math.max(...dates.map(d => d.getTime())));
   };
@@ -71,7 +71,7 @@ const BooksPage = () => {
   const getAverageRating = (bookId: number) => {
     const bookBorrowings = getBookBorrowings(bookId).filter((b: any) => b.rating);
     if (bookBorrowings.length === 0) return null;
-    
+
     const sum = bookBorrowings.reduce((acc: number, b: any) => acc + b.rating, 0);
     return (sum / bookBorrowings.length).toFixed(1);
   };
@@ -80,24 +80,24 @@ const BooksPage = () => {
     const timesBorrowed = getTimesBorrowed(bookId);
     const avgRating = getAverageRating(bookId);
     const lastBorrowed = getLastBorrowedDate(bookId);
-    
+
     if (timesBorrowed === 0) return 0;
-    
+
     // Base score from borrowing frequency (max 50 points)
     let score = Math.min(timesBorrowed * 10, 50);
-    
+
     // Add rating bonus (max 30 points)
     if (avgRating) {
       score += parseFloat(avgRating) * 6;
     }
-    
+
     // Add recency bonus (max 20 points)
     if (lastBorrowed) {
       const daysSince = Math.floor((new Date().getTime() - lastBorrowed.getTime()) / (1000 * 60 * 60 * 24));
       const recencyBonus = Math.max(0, 20 - (daysSince / 7));
       score += recencyBonus;
     }
-    
+
     return Math.round(score);
   };
 
@@ -163,7 +163,7 @@ const BooksPage = () => {
         const isBorrowed = borrowings?.some((b: any) => b.bookId === row.id && b.status === 'borrowed');
         const timesBorrowed = getTimesBorrowed(row.id);
         const lastBorrowed = getLastBorrowedDate(row.id);
-        
+
         return (
           <div className="space-y-1">
             {isBorrowed ? (
@@ -193,7 +193,7 @@ const BooksPage = () => {
       cell: (row: any) => {
         const avgRating = getAverageRating(row.id);
         const popularityScore = getPopularityScore(row.id);
-        
+
         return (
           <div className="space-y-1">
             <div className="flex items-center">
@@ -280,7 +280,7 @@ const BooksPage = () => {
     const availabilityMatch = selectedAvailability === 'all' || 
       (selectedAvailability === 'borrowed' && isBorrowed) ||
       (selectedAvailability === 'available' && !isBorrowed);
-    
+
     let filterMatch = true;
     if (filterValue !== 'all' && filterType === 'publisher' && book.publisher !== 'All Publishers') {
       filterMatch = book.publisher === filterValue;
@@ -294,7 +294,7 @@ const BooksPage = () => {
           break;
       }
     }
-    
+
     return filterMatch && availabilityMatch;
   });
 
@@ -413,7 +413,7 @@ const BooksPage = () => {
                     )}
                   </DialogContent>
                 </Dialog>
-                
+
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">
@@ -460,12 +460,44 @@ const BooksPage = () => {
                 loading={isLoading}
                 emptyMessage="No books are currently borrowed"
                 actions={(row) => (
-                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                    setEditingBook(row);
-                    setOpenEditDialog(true);
+                  <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
+                    setOpenEditDialog(open);
+                    if (!open) {
+                      setEditingBook(null);
+                    }
                   }}>
-                    <Edit size={16} className="mr-1" /> Edit
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                        setEditingBook(row);
+                        setOpenEditDialog(true);
+                      }}>
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+                      <DialogHeader>
+                        <DialogTitle>Edit Book</DialogTitle>
+                        <DialogDescription>
+                          Update the book details. Fill out the form below with the updated information.
+                        </DialogDescription>
+                      </DialogHeader>
+                      {editingBook && (
+                        <BookForm 
+                          book={editingBook} 
+                          onSuccess={async () => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
+                          }} 
+                          onCancel={() => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                          }} 
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 )}
               />
             </CardContent>
@@ -485,12 +517,44 @@ const BooksPage = () => {
                 loading={isLoading}
                 emptyMessage="No borrowing data available"
                 actions={(row) => (
-                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                    setEditingBook(row);
-                    setOpenEditDialog(true);
+                  <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
+                    setOpenEditDialog(open);
+                    if (!open) {
+                      setEditingBook(null);
+                    }
                   }}>
-                    <Edit size={16} className="mr-1" /> Edit
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                        setEditingBook(row);
+                        setOpenEditDialog(true);
+                      }}>
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+                      <DialogHeader>
+                        <DialogTitle>Edit Book</DialogTitle>
+                        <DialogDescription>
+                          Update the book details. Fill out the form below with the updated information.
+                        </DialogDescription>
+                      </DialogHeader>
+                      {editingBook && (
+                        <BookForm 
+                          book={editingBook} 
+                          onSuccess={async () => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
+                          }} 
+                          onCancel={() => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                          }} 
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 )}
               />
             </CardContent>
@@ -510,12 +574,44 @@ const BooksPage = () => {
                 loading={isLoading}
                 emptyMessage="No popularity data available"
                 actions={(row) => (
-                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                    setEditingBook(row);
-                    setOpenEditDialog(true);
+                  <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
+                    setOpenEditDialog(open);
+                    if (!open) {
+                      setEditingBook(null);
+                    }
                   }}>
-                    <Edit size={16} className="mr-1" /> Edit
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                        setEditingBook(row);
+                        setOpenEditDialog(true);
+                      }}>
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+                      <DialogHeader>
+                        <DialogTitle>Edit Book</DialogTitle>
+                        <DialogDescription>
+                          Update the book details. Fill out the form below with the updated information.
+                        </DialogDescription>
+                      </DialogHeader>
+                      {editingBook && (
+                        <BookForm 
+                          book={editingBook} 
+                          onSuccess={async () => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
+                          }} 
+                          onCancel={() => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                          }} 
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 )}
               />
             </CardContent>
@@ -535,12 +631,44 @@ const BooksPage = () => {
                 loading={isLoading}
                 emptyMessage="No rating data available"
                 actions={(row) => (
-                  <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
-                    setEditingBook(row);
-                    setOpenEditDialog(true);
+                  <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
+                    setOpenEditDialog(open);
+                    if (!open) {
+                      setEditingBook(null);
+                    }
                   }}>
-                    <Edit size={16} className="mr-1" /> Edit
-                  </Button>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={() => {
+                        setEditingBook(row);
+                        setOpenEditDialog(true);
+                      }}>
+                        <Edit size={16} className="mr-1" /> Edit
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+                      <DialogHeader>
+                        <DialogTitle>Edit Book</DialogTitle>
+                        <DialogDescription>
+                          Update the book details. Fill out the form below with the updated information.
+                        </DialogDescription>
+                      </DialogHeader>
+                      {editingBook && (
+                        <BookForm 
+                          book={editingBook} 
+                          onSuccess={async () => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                            await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+                            await queryClient.refetchQueries({ queryKey: ['/api/books'] });
+                          }} 
+                          onCancel={() => {
+                            setOpenEditDialog(false);
+                            setEditingBook(null);
+                          }} 
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 )}
               />
             </CardContent>
