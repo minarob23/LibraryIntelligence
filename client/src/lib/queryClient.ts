@@ -3,10 +3,11 @@ import { localStorage_storage } from './localStorage';
 
 // Mock API responses using localStorage
 const mockApiResponse = async (endpoint: string, options?: any): Promise<any> => {
-  const [path, queryString] = endpoint.split('?');
-  const params = new URLSearchParams(queryString || '');
+  try {
+    const [path, queryString] = endpoint.split('?');
+    const params = new URLSearchParams(queryString || '');
 
-  switch (true) {
+    switch (true) {
     case path === '/api/books':
       if (options?.method === 'POST') {
         return localStorage_storage.createBook(options.body);
