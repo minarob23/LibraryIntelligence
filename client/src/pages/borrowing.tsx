@@ -202,15 +202,17 @@ const BorrowingManagement = () => {
     {
       key: 'id',
       header: 'ID',
-      cell: ({ row }: any) => row?.id ? `BRW-${row.id}` : 'N/A',
+      cell: (row: any) => row?.id ? `BRW-${row.id}` : 'N/A',
     },
     {
       key: 'borrower',
       header: 'Borrower',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
+        console.log('Borrower cell - row data:', row);
         if (!row) return 'Unknown';
         
         const borrower = findBorrowerById(row.borrowerId);
+        console.log('Found borrower:', borrower, 'for borrowerId:', row.borrowerId);
         
         return borrower ? (
           <div className="flex items-center">
@@ -235,10 +237,12 @@ const BorrowingManagement = () => {
     {
       key: 'book',
       header: 'Book',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
+        console.log('Book cell - row data:', row);
         if (!row) return 'Unknown';
         
         const book = findBookById(row.bookId);
+        console.log('Found book:', book, 'for bookId:', row.bookId);
         
         return book ? (
           <div>
@@ -256,7 +260,7 @@ const BorrowingManagement = () => {
     {
       key: 'borrowDate',
       header: 'Borrow Date',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
         if (!row?.borrowDate) return '-';
         try {
           return new Date(row.borrowDate).toLocaleDateString();
@@ -268,7 +272,7 @@ const BorrowingManagement = () => {
     {
       key: 'dueDate',
       header: 'Due Date',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
         if (!row?.dueDate) return '-';
         try {
           return new Date(row.dueDate).toLocaleDateString();
@@ -280,7 +284,7 @@ const BorrowingManagement = () => {
     {
       key: 'returnDate',
       header: 'Return Date',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
         if (!row?.returnDate) return '-';
         try {
           return new Date(row.returnDate).toLocaleDateString();
@@ -292,12 +296,12 @@ const BorrowingManagement = () => {
     {
       key: 'status',
       header: 'Status',
-      cell: ({ row }: any) => row ? getStatusBadge(row) : '-',
+      cell: (row: any) => row ? getStatusBadge(row) : '-',
     },
     {
       key: 'rating',
       header: 'Rating',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
         if (!row) return <span className="text-gray-400 text-sm">-</span>;
         
         if (row.returnDate && row.rating) {
@@ -314,7 +318,7 @@ const BorrowingManagement = () => {
     {
       key: 'actions',
       header: 'Actions',
-      cell: ({ row }: any) => {
+      cell: (row: any) => {
         if (!row) return null;
         
         return (
