@@ -55,21 +55,21 @@ const BorrowingManagement = () => {
   // Filter borrowings based on search and status
   const filteredBorrowings = borrowings.filter((borrowing: any) => {
     // Try both string and number comparison for ID matching
-    const borrower = borrowers.find((b: any) => 
+    const borrower = borrowing.borrowerId ? borrowers.find((b: any) => 
       b.id === borrowing.borrowerId || 
       b.id === parseInt(borrowing.borrowerId) || 
-      b.id.toString() === borrowing.borrowerId.toString()
-    );
-    const book = books.find((b: any) => 
+      (b.id && borrowing.borrowerId && b.id.toString() === borrowing.borrowerId.toString())
+    ) : null;
+    const book = borrowing.bookId ? books.find((b: any) => 
       b.id === borrowing.bookId || 
       b.id === parseInt(borrowing.bookId) || 
-      b.id.toString() === borrowing.bookId.toString()
-    );
+      (b.id && borrowing.bookId && b.id.toString() === borrowing.bookId.toString())
+    ) : null;
 
     const matchesSearch = !searchTerm || 
       borrower?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       book?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      borrowing.id.toString().includes(searchTerm) ||
+      (borrowing.id && borrowing.id.toString().includes(searchTerm)) ||
       (borrowing.borrowerId && borrowing.borrowerId.toString().includes(searchTerm)) ||
       (borrowing.bookId && borrowing.bookId.toString().includes(searchTerm));
 
@@ -175,11 +175,11 @@ const BorrowingManagement = () => {
         if (!row) return 'Unknown';
         
         // Try both string and number comparison for ID matching
-        const borrower = borrowers.find((b: any) => 
+        const borrower = row.borrowerId ? borrowers.find((b: any) => 
           b.id === row.borrowerId || 
           b.id === parseInt(row.borrowerId) || 
-          b.id.toString() === row.borrowerId.toString()
-        );
+          (b.id && row.borrowerId && b.id.toString() === row.borrowerId.toString())
+        ) : null;
         
         return borrower ? (
           <div className="flex items-center">
@@ -208,11 +208,11 @@ const BorrowingManagement = () => {
         if (!row) return 'Unknown';
         
         // Try both string and number comparison for ID matching
-        const book = books.find((b: any) => 
+        const book = row.bookId ? books.find((b: any) => 
           b.id === row.bookId || 
           b.id === parseInt(row.bookId) || 
-          b.id.toString() === row.bookId.toString()
-        );
+          (b.id && row.bookId && b.id.toString() === row.bookId.toString())
+        ) : null;
         
         return book ? (
           <div>
