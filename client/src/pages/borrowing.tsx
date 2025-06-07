@@ -155,12 +155,14 @@ const BorrowingManagement = () => {
     {
       key: 'id',
       header: 'ID',
-      cell: (row: any) => `BRW-${row.id}`,
+      cell: ({ row }: any) => row?.id ? `BRW-${row.id}` : 'N/A',
     },
     {
       key: 'borrower',
       header: 'Borrower',
-      cell: (row: any) => {
+      cell: ({ row }: any) => {
+        if (!row) return 'Unknown';
+        
         const borrower = borrowers.find((b: any) => b.id === row.borrowerId);
         return borrower ? (
           <div className="flex items-center">
@@ -180,7 +182,9 @@ const BorrowingManagement = () => {
     {
       key: 'book',
       header: 'Book',
-      cell: (row: any) => {
+      cell: ({ row }: any) => {
+        if (!row) return 'Unknown';
+        
         const book = books.find((b: any) => b.id === row.bookId);
         return book ? (
           <div>
@@ -193,27 +197,29 @@ const BorrowingManagement = () => {
     {
       key: 'borrowDate',
       header: 'Borrow Date',
-      cell: (row: any) => new Date(row.borrowDate).toLocaleDateString(),
+      cell: ({ row }: any) => row?.borrowDate ? new Date(row.borrowDate).toLocaleDateString() : '-',
     },
     {
       key: 'dueDate',
       header: 'Due Date',
-      cell: (row: any) => new Date(row.dueDate).toLocaleDateString(),
+      cell: ({ row }: any) => row?.dueDate ? new Date(row.dueDate).toLocaleDateString() : '-',
     },
     {
       key: 'returnDate',
       header: 'Return Date',
-      cell: (row: any) => row.returnDate ? new Date(row.returnDate).toLocaleDateString() : '-',
+      cell: ({ row }: any) => row?.returnDate ? new Date(row.returnDate).toLocaleDateString() : '-',
     },
     {
       key: 'status',
       header: 'Status',
-      cell: (row: any) => getStatusBadge(row),
+      cell: ({ row }: any) => row ? getStatusBadge(row) : '-',
     },
     {
       key: 'rating',
       header: 'Rating',
-      cell: (row: any) => {
+      cell: ({ row }: any) => {
+        if (!row) return <span className="text-gray-400 text-sm">-</span>;
+        
         if (row.returnDate && row.rating) {
           return (
             <div className="flex items-center gap-1">
@@ -226,47 +232,27 @@ const BorrowingManagement = () => {
       },
     },
     {
-      id: 'actions',
+      key: 'actions',
       header: 'Actions',
-      cell: ({ row }: any) => (
-        <div className="flex items-center gap-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-primary-500 hover:text-primary-600">
-                <Edit size={16} className="mr-1" /> Edit
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Edit Borrowing</DialogTitle>
-                <DialogDescription>
-                  Update the borrowing details.
-                </DialogDescription>
-              </DialogHeader>
-              <BorrowForm 
-                borrowing={row}
-                onSuccess={() => {
-                  queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-                }}
-              />
-            </DialogContent>
-          </Dialog>
-
-          {!row.returnDate && (
+      cell: ({ row }: any) => {
+        if (!row) return null;
+        
+        return (
+          <div className="flex items-center gap-2">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700">
-                  <BookOpen size={16} className="mr-1" /> Return
+                <Button variant="ghost" size="sm" className="text-primary-500 hover:text-primary-600">
+                  <Edit size={16} className="mr-1" /> Edit
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                  <DialogTitle>Return Book</DialogTitle>
+                  <DialogTitle>Edit Borrowing</DialogTitle>
                   <DialogDescription>
-                    Return the book and rate your reading experience.
+                    Update the borrowing details.
                   </DialogDescription>
                 </DialogHeader>
-                <ReturnBookForm 
+                <BorrowForm 
                   borrowing={row}
                   onSuccess={() => {
                     queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
@@ -274,31 +260,55 @@ const BorrowingManagement = () => {
                 />
               </DialogContent>
             </Dialog>
-          )}
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
-                <Trash2 size={16} className="mr-1" /> Delete
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the borrowing record.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleDelete(row.id)}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      ),
+            {!row.returnDate && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-green-600 hover:text-green-700">
+                    <BookOpen size={16} className="mr-1" /> Return
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Return Book</DialogTitle>
+                    <DialogDescription>
+                      Return the book and rate your reading experience.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <ReturnBookForm 
+                    borrowing={row}
+                    onSuccess={() => {
+                      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+                    }}
+                  />
+                </DialogContent>
+              </Dialog>
+            )}
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
+                  <Trash2 size={16} className="mr-1" /> Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the borrowing record.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => handleDelete(row.id)}>
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        );
+      },
     },
   ];
 

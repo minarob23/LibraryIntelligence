@@ -133,20 +133,25 @@ const DataTable = ({
                 </TableCell>
               </TableRow>
             ) : (
-              filteredData.map((row) => (
-                <TableRow key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  {columns.map((column) => (
-                    <TableCell key={`${row.id}-${column.key}`} className="px-4 py-3 whitespace-nowrap text-sm">
-                      {column.cell ? column.cell(row) : row[column.key]}
-                    </TableCell>
-                  ))}
-                  {actions && (
-                    <TableCell className="px-4 py-3 whitespace-nowrap text-right text-sm">
-                      {actions(row)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))
+              filteredData.map((row, index) => {
+                // Ensure row has an id, fallback to index if needed
+                const rowKey = row?.id ? `row-${row.id}` : `row-${index}`;
+    
+                return (
+                  <TableRow key={rowKey} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    {columns.map((column) => (
+                      <TableCell key={`${rowKey}-${column.key}`} className="px-4 py-3 whitespace-nowrap text-sm">
+                        {column.cell ? column.cell(row) : (row ? row[column.key] : '-')}
+                      </TableCell>
+                    ))}
+                    {actions && (
+                      <TableCell key={`${rowKey}-actions`} className="px-4 py-3 whitespace-nowrap text-right text-sm">
+                        {actions(row)}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
