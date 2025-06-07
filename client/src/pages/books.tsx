@@ -146,7 +146,7 @@ const BooksPage = () => {
     },
     {
       key: 'bookCode',
-      header: 'Book Code',
+      header: 'Location',
       cell: (row: any) => (
         <div>
           <div className="font-mono text-sm">{row.bookCode}</div>
@@ -347,11 +347,7 @@ const BooksPage = () => {
                 Add a new book to the library collection. Fill out the form below with the book details.
               </DialogDescription>
             </DialogHeader>
-            <BookForm 
-              index={(books?.length || 0) + 1}
-              onSuccess={() => setOpenAddDialog(false)} 
-              onCancel={() => setOpenAddDialog(false)} 
-            />
+            <BookForm onSuccess={() => setOpenAddDialog(false)} onCancel={() => setOpenAddDialog(false)} />
           </DialogContent>
         </Dialog>
       </div>
