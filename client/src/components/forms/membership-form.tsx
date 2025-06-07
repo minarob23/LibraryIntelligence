@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { membershipApplicationSchema } from '@shared/schema';
 import { z } from 'zod';
-import { apiRequest } from '@/lib/queryClient';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Form, 
@@ -62,9 +62,31 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
         throw new Error('No response from server');
       }
 
+      // Also create a borrower record
+      const joinedDate = new Date().toISOString().split('T')[0];
+      const expiryDate = new Date();
+      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+
+      const borrowerData = {
+        name: data.name,
+        category: data.stage,
+        phone: data.phone,
+        email: data.email,
+        address: data.address,
+        joinedDate: joinedDate,
+        expiryDate: expiryDate.toISOString().split('T')[0]
+      };
+
+      await apiRequest('POST', '/api/borrowers', borrowerData);
+
+      // Invalidate borrowers queries to refresh the data
+      queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
       toast({
         title: 'Success',
-        description: 'Your membership application has been submitted successfully.',
+        description: 'Your membership application has been submitted successfully and you have been added as a borrower.',
       });
 
       setIsSuccess(true);
