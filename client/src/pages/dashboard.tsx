@@ -65,7 +65,7 @@ const Dashboard = () => {
 
   // Format borrower growth data for chart by category
   const formatBorrowerGrowth = () => {
-    if (!borrowers || !Array.isArray(borrowers)) return [];
+    if (!borrowers) return [];
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -83,20 +83,11 @@ const Dashboard = () => {
       monthlyGrowth.push(categoryData);
     }
 
-    // Count borrowers per month and category based on join date or creation date
+    // Count borrowers per month and category based on join date
     borrowers.forEach((borrower: any) => {
-      if (!borrower) return;
-      
-      // Use joinedDate if available, otherwise use createdAt or current date
-      let dateToUse = borrower.joinedDate || borrower.createdAt || new Date().toISOString();
-      const date = new Date(dateToUse);
-      
-      // Ensure valid date
-      if (isNaN(date.getTime())) return;
-      
+      const date = new Date(borrower.joinedDate);
       const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
       const monthData = monthlyGrowth.find(data => data.month === monthKey);
-      
       if (monthData && borrower.category) {
         // Capitalize the category to match chart format
         const capitalizedCategory = borrower.category.charAt(0).toUpperCase() + borrower.category.slice(1);

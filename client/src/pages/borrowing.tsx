@@ -212,7 +212,7 @@ const BorrowingManagement = () => {
     {
       id: 'actions',
       header: 'Actions',
-      cell: (row: any) => (
+      cell: ({ row }: any) => (
         <div className="flex items-center gap-2">
           <Dialog>
             <DialogTrigger asChild>
@@ -347,7 +347,7 @@ const BorrowingManagement = () => {
         {statusTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
             <DataTable
-              data={filteredBorrowings || []}
+              data={filteredBorrowings}
               columns={columns}
               isLoading={isLoading}
               emptyMessage="No borrowing records found"
