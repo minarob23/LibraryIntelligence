@@ -70,7 +70,23 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       return borrowerIdParam ? localStorage_storage.getBorrowingsByBorrowerId(parseInt(borrowerIdParam)) : localStorage_storage.getBorrowings();
 
     case path.startsWith('/api/borrowings/'):
-      const borrowingId = parseInt(path.split('/')[3]);
+      const pathParts = path.split('/');
+      const borrowingId = parseInt(pathParts[3]);
+      
+      if (pathParts[4] === 'return' && options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(borrowingId, data);
+      }
+      
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(borrowingId, data);
+      }
+      
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBorrowing(borrowingId);
+      }
+      
       return localStorage_storage.getBorrowing(borrowingId);
 
     case path === '/api/dashboard/most-borrowed-books':
@@ -105,13 +121,9 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
   }
 };
 
-export const apiRequest = async (method: string, url: string, data?: any) => {
+export const apiRequest = async (url: string, options?: any) => {
   try {
-    const response = await mockApiResponse(url, {
-      method,
-      body: data
-    });
-
+    const response = await mockApiResponse(url, options);
     return response;
   } catch (error) {
     console.error('API Request Error:', error);

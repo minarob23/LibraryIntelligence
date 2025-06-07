@@ -105,28 +105,32 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
     },
   });
 
-  const onSubmit = async (data: BorrowFormValues) => {
+  const onSubmit = async (values: BorrowFormValues) => {
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
-
-      // Remove the itemType field before sending to the API
-      const { itemType: _, ...submitData } = data;
-
-      if (isEditing && borrowing) {
-        await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, submitData);
+      if (isEditing) {
+        await apiRequest(`/api/borrowings/${borrowing.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
         toast({
           title: 'Success',
           description: 'Borrowing record updated successfully',
         });
       } else {
-        await apiRequest('POST', '/api/borrowings', submitData);
+        await apiRequest('/api/borrowings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
         toast({
           title: 'Success',
-          description: 'Borrowing record added successfully',
+          description: 'Borrowing record created successfully',
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
       if (onSuccess) {
         onSuccess();
@@ -135,7 +139,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
       console.error('Error submitting form:', error);
       toast({
         title: 'Error',
-        description: `Failed to ${isEditing ? 'update' : 'add'} borrowing record. Please try again.`,
+        description: `Failed to ${isEditing ? 'update' : 'create'} borrowing record. Please try again.`,
         variant: 'destructive',
       });
     } finally {
