@@ -1,94 +1,133 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 import { localStorage_storage } from './localStorage';
 
-// Mock API responses for development
-const mockApiResponse = async (url: string, options: RequestInit = {}) => {
-  const method = options.method || 'GET';
+// Mock API responses using localStorage
+const mockApiResponse = async (endpoint: string, options?: any): Promise<any> => {
+  const [path, queryString] = endpoint.split('?');
+  const params = new URLSearchParams(queryString || '');
 
-  // Extract endpoint from URL
-  const endpoint = url.replace('/api', '');
+  switch (true) {
+    case path === '/api/books':
+      if (options?.method === 'POST') {
+        return localStorage_storage.createBook(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateBook(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteBook(id);
+      }
+      return localStorage_storage.getBooks();
 
-  try {
-    if (method === 'GET') {
-      if (endpoint === '/books') {
-        return localStorage_storage.getBooks();
-      } else if (endpoint === '/borrowers') {
-        return localStorage_storage.getBorrowers();
-      } else if (endpoint === '/librarians') {
-        return localStorage_storage.getLibrarians();
-      } else if (endpoint === '/borrowings') {
-        return localStorage_storage.getBorrowings();
-      } else if (endpoint === '/membershipApplications') {
-        return localStorage_storage.getMembershipApplications();
-      }
-    } else if (method === 'POST') {
-      let body;
-      try {
-        body = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
-      } catch (error) {
-        console.error('Error parsing request body:', error);
-        throw new Error('Invalid request body');
-      }
+    case path.startsWith('/api/books/'):
+      const bookId = parseInt(path.split('/')[3]);
+      return localStorage_storage.getBook(bookId);
 
-      if (endpoint === '/books') {
-        return localStorage_storage.addBook(body);
-      } else if (endpoint === '/borrowers') {
-        return localStorage_storage.addBorrower(body);
-      } else if (endpoint === '/librarians') {
-        return localStorage_storage.addLibrarian(body);
-      } else if (endpoint === '/borrowings') {
-        return localStorage_storage.addBorrowing(body);
-      } else if (endpoint === '/membershipApplications') {
-        return localStorage_storage.addMembershipApplication(body);
+    case path === '/api/borrowers':
+      const category = params.get('category');
+      if (options?.method === 'POST') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createBorrower(data);
       }
-    } else if (method === 'PUT') {
-      let body;
-      try {
-        body = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
-      } catch (error) {
-        console.error('Error parsing request body:', error);
-        throw new Error('Invalid request body');
+      return category ? localStorage_storage.getBorrowersByCategory(category) : localStorage_storage.getBorrowers();
+
+    case path.startsWith('/api/borrowers/'):
+      const borrowerId = parseInt(path.split('/')[3]);
+
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrower(borrowerId, data);
       }
 
-      const idMatch = endpoint.match(/\/(\w+)\/(\d+)/);
-
-      if (idMatch) {
-        const [, resource, id] = idMatch;
-        const numericId = parseInt(id);
-
-        if (resource === 'books') {
-          return localStorage_storage.updateBook(numericId, body);
-        } else if (resource === 'borrowers') {
-          return localStorage_storage.updateBorrower(numericId, body);
-        } else if (resource === 'librarians') {
-          return localStorage_storage.updateLibrarian(numericId, body);
-        } else if (resource === 'borrowings') {
-          return localStorage_storage.updateBorrowing(numericId, body);
-        }
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBorrower(borrowerId);
       }
-    } else if (method === 'DELETE') {
-      const idMatch = endpoint.match(/\/(\w+)\/(\d+)/);
 
-      if (idMatch) {
-        const [, resource, id] = idMatch;
-        const numericId = parseInt(id);
+      return localStorage_storage.getBorrower(borrowerId);
 
-        if (resource === 'books') {
-          return localStorage_storage.deleteBook(numericId);
-        } else if (resource === 'borrowers') {
-          return localStorage_storage.deleteBorrower(numericId);
-        } else if (resource === 'librarians') {
-          return localStorage_storage.deleteLibrarian(numericId);
-        } else if (resource === 'borrowings') {
-          return localStorage_storage.deleteBorrowing(numericId);
-        }
+    case path === '/api/librarians':
+      if (options?.method === 'POST') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createLibrarian(data);
       }
-    }
+      return localStorage_storage.getLibrarians();
 
-    throw new Error(`Endpoint ${endpoint} not found`);
-  } catch (error) {
-    console.error('Mock API Error:', error);
-    throw error;
+    case path.startsWith('/api/librarians/'):
+      const librarianId = parseInt(path.split('/')[3]);
+      
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateLibrarian(librarianId, data);
+      }
+      
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteLibrarian(librarianId);
+      }
+      
+      return localStorage_storage.getLibrarian(librarianId);
+
+    case path === '/api/borrowings':
+      const borrowerIdParam = params.get('borrowerId');
+      if (options?.method === 'POST') {
+        return localStorage_storage.createBorrowing(options.body);
+      } else if (options?.method === 'PUT') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.updateBorrowing(id, options.body);
+      } else if (options?.method === 'DELETE') {
+        const id = parseInt(path.split('/').pop() || '0');
+        return localStorage_storage.deleteBorrowing(id);
+      }
+      return borrowerIdParam ? localStorage_storage.getBorrowingsByBorrowerId(parseInt(borrowerIdParam)) : localStorage_storage.getBorrowings();
+
+    case path.startsWith('/api/borrowings/'):
+      const pathParts = path.split('/');
+      const borrowingId = parseInt(pathParts[3]);
+
+      if (pathParts[4] === 'return' && options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(borrowingId, data);
+      }
+
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(borrowingId, data);
+      }
+
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBorrowing(borrowingId);
+      }
+
+      return localStorage_storage.getBorrowing(borrowingId);
+
+    case path === '/api/dashboard/most-borrowed-books':
+      const limit1 = parseInt(params.get('limit') || '5');
+      return localStorage_storage.getMostBorrowedBooks(limit1);
+
+    case path === '/api/dashboard/popular-books':
+      const limit2 = parseInt(params.get('limit') || '4');
+      return localStorage_storage.getPopularBooks(limit2);
+
+    case path === '/api/dashboard/top-borrowers':
+      const limit3 = parseInt(params.get('limit') || '5');
+      return localStorage_storage.getTopBorrowers(limit3);
+
+    case path === '/api/dashboard/borrower-distribution':
+      return localStorage_storage.getBorrowerDistribution();
+
+    case path === '/api/membership-application':
+      if (options?.method === 'POST') {
+        return localStorage_storage.createMembershipApplication(options.body);
+      }
+      break;
+
+    case path === '/api/reset-ui':
+      return { message: 'UI has been reset successfully' };
+
+    case path === '/api/restore-database':
+      return { message: 'Database restored successfully' };
+
+    default:
+      throw new Error(`Unknown endpoint: ${endpoint}`);
   }
 };
 
