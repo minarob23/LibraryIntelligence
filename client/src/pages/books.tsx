@@ -145,11 +145,11 @@ const BooksPage = () => {
       cell: (row: any) => row.author,
     },
     {
-      key: 'bookCode',
-      header: 'Book Code',
+      key: 'publisher',
+      header: 'Publisher',
       cell: (row: any) => (
         <div>
-          <div className="font-mono text-sm">{row.bookCode}</div>
+          <div className="text-sm">{row.publisher}</div>
           <div className="text-xs text-gray-500">
             {row.totalPages ? `${row.totalPages} pages` : 'N/A'}
           </div>
