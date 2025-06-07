@@ -330,7 +330,7 @@ class LocalStorage {
   cleanCorruptedData() {
     const data = this.getData();
 
-    // Only remove clearly corrupted entries, keep valid data
+    // More aggressive cleaning for borrowings
     const originalLength = data.borrowings.length;
     data.borrowings = data.borrowings.filter(borrowing => {
       // Check if borrowing is a proper object with required fields
@@ -339,54 +339,79 @@ class LocalStorage {
       }
 
       // Check if it's an array-like object (corrupted JSON string)
-      if (Array.isArray(borrowing) || (typeof borrowing === 'object' && '0' in borrowing)) {
+      if (Array.isArray(borrowing)) {
         return false;
       }
 
-      // Check if it has required fields
-      return borrowing.id && 
-             borrowing.borrowerId && 
-             borrowing.bookId &&
-             typeof borrowing.id === 'number' &&
-             typeof borrowing.borrowerId === 'number' &&
-             typeof borrowing.bookId === 'number';
+      // Check for numeric keys which indicate corrupted data
+      const keys = Object.keys(borrowing);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+
+      // Check if it has the expected structure of a borrowing object
+      const hasValidStructure = 
+        borrowing.hasOwnProperty('id') &&
+        borrowing.hasOwnProperty('borrowerId') &&
+        borrowing.hasOwnProperty('bookId') &&
+        typeof borrowing.id === 'number' &&
+        typeof borrowing.borrowerId === 'number' &&
+        typeof borrowing.bookId === 'number';
+
+      return hasValidStructure;
     });
 
     if (data.borrowings.length !== originalLength) {
-      console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted entries`);
+      console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted borrowing entries`);
       this.saveData(data);
     }
 
-    // Also clean other data types
+    // Also clean other data types with similar logic
     const borrowers = data.borrowers;
-    const cleanBorrowers = borrowers.filter(borrower => 
-      borrower && 
-      typeof borrower === 'object' && 
-      !Array.isArray(borrower) &&
-      !('0' in borrower) &&
-      borrower.id &&
-      borrower.name &&
-      typeof borrower.id === 'number'
-    );
+    const cleanBorrowers = borrowers.filter(borrower => {
+      if (!borrower || typeof borrower !== 'object' || Array.isArray(borrower)) {
+        return false;
+      }
+      
+      const keys = Object.keys(borrower);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+
+      return borrower.hasOwnProperty('id') &&
+             borrower.hasOwnProperty('name') &&
+             typeof borrower.id === 'number' &&
+             typeof borrower.name === 'string';
+    });
 
     if (cleanBorrowers.length !== borrowers.length) {
       console.log(`Cleaned ${borrowers.length - cleanBorrowers.length} corrupted borrower entries`);
+      data.borrowers = cleanBorrowers;
       this.saveData(data);
     }
 
     const books = data.books;
-    const cleanBooks = books.filter(book => 
-      book && 
-      typeof book === 'object' && 
-      !Array.isArray(book) &&
-      !('0' in book) &&
-      book.id &&
-      book.name &&
-      typeof book.id === 'number'
-    );
+    const cleanBooks = books.filter(book => {
+      if (!book || typeof book !== 'object' || Array.isArray(book)) {
+        return false;
+      }
+      
+      const keys = Object.keys(book);
+      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+      if (hasNumericKeys) {
+        return false;
+      }
+
+      return book.hasOwnProperty('id') &&
+             (book.hasOwnProperty('name') || book.hasOwnProperty('title')) &&
+             typeof book.id === 'number';
+    });
 
     if (cleanBooks.length !== books.length) {
       console.log(`Cleaned ${books.length - cleanBooks.length} corrupted book entries`);
+      data.books = cleanBooks;
       this.saveData(data);
     }
   }
