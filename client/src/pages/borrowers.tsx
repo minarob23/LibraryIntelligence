@@ -57,9 +57,9 @@ const BorrowersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showExpired, setShowExpired] = useState(false);
 
-  const { data: allBorrowers, isLoading } = useQuery({ 
+  const { data: allBorrowers, isLoading, refetch: refetchBorrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
-    refetchInterval: 2000, // Refetch every 2 seconds for consistency
+    refetchOnWindowFocus: true,
   });
 
   // Filter borrowers based on selected category and search term
@@ -301,8 +301,10 @@ const BorrowersPage = () => {
               <BorrowerForm 
                 onSuccess={async () => {
                   setOpenAddDialog(false);
-                  // Force a manual refetch of borrowers data
-                  await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
+                  // Force immediate data refresh
+                  setTimeout(async () => {
+                    await refetchBorrowers();
+                  }, 100);
                 }} 
                 onCancel={() => setOpenAddDialog(false)} 
               />
@@ -404,8 +406,10 @@ const BorrowersPage = () => {
                           onSuccess={async () => {
                             setOpenEditDialog(false);
                             setEditingBorrower(null);
-                            // Force a manual refetch of borrowers data
-                            await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
+                            // Force immediate data refresh
+                            setTimeout(async () => {
+                              await refetchBorrowers();
+                            }, 100);
                           }}
                           onCancel={() => {
                             setOpenEditDialog(false);

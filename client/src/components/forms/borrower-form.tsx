@@ -100,18 +100,15 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       if (isEditing && borrower?.id) {
         const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, data);
 
-        // Invalidate and immediately refetch all related queries
-        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-
-        // Force immediate refetch to ensure UI updates
-        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
-
         toast({
           title: 'Success',
           description: 'Borrower updated successfully',
         });
+
+        // Invalidate queries
+        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
 
         if (onSuccess) {
           onSuccess();
@@ -119,18 +116,15 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       } else {
         const response = await apiRequest('POST', '/api/borrowers', data);
 
-        // Invalidate and immediately refetch all related queries
-        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-
-        // Force immediate refetch to ensure UI updates
-        await queryClient.refetchQueries({ queryKey: ['/api/borrowers'] });
-
         toast({
           title: 'Success',
           description: 'Borrower added successfully',
         });
+
+        // Invalidate queries
+        queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
 
         if (onSuccess) {
           onSuccess();
