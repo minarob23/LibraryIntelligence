@@ -44,11 +44,12 @@ type BookFormValues = z.infer<typeof bookSchema>;
 
 interface BookFormProps {
   book?: BookFormValues & { id?: number };
+  index?: number;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-const BookForm = ({ book, onSuccess, onCancel }: BookFormProps) => {
+const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!book;
