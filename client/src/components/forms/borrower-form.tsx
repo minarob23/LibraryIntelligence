@@ -92,11 +92,11 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       additionalPhone: '',
     },
   });
-  
+
   const onSubmit = async (data: BorrowerFormValues) => {
     try {
       setIsSubmitting(true);
-      
+
       if (isEditing && borrower?.id) {
         const response = await apiRequest(`/api/borrowers/${borrower.id}`, {
           method: 'PUT',
@@ -105,11 +105,19 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           },
           body: JSON.stringify(data),
         });
-        
+
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
         toast({
           title: 'Success',
           description: 'Borrower updated successfully',
         });
+
+        if (onSuccess) {
+          onSuccess();
+        }
       } else {
         const response = await apiRequest('/api/borrowers', {
           method: 'POST',
@@ -118,21 +126,21 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
           },
           body: JSON.stringify(data),
         });
-        
+
+        await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+        await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+
         toast({
           title: 'Success',
           description: 'Borrower added successfully',
         });
+
+        if (onSuccess) {
+          onSuccess();
+        }
       }
-      
-      // Invalidate all related queries
-      await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
-      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-      await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-      
-      if (onSuccess) {
-        onSuccess();
-      }
+
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
@@ -144,7 +152,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <Card>
       <CardHeader>
@@ -168,7 +176,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="category"
@@ -193,7 +201,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="phone"
@@ -207,7 +215,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="additionalPhone"
@@ -221,7 +229,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="email"
@@ -235,7 +243,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="address"
@@ -249,7 +257,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="joinedDate"
@@ -263,7 +271,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="expiryDate"
@@ -277,7 +285,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               {/* Additional Information */}
               <FormField
                 control={form.control}
@@ -292,7 +300,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="fatherOfConfession"
@@ -306,7 +314,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="studies"
@@ -320,7 +328,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="job"
@@ -334,7 +342,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="hobbies"
@@ -348,7 +356,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="favoriteBooks"
@@ -363,7 +371,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                 )}
               />
             </div>
-            
+
             <div className="flex justify-end space-x-2 pt-3">
               {onCancel && (
                 <Button type="button" variant="outline" onClick={onCancel}>

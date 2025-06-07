@@ -119,14 +119,15 @@ class LocalStorage {
     const index = data.borrowers.findIndex(borrower => borrower.id === id);
     if (index !== -1) {
       // Ensure we preserve the ID and merge all other fields
-      data.borrowers[index] = { 
+      const updatedBorrower = { 
         ...data.borrowers[index], 
         ...borrowerUpdate,
         id: id // Preserve the original ID
       };
+      data.borrowers[index] = updatedBorrower;
       this.saveData(data);
-      console.log('Borrower updated:', data.borrowers[index]);
-      return data.borrowers[index];
+      console.log('Borrower updated successfully:', updatedBorrower);
+      return updatedBorrower;
     }
     console.error('Borrower not found for update:', id);
     return null;

@@ -26,18 +26,23 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/borrowers':
       const category = params.get('category');
       if (options?.method === 'POST') {
-        return localStorage_storage.createBorrower(options.body);
-      } else if (options?.method === 'PUT') {
-        const id = parseInt(path.split('/').pop() || '0');
-        return localStorage_storage.updateBorrower(id, options.body);
-      } else if (options?.method === 'DELETE') {
-        const id = parseInt(path.split('/').pop() || '0');
-        return localStorage_storage.deleteBorrower(id);
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createBorrower(data);
       }
       return category ? localStorage_storage.getBorrowersByCategory(category) : localStorage_storage.getBorrowers();
 
     case path.startsWith('/api/borrowers/'):
       const borrowerId = parseInt(path.split('/')[3]);
+      
+      if (options?.method === 'PUT') {
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrower(borrowerId, data);
+      }
+      
+      if (options?.method === 'DELETE') {
+        return localStorage_storage.deleteBorrower(borrowerId);
+      }
+      
       return localStorage_storage.getBorrower(borrowerId);
 
     case path === '/api/librarians':

@@ -91,7 +91,9 @@ const BorrowersPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest('DELETE', `/api/borrowers/${id}`);
+      await apiRequest(`/api/borrowers/${id}`, {
+        method: 'DELETE',
+      });
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
       await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
       await queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
@@ -115,12 +117,18 @@ const BorrowersPage = () => {
       const oneYearFromNow = new Date();
       oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
-      await apiRequest('PUT', `/api/borrowers/${borrower.id}`, {
-        ...borrower,
-        expiryDate: oneYearFromNow.toISOString().split('T')[0],
+      await apiRequest(`/api/borrowers/${borrower.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...borrower,
+          expiryDate: oneYearFromNow.toISOString().split('T')[0],
+        }),
       });
 
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+      await queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
 
       toast({
         title: 'Success',
