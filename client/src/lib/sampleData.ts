@@ -125,6 +125,7 @@ export const initializeSampleData = () => {
   // Sample Librarians
   const sampleLibrarians = [
     {
+      librarianId: 'LIB-001',
       name: 'Sarah Wilson',
       phone: '+1234567893',
       appointmentDate: '2023-09-01',
