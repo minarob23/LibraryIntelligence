@@ -36,7 +36,12 @@ export async function setupVite(app: Express) {
         port: 5000,
         host: '0.0.0.0',
         clientPort: 5000
-      }
+      },
+      allowedHosts: [
+        '.replit.dev',
+        'localhost',
+        '127.0.0.1'
+      ]
     },
     appType: "custom",
   });
