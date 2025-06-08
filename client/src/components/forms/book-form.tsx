@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertBookSchema } from '@shared/schema';
 import { z } from 'zod';
-import { Calendar, Upload, X, Check, ChevronsUpDown, Plus, BookOpen, Quote } from 'lucide-react';
+import { Calendar, Upload, X, Check, ChevronsUpDown, Plus, BookOpen, Quote, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,6 +30,8 @@ import ImageUpload from '@/components/ui/image-upload';
 
 import IndexItemCard from '@/components/ui/index-item';
 import { cn } from '@/lib/utils';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Copy, Star, FileText, Minus, Edit } from 'lucide-react';
 
 // Extend the schema to add validation messages
 const PREDEFINED_GENRES = [
@@ -212,7 +214,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     order: number;
   }>>([]);
   const [showIndexForm, setShowIndexForm] = useState(false);
-  const [editingIndex, setEditingIndex] = useState<any>(null);
+  const [editingIndexItem, setEditingIndexItem] = useState<any>(null);
   const [indexForm, setIndexForm] = useState({
     title: '',
     page: '',
@@ -310,9 +312,9 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         order: indexItems.length
       };
 
-      if (editingIndex) {
-        setIndexItems(indexItems.map(item => item.id === editingIndex.id ? { ...newItem, id: editingIndex.id } : item));
-        setEditingIndex(null);
+      if (editingIndexItem) {
+        setIndexItems(indexItems.map(item => item.id === editingIndexItem.id ? { ...newItem, id: editingIndexItem.id } : item));
+        setEditingIndexItem(null);
       } else {
         setIndexItems([...indexItems, newItem]);
       }
@@ -323,7 +325,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   };
 
   const handleEditIndexItem = (item: any) => {
-    setEditingIndex(item);
+    setEditingIndexItem(item);
     setIndexForm({
       title: item.title,
       page: item.page?.toString() || '',
@@ -820,51 +822,127 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label className="text-base font-semibold flex items-center gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  Book Index
+                  <List className="h-4 w-4" />
+                  Table of Contents ({indexItems.length})
+                  {indexItems.length > 0 && (
+                    <Badge variant="secondary" className="ml-2">
+                      {indexItems.filter(item => item.level === 1).length} chapters
+                    </Badge>
+                  )}
                 </Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowIndexForm(true)}
-                >
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Index Item
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const toc = indexItems
+                        .sort((a, b) => (a.page || 0) - (b.page || 0))
+                        .map(item => `${'  '.repeat(item.level - 1)}${item.title}${item.page ? ` ..................... ${item.page}` : ''}`)
+                        .join('\n');
+                      navigator.clipboard.writeText(toc);
+                      toast({ title: 'Table of contents copied to clipboard!' });
+                    }}
+                    disabled={indexItems.length === 0}
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy TOC
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowIndexForm(true)}
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Chapter
+                  </Button>
+                </div>
               </div>
 
               {showIndexForm && (
-                <Card className="p-4 border-dashed">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <Input
-                      placeholder="Chapter/Section Title"
-                      value={indexForm.title}
-                      onChange={(e) => setIndexForm({ ...indexForm, title: e.target.value })}
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Page"
-                      value={indexForm.page}
-                      onChange={(e) => setIndexForm({ ...indexForm, page: e.target.value })}
-                    />
-                    <Select
-                      value={indexForm.level.toString()}
-                      onValueChange={(value) => setIndexForm({ ...indexForm, level: parseInt(value) })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Level" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Chapter</SelectItem>
-                        <SelectItem value="2">Section</SelectItem>
-                        <SelectItem value="3">Subsection</SelectItem>
-                      </SelectContent>
-                    </Select>
+                <Card className="p-4 border-dashed border-2 bg-muted/20">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <List className="h-4 w-4 text-muted-foreground" />
+                      <Label className="font-medium">
+                        {editingIndexItem ? 'Edit Index Item' : 'Add New Index Item'}
+                      </Label>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Title</Label>
+                        <Input
+                          placeholder="e.g., Introduction, Chapter 1: The Beginning"
+                          value={indexForm.title}
+                          onChange={(e) => setIndexForm({ ...indexForm, title: e.target.value })}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Page Number</Label>
+                          <Input
+                            type="number"
+                            placeholder="e.g., 1"
+                            value={indexForm.page}
+                            onChange={(e) => setIndexForm({ ...indexForm, page: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Hierarchy Level</Label>
+                          <Select 
+                            value={indexForm.level.toString()} 
+                            onValueChange={(value) => setIndexForm({ ...indexForm, level: parseInt(value) })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">
+                                <div className="flex items-center gap-2">
+                                  <BookOpen className="h-3 w-3" />
+                                  Level 1 - Chapter/Part
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="2">
+                                <div className="flex items-center gap-2 ml-4">
+                                  <FileText className="h-3 w-3" />
+                                  Level 2 - Section
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="3">
+                                <div className="flex items-center gap-2 ml-8">
+                                  <Minus className="h-3 w-3" />
+                                  Level 3 - Subsection
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Button type="button" size="sm" onClick={handleAddIndexItem}>
-                      {editingIndex ? 'Update' : 'Add'} Item
+
+                  <div className="flex gap-2 mt-4 pt-3 border-t">
+                    <Button 
+                      type="button" 
+                      size="sm" 
+                      onClick={handleAddIndexItem}
+                      disabled={!indexForm.title.trim()}
+                    >
+                      {editingIndexItem ? (
+                        <>
+                          <Edit className="h-3 w-3 mr-1" />
+                          Update Item
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add Item
+                        </>
+                      )}
                     </Button>
                     <Button 
                       type="button" 
@@ -872,8 +950,8 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       size="sm" 
                       onClick={() => {
                         setShowIndexForm(false);
-                        setEditingIndex(null);
-                        setIndexForm({ title: '', page: '', level: 1, order: 0 });
+                        setEditingIndexItem(null);
+                        setIndexForm({ title: '', page: '', level: 1 });
                       }}
                     >
                       Cancel
@@ -882,19 +960,46 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </Card>
               )}
 
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {indexItems.map((item) => (
-                  <IndexItemCard
-                    key={item.id}
-                    item={item}
-                    onEdit={handleEditIndexItem}
-                    onDelete={handleDeleteIndexItem}
-                  />
-                ))}
+              <div className="space-y-3">
+                {indexItems.length > 0 && (
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span>Total items: {indexItems.length}</span>
+                    <span>•</span>
+                    <span>Chapters: {indexItems.filter(item => item.level === 1).length}</span>
+                    <span>•</span>
+                    <span>Sections: {indexItems.filter(item => item.level === 2).length}</span>
+                    <span>•</span>
+                    <span>Subsections: {indexItems.filter(item => item.level === 3).length}</span>
+                  </div>
+                )}
+
+                <ScrollArea className="max-h-[400px]">
+                  <div className="space-y-1">
+                    {indexItems
+                      .sort((a, b) => {
+                        // Sort by page number, then by order
+                        if (a.page && b.page) return Number(a.page) - Number(b.page);
+                        return a.order - b.order;
+                      })
+                      .map((item, index) => (
+                        <IndexItemCard
+                          key={index}
+                          item={{ ...item, id: index }}
+                          onEdit={handleEditIndexItem}
+                          onDelete={handleDeleteIndexItem}
+                        />
+                      ))}
+                  </div>
+                </ScrollArea>
+
                 {indexItems.length === 0 && (
-                  <p className="text-sm text-gray-500 text-center py-4">
-                    No index items added yet. Click "Add Index Item" to get started.
-                  </p>
+                  <Card className="p-6 border-dashed border-2">
+                    <div className="text-center text-muted-foreground">
+                      <List className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm mb-1">No table of contents added yet</p>
+                      <p className="text-xs">Organize chapters and sections for easy navigation</p>
+                    </div>
+                  </Card>
                 )}
               </div>
             </div>
@@ -904,55 +1009,124 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               <div className="flex items-center justify-between">
                 <Label className="text-base font-semibold flex items-center gap-2">
                   <Quote className="h-4 w-4" />
-                  Book Quotes
+                  Book Quotes ({quotes.length})
+                  {quotes.filter(q => q.isFavorite).length > 0 && (
+                    <Badge variant="secondary" className="ml-2">
+                      {quotes.filter(q => q.isFavorite).length} favorite
+                    </Badge>
+                  )}
                 </Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowQuoteForm(true)}
-                >
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Quote
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const quote = `"${quotes.map(q => q.content).join('"\n\n"')}"`;
+                      navigator.clipboard.writeText(quote);
+                      toast({ title: 'Quotes copied to clipboard!' });
+                    }}
+                    disabled={quotes.length === 0}
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy All
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowQuoteForm(true)}
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Quote
+                  </Button>
+                </div>
               </div>
 
               {showQuoteForm && (
-                <Card className="p-4 border-dashed">
-                  <div className="space-y-3">
+                <Card className="p-4 border-dashed border-2 bg-muted/20">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Quote className="h-4 w-4 text-muted-foreground" />
+                      <Label className="font-medium">
+                        {editingQuote ? 'Edit Quote' : 'Add New Quote'}
+                      </Label>
+                    </div>
+
                     <Textarea
-                      placeholder="Enter the quote content"
+                      placeholder="Enter the memorable quote from this book..."
                       value={quoteForm.content}
                       onChange={(e) => setQuoteForm({ ...quoteForm, content: e.target.value })}
-                      className="min-h-[80px]"
+                      className="min-h-[100px] resize-none"
                     />
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      <Input
-                        type="number"
-                        placeholder="Page"
-                        value={quoteForm.page}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, page: e.target.value })}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Page Number</Label>
+                        <Input
+                          type="number"
+                          placeholder="e.g., 42"
+                          value={quoteForm.page}
+                          onChange={(e) => setQuoteForm({ ...quoteForm, page: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Chapter</Label>
+                        <Input
+                          placeholder="e.g., Chapter 5"
+                          value={quoteForm.chapter}
+                          onChange={(e) => setQuoteForm({ ...quoteForm, chapter: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Character/Speaker</Label>
+                        <Input
+                          placeholder="e.g., Narrator"
+                          value={quoteForm.author}
+                          onChange={(e) => setQuoteForm({ ...quoteForm, author: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Tags</Label>
+                        <Input
+                          placeholder="love, wisdom, conflict"
+                          value={quoteForm.tags}
+                          onChange={(e) => setQuoteForm({ ...quoteForm, tags: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="isFavorite"
+                        checked={quoteForm.isFavorite}
+                        onCheckedChange={(checked) => setQuoteForm({ ...quoteForm, isFavorite: !!checked })}
                       />
-                      <Input
-                        placeholder="Chapter"
-                        value={quoteForm.chapter}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, chapter: e.target.value })}
-                      />
-                      <Input
-                        placeholder="Author"
-                        value={quoteForm.author}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, author: e.target.value })}
-                      />
-                      <Input
-                        placeholder="Tags (comma-separated)"
-                        value={quoteForm.tags}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, tags: e.target.value })}
-                      />
+                      <Label htmlFor="isFavorite" className="text-sm flex items-center gap-1">
+                        <Star className="h-3 w-3" />
+                        Mark as favorite
+                      </Label>
                     </div>
                   </div>
-                  <div className="flex gap-2 mt-3">
-                    <Button type="button" size="sm" onClick={handleAddQuote}>
-                      {editingQuote ? 'Update' : 'Add'} Quote
+
+                  <div className="flex gap-2 mt-4 pt-3 border-t">
+                    <Button 
+                      type="button" 
+                      size="sm" 
+                      onClick={handleAddQuote}
+                      disabled={!quoteForm.content.trim()}
+                    >
+                      {editingQuote ? (
+                        <>
+                          <Edit className="h-3 w-3 mr-1" />
+                          Update Quote
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add Quote
+                        </>
+                      )}
                     </Button>
                     <Button 
                       type="button" 
@@ -970,20 +1144,43 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </Card>
               )}
 
-              <div className="grid gap-3 max-h-60 overflow-y-auto">
-                {quotes.map((quote) => (
-                  <QuoteCard
-                    key={quote.id}
-                    quote={quote}
-                    onEdit={handleEditQuote}
-                    onDelete={handleDeleteQuote}
-                    onToggleFavorite={handleToggleQuoteFavorite}
-                  />
-                ))}
+              <div className="space-y-3">
+                {quotes.length > 0 && (
+                  <div className="flex gap-2 text-xs text-muted-foreground">
+                    <span>Total: {quotes.length}</span>
+                    <span>•</span>
+                    <span>Favorites: {quotes.filter(q => q.isFavorite).length}</span>
+                    <span>•</span>
+                    <span>With Pages: {quotes.filter(q => q.page).length}</span>
+                  </div>
+                )}
+
+                {quotes
+                  .sort((a, b) => {
+                    // Sort favorites first, then by page number
+                    if (a.isFavorite && !b.isFavorite) return -1;
+                    if (!a.isFavorite && b.isFavorite) return 1;
+                    if (a.page && b.page) return Number(a.page) - Number(b.page);
+                    return 0;
+                  })
+                  .map((quote, index) => (
+                    <QuoteCard
+                      key={index}
+                      quote={{ ...quote, id: index }}
+                      onEdit={handleEditQuote}
+                      onDelete={handleDeleteQuote}
+                      onToggleFavorite={handleToggleQuoteFavorite}
+                    />
+                  ))}
+
                 {quotes.length === 0 && (
-                  <p className="text-sm text-gray-500 text-center py-4">
-                    No quotes added yet. Click "Add Quote" to save meaningful passages from this book.
-                  </p>
+                  <Card className="p-6 border-dashed border-2">
+                    <div className="text-center text-muted-foreground">
+                      <Quote className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm mb-1">No quotes added yet</p>
+                      <p className="text-xs">Capture memorable passages from this book</p>
+                    </div>
+                  </Card>
                 )}
               </div>
             </div>
@@ -993,7 +1190,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               <Label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 📊 Book Statistics & Information
               </Label>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Added Date */}
                 <div className="space-y-2">
