@@ -687,17 +687,17 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               name="index"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Index Content</FormLabel>
+                  <FormLabel>Real Index Content</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Enter book index content" 
+                      placeholder="Enter the actual table of contents and real index content of the book" 
                       className="min-h-[120px]" 
                       {...field} 
                     />
                   </FormControl>
                   <FormMessage />
                   <p className="text-sm text-gray-500 mt-1">
-                    Enter the table of contents or index of the book
+                    Enter the complete table of contents, chapter listings, and real index content from the book
                   </p>
                 </FormItem>
               )}
