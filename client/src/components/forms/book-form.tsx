@@ -3,6 +3,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertBookSchema } from '@shared/schema';
 import { z } from 'zod';
+import { Calendar, Upload, X, Check, ChevronsUpDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -20,8 +29,69 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { queryClient } from '@/lib/queryClient';
 import ImageUpload from '@/components/ui/image-upload';
+import { cn } from '@/lib/utils';
 
 // Extend the schema to add validation messages
+const PREDEFINED_GENRES = [
+  "Doctrine - عقيدة",
+  "Comparative Theology - لاهوت مقارن",
+  "Theology - لاهوت",
+  "Spiritual Theology - لاهوت روحي",
+  "Moral Theology - لاهوت أخلاقي",
+  "Sermons - عظات",
+  "Questions - أسئلة",
+  "Islamic - إسلاميات",
+  "Youth - شبابيات",
+  "Educational - تربوي",
+  "Religious Issues - قضايا دينية",
+  "Spiritual - روحي",
+  "Spiritual Literature - أدب روحي",
+  "Biblical - كتابي",
+  "Biblical Studies - دراسات كتابية",
+  "Biblical Theology - لاهوت كتابي",
+  "Biblical Criticism - نقد كتابي",
+  "Biblical Reflections - تأملات كتابية",
+  "Biblical Articles - مقالات كتابية",
+  "Hermeneutics - علم التفسير",
+  "Patristics - آبائيات",
+  "Patristic Studies - دراسات آبائيّة",
+  "Historical - تاريخي",
+  "Defensives - دفاعيات",
+  "Ritual - طقسي",
+  "Church History - تاريخ كنيسة",
+  "Ecumenical Councils - مجامع مسكونية",
+  "Comparative Religion - مقارنة أديان",
+  "Israelites - إسرائيليات",
+  "Jewish Studies - دراسات يهودية",
+  "Ancient Near Eastern Studies - دراسات الشرق الأدنى القديم",
+  "Anthropology - الأنثروبولوجيا",
+  "Philosophy - فلسفي",
+  "Christian Philosophy - فلسفة مسيحية",
+  "Christian Thought - فكر مسيحي",
+  "Psychiatry - طب نفسي",
+  "Eucharist - إفخارستيا",
+  "Feasts - أعياد",
+  "Liturgy Studies - دراسات ليتورجيا",
+  "Liturgy - ليتورجيا",
+  "Religious Policy - سياسة دينية",
+  "Monastic teachings - تعاليم رهبانية",
+  "Political Satire",
+  "Paleography - مخطوطات قديمة",
+  "Hebrews - عبري",
+  "Christian Biographies - سير قديسين",
+  "Biography - سيرة ذاتية",
+  "Christology - طبيعة المسيح",
+  "Mariology - اللاهوت المريمي",
+  "Iconography - علم دراسة الأيقونة",
+  "Religious Drama - مسرح ديني",
+  "Poetry - شعر",
+  "Novel - روايات",
+  "Literature - أدب",
+  "Sociology of Religion - علم الاجتماع الديني",
+  "Sociology - علم اجتماع",
+  "Christian Psychology - علم النفس المسيحي"
+];
+
 const bookSchema = insertBookSchema.extend({
   name: z.string().min(2, 'Book name must be at least 2 characters'),
   author: z.string().min(2, 'Author name must be at least 2 characters'),
@@ -53,6 +123,13 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!book;
+  const [uploadedImage, setUploadedImage] = useState<string | null>(
+    book?.coverImage || null
+  );
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(
+    book?.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
+  );
+  const [genresOpen, setGenresOpen] = useState(false);
 
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
@@ -89,15 +166,20 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const onSubmit = async (data: BookFormValues) => {
     try {
       setIsSubmitting(true);
+    const formData = {
+      ...data,
+      coverImage: uploadedImage || '/src/assets/book-covers/cover1.svg',
+      genres: selectedGenres.join(', '),
+    };
 
       if (isEditing && book) {
-        await apiRequest('PUT', `/api/books/${book.id}`, data);
+        await apiRequest('PUT', `/api/books/${book.id}`, formData);
         toast({
           title: 'Success',
           description: 'Book updated successfully',
         });
       } else {
-        await apiRequest('POST', '/api/books', data);
+        await apiRequest('POST', '/api/books', formData);
         toast({
           title: 'Success',
           description: 'Book added successfully',
@@ -111,7 +193,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
       queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-      
+
       // Force immediate refetch to ensure UI updates
       queryClient.refetchQueries({ queryKey: ['/api/books'], type: 'active' });
       queryClient.refetchQueries({ queryKey: ['/api/borrowings'], type: 'active' });
@@ -296,6 +378,107 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 )}
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="publisher"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Publisher</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter publisher name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="publishedDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Published Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+                control={form.control}
+                name="genres"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Genres</FormLabel>
+                    <Popover open={genresOpen} onOpenChange={setGenresOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={genresOpen}
+                          className="w-full justify-between mt-1 h-auto min-h-[40px]"
+                        >
+                          <div className="flex flex-wrap gap-1">
+                            {selectedGenres.length === 0 && "Select genres..."}
+                            {selectedGenres.map((genre, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {genre}
+                                <X 
+                                  className="ml-1 h-3 w-3 cursor-pointer" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedGenres(selectedGenres.filter((_, i) => i !== index));
+                                  }}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Search genres..." />
+                          <CommandEmpty>No genre found.</CommandEmpty>
+                          <CommandGroup className="max-h-64 overflow-auto">
+                            {PREDEFINED_GENRES.map((genre) => (
+                              <CommandItem
+                                key={genre}
+                                onSelect={() => {
+                                  if (selectedGenres.includes(genre)) {
+                                    setSelectedGenres(selectedGenres.filter(g => g !== genre));
+                                  } else {
+                                    setSelectedGenres([...selectedGenres, genre]);
+                                  }
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedGenres.includes(genre) ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {genre}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                    <p className="text-sm text-gray-500 mt-1">
+                      Select multiple genres for this book
+                    </p>
+                  </FormItem>
+                )}
+              />
 
             <FormField
               control={form.control}

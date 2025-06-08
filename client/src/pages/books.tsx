@@ -152,6 +152,30 @@ const BooksPage = () => {
       cell: (row: any) => row.publisher,
     },
     {
+      key: 'genres',
+      header: 'Genres',
+      cell: (row: any) => (
+        <div className="max-w-32">
+          {row.genres ? (
+            <div className="flex flex-wrap gap-1">
+              {row.genres.split(',').slice(0, 2).map((genre: string, index: number) => (
+                <Badge key={index} variant="outline" className="text-xs">
+                  {genre.trim()}
+                </Badge>
+              ))}
+              {row.genres.split(',').length > 2 && (
+                <Badge variant="outline" className="text-xs">
+                  +{row.genres.split(',').length - 2}
+                </Badge>
+              )}
+            </div>
+          ) : (
+            <span className="text-gray-400 text-xs">No genres</span>
+          )}
+        </div>
+      ),
+    },
+    {
       key: 'bookCode',
       header: 'Book Code',
       cell: (row: any) => (
@@ -222,9 +246,12 @@ const BooksPage = () => {
   const [selectedAuthor, setSelectedAuthor] = useState('all');
   const [selectedAvailability, setSelectedAvailability] = useState('all');
 
-  // Get unique authors from books
+  // Get unique authors, publishers, and genres from books
   const authors = [...new Set(books?.map(book => book.author) || [])];
   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
+  const genres = [...new Set(books?.flatMap(book => 
+    book.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
+  ) || [])];
 
   const [filterType, setFilterType] = useState('publisher');
   const [filterValue, setFilterValue] = useState('all');
@@ -241,6 +268,7 @@ const BooksPage = () => {
         <SelectContent>
           <SelectItem value="publisher">Publisher</SelectItem>
           <SelectItem value="author">Author</SelectItem>
+          <SelectItem value="genres">Genres</SelectItem>
           <SelectItem value="code">Book Code</SelectItem>
         </SelectContent>
       </Select>
@@ -256,6 +284,9 @@ const BooksPage = () => {
           ))}
           {filterType === 'author' && authors.map(author => (
             <SelectItem key={author} value={author}>{author}</SelectItem>
+          ))}
+          {filterType === 'genres' && genres.map(genre => (
+            <SelectItem key={genre} value={genre}>{genre}</SelectItem>
           ))}
           {filterType === 'code' && books?.map(book => (
             <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
@@ -290,6 +321,9 @@ const BooksPage = () => {
       switch (filterType) {
         case 'author':
           filterMatch = book.author === filterValue;
+          break;
+        case 'genres':
+          filterMatch = book.genres && book.genres.split(',').map((g: string) => g.trim()).includes(filterValue);
           break;
         case 'code':
           filterMatch = book.bookCode === filterValue;
