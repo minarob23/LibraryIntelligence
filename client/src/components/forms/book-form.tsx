@@ -125,8 +125,7 @@ const bookSchema = insertBookSchema.extend({
   author: z.string().min(2, 'Author name must be at least 2 characters'),
   publisher: z.string().min(2, 'Publisher name must be at least 2 characters'),
   bookCode: z.string().min(2, 'Book code must be at least 2 characters'),
-  richContent: z.string().optional(),
-  quotes: z.string().optional(),
+  index: z.string().optional(),
   copies: z.number().min(1, 'Number of copies must be at least 1'),
   description: z.string().optional(),
   coverImage: z.string().min(1, 'Cover image is required'),
@@ -178,8 +177,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       author: '',
       publisher: '',
       bookCode: '',
-      richContent: '',
-      quotes: '',
+      index: '',
       copies: 1,
       description: '',
       coverImage: '',
@@ -214,8 +212,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       genres: selectedGenres.join(', '),
       author: selectedAuthors.join(', '),
       publisher: selectedPublishers.join(', '),
-      richContent: data.richContent || '',
-      quotes: data.quotes || '',
     };
 
       if (isEditing && book) {
@@ -688,44 +684,20 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
 
             <FormField
               control={form.control}
-              name="richContent"
+              name="index"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Rich Content</FormLabel>
+                  <FormLabel>Real Index Content</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Enter rich content about the book - table of contents, key topics, structure, etc." 
-                      className="min-h-[120px] font-mono text-sm" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                  <p className="text-sm text-gray-500 mt-1">
-                    Add structured content like table of contents, key topics, or any detailed information about the book's structure
-                  </p>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="quotes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quote Cards</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Add memorable quotes from the book. Separate each quote with '---' on a new line" 
+                      placeholder="Enter the actual table of contents and real index content of the book" 
                       className="min-h-[120px]" 
                       {...field} 
                     />
                   </FormControl>
                   <FormMessage />
                   <p className="text-sm text-gray-500 mt-1">
-                    Add inspiring or memorable quotes from the book. Use '---' to separate multiple quotes. Example:<br/>
-                    "First quote here" - Page 45<br/>
-                    ---<br/>
-                    "Second quote here" - Chapter 3
+                    Enter the complete table of contents, chapter listings, and real index content from the book
                   </p>
                 </FormItem>
               )}

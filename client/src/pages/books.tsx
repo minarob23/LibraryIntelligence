@@ -29,7 +29,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import DataTable from '@/components/tables/data-table';
 import BookForm from '@/components/forms/book-form';
-import QuotesDisplay from '@/components/ui/quotes-display';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 
 const BooksPage = () => {
@@ -175,22 +174,6 @@ const BooksPage = () => {
         </div>
       ) : (
         <span className="text-gray-500 text-xs">No genres</span>
-      ),
-    },
-    {
-      key: 'richContent',
-      header: 'Content',
-      cell: (row: any) => row.richContent ? (
-        <div className="max-w-xs">
-          <div className="text-xs text-gray-600 dark:text-gray-400 truncate">
-            {row.richContent.substring(0, 50)}...
-          </div>
-          <Badge variant="outline" className="text-xs mt-1 bg-gray-50 text-gray-700">
-            Rich Content
-          </Badge>
-        </div>
-      ) : (
-        <span className="text-gray-500 text-xs">No content</span>
       ),
     },
     {
@@ -413,13 +396,12 @@ const BooksPage = () => {
       </div>
 
       <Tabs defaultValue="all" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
           <TabsTrigger value="borrowed">Borrowed ({borrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="most-borrowed">Most Borrowed ({mostBorrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="popular">Popular ({popularBooks.length})</TabsTrigger>
           <TabsTrigger value="top-rated">Top Rated ({topRatedBooks.length})</TabsTrigger>
-          <TabsTrigger value="quotes">Quote Cards</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -718,45 +700,6 @@ const BooksPage = () => {
                   </Dialog>
                 )}
               />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="quotes" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quote Cards from Books</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {books?.filter(book => book.quotes && book.quotes.trim() !== '').length === 0 ? (
-                  <div className="text-center text-gray-500 dark:text-gray-400 py-12">
-                    <p className="text-lg mb-2">No quotes available yet</p>
-                    <p>Add quotes to books to see inspiring quote cards here!</p>
-                  </div>
-                ) : (
-                  books?.filter(book => book.quotes && book.quotes.trim() !== '').map(book => (
-                    <div key={book.id} className="space-y-3">
-                      <div className="flex items-center gap-3 border-b pb-2">
-                        <img 
-                          className="h-10 w-8 object-cover rounded" 
-                          src={book.coverImage} 
-                          alt={`Cover of ${book.name}`} 
-                        />
-                        <div>
-                          <h4 className="font-semibold text-lg">{book.name}</h4>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">by {book.author}</p>
-                        </div>
-                      </div>
-                      <QuotesDisplay 
-                        quotes={book.quotes} 
-                        bookTitle={book.name}
-                        bookAuthor={book.author}
-                      />
-                    </div>
-                  ))
-                )}
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
