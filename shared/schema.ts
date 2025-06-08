@@ -29,7 +29,42 @@ export const books = pgTable("books", {
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
+// Quotes table
+export const quotes = pgTable("quotes", {
+  id: serial("id").primaryKey(),
+  bookId: integer("book_id").notNull(),
+  content: text("content").notNull(),
+  page: integer("page"),
+  chapter: text("chapter"),
+  author: text("author"),
+  tags: text("tags"),
+  isFavorite: boolean("is_favorite").default(false),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+// Book Index table
+export const bookIndex = pgTable("book_index", {
+  id: serial("id").primaryKey(),
+  bookId: integer("book_id").notNull(),
+  title: text("title").notNull(),
+  page: integer("page"),
+  level: integer("level").default(1), // 1 for main chapters, 2 for subsections, etc.
+  parentId: integer("parent_id"),
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
 export const insertBookSchema = createInsertSchema(books).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertQuoteSchema = createInsertSchema(quotes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertBookIndexSchema = createInsertSchema(bookIndex).omit({
   id: true,
   createdAt: true,
 });
@@ -172,6 +207,12 @@ export type InsertBorrower = z.infer<typeof insertBorrowerSchema>;
 
 export type Borrowing = typeof borrowings.$inferSelect;
 export type InsertBorrowing = z.infer<typeof insertBorrowingSchema>;
+
+export type Quote = typeof quotes.$inferSelect;
+export type InsertQuote = z.infer<typeof insertQuoteSchema>;
+
+export type BookIndex = typeof bookIndex.$inferSelect;
+export type InsertBookIndex = z.infer<typeof insertBookIndexSchema>;
 
 export type LibraryHours = {
   [key: string]: { open: string; close: string };
