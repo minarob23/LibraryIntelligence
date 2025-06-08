@@ -28,4 +28,11 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+  server: {
+    allowedHosts: [
+      '.replit.dev',
+      'localhost',
+      '127.0.0.1'
+    ]
+  },
 });
