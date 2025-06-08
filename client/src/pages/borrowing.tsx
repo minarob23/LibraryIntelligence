@@ -325,9 +325,22 @@ const BorrowingManagement = () => {
         
         return (
           <div className="flex items-center gap-2">
-            <Dialog>
+            <Dialog open={openEditDialog && editingBorrowing?.id === row.id} onOpenChange={(open) => {
+              if (!open) {
+                setOpenEditDialog(false);
+                setEditingBorrowing(null);
+              }
+            }}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-primary-500 hover:text-primary-600">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary-500 hover:text-primary-600"
+                  onClick={() => {
+                    setEditingBorrowing(row);
+                    setOpenEditDialog(true);
+                  }}
+                >
                   <Edit size={16} className="mr-1" /> Edit
                 </Button>
               </DialogTrigger>
@@ -342,6 +355,12 @@ const BorrowingManagement = () => {
                   borrowing={row}
                   onSuccess={() => {
                     queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+                    setOpenEditDialog(false);
+                    setEditingBorrowing(null);
+                  }}
+                  onCancel={() => {
+                    setOpenEditDialog(false);
+                    setEditingBorrowing(null);
                   }}
                 />
               </DialogContent>
