@@ -88,6 +88,38 @@ const PREDEFINED_GENRES = [
   "Christian Psychology - علم النفس المسيحي"
 ];
 
+const PREDEFINED_AUTHORS = [
+  "الراهب سارافيم البرموسي",
+  "الدكتور القس رضا ثابت",
+  "د. عماد موريس إسكندر",
+  "كنيسة مارجرجس سبورتنج",
+  "الأب متى المسكين",
+  "الأنبا غريغورويس",
+  "البابا ألكسندروس",
+  "الراهب أثناسيوس المقاري",
+  "Paul L. Gavrilyuk",
+  "محمد الباز",
+  "الأب لويس برسوم",
+  "كيرلس بهجت",
+  "د. خولة حمدي",
+  "الأنبا موسى",
+  "Kosti Bandali",
+  "ميليتوس أسقف ساردس"
+];
+
+const PREDEFINED_PUBLISHERS = [
+  "مدرسة الإسكندرية",
+  "مركز باناريون للتراث الآبائي",
+  "دار الثقافة",
+  "كنيسة مارجرجس سبورتنج",
+  "مجلة",
+  "الكلية الإكليريكية",
+  "دار مجلة مرقس",
+  "المعهد الإكليريكي القبطي الفرنسيسكاني بالجيزة",
+  "منشورات النور",
+  "بتانة"
+];
+
 const bookSchema = insertBookSchema.extend({
   name: z.string().min(2, 'Book name must be at least 2 characters'),
   author: z.string().min(2, 'Author name must be at least 2 characters'),
@@ -125,7 +157,17 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>(
     book?.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
   );
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>(
+    book?.author ? book.author.split(',').map((a: string) => a.trim()) : []
+  );
+  const [selectedPublishers, setSelectedPublishers] = useState<string[]>(
+    book?.publisher ? book.publisher.split(',').map((p: string) => p.trim()) : []
+  );
   const [genresOpen, setGenresOpen] = useState(false);
+  const [authorsOpen, setAuthorsOpen] = useState(false);
+  const [publishersOpen, setPublishersOpen] = useState(false);
+  const [newAuthor, setNewAuthor] = useState('');
+  const [newPublisher, setNewPublisher] = useState('');
 
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
@@ -166,6 +208,8 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       ...data,
       coverImage: uploadedImage || '/src/assets/book-covers/cover1.svg',
       genres: selectedGenres.join(', '),
+      author: selectedAuthors.join(', '),
+      publisher: selectedPublishers.join(', '),
     };
 
       if (isEditing && book) {
@@ -236,13 +280,90 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               <FormField
                 control={form.control}
                 name="author"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
-                    <FormLabel>Author</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter author name" {...field} />
-                    </FormControl>
+                    <FormLabel>Author(s)</FormLabel>
+                    <Popover open={authorsOpen} onOpenChange={setAuthorsOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={authorsOpen}
+                          className="w-full justify-between mt-1 h-auto min-h-[40px] text-left"
+                        >
+                          <div className="flex flex-wrap gap-1">
+                            {selectedAuthors.length === 0 && "Select authors..."}
+                            {selectedAuthors.map((author, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs bg-blue-100 text-blue-800">
+                                {author}
+                                <X 
+                                  className="ml-1 h-3 w-3 cursor-pointer" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedAuthors(selectedAuthors.filter((_, i) => i !== index));
+                                  }}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput 
+                            placeholder="Search authors..." 
+                            value={newAuthor}
+                            onValueChange={setNewAuthor}
+                          />
+                          <CommandEmpty>
+                            <div className="p-2">
+                              <p className="text-sm text-gray-500 mb-2">No author found.</p>
+                              {newAuthor && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (newAuthor.trim() && !selectedAuthors.includes(newAuthor.trim())) {
+                                      setSelectedAuthors([...selectedAuthors, newAuthor.trim()]);
+                                      setNewAuthor('');
+                                    }
+                                  }}
+                                >
+                                  Add "{newAuthor}"
+                                </Button>
+                              )}
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup className="max-h-64 overflow-auto">
+                            {PREDEFINED_AUTHORS.map((author) => (
+                              <CommandItem
+                                key={author}
+                                onSelect={() => {
+                                  if (selectedAuthors.includes(author)) {
+                                    setSelectedAuthors(selectedAuthors.filter(a => a !== author));
+                                  } else {
+                                    setSelectedAuthors([...selectedAuthors, author]);
+                                  }
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedAuthors.includes(author) ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {author}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
+                    <p className="text-sm text-gray-500 mt-1">
+                      Select multiple authors or add new ones
+                    </p>
                   </FormItem>
                 )}
               />
@@ -250,13 +371,90 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               <FormField
                 control={form.control}
                 name="publisher"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
-                    <FormLabel>Publisher</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter publisher name" {...field} />
-                    </FormControl>
+                    <FormLabel>Publisher(s)</FormLabel>
+                    <Popover open={publishersOpen} onOpenChange={setPublishersOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={publishersOpen}
+                          className="w-full justify-between mt-1 h-auto min-h-[40px] text-left"
+                        >
+                          <div className="flex flex-wrap gap-1">
+                            {selectedPublishers.length === 0 && "Select publishers..."}
+                            {selectedPublishers.map((publisher, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs bg-green-100 text-green-800">
+                                {publisher}
+                                <X 
+                                  className="ml-1 h-3 w-3 cursor-pointer" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedPublishers(selectedPublishers.filter((_, i) => i !== index));
+                                  }}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput 
+                            placeholder="Search publishers..." 
+                            value={newPublisher}
+                            onValueChange={setNewPublisher}
+                          />
+                          <CommandEmpty>
+                            <div className="p-2">
+                              <p className="text-sm text-gray-500 mb-2">No publisher found.</p>
+                              {newPublisher && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (newPublisher.trim() && !selectedPublishers.includes(newPublisher.trim())) {
+                                      setSelectedPublishers([...selectedPublishers, newPublisher.trim()]);
+                                      setNewPublisher('');
+                                    }
+                                  }}
+                                >
+                                  Add "{newPublisher}"
+                                </Button>
+                              )}
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup className="max-h-64 overflow-auto">
+                            {PREDEFINED_PUBLISHERS.map((publisher) => (
+                              <CommandItem
+                                key={publisher}
+                                onSelect={() => {
+                                  if (selectedPublishers.includes(publisher)) {
+                                    setSelectedPublishers(selectedPublishers.filter(p => p !== publisher));
+                                  } else {
+                                    setSelectedPublishers([...selectedPublishers, publisher]);
+                                  }
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedPublishers.includes(publisher) ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {publisher}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
+                    <p className="text-sm text-gray-500 mt-1">
+                      Select multiple publishers or add new ones
+                    </p>
                   </FormItem>
                 )}
               />
@@ -425,12 +623,12 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                           variant="outline"
                           role="combobox"
                           aria-expanded={genresOpen}
-                          className="w-full justify-between mt-1 h-auto min-h-[40px]"
+                          className="w-full justify-between mt-1 h-auto min-h-[40px] text-left"
                         >
                           <div className="flex flex-wrap gap-1">
                             {selectedGenres.length === 0 && "Select genres..."}
                             {selectedGenres.map((genre, index) => (
-                              <Badge key={index} variant="secondary" className="text-xs">
+                              <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-800">
                                 {genre}
                                 <X 
                                   className="ml-1 h-3 w-3 cursor-pointer" 

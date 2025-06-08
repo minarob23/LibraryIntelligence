@@ -4,13 +4,7 @@ import { Edit, Trash2, Plus, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -154,25 +148,16 @@ const BooksPage = () => {
     {
       key: 'genres',
       header: 'Genres',
-      cell: (row: any) => (
-        <div className="max-w-32">
-          {row.genres ? (
-            <div className="flex flex-wrap gap-1">
-              {row.genres.split(',').slice(0, 2).map((genre: string, index: number) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {genre.trim()}
-                </Badge>
-              ))}
-              {row.genres.split(',').length > 2 && (
-                <Badge variant="outline" className="text-xs">
-                  +{row.genres.split(',').length - 2}
-                </Badge>
-              )}
-            </div>
-          ) : (
-            <span className="text-gray-400 text-xs">No genres</span>
-          )}
+      cell: (row: any) => row.genres ? (
+        <div className="flex flex-wrap gap-1">
+          {row.genres.split(',').map((genre: string, index: number) => (
+            <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-800">
+              {genre.trim()}
+            </Badge>
+          ))}
         </div>
+      ) : (
+        <span className="text-gray-500 text-xs">No genres</span>
       ),
     },
     {
