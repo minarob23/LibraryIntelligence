@@ -146,9 +146,7 @@ const BorrowingManagement = () => {
   // Delete borrowing record
   const handleDelete = async (id: number) => {
     try {
-      await apiRequest(`/api/borrowings/${id}`, {
-        method: 'DELETE',
-      });
+      await apiRequest('DELETE', `/api/borrowings/${id}`);
 
       await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
