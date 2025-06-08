@@ -13,7 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import { IndexItem } from '@/components/ui/index-item';
 import QuoteCard from '@/components/ui/quote-card';
 import { 
@@ -147,7 +147,7 @@ const bookSchema = insertBookSchema.extend({
 type BookFormValues = z.infer<typeof bookSchema>;
 
 interface BookFormProps {
-  book?: BookFormValues & { id?: number };
+  book?: BookFormValues & { id?: number, lastBorrowedDate?: string, timesBorrowed?: number, popularityScore?: number, rate?: number };
   index?: number;
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -174,7 +174,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [publishersOpen, setPublishersOpen] = useState(false);
   const [newAuthor, setNewAuthor] = useState('');
   const [newPublisher, setNewPublisher] = useState('');
-  
+
   // Quotes management
   const [quotes, setQuotes] = useState<Array<{
     id?: number;
@@ -258,14 +258,14 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         tags: quoteForm.tags || undefined,
         isFavorite: quoteForm.isFavorite
       };
-      
+
       if (editingQuote) {
         setQuotes(quotes.map(q => q.id === editingQuote.id ? { ...newQuote, id: editingQuote.id } : q));
         setEditingQuote(null);
       } else {
         setQuotes([...quotes, newQuote]);
       }
-      
+
       setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
       setShowQuoteForm(false);
     }
@@ -302,14 +302,14 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         level: indexForm.level,
         order: indexItems.length
       };
-      
+
       if (editingIndex) {
         setIndexItems(indexItems.map(item => item.id === editingIndex.id ? { ...newItem, id: editingIndex.id } : item));
         setEditingIndex(null);
       } else {
         setIndexItems([...indexItems, newItem]);
       }
-      
+
       setIndexForm({ title: '', page: '', level: 1, order: 0 });
       setShowIndexForm(false);
     }
@@ -980,6 +980,89 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 )}
               </div>
             </div>
+
+             {/* Added Date (Read-Only) */}
+             <FormField
+              control={form.control}
+              name="addedDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Added Date</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Added Date" {...field} readOnly />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Last Borrowed Date (Read-Only) */}
+            {book?.lastBorrowedDate && (
+              <FormField
+                control={form.control}
+                name="lastBorrowedDate"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Last Borrowed Date</FormLabel>
+                    <FormControl>
+                      <Input placeholder={book.lastBorrowedDate} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Times Borrowed (Read-Only) */}
+            {book?.timesBorrowed !== undefined && (
+              <FormField
+                control={form.control}
+                name="timesBorrowed"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Times Borrowed</FormLabel>
+                    <FormControl>
+                      <Input placeholder={book.timesBorrowed.toString()} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Popularity Score (Read-Only) */}
+            {book?.popularityScore !== undefined && (
+              <FormField
+                control={form.control}
+                name="popularityScore"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Popularity Score</FormLabel>
+                    <FormControl>
+                      <Input placeholder={book.popularityScore.toString()} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Rate (Read-Only) */}
+            {book?.rate !== undefined && (
+              <FormField
+                control={form.control}
+                name="rate"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Rate</FormLabel>
+                    <FormControl>
+                      <Input placeholder={book.rate.toString()} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <FormField
               control={form.control}
