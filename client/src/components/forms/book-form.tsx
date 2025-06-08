@@ -1199,7 +1199,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md border">
                     <span className="text-sm font-mono">
-                      {book?.addedDate || form.getValues('addedDate') || 'Not set'}
+                      {isEditing 
+                        ? (book?.addedDate ? new Date(book.addedDate).toLocaleDateString() : 'Not set')
+                        : new Date().toLocaleDateString()
+                      }
                     </span>
                   </div>
                 </div>
@@ -1211,7 +1214,12 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md border">
                     <span className="text-sm font-mono">
-                      {book?.publishedDate || form.getValues('publishedDate') || 'Not specified'}
+                      {book?.publishedDate 
+                        ? new Date(book.publishedDate).toLocaleDateString() 
+                        : form.getValues('publishedDate') 
+                          ? new Date(form.getValues('publishedDate')).toLocaleDateString()
+                          : 'Not specified'
+                      }
                     </span>
                   </div>
                 </div>
@@ -1223,7 +1231,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md border border-blue-200 dark:border-blue-800">
                     <span className="text-sm font-mono text-blue-800 dark:text-blue-300">
-                      {book?.lastBorrowedDate ? new Date(book.lastBorrowedDate).toLocaleDateString() : 'Never borrowed'}
+                      {isEditing && book?.lastBorrowedDate 
+                        ? new Date(book.lastBorrowedDate).toLocaleDateString() 
+                        : 'Never borrowed'
+                      }
                     </span>
                   </div>
                 </div>
@@ -1235,10 +1246,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-md border border-green-200 dark:border-green-800">
                     <span className="text-lg font-bold text-green-800 dark:text-green-300">
-                      {book?.timesBorrowed ?? 0}
+                      {isEditing ? (book?.timesBorrowed ?? 0) : 0}
                     </span>
                     <span className="text-xs text-green-600 dark:text-green-400 ml-2">
-                      {(book?.timesBorrowed ?? 0) === 1 ? 'time' : 'times'}
+                      {((isEditing ? (book?.timesBorrowed ?? 0) : 0) === 1) ? 'time' : 'times'}
                     </span>
                   </div>
                 </div>
@@ -1250,7 +1261,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-md border border-purple-200 dark:border-purple-800">
                     <span className="text-lg font-bold text-purple-800 dark:text-purple-300">
-                      {book?.popularityScore ?? 0}
+                      {isEditing ? (book?.popularityScore ?? 0) : 0}
                     </span>
                     <span className="text-xs text-purple-600 dark:text-purple-400 ml-2">
                       / 100
@@ -1265,9 +1276,9 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800">
                     <span className="text-lg font-bold text-yellow-800 dark:text-yellow-300">
-                      {book?.rate ? `${book.rate}/10` : 'No ratings'}
+                      {isEditing && book?.rate ? `${book.rate}/10` : 'No ratings'}
                     </span>
-                    {book?.rate && (
+                    {isEditing && book?.rate && (
                       <div className="flex items-center mt-1">
                         {[...Array(5)].map((_, i) => (
                           <Star 
@@ -1286,14 +1297,14 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               </div>
 
               {/* Additional Info */}
-              {isEditing && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm text-blue-800 dark:text-blue-300">
-                    <strong>ℹ️ Note:</strong> These statistics are automatically calculated based on borrowing history and user ratings. 
-                    They update in real-time as the book is borrowed and returned.
-                  </p>
-                </div>
-              )}
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <strong>ℹ️ Note:</strong> {isEditing 
+                    ? 'These statistics are automatically calculated based on borrowing history and user ratings. They update in real-time as the book is borrowed and returned.'
+                    : 'Statistics will be calculated automatically once the book is added and starts being borrowed by members.'
+                  }
+                </p>
+              </div>
             </div>
 
             <FormField
