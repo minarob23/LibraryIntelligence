@@ -184,8 +184,13 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       return { success: true, data: null };
   }
   } catch (error) {
-    console.error('API Request Error:', error);
-    throw error;
+    console.error('Mock API error for endpoint:', endpoint, error);
+    // Return a default error response instead of throwing
+    return { 
+      error: true, 
+      message: error instanceof Error ? error.message : 'Unknown error occurred',
+      endpoint 
+    };
   }
 };
 
