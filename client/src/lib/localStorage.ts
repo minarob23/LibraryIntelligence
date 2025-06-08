@@ -873,6 +873,60 @@ class LocalStorage {
       console.error('Error during corruption cleanup:', error);
     }
   }
+
+  createBorrowing(borrowingData: any): any {
+    const data = this.getData();
+
+    // Parse the data if it's a string
+    let parsedData = borrowingData;
+    if (typeof borrowingData === 'string') {
+      try {
+        parsedData = JSON.parse(borrowingData);
+      } catch (error) {
+        console.error('Failed to parse borrowing data:', error);
+        throw new Error('Invalid borrowing data format');
+      }
+    }
+
+    // Validate the parsed data
+    if (!parsedData || typeof parsedData !== 'object' || Array.isArray(parsedData)) {
+      throw new Error('Invalid borrowing data structure');
+    }
+
+    // Ensure required fields are present and valid
+    if (!parsedData.borrowerId) {
+      throw new Error('Missing borrowerId');
+    }
+
+    if (!parsedData.librarianId) {
+      console.error('Missing librarianId for borrowing:', parsedData);
+      throw new Error('Missing librarianId');
+    }
+
+    // Validate that the librarian exists
+    const librarianExists = data.librarians.some(lib => lib.id === parsedData.librarianId);
+    if (!librarianExists) {
+      console.error('Invalid librarianId:', parsedData.librarianId);
+      throw new Error(`Librarian with ID ${parsedData.librarianId} does not exist`);
+    }
+
+    // For book-only borrowing, only bookId is required
+    if (!parsedData.bookId && !parsedData.researchId) {
+      throw new Error('Must specify either bookId or researchId');
+    }
+
+    const newBorrowing = {
+      ...parsedData,
+      id: this.generateId(),
+      createdAt: new Date().toISOString(),
+    };
+
+    data.borrowings = data.borrowings || [];
+    data.borrowings.push(newBorrowing);
+    this.saveData(data);
+
+    return newBorrowing;
+  }
 }
 
 export const localStorage_storage = new LocalStorage();
