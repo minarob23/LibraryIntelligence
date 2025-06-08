@@ -255,51 +255,7 @@ class LocalStorage {
     return data.borrowings.filter(borrowing => borrowing.borrowerId === borrowerId);
   }
 
-  createBorrowing(borrowingData: any): any {
-    const data = this.getData();
-
-    // Parse the data if it's a string
-    let parsedData = borrowingData;
-    if (typeof borrowingData === 'string') {
-      try {
-        parsedData = JSON.parse(borrowingData);
-      } catch (error) {
-        console.error('Failed to parse borrowing data:', error);
-        throw new Error('Invalid borrowing data format');
-      }
-    }
-
-    // Validate the parsed data
-    if (!parsedData || typeof parsedData !== 'object' || Array.isArray(parsedData)) {
-      throw new Error('Invalid borrowing data structure');
-    }
-
-    // Ensure required fields are present and valid
-    if (!parsedData.borrowerId) {
-      throw new Error('Missing borrowerId');
-    }
-
-    if (!parsedData.librarianId) {
-      throw new Error('Missing librarianId');
-    }
-
-    // For book-only borrowing, only bookId is required
-    if (!parsedData.bookId && !parsedData.researchId) {
-      throw new Error('Must specify either bookId or researchId');
-    }
-
-    const newBorrowing = {
-      ...parsedData,
-      id: this.generateId(),
-      createdAt: new Date().toISOString(),
-    };
-
-    data.borrowings = data.borrowings || [];
-    data.borrowings.push(newBorrowing);
-    this.saveData(data);
-
-    return newBorrowing;
-  }
+  
 
   updateBorrowing(id: number, borrowingUpdate: any) {
     const data = this.getData();
