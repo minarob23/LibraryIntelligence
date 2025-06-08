@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { IndexItem } from '@/components/ui/index-item';
-import { QuoteCard } from '@/components/ui/quote-card';
+import QuoteCard from '@/components/ui/quote-card';
 import { 
   Form, 
   FormControl, 
