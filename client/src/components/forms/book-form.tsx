@@ -26,7 +26,6 @@ import {
 } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { queryClient } from '@/lib/queryClient';
 import ImageUpload from '@/components/ui/image-upload';
 
 import IndexItemCard from '@/components/ui/index-item';
