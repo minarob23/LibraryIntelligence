@@ -45,7 +45,23 @@ app.use((req, res, next) => {
 
   // ALWAYS serve the app on port 5000
   const port = 5000;
-  app.listen(port, "0.0.0.0", () => {
+  const server = app.listen(port, "0.0.0.0", () => {
     log(`serving on port ${port}`);
+  });
+
+  // Handle WebSocket upgrade requests
+  server.on('upgrade', (request, socket, head) => {
+    // Allow WebSocket upgrades for Vite HMR
+    if (request.url?.startsWith('/__vite_hmr')) {
+      // Let Vite handle HMR WebSocket connections
+      return;
+    }
+    
+    // Handle other upgrade requests or close invalid ones
+    socket.write('HTTP/1.1 426 Upgrade Required\r\n' +
+                'Upgrade: websocket\r\n' +
+                'Connection: Upgrade\r\n' +
+                '\r\n');
+    socket.end();
   });
 })();
