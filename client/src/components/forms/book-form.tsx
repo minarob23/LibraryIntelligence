@@ -146,7 +146,15 @@ const bookSchema = insertBookSchema.extend({
 type BookFormValues = z.infer<typeof bookSchema>;
 
 interface BookFormProps {
-  book?: BookFormValues & { id?: number, lastBorrowedDate?: string, timesBorrowed?: number, popularityScore?: number, rate?: number };
+  book?: BookFormValues & { 
+    id?: number; 
+    lastBorrowedDate?: string; 
+    timesBorrowed?: number; 
+    popularityScore?: number; 
+    rate?: number;
+    addedDate?: string;
+    publishedDate?: string;
+  };
   index?: number;
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -980,88 +988,116 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               </div>
             </div>
 
-             {/* Added Date (Read-Only) */}
-             <FormField
-              control={form.control}
-              name="addedDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Added Date</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Added Date" {...field} readOnly />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+             {/* Book Statistics Section - Read Only */}
+            <div className="space-y-4 pt-6 border-t">
+              <Label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                📊 Book Statistics & Information
+              </Label>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Added Date */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    📅 Added Date
+                  </Label>
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md border">
+                    <span className="text-sm font-mono">
+                      {book?.addedDate || form.getValues('addedDate') || 'Not set'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Published Date */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    📖 Published Date
+                  </Label>
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md border">
+                    <span className="text-sm font-mono">
+                      {book?.publishedDate || form.getValues('publishedDate') || 'Not specified'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Last Borrowed Date */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    🕒 Last Borrowed Date
+                  </Label>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md border border-blue-200 dark:border-blue-800">
+                    <span className="text-sm font-mono text-blue-800 dark:text-blue-300">
+                      {book?.lastBorrowedDate ? new Date(book.lastBorrowedDate).toLocaleDateString() : 'Never borrowed'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Times Borrowed */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    🔄 Times Borrowed
+                  </Label>
+                  <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-md border border-green-200 dark:border-green-800">
+                    <span className="text-lg font-bold text-green-800 dark:text-green-300">
+                      {book?.timesBorrowed ?? 0}
+                    </span>
+                    <span className="text-xs text-green-600 dark:text-green-400 ml-2">
+                      {(book?.timesBorrowed ?? 0) === 1 ? 'time' : 'times'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Popularity Score */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    🌟 Popularity Score
+                  </Label>
+                  <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-md border border-purple-200 dark:border-purple-800">
+                    <span className="text-lg font-bold text-purple-800 dark:text-purple-300">
+                      {book?.popularityScore ?? 0}
+                    </span>
+                    <span className="text-xs text-purple-600 dark:text-purple-400 ml-2">
+                      / 100
+                    </span>
+                  </div>
+                </div>
+
+                {/* Rate */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    ⭐ Average Rating
+                  </Label>
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800">
+                    <span className="text-lg font-bold text-yellow-800 dark:text-yellow-300">
+                      {book?.rate ? `${book.rate}/10` : 'No ratings'}
+                    </span>
+                    {book?.rate && (
+                      <div className="flex items-center mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className={`h-3 w-3 ${
+                              i < Math.floor((book.rate || 0) / 2) 
+                                ? 'text-yellow-500 fill-current' 
+                                : 'text-gray-300'
+                            }`} 
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Info */}
+              {isEditing && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="text-sm text-blue-800 dark:text-blue-300">
+                    <strong>ℹ️ Note:</strong> These statistics are automatically calculated based on borrowing history and user ratings. 
+                    They update in real-time as the book is borrowed and returned.
+                  </p>
+                </div>
               )}
-            />
-
-            {/* Last Borrowed Date (Read-Only) */}
-            {book?.lastBorrowedDate && (
-              <FormField
-                control={form.control}
-                name="lastBorrowedDate"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Last Borrowed Date</FormLabel>
-                    <FormControl>
-                      <Input placeholder={book.lastBorrowedDate} readOnly />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {/* Times Borrowed (Read-Only) */}
-            {book?.timesBorrowed !== undefined && (
-              <FormField
-                control={form.control}
-                name="timesBorrowed"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Times Borrowed</FormLabel>
-                    <FormControl>
-                      <Input placeholder={book.timesBorrowed.toString()} readOnly />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {/* Popularity Score (Read-Only) */}
-            {book?.popularityScore !== undefined && (
-              <FormField
-                control={form.control}
-                name="popularityScore"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Popularity Score</FormLabel>
-                    <FormControl>
-                      <Input placeholder={book.popularityScore.toString()} readOnly />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {/* Rate (Read-Only) */}
-            {book?.rate !== undefined && (
-              <FormField
-                control={form.control}
-                name="rate"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Rate</FormLabel>
-                    <FormControl>
-                      <Input placeholder={book.rate.toString()} readOnly />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            </div>
 
             <FormField
               control={form.control}
