@@ -138,12 +138,28 @@ const BooksPage = () => {
     {
       key: 'author',
       header: 'Author',
-      cell: (row: any) => row.author,
+      cell: (row: any) => (
+        <div className="flex flex-wrap gap-1">
+          {row.author.split(',').map((author: string, index: number) => (
+            <Badge key={index} variant="secondary" className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+              {author.trim()}
+            </Badge>
+          ))}
+        </div>
+      ),
     },
     {
       key: 'publisher',
       header: 'Publisher',
-      cell: (row: any) => row.publisher,
+      cell: (row: any) => (
+        <div className="flex flex-wrap gap-1">
+          {row.publisher.split(',').map((publisher: string, index: number) => (
+            <Badge key={index} variant="secondary" className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+              {publisher.trim()}
+            </Badge>
+          ))}
+        </div>
+      ),
     },
     {
       key: 'genres',

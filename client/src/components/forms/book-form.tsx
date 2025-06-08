@@ -125,6 +125,7 @@ const bookSchema = insertBookSchema.extend({
   author: z.string().min(2, 'Author name must be at least 2 characters'),
   publisher: z.string().min(2, 'Publisher name must be at least 2 characters'),
   bookCode: z.string().min(2, 'Book code must be at least 2 characters'),
+  index: z.string().optional(),
   copies: z.number().min(1, 'Number of copies must be at least 1'),
   description: z.string().optional(),
   coverImage: z.string().min(1, 'Cover image is required'),
@@ -176,6 +177,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       author: '',
       publisher: '',
       bookCode: '',
+      index: '',
       copies: 1,
       description: '',
       coverImage: '',
@@ -679,6 +681,27 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
+
+            <FormField
+              control={form.control}
+              name="index"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Index Content</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Enter book index content" 
+                      className="min-h-[120px]" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="text-sm text-gray-500 mt-1">
+                    Enter the table of contents or index of the book
+                  </p>
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

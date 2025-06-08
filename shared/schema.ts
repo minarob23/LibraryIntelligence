@@ -15,6 +15,7 @@ export const books = pgTable("books", {
   author: text("author").notNull(),
   publisher: text("publisher").notNull(),
   bookCode: text("book_code").notNull().unique(),
+  index: text("index"),
   copies: integer("copies").notNull().default(1),
   description: text("description"),
   totalPages: integer("total_pages"),
