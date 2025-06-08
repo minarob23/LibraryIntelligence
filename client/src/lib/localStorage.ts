@@ -215,31 +215,49 @@ class LocalStorage {
     const data = this.getData();
     let borrowings = data.borrowings || [];
 
-    // Filter out corrupted entries immediately
+    // Filter out completely corrupted entries and default librarian references
+    const originalLength = borrowings.length;
     borrowings = borrowings.filter(borrowing => {
-      // Check if borrowing is corrupted (has numeric keys)
       if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
         return false;
       }
 
+      // Check for numeric keys that indicate corruption
       const keys = Object.keys(borrowing);
       const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
-
       if (hasNumericKeys) {
-        console.log('Found corrupted borrowing entry, removing:', borrowing);
         return false;
       }
 
-      // Ensure essential fields exist
-      return typeof borrowing.id === 'number' &&
-             typeof borrowing.borrowerId === 'number' &&
-             typeof borrowing.bookId === 'number';
+      // Check if it has the expected structure of a borrowing object
+      const hasValidStructure = 
+        borrowing.hasOwnProperty('id') &&
+        borrowing.hasOwnProperty('borrowerId') &&
+        borrowing.hasOwnProperty('bookId') &&
+        typeof borrowing.id === 'number' &&
+        typeof borrowing.borrowerId === 'number' &&
+        typeof borrowing.bookId === 'number';
+
+      if (!hasValidStructure) {
+        return false;
+      }
+
+      // Remove borrowings with invalid references (borrower or book doesn't exist)
+      const borrowerExists = data.borrowers.some(b => b && b.id === borrowing.borrowerId);
+      const bookExists = data.books.some(b => b && b.id === borrowing.bookId);
+
+      if (!borrowerExists || !bookExists) {
+        console.log(`Removing borrowing record with invalid references: borrowerId=${borrowing.borrowerId}, bookId=${borrowing.bookId}`);
+        return false;
+      }
+
+      return true;
     });
 
-    // If we filtered out corrupted data, save the clean data immediately
-    if (borrowings.length !== (data.borrowings || []).length) {
-      console.log('Saving cleaned borrowings data...');
-      this.saveData({ ...data, borrowings });
+    if (data.borrowings.length !== originalLength) {
+      console.log(`Cleaned ${originalLength - borrowings.length} corrupted/invalid borrowing entries`);
+      data.borrowings = borrowings;
+      this.saveData(data);
     }
 
     return borrowings;
@@ -255,7 +273,7 @@ class LocalStorage {
     return data.borrowings.filter(borrowing => borrowing.borrowerId === borrowerId);
   }
 
-  
+
 
   updateBorrowing(id: number, borrowingUpdate: any) {
     const data = this.getData();
@@ -830,6 +848,48 @@ class LocalStorage {
     }
   }
 
+   private cleanupInvalidBorrowings(): void {
+    const data = this.getData();
+    const originalLength = data.borrowings.length;
+    data.borrowings = data.borrowings.filter(borrowing => {
+        if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
+            return false;
+        }
+
+        const keys = Object.keys(borrowing);
+        const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
+        if (hasNumericKeys) {
+            return false;
+        }
+
+        const hasValidStructure =
+            borrowing.hasOwnProperty('id') &&
+            borrowing.hasOwnProperty('borrowerId') &&
+            borrowing.hasOwnProperty('bookId') &&
+            typeof borrowing.id === 'number' &&
+            typeof borrowing.borrowerId === 'number' &&
+            typeof borrowing.bookId === 'number';
+
+        if (!hasValidStructure) {
+            return false;
+        }
+
+        const borrowerExists = data.borrowers.some(b => b && b.id === borrowing.borrowerId);
+        const bookExists = data.books.some(b => b && b.id === borrowing.bookId);
+
+        if (!borrowerExists || !bookExists) {
+            console.log(`Removing borrowing record with invalid references: borrowerId=${borrowing.borrowerId}, bookId=${borrowing.bookId}`);
+            return false;
+        }
+
+        return true;
+    });
+
+    if (data.borrowings.length !== originalLength) {
+        console.log(`Cleaned ${originalLength - data.borrowings.length} corrupted/invalid borrowing entries`);
+        this.saveData(data);
+    }
+}
   createBorrowing(borrowingData: any): any {
     const data = this.getData();
 
