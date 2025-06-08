@@ -44,6 +44,7 @@ const borrowingSchema = insertBorrowingSchema.extend({
 
 // We need to add a custom schema validator to ensure either bookId or researchId is provided
 const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
+  // For book-only borrowing, we just need bookId
   if (!data.bookId && !data.researchId) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -119,25 +120,32 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const onSubmit = async (values: BorrowFormValues) => {
     setIsSubmitting(true);
     try {
-      // Clean and prepare the data
-      const submitData = {
+      // Clean and prepare the data for book-only borrowing
+      const submitData: any = {
         borrowerId: values.borrowerId,
         librarianId: values.librarianId,
-        bookId: values.bookId || null,
-        researchId: values.researchId || null,
         borrowDate: values.borrowDate,
         dueDate: values.dueDate,
         status: values.status,
-        rating: values.rating || null,
-        review: values.review || null,
       };
 
-      // Remove undefined values
-      Object.keys(submitData).forEach(key => {
-        if (submitData[key] === undefined) {
-          delete submitData[key];
-        }
-      });
+      // Only include bookId if it has a value (for book-only borrowing)
+      if (values.bookId) {
+        submitData.bookId = values.bookId;
+      }
+
+      // Only include researchId if it has a value (not needed for book-only)
+      if (values.researchId) {
+        submitData.researchId = values.researchId;
+      }
+
+      // Optional fields
+      if (values.rating) {
+        submitData.rating = values.rating;
+      }
+      if (values.review) {
+        submitData.review = values.review;
+      }
 
       console.log('Submitting borrowing data:', submitData);
 
@@ -183,7 +191,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{isEditing ? 'Edit Borrowing Record' : 'New Borrowing Record'}</CardTitle>
+        <CardTitle>{isEditing ? 'Edit Book Borrowing Record' : 'New Book Borrowing Record'}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -279,39 +287,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="researchId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Research Paper</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        if (value) {
-                          field.onChange(parseInt(value));
-                          // Clear book when research paper is selected
-                          form.setValue('bookId', undefined);
-                        }
-                      }}
-                      defaultValue={field.value?.toString()}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select research paper (optional)" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {researchPapers?.map((paper: any) => (
-                          <SelectItem key={paper.id} value={paper.id.toString()}>
-                            {paper.name} by {paper.author}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Research Paper field hidden for book-only borrowing */}
 
               <FormField
                 control={form.control}
