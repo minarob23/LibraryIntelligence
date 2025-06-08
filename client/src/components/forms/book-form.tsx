@@ -21,9 +21,6 @@ import {
   FormLabel, 
   FormMessage 
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { queryClient } from '@/lib/queryClient';
@@ -380,20 +377,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="publisher"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Publisher</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter publisher name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="publishedDate"
                 render={({ field }) => (
                   <FormItem>
@@ -402,6 +385,26 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       <Input
                         type="date"
                         {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="totalPages"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Pages</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min="1" 
+                        placeholder="Enter total pages"
+                        {...field} 
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
                       />
                     </FormControl>
                     <FormMessage />
