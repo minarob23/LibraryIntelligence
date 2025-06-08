@@ -38,7 +38,7 @@ const MembershipPage = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>Access to thousands of books</span>
+                  <span>Access to thousands of books and research papers</span>
                 </li>
                 <li className="flex items-start">
                   <svg

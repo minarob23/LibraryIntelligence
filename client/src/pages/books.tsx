@@ -241,7 +241,6 @@ const BooksPage = () => {
         <SelectContent>
           <SelectItem value="publisher">Publisher</SelectItem>
           <SelectItem value="author">Author</SelectItem>
-          <SelectItem value="genres">Genres</SelectItem>
           <SelectItem value="code">Book Code</SelectItem>
         </SelectContent>
       </Select>
@@ -257,9 +256,6 @@ const BooksPage = () => {
           ))}
           {filterType === 'author' && authors.map(author => (
             <SelectItem key={author} value={author}>{author}</SelectItem>
-          ))}
-          {filterType === 'genres' && genres.map(genre => (
-            <SelectItem key={genre} value={genre}>{genre}</SelectItem>
           ))}
           {filterType === 'code' && books?.map(book => (
             <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
@@ -294,9 +290,6 @@ const BooksPage = () => {
       switch (filterType) {
         case 'author':
           filterMatch = book.author === filterValue;
-          break;
-        case 'genres':
-          filterMatch = book.genres?.split(',').map(g => g.trim()).includes(filterValue);
           break;
         case 'code':
           filterMatch = book.bookCode === filterValue;
