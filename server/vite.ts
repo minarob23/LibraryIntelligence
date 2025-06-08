@@ -25,11 +25,14 @@ export async function setupVite(app: Express, server: Server) {
     hmr: { 
       server,
       host: '0.0.0.0',
-      port: 5000
+      port: 5000,
+      clientPort: 5000
     },
     allowedHosts: true,
     host: '0.0.0.0',
     port: 5000,
+    cors: true,
+    origin: 'http://0.0.0.0:5000'
   };
 
   const vite = await createViteServer({
