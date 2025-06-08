@@ -150,21 +150,13 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
       console.log('Submitting borrowing data:', submitData);
 
       if (isEditing) {
-        await apiRequest(`/api/borrowings/${borrowing.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(submitData),
-        });
+        await apiRequest('PUT', `/api/borrowings/${borrowing.id}`, JSON.stringify(submitData));
         toast({
           title: 'Success',
           description: 'Borrowing record updated successfully',
         });
       } else {
-        await apiRequest('/api/borrowings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(submitData),
-        });
+        await apiRequest('POST', '/api/borrowings', JSON.stringify(submitData));
         toast({
           title: 'Success',
           description: 'Borrowing record created successfully',
@@ -271,7 +263,7 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select book (optional)" />
+                          <SelectValue placeholder="Select book" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
