@@ -338,42 +338,19 @@ export const initializeSampleData = () => {
       }
     });
 
-    // Get actual IDs from created data
-    const currentData = localStorage_storage.getData();
-    const availableBorrowers = currentData.borrowers.slice(0, 2);
-    const availableBooks = currentData.books.slice(0, 2);
-    const availableLibrarians = currentData.librarians;
-
-    if (availableBorrowers.length >= 2 && availableBooks.length >= 2 && availableLibrarians.length > 0) {
-      const sampleBorrowingsData = [
-        {
-          borrowerId: availableBorrowers[0].id,
-          librarianId: availableLibrarians[0].id,
-          bookId: availableBooks[0].id,
-          borrowDate: '2024-01-20',
-          dueDate: '2024-02-03',
-          status: 'borrowed' as const,
-        },
-        {
-          borrowerId: availableBorrowers[1].id,
-          librarianId: availableLibrarians[0].id,
-          bookId: availableBooks[1].id,
-          borrowDate: '2024-02-15',
-          dueDate: '2024-03-01',
-          status: 'borrowed' as const,
-        },
-      ];
-
-      sampleBorrowingsData.forEach(borrowingData => {
-        try {
-          localStorage_storage.createBorrowing(borrowingData);
-        } catch (error) {
-          console.log('Borrowing already exists or error creating:', error);
-        }
-      });
-    } else {
-      console.log('Not enough data to create sample borrowings');
-    }
+    // Create borrowings with proper librarianId
+    sampleBorrowings.forEach(borrowing => {
+      try {
+        const borrowingWithLibrarian = {
+          ...borrowing,
+          librarianId: defaultLibrarianId
+        };
+        console.log('Creating borrowing with librarianId:', defaultLibrarianId);
+        localStorage_storage.createBorrowing(borrowingWithLibrarian);
+      } catch (error) {
+        console.log('Borrowing already exists or error creating:', error);
+      }
+    });
 
     console.log('Sample data initialized successfully');
   } catch (error) {
