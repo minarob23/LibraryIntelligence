@@ -28,8 +28,6 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = express();
-
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -40,7 +38,7 @@ app.use((req, res, next) => {
 
   // Setup vite in development
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite(app, app);
   } else {
     serveStatic(app);
   }
