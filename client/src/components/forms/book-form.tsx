@@ -28,7 +28,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { queryClient } from '@/lib/queryClient';
 import ImageUpload from '@/components/ui/image-upload';
-import QuoteCard from '@/components/ui/quote-card';
+
 import IndexItemCard from '@/components/ui/index-item';
 import { cn } from '@/lib/utils';
 
