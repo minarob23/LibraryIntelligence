@@ -14,6 +14,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { IndexItem } from '@/components/ui/index-item';
+import { QuoteCard } from '@/components/ui/quote-card';
 import { 
   Form, 
   FormControl, 
