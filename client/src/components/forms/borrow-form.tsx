@@ -120,27 +120,24 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
     setIsSubmitting(true);
     try {
       // Clean and prepare the data
-      const submitData: any = {
+      const submitData = {
         borrowerId: values.borrowerId,
         librarianId: values.librarianId,
+        bookId: values.bookId || null,
+        researchId: values.researchId || null,
         borrowDate: values.borrowDate,
         dueDate: values.dueDate,
         status: values.status,
+        rating: values.rating || null,
+        review: values.review || null,
       };
 
-      // Only include bookId or researchId if they have values
-      if (values.bookId) {
-        submitData.bookId = values.bookId;
-      }
-      if (values.researchId) {
-        submitData.researchId = values.researchId;
-      }
-      if (values.rating) {
-        submitData.rating = values.rating;
-      }
-      if (values.review) {
-        submitData.review = values.review;
-      }
+      // Remove undefined values
+      Object.keys(submitData).forEach(key => {
+        if (submitData[key] === undefined) {
+          delete submitData[key];
+        }
+      });
 
       console.log('Submitting borrowing data:', submitData);
 
