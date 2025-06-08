@@ -92,10 +92,12 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/borrowings':
       const borrowerIdParam = params.get('borrowerId');
       if (options?.method === 'POST') {
-        return localStorage_storage.createBorrowing(options.body);
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.createBorrowing(data);
       } else if (options?.method === 'PUT') {
         const id = parseInt(path.split('/').pop() || '0');
-        return localStorage_storage.updateBorrowing(id, options.body);
+        const data = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
+        return localStorage_storage.updateBorrowing(id, data);
       } else if (options?.method === 'DELETE') {
         const id = parseInt(path.split('/').pop() || '0');
         return localStorage_storage.deleteBorrowing(id);

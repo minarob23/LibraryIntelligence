@@ -275,8 +275,17 @@ class LocalStorage {
     }
 
     // Ensure required fields are present and valid
-    if (!parsedData.borrowerId || !parsedData.bookId) {
-      throw new Error('Missing required borrowing fields');
+    if (!parsedData.borrowerId) {
+      throw new Error('Missing borrowerId');
+    }
+
+    if (!parsedData.librarianId) {
+      throw new Error('Missing librarianId');
+    }
+
+    // Must have either bookId or researchId
+    if (!parsedData.bookId && !parsedData.researchId) {
+      throw new Error('Must specify either bookId or researchId');
     }
 
     const newBorrowing = {
