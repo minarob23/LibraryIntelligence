@@ -1,0 +1,82 @@
+[vite] connecting...
+DOMException {}
+
+Running immediate corruption cleanup...
+Valid data already exists, skipping initialization
+Borrower cell - row data: 
+Object {borrowerId: 1749332446046, bookId: 1749332447003, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749332446046
+Book cell - row data: 
+Object {borrowerId: 1749332446046, bookId: 1749332447003, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749332447003
+Borrower cell - row data: 
+Object {borrowerId: 1749332446932, bookId: 1749332446071, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749332446932
+Book cell - row data: 
+Object {borrowerId: 1749332446932, bookId: 1749332446071, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749332446071
+Borrowings raw data: 
+(2) [{…}, {…}]
+Borrowers raw data: 
+(2) [{…}, {…}]
+Books raw data: 
+(3) [{…}, {…}, {…}]
+Borrower cell - row data: 
+Object {borrowerId: 1749332446046, bookId: 1749332447003, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+bookId: 1749332447003
+borrowDate: "2025-06-07"
+borrowerId: 1749332446046
+createdAt: "2025-06-07T21:40:46.032Z"
+dueDate: "2025-06-21"
+id: 1749332446258
+status: "borrowed"
+[[Prototype]]: Object
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749332446046
+Book cell - row data: 
+Object {borrowerId: 1749332446046, bookId: 1749332447003, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "borrowed", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749332447003
+Borrower cell - row data: 
+Object {borrowerId: 1749332446932, bookId: 1749332446071, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749332446932
+Book cell - row data: 
+Object {borrowerId: 1749332446932, bookId: 1749332446071, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749332446071
+Submitting borrowing data: 
+Object {borrowerId: 1749332446046, librarianId: 1749332446718, borrowDate: "2025-06-08", dueDate: "2025-06-22", status: "borrowed", …}
+API Request Error: 
+TypeError {}
+
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+API Request Error: 
+TypeError {}
+
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Error submitting form: 
+TypeError {}
+
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://0b400ffb-9f14-42a9-b9d4-9f9bfbce0116-00-ity8piktwcdh.kirk.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
