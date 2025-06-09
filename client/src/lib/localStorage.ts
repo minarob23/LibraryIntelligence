@@ -351,7 +351,7 @@ class LocalStorage {
   }
 
   // Dashboard analytics with corruption prevention
-  getMostBorrowedBooks: (limit: number = 5) => {
+  getMostBorrowedBooksAnalytics(limit: number = 5) {
     try {
       const borrowings = this.getBorrowings();
       const books = this.getBooks();
@@ -383,12 +383,12 @@ class LocalStorage {
 
       return mostBorrowed;
     } catch (error) {
-      console.error('Error in getMostBorrowedBooks:', error);
+      console.error('Error in getMostBorrowedBooksAnalytics:', error);
       return [];
     }
-  },
+  }
 
-  getPopularBooks: (limit: number = 4) => {
+  getPopularBooksAnalytics(limit: number = 4) {
     try {
       const books = this.getBooks();
       const borrowings = this.getBorrowings();
@@ -413,12 +413,12 @@ class LocalStorage {
         };
       });
     } catch (error) {
-      console.error('Error in getPopularBooks:', error);
+      console.error('Error in getPopularBooksAnalytics:', error);
       return [];
     }
-  },
+  }
 
-  getTopBorrowers: (limit: number = 5) => {
+  getTopBorrowersAnalytics(limit: number = 5) {
     try {
       const borrowers = this.getBorrowers();
       const borrowings = this.getBorrowings();
@@ -453,12 +453,12 @@ class LocalStorage {
 
       return topBorrowers;
     } catch (error) {
-      console.error('Error in getTopBorrowers:', error);
+      console.error('Error in getTopBorrowersAnalytics:', error);
       return [];
     }
-  },
+  }
 
-  getBorrowerDistribution: () => {
+  getBorrowerDistributionAnalytics() {
     try {
       const borrowers = this.getBorrowers();
 
@@ -484,10 +484,10 @@ class LocalStorage {
         count
       }));
     } catch (error) {
-      console.error('Error in getBorrowerDistribution:', error);
+      console.error('Error in getBorrowerDistributionAnalytics:', error);
       return [];
     }
-  },
+  }
 
   getMostBorrowedBooks(limit: number = 5) {
     const data = this.getData();
@@ -966,8 +966,8 @@ class LocalStorage {
       }
     } catch (error) {
       console.error('Error during corruption cleanup:', error);
-    }```text
     }
+  }
   }
 
   createBorrowing(borrowingData: any): any {
