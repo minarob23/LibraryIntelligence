@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Users, Repeat, Plus } from 'lucide-react';
+import { Users, Repeat, Plus, RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -150,6 +150,15 @@ const Dashboard = () => {
             <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
           </div>
           <div className="flex gap-3">
+            <Button 
+              onClick={refreshData}
+              variant="outline"
+              className="shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Refresh
+            </Button>
+            
             <Dialog open={openBorrowDialog} onOpenChange={setOpenBorrowDialog}>
               <DialogTrigger asChild>
                 <Button 
