@@ -31,7 +31,10 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
   const tags = quote.tags ? quote.tags.split(',').map(tag => tag.trim()) : [];
 
   return (
-    <Card className="relative group hover:shadow-md transition-shadow">
+    <Card 
+      className="relative group hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => onEdit && onEdit(quote)}
+    >
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <div className="flex-1">
