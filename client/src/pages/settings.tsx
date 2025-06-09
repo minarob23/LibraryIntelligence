@@ -31,8 +31,6 @@ const Settings = () => {
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const { isCompactView, setIsCompactView } = useCompactView();
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [expiryReminders, setExpiryReminders] = useState(true);
-  const [overdueItems, setOverdueItems] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fontSizePreference, setFontSizePreference] = useState('medium');
@@ -712,32 +710,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-md font-medium mb-3">Notifications</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Expiry Reminders</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for membership expirations</p>
-                    </div>
-                    <Switch
-                      checked={expiryReminders}
-                      onCheckedChange={setExpiryReminders}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Overdue Items</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Alerts for overdue books and materials</p>
-                    </div>
-                    <Switch
-                      checked={overdueItems}
-                      onCheckedChange={setOverdueItems}
-                    />
-                  </div>
-                </div>
-              </div>
+              
 
               <div>
                 <h4 className="text-md font-medium mb-3">Data Management</h4>
