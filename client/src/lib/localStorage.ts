@@ -968,7 +968,6 @@ class LocalStorage {
       console.error('Error during corruption cleanup:', error);
     }
   }
-  }
 
   createBorrowing(borrowingData: any): any {
     const data = this.getData();
