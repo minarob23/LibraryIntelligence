@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import DataTable from '@/components/tables/data-table';
 import BookForm from '@/components/forms/book-form';
+import BookRecommendations from '@/components/dashboard/book-recommendations';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 
 const BooksPage = () => {
@@ -430,12 +431,13 @@ const BooksPage = () => {
       </div>
 
       <Tabs defaultValue="all" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
           <TabsTrigger value="borrowed">Borrowed ({borrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="most-borrowed">Most Borrowed ({mostBorrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="popular">Popular ({popularBooks.length})</TabsTrigger>
           <TabsTrigger value="top-rated">Top Rated ({topRatedBooks.length})</TabsTrigger>
+          <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
           <TabsTrigger value="gallery">Gallery ({books?.length || 0})</TabsTrigger>
         </TabsList>
 
@@ -737,6 +739,10 @@ const BooksPage = () => {
               />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="recommendations" className="space-y-4">
+          <BookRecommendations />
         </TabsContent>
 
         <TabsContent value="gallery" className="space-y-4">

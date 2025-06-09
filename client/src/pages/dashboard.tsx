@@ -9,6 +9,7 @@ import ChartContainer from '@/components/dashboard/chart-container';
 import PopularBooks from '@/components/dashboard/popular-books';
 import TopBorrowers from '@/components/dashboard/top-borrowers';
 import BorrowingTrends from '@/components/dashboard/borrowing-trends';
+import BookRecommendations from '@/components/dashboard/book-recommendations';
 import BorrowForm from '@/components/forms/borrow-form';
 import MembershipForm from '@/components/forms/membership-form';
 
@@ -289,6 +290,11 @@ const Dashboard = () => {
             height={400}
           />
         )}
+      </div>
+
+      {/* Book Recommendations */}
+      <div className="mb-6">
+        <BookRecommendations />
       </div>
 
       {/* Borrowing Trends */}
