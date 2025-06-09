@@ -28,6 +28,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTable from '@/components/tables/data-table';
 import BorrowerForm from '@/components/forms/borrower-form';
 import ChartContainer from '@/components/dashboard/chart-container';
+import TopBorrowers from '@/components/dashboard/top-borrowers';
+import TopBorrowersByEngagement from '@/components/dashboard/top-borrowers-engagement';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { Input } from "@/components/ui/input"
 
@@ -365,6 +367,12 @@ const BorrowersPage = () => {
             </div>
           </DialogContent>
         </Dialog>
+      </div>
+
+      {/* Top Borrowers Sections */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+        <TopBorrowers />
+        <TopBorrowersByEngagement />
       </div>
 
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
