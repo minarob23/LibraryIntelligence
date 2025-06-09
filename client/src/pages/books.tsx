@@ -280,7 +280,7 @@ const BooksPage = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All {filterType}s</SelectItem>
-          {filterType === 'publisher' && publishers.filter(pub => pub !== 'All Publishers').map(pub => (
+          {filterType === 'publisher' && publishers.map(pub => (
             <SelectItem key={pub} value={pub}>{pub}</SelectItem>
           ))}
           {filterType === 'author' && authors.map(author => (
@@ -316,10 +316,11 @@ const BooksPage = () => {
       (selectedAvailability === 'available' && !isBorrowed);
 
     let filterMatch = true;
-    if (filterValue !== 'all' && filterType === 'publisher' && book.publisher !== 'All Publishers') {
-      filterMatch = book.publisher === filterValue;
-    } else if (filterValue !== 'all') {
+    if (filterValue !== 'all') {
       switch (filterType) {
+        case 'publisher':
+          filterMatch = book.publisher === filterValue;
+          break;
         case 'author':
           filterMatch = book.author === filterValue;
           break;
