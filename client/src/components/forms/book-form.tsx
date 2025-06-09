@@ -1171,8 +1171,8 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      const quote = quotes.map(q => `"${q.content}"`).join('\n\n');
-                      navigator.clipboard.writeText(quote);
+                      const quotesText = quotes.map(q => '"' + q.content + '"').join('\n\n');
+                      navigator.clipboard.writeText(quotesText);
                       toast({ title: 'Quotes copied to clipboard!' });
                     }}
                     disabled={quotes.length === 0}
