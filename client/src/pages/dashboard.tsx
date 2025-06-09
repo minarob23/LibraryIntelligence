@@ -17,50 +17,74 @@ const Dashboard = () => {
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
 
-  // Refresh data every 30 seconds
+  // Refresh data every 30 seconds (disabled to prevent unwanted increments)
   useEffect(() => {
-    const interval = setInterval(() => {
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-    }, 30000);
+    // Commenting out automatic refresh to prevent data corruption
+    // const interval = setInterval(() => {
+    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
+    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
+    // }, 30000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, [queryClient]);
 
   const refreshData = () => {
-    window.location.reload();
+    // Invalidate specific queries instead of full page reload
+    queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/research'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
   };
 
-  // Fetch dashboard statistics
+  // Fetch dashboard statistics with error handling
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
+    retry: 1,
+    onError: (error) => console.log('Books query error:', error),
   });
 
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
+    retry: 1,
+    onError: (error) => console.log('Borrowers query error:', error),
   });
 
   const { data: memberGrowthData } = useQuery({ 
     queryKey: ['/api/dashboard/member-growth'],
+    retry: 1,
+    onError: (error) => console.log('Member growth query error:', error),
   });
 
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
+    retry: 1,
+    onError: (error) => console.log('Borrowings query error:', error),
   });
 
   const { data: research } = useQuery({ 
     queryKey: ['/api/research'],
+    retry: 1,
+    onError: (error) => console.log('Research query error:', error),
   });
 
   const { data: mostBorrowedBooks } = useQuery({ 
     queryKey: ['/api/dashboard/most-borrowed-books'],
+    retry: 1,
+    onError: (error) => console.log('Most borrowed books query error:', error),
   });
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
+    retry: 1,
+    onError: (error) => console.log('Borrower distribution query error:', error),
   });
 
   // Format borrower growth data for chart by category

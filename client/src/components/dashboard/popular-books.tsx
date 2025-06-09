@@ -13,16 +13,18 @@ const PopularBooks = () => {
 
   const { data: books, isLoading } = useQuery({
     queryKey: ['/api/dashboard/popular-books'],
-    refetchInterval: 30000,
-    staleTime: 0,
-    cacheTime: 0
+    refetchInterval: false, // Disable automatic refetching
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    retry: 1,
+    onError: (error) => console.log('Popular books query error:', error),
   });
 
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
-    }
+    retry: 1,
+    onError: (error) => console.log('Borrowings query error:', error),
+    // Remove onSuccess to prevent cascade invalidations
   });
 
   const calculatePopularityScore = (bookId: number) => {
