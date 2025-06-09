@@ -178,26 +178,6 @@ const BooksPage = () => {
       ),
     },
     {
-      key: 'tags',
-      header: 'Tags',
-      cell: (row: any) => row.tags ? (
-        <div className="flex flex-wrap gap-1">
-          {row.tags.split(',').slice(0, 3).map((tag: string, index: number) => (
-            <Badge key={index} variant="secondary" className="text-xs bg-gradient-to-r from-orange-100 to-pink-100 text-orange-800 border border-orange-200">
-              🏷️ {tag.trim()}
-            </Badge>
-          ))}
-          {row.tags.split(',').length > 3 && (
-            <Badge variant="outline" className="text-xs text-gray-500">
-              +{row.tags.split(',').length - 3} more
-            </Badge>
-          )}
-        </div>
-      ) : (
-        <span className="text-gray-500 text-xs">No tags</span>
-      ),
-    },
-    {
       key: 'bookCode',
       header: 'Book Code',
       cell: (row: any) => (
