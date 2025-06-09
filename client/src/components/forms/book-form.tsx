@@ -346,35 +346,43 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   };
 
   // Quote management functions with auto-save
-  const handleAddQuote = () => {
-    if (!quoteForm.content.trim()) return;
+  const handleAddQuote = async () => {
+    if (quoteForm.content.trim()) {
+      const newQuote = {
+        id: Date.now(),
+        content: quoteForm.content,
+        page: quoteForm.page ? parseInt(quoteForm.page) : undefined,
+        chapter: quoteForm.chapter || undefined,
+        author: quoteForm.author || undefined,
+        tags: quoteForm.tags || undefined,
+        isFavorite: quoteForm.isFavorite
+      };
 
-    let updatedQuotes;
-    if (editingQuote !== null) {
-      updatedQuotes = quotes.map((quote, index) => 
-        index === editingQuote ? { ...quoteForm } : quote
-      );
-      setEditingQuote(null);
-      toast({ title: 'Quote updated successfully!' });
-    } else {
-      updatedQuotes = [...quotes, { ...quoteForm }];
-      toast({ title: 'Quote added successfully!' });
-    }
-
-    setQuotes(updatedQuotes);
-
-    // Auto-save to localStorage if book has an ID
-    if (book?.id) {
-      try {
-        localStorage.setItem(`book-quotes-${book.id}`, JSON.stringify(updatedQuotes));
-      } catch (error) {
-        console.error('Error saving quotes to localStorage:', error);
+      if (editingQuote) {
+        setQuotes(quotes.map(q => q.id === editingQuote.id ? { ...newQuote, id: editingQuote.id } : q));
+        setEditingQuote(null);
+      } else {
+        setQuotes([...quotes, newQuote]);
       }
-    }
 
-    // Reset form and close modal
-    setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
-    setShowQuoteForm(false);
+      // Auto-save quotes to localStorage
+      const updatedQuotes = editingQuote 
+        ? quotes.map(q => q.id === editingQuote.id ? { ...newQuote, id: editingQuote.id } : q)
+        : [...quotes, newQuote];
+      
+      try {
+        localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
+        toast({
+          title: 'Quote Saved',
+          description: 'Quote has been automatically saved.',
+        });
+      } catch (error) {
+        console.error('Error saving quote:', error);
+      }
+
+      setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
+      setShowQuoteForm(false);
+    }
   };
 
   const handleEditQuote = (quote: any) => {
@@ -393,7 +401,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const handleDeleteQuote = async (id: number | string) => {
     const updatedQuotes = quotes.filter(q => q.id !== id);
     setQuotes(updatedQuotes);
-
+    
     // Auto-save to localStorage
     try {
       localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
@@ -409,7 +417,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const handleToggleQuoteFavorite = async (id: number | string) => {
     const updatedQuotes = quotes.map(q => q.id === id ? { ...q, isFavorite: !q.isFavorite } : q);
     setQuotes(updatedQuotes);
-
+    
     // Auto-save to localStorage
     try {
       localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
@@ -976,7 +984,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     </div>
                     Tags
                   </FormLabel>
-
+                  
                   <div className="space-y-3">
                     <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
                       <PopoverTrigger asChild>
@@ -1178,19 +1186,16 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </div>
               </div>
 
-              <Dialog open={showQuoteForm} onOpenChange={setShowQuoteForm}>
-                <DialogTrigger asChild>
-                 
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                      <Quote className="h-5 w-5 text-muted-foreground" />
-                      {editingQuote ? 'Edit Quote' : 'Add New Quote'}
-                    </DialogTitle>
-                  </DialogHeader>
-
+              {showQuoteForm && (
+                <Card className="p-4 border-dashed border-2 bg-muted/20">
                   <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Quote className="h-4 w-4 text-muted-foreground" />
+                      <Label className="font-medium">
+                        {editingQuote ? 'Edit Quote' : 'Add New Quote'}
+                      </Label>
+                    </div>
+
                     <Textarea
                       placeholder="Enter the memorable quote from this book..."
                       value={quoteForm.content}
@@ -1247,19 +1252,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-2 mt-4 pt-3 border-t">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => {
-                        setShowQuoteForm(false);
-                        setEditingQuote(null);
-                        setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
-                      }}
-                    >
-                      Cancel
-                    </Button>
+                  <div className="flex gap-2 mt-4 pt-3 border-t">
                     <Button 
                       type="button" 
                       size="sm" 
@@ -1278,9 +1271,21 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                         </>
                       )}
                     </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
+                        setShowQuoteForm(false);
+                        setEditingQuote(null);
+                        setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
+                      }}
+                    >
+                      Cancel
+                    </Button>
                   </div>
-                </DialogContent>
-              </Dialog>
+                </Card>
+              )}
 
               <div className="space-y-3">
                 {quotes.length > 0 && (
@@ -1755,13 +1760,13 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       // Group items hierarchically
                       const renderHierarchy = () => {
                         const chapters = filteredItems.filter(item => item.level === 1);
-
+                        
                         return chapters.map((chapter, chapterIndex) => {
                           const sections = filteredItems.filter(item => 
                             item.level === 2 && 
                             (!item.page || !chapter.page || item.page > chapter.page)
                           );
-
+                          
                           return (
                             <div key={chapterIndex} className="mb-2">
                               {/* Chapter */}
