@@ -260,7 +260,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [newGenre, setNewGenre] = useState('');
   const [newTag, setNewTag] = useState('');
 
-  // Quotes management
+  // Quotes management with auto-load from localStorage
   const [quotes, setQuotes] = useState<Array<{
     id?: number;
     content: string;
@@ -269,7 +269,19 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     author?: string;
     tags?: string;
     isFavorite?: boolean;
-  }>>([]);
+  }>>(() => {
+    // Load saved quotes on initialization
+    if (book?.id) {
+      try {
+        const savedQuotes = localStorage.getItem(`book-quotes-${book.id}`);
+        return savedQuotes ? JSON.parse(savedQuotes) : [];
+      } catch (error) {
+        console.error('Error loading saved quotes:', error);
+        return [];
+      }
+    }
+    return [];
+  });
   const [showQuoteForm, setShowQuoteForm] = useState(false);
   const [editingQuote, setEditingQuote] = useState<any>(null);
   const [quoteForm, setQuoteForm] = useState({
@@ -298,6 +310,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     order: 0
   });
   const [showIndexModal, setShowIndexModal] = useState(false);
+  const [indexSearch, setIndexSearch] = useState('');
 
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
@@ -332,8 +345,8 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     }
   };
 
-  // Quote management functions
-  const handleAddQuote = () => {
+  // Quote management functions with auto-save
+  const handleAddQuote = async () => {
     if (quoteForm.content.trim()) {
       const newQuote = {
         id: Date.now(),
@@ -350,6 +363,21 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
         setEditingQuote(null);
       } else {
         setQuotes([...quotes, newQuote]);
+      }
+
+      // Auto-save quotes to localStorage
+      const updatedQuotes = editingQuote 
+        ? quotes.map(q => q.id === editingQuote.id ? { ...newQuote, id: editingQuote.id } : q)
+        : [...quotes, newQuote];
+      
+      try {
+        localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
+        toast({
+          title: 'Quote Saved',
+          description: 'Quote has been automatically saved.',
+        });
+      } catch (error) {
+        console.error('Error saving quote:', error);
       }
 
       setQuoteForm({ content: '', page: '', chapter: '', author: '', tags: '', isFavorite: false });
@@ -370,12 +398,36 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     setShowQuoteForm(true);
   };
 
-  const handleDeleteQuote = (id: number | string) => {
-    setQuotes(quotes.filter(q => q.id !== id));
+  const handleDeleteQuote = async (id: number | string) => {
+    const updatedQuotes = quotes.filter(q => q.id !== id);
+    setQuotes(updatedQuotes);
+    
+    // Auto-save to localStorage
+    try {
+      localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
+      toast({
+        title: 'Quote Deleted',
+        description: 'Quote has been automatically removed.',
+      });
+    } catch (error) {
+      console.error('Error saving quotes after deletion:', error);
+    }
   };
 
-  const handleToggleQuoteFavorite = (id: number | string) => {
-    setQuotes(quotes.map(q => q.id === id ? { ...q, isFavorite: !q.isFavorite } : q));
+  const handleToggleQuoteFavorite = async (id: number | string) => {
+    const updatedQuotes = quotes.map(q => q.id === id ? { ...q, isFavorite: !q.isFavorite } : q);
+    setQuotes(updatedQuotes);
+    
+    // Auto-save to localStorage
+    try {
+      localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
+      toast({
+        title: 'Quote Updated',
+        description: 'Favorite status has been automatically saved.',
+      });
+    } catch (error) {
+      console.error('Error saving quotes after favorite toggle:', error);
+    }
   };
 
   // Index management functions
@@ -1651,92 +1703,207 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </Card>
               )}
 
-              {/* Index Items Display */}
+              {/* Search Bar */}
+              <div className="relative">
+                <Input
+                  placeholder="Search in table of contents..."
+                  value={indexSearch}
+                  onChange={(e) => setIndexSearch(e.target.value)}
+                  className="pl-10 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                  <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Index Items Display with Hierarchical Structure */}
               <ScrollArea className="max-h-[400px] pr-4">
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {indexItems.length > 0 ? (
-                    indexItems
-                      .sort((a, b) => {
-                        // Sort by page number, then by order
+                    (() => {
+                      // Filter items based on search with priority: chapter > section > subsection
+                      const filteredItems = indexItems.filter(item => {
+                        if (!indexSearch.trim()) return true;
+                        const searchLower = indexSearch.toLowerCase();
+                        return item.title.toLowerCase().includes(searchLower);
+                      }).sort((a, b) => {
+                        // Sort by level first (priority: chapter > section > subsection)
+                        if (indexSearch.trim()) {
+                          if (a.level !== b.level) return a.level - b.level;
+                        }
+                        // Then by page number, then by order
                         if (a.page && b.page) return Number(a.page) - Number(b.page);
                         return a.order - b.order;
-                      })
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-blue-300"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 flex-1">
-                              {/* Level Indicator */}
-                              <div className="flex flex-col items-center">
-                                <div className={`w-3 h-3 rounded-full ${
-                                  item.level === 1 ? 'bg-blue-500' : 
-                                  item.level === 2 ? 'bg-green-500' : 'bg-purple-500'
-                                }`} />
-                                {item.level > 1 && (
-                                  <div className={`w-0.5 h-4 ${
-                                    item.level === 2 ? 'bg-green-300' : 'bg-purple-300'
-                                  }`} />
-                                )}
+                      });
+
+                      // Group items hierarchically
+                      const renderHierarchy = () => {
+                        const chapters = filteredItems.filter(item => item.level === 1);
+                        
+                        return chapters.map((chapter, chapterIndex) => {
+                          const sections = filteredItems.filter(item => 
+                            item.level === 2 && 
+                            (!item.page || !chapter.page || item.page > chapter.page)
+                          );
+                          
+                          return (
+                            <div key={chapterIndex} className="mb-2">
+                              {/* Chapter */}
+                              <div className="group relative bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border-l-4 border-blue-500 rounded-lg p-3 hover:shadow-md transition-all duration-200">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-3 flex-1">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <span className="text-white text-xs font-bold">▼</span>
+                                      </div>
+                                      <Badge className="bg-blue-500 text-white text-xs px-2 py-0">
+                                        الفصل
+                                      </Badge>
+                                      {chapter.page && (
+                                        <Badge variant="secondary" className="text-xs">
+                                          صفحة {chapter.page}
+                                        </Badge>
+                                      )}
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="font-bold text-blue-800 dark:text-blue-200 text-lg">
+                                        {chapter.title}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleEditIndexItem(chapter)}
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <Edit className="h-3 w-3" />
+                                    </Button>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleDeleteIndexItem(filteredItems.indexOf(chapter))}
+                                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <X className="h-3 w-3" />
+                                    </Button>
+                                  </div>
+                                </div>
                               </div>
-                              
-                              <div className="flex-1">
-                                {/* Level Badge */}
-                                <div className="flex items-center gap-2 mb-1">
-                                  <Badge 
-                                    variant="outline" 
-                                    className={`text-xs px-2 py-0 ${
-                                      item.level === 1 ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                                      item.level === 2 ? 'bg-green-50 text-green-700 border-green-200' :
-                                      'bg-purple-50 text-purple-700 border-purple-200'
-                                    }`}
-                                  >
-                                    {item.level === 1 ? 'Chapter' : item.level === 2 ? 'Section' : 'Subsection'}
-                                  </Badge>
-                                  {item.page && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      Page {item.page}
-                                    </Badge>
-                                  )}
-                                </div>
-                                
-                                {/* Title with proper indentation */}
-                                <div className={`font-medium ${
-                                  item.level === 1 ? 'text-lg text-blue-700 dark:text-blue-300' :
-                                  item.level === 2 ? 'text-base text-green-700 dark:text-green-300 ml-4' :
-                                  'text-sm text-purple-700 dark:text-purple-300 ml-8'
-                                }`}>
-                                  {item.level === 1 && '📖 '}
-                                  {item.level === 2 && '📄 '}
-                                  {item.level === 3 && '📝 '}
-                                  {item.title}
-                                </div>
+
+                              {/* Sections under this chapter */}
+                              <div className="ml-6 mt-1 space-y-1">
+                                {sections.map((section, sectionIndex) => {
+                                  const subsections = filteredItems.filter(item => 
+                                    item.level === 3 && 
+                                    (!item.page || !section.page || item.page > section.page)
+                                  );
+
+                                  return (
+                                    <div key={sectionIndex}>
+                                      {/* Section */}
+                                      <div className="group relative bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-l-3 border-green-400 rounded-lg p-2 hover:shadow-sm transition-all duration-200">
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center gap-2 flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                                              <Badge className="bg-green-400 text-white text-xs px-2 py-0">
+                                                قسم
+                                              </Badge>
+                                              {section.page && (
+                                                <Badge variant="secondary" className="text-xs">
+                                                  صفحة {section.page}
+                                                </Badge>
+                                              )}
+                                            </div>
+                                            <div className="font-semibold text-green-700 dark:text-green-300">
+                                              {section.title}
+                                            </div>
+                                          </div>
+                                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button
+                                              type="button"
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => handleEditIndexItem(section)}
+                                              className="h-6 w-6 p-0"
+                                            >
+                                              <Edit className="h-2 w-2" />
+                                            </Button>
+                                            <Button
+                                              type="button"
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => handleDeleteIndexItem(filteredItems.indexOf(section))}
+                                              className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                            >
+                                              <X className="h-2 w-2" />
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Subsections under this section */}
+                                      <div className="ml-6 mt-1 space-y-1">
+                                        {subsections.map((subsection, subsectionIndex) => (
+                                          <div key={subsectionIndex} className="group relative bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/10 dark:to-purple-800/10 border-l-2 border-purple-300 rounded-lg p-2 hover:shadow-sm transition-all duration-200">
+                                            <div className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2 flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                                                  <Badge className="bg-purple-300 text-white text-xs px-1 py-0">
+                                                    فرع
+                                                  </Badge>
+                                                  {subsection.page && (
+                                                    <Badge variant="secondary" className="text-xs">
+                                                      صفحة {subsection.page}
+                                                    </Badge>
+                                                  )}
+                                                </div>
+                                                <div className="text-sm text-purple-700 dark:text-purple-300">
+                                                  {subsection.title}
+                                                </div>
+                                              </div>
+                                              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Button
+                                                  type="button"
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => handleEditIndexItem(subsection)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Edit className="h-2 w-2" />
+                                                </Button>
+                                                <Button
+                                                  type="button"
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => handleDeleteIndexItem(filteredItems.indexOf(subsection))}
+                                                  className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                >
+                                                  <X className="h-2 w-2" />
+                                                </Button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
-                            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleEditIndexItem(item)}
-                                className="h-8 w-8 p-0"
-                              >
-                                <Edit className="h-3 w-3" />
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDeleteIndexItem(index)}
-                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                <X className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      ))
+                          );
+                        });
+                      };
+
+                      return renderHierarchy();
+                    })()
                   ) : (
                     <Card className="p-8 border-dashed border-2 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
                       <div className="text-center text-muted-foreground">
