@@ -1601,11 +1601,22 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 <Card className="p-4 border-2 border-dashed border-green-200 bg-green-50/50 dark:bg-green-900/10">
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="bg-green-500 p-1 rounded">
+                      <div className={cn(
+                        "p-1 rounded",
+                        indexForm.level === 1 ? "bg-blue-500" : 
+                        indexForm.level === 2 ? "bg-green-500" : "bg-purple-500"
+                      )}>
                         <List className="h-3 w-3 text-white" />
                       </div>
-                      <Label className="font-medium text-green-800 dark:text-green-300">
-                        {editingIndexItem ? 'Edit Index Item' : 'Add New Index Item'}
+                      <Label className={cn(
+                        "font-medium",
+                        indexForm.level === 1 ? "text-blue-800 dark:text-blue-300" : 
+                        indexForm.level === 2 ? "text-green-800 dark:text-green-300" : "text-purple-800 dark:text-purple-300"
+                      )}>
+                        {editingIndexItem ? 'Edit Index Item' : 
+                          indexForm.level === 1 ? 'Add New Chapter' :
+                          indexForm.level === 2 ? 'Add New Section' : 'Add New Subsection'
+                        }
                       </Label>
                     </div>
 
@@ -1613,10 +1624,18 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       <div className="space-y-1">
                         <Label className="text-xs text-muted-foreground">Title</Label>
                         <Input
-                          placeholder="e.g., Introduction, Chapter 1: The Beginning"
+                          placeholder={
+                            indexForm.level === 1 ? "e.g., Chapter 1: The Beginning" :
+                            indexForm.level === 2 ? "e.g., Section 1.1: Overview" :
+                            "e.g., Subsection 1.1.1: Introduction"
+                          }
                           value={indexForm.title}
                           onChange={(e) => setIndexForm({ ...indexForm, title: e.target.value })}
-                          className="border-green-200 focus:border-green-400"
+                          className={cn(
+                            "focus:border-green-400",
+                            indexForm.level === 1 ? "border-blue-200" : 
+                            indexForm.level === 2 ? "border-green-200" : "border-purple-200"
+                          )}
                         />
                       </div>
 
@@ -1755,9 +1774,26 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-3 flex-1">
                                     <div className="flex items-center gap-2">
-                                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setIndexForm({
+                                            title: '',
+                                            page: chapter.page ? (chapter.page + 1).toString() : '',
+                                            level: 2,
+                                            order: indexItems.length
+                                          });
+                                          setShowIndexForm(true);
+                                          toast({
+                                            title: 'Adding Section',
+                                            description: `Adding section under: ${chapter.title}`,
+                                          });
+                                        }}
+                                        className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"
+                                        title="Click to add section under this chapter"
+                                      >
                                         <span className="text-white text-xs font-bold">▼</span>
-                                      </div>
+                                      </button>
                                       <Badge className="bg-blue-500 text-white text-xs px-2 py-0">
                                         الفصل
                                       </Badge>
@@ -1767,13 +1803,51 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                         </Badge>
                                       )}
                                     </div>
-                                    <div className="flex-1">
-                                      <div className="font-bold text-blue-800 dark:text-blue-200 text-lg">
+                                    <div 
+                                      className="flex-1 cursor-pointer"
+                                      onClick={() => {
+                                        setIndexForm({
+                                          title: '',
+                                          page: chapter.page ? (chapter.page + 1).toString() : '',
+                                          level: 2,
+                                          order: indexItems.length
+                                        });
+                                        setShowIndexForm(true);
+                                        toast({
+                                          title: 'Adding Section',
+                                          description: `Adding section under: ${chapter.title}`,
+                                        });
+                                      }}
+                                      title="Click to add section under this chapter"
+                                    >
+                                      <div className="font-bold text-blue-800 dark:text-blue-200 text-lg hover:text-blue-600 dark:hover:text-blue-100 transition-colors">
                                         {chapter.title}
                                       </div>
                                     </div>
                                   </div>
                                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => {
+                                        setIndexForm({
+                                          title: '',
+                                          page: chapter.page ? (chapter.page + 1).toString() : '',
+                                          level: 2,
+                                          order: indexItems.length
+                                        });
+                                        setShowIndexForm(true);
+                                        toast({
+                                          title: 'Adding Section',
+                                          description: `Adding section under: ${chapter.title}`,
+                                        });
+                                      }}
+                                      className="h-8 w-8 p-0 bg-green-50 hover:bg-green-100 text-green-600"
+                                      title="Add section"
+                                    >
+                                      <Plus className="h-3 w-3" />
+                                    </Button>
                                     <Button
                                       type="button"
                                       variant="ghost"
@@ -1811,7 +1885,24 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                         <div className="flex items-center justify-between">
                                           <div className="flex items-center gap-2 flex-1">
                                             <div className="flex items-center gap-2">
-                                              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  setIndexForm({
+                                                    title: '',
+                                                    page: section.page ? (section.page + 1).toString() : '',
+                                                    level: 3,
+                                                    order: indexItems.length
+                                                  });
+                                                  setShowIndexForm(true);
+                                                  toast({
+                                                    title: 'Adding Subsection',
+                                                    description: `Adding subsection under: ${section.title}`,
+                                                  });
+                                                }}
+                                                className="w-3 h-3 bg-green-400 rounded-full hover:bg-green-500 transition-colors cursor-pointer"
+                                                title="Click to add subsection under this section"
+                                              ></button>
                                               <Badge className="bg-green-400 text-white text-xs px-2 py-0">
                                                 قسم
                                               </Badge>
@@ -1821,11 +1912,49 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                                 </Badge>
                                               )}
                                             </div>
-                                            <div className="font-semibold text-green-700 dark:text-green-300">
+                                            <div 
+                                              className="font-semibold text-green-700 dark:text-green-300 cursor-pointer hover:text-green-600 dark:hover:text-green-200 transition-colors"
+                                              onClick={() => {
+                                                setIndexForm({
+                                                  title: '',
+                                                  page: section.page ? (section.page + 1).toString() : '',
+                                                  level: 3,
+                                                  order: indexItems.length
+                                                });
+                                                setShowIndexForm(true);
+                                                toast({
+                                                  title: 'Adding Subsection',
+                                                  description: `Adding subsection under: ${section.title}`,
+                                                });
+                                              }}
+                                              title="Click to add subsection under this section"
+                                            >
                                               {section.title}
                                             </div>
                                           </div>
                                           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button
+                                              type="button"
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => {
+                                                setIndexForm({
+                                                  title: '',
+                                                  page: section.page ? (section.page + 1).toString() : '',
+                                                  level: 3,
+                                                  order: indexItems.length
+                                                });
+                                                setShowIndexForm(true);
+                                                toast({
+                                                  title: 'Adding Subsection',
+                                                  description: `Adding subsection under: ${section.title}`,
+                                                });
+                                              }}
+                                              className="h-6 w-6 p-0 bg-purple-50 hover:bg-purple-100 text-purple-600"
+                                              title="Add subsection"
+                                            >
+                                              <Plus className="h-2 w-2" />
+                                            </Button>
                                             <Button
                                               type="button"
                                               variant="ghost"
