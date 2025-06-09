@@ -45,8 +45,8 @@ const MembershipPage = () => {
                   {[
                     { icon: <BookOpen className="h-4 w-4 text-blue-500" />, text: "Extensive book collection" },
                     { icon: <Clock className="h-4 w-4 text-green-500" />, text: "Extended borrowing time" },
-                    { icon: <Users className="h-4 w-4 text-purple-500" />, text: "Community events" },
-                    { icon: <Shield className="h-4 w-4 text-orange-500" />, text: "Research assistance" },
+                    { icon: <Users className="h-4 w-4 text-purple-500" />, text: "Reading recommendations" },
+                    { icon: <Shield className="h-4 w-4 text-orange-500" />, text: "Priority book reservations" },
                     { icon: <Star className="h-4 w-4 text-yellow-500" />, text: "Digital resources" }
                   ].map((benefit, index) => (
                     <div key={index} className="flex items-center space-x-3 p-2 rounded-lg bg-white dark:bg-gray-700 shadow-sm hover:shadow-md transition-all duration-200">
