@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useNotifications } from '@/lib/hooks/use-notifications';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -31,7 +30,6 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 
 const LibrariansPage = () => {
   const { toast } = useToast();
-  const { addActionNotification } = useNotifications();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingLibrarian, setEditingLibrarian] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -42,12 +40,8 @@ const LibrariansPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const librarian = librarians?.find(l => l.id === id);
       await apiRequest('DELETE', `/api/librarians/${id}`);
       queryClient.invalidateQueries({ queryKey: ['/api/librarians'] });
-      
-      addActionNotification('Deleted', 'Librarian', librarian?.name || `ID: ${id}`);
-      
       toast({
         title: 'Success',
         description: 'Librarian deleted successfully',

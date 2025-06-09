@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertBorrowerSchema } from '@shared/schema';
 import { z } from 'zod';
+import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import { useNotifications } from '@/lib/hooks/use-notifications';
 import { 
   Form, 
   FormControl, 
@@ -52,7 +52,6 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!borrower?.id;
-  const { addActionNotification } = useNotifications();
 
   // Set default dates if not provided
   const today = new Date().toISOString().split('T')[0];
@@ -107,7 +106,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
 
       if (isEditing && borrower?.id) {
         const response = await apiRequest('PUT', `/api/borrowers/${borrower.id}`, submissionData);
-        addActionNotification('Updated', 'Borrower', data.name);
+
         toast({
           title: 'Success',
           description: 'Borrower updated successfully',
@@ -123,7 +122,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
         }
       } else {
         const response = await apiRequest('POST', '/api/borrowers', submissionData);
-        addActionNotification('Added', 'Borrower', data.name);
+
         toast({
           title: 'Success',
           description: 'Borrower added successfully',

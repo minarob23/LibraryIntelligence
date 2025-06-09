@@ -296,7 +296,7 @@ const BorrowersPage = () => {
         const expiryDate = new Date(row.expiryDate);
         const today = new Date();
         const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
+        
         return (
           <div className="flex flex-col">
             <span className="font-medium">

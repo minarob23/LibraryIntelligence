@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useToast } from '@/hooks/use-toast';
-import { useNotifications } from '@/lib/hooks/use-notifications';
+import { insertLibrarianSchema } from '@shared/schema';
+import { z } from 'zod';
 import { apiRequest } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Form, 
   FormControl, 
@@ -43,8 +43,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!librarian?.id;
-  const { addActionNotification } = useNotifications();
-
+  
   // Set default appointment date if not provided
   const today = new Date().toISOString().split('T')[0];
 
@@ -66,30 +65,27 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
       email: '',
     },
   });
-
+  
   const onSubmit = async (data: LibrarianFormValues) => {
     try {
       setIsSubmitting(true);
-      const librarianData = JSON.stringify(data);
-
+      
       if (isEditing && librarian) {
-        await apiRequest('PUT', `/api/librarians/${librarian.id}`, librarianData);
-        addActionNotification('Updated', 'Librarian', data.name);
+        await apiRequest('PUT', `/api/librarians/${librarian.id}`, JSON.stringify(data));
         toast({
           title: 'Success',
           description: 'Librarian updated successfully',
         });
       } else {
-        await apiRequest('POST', '/api/librarians', librarianData);
-        addActionNotification('Added', 'Librarian', data.name);
+        await apiRequest('POST', '/api/librarians', JSON.stringify(data));
         toast({
           title: 'Success',
           description: 'Librarian added successfully',
         });
       }
-
+      
       queryClient.invalidateQueries({ queryKey: ['/api/librarians'] });
-
+      
       if (onSuccess) {
         onSuccess();
       }
@@ -104,7 +100,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
       setIsSubmitting(false);
     }
   };
-
+  
   return (
     <Card>
       <CardHeader>
@@ -141,7 +137,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
                   </FormItem>
                 )}
               />
-
+              
               <FormField
                 control={form.control}
                 name="phone"
@@ -155,7 +151,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
                   </FormItem>
                 )}
               />
-
+              
               <FormField
                 control={form.control}
                 name="email"
@@ -169,7 +165,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
                   </FormItem>
                 )}
               />
-
+              
               <FormField
                 control={form.control}
                 name="appointmentDate"
@@ -183,7 +179,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
                   </FormItem>
                 )}
               />
-
+              
               <FormField
                 control={form.control}
                 name="membershipStatus"
@@ -207,7 +203,7 @@ const LibrarianForm = ({ librarian, onSuccess, onCancel }: LibrarianFormProps) =
                 )}
               />
             </div>
-
+            
             <div className="flex justify-end space-x-2 pt-4">
               {onCancel && (
                 <Button type="button" variant="outline" onClick={onCancel}>
