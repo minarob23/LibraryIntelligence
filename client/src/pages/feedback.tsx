@@ -75,17 +75,27 @@ const FeedbackPage = () => {
   };
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-6 animate-slide-up">
-        <h2 className="text-2xl font-bold">Feedback & Suggestions</h2>
-        <p className="text-gray-600 dark:text-gray-400">Submit feedback or view responses</p>
+    <div className="animate-fade-in min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="mb-8 animate-slide-up text-center py-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+          Feedback & Suggestions
+        </h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Your voice matters! Share your thoughts and help us improve our library services
+        </p>
+        <div className="w-32 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-6 rounded-full"></div>
       </div>
 
-      <Tabs defaultValue="form" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="form">Suggestions & Feedbacks</TabsTrigger>
-          <TabsTrigger value="responses">Responses</TabsTrigger>
-        </TabsList>
+      <div className="container mx-auto px-4">
+        <Tabs defaultValue="form" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8 bg-white dark:bg-gray-800 shadow-lg rounded-xl p-2">
+            <TabsTrigger value="form" className="rounded-lg py-3 text-lg font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white transition-all duration-200">
+              💬 Submit Feedback
+            </TabsTrigger>
+            <TabsTrigger value="responses" className="rounded-lg py-3 text-lg font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-teal-500 data-[state=active]:text-white transition-all duration-200">
+              📋 View Responses
+            </TabsTrigger>
+          </TabsList>
 
         <TabsContent value="form">
           <div className="max-w-2xl mx-auto">
@@ -94,11 +104,15 @@ const FeedbackPage = () => {
         </TabsContent>
 
         <TabsContent value="responses">
-          <Card>
-            <CardHeader>
-              <CardTitle>Responses</CardTitle>
+          <Card className="shadow-xl border-0 bg-gradient-to-br from-white to-green-50 dark:from-gray-900 dark:to-green-900/20">
+            <CardHeader className="text-center pb-6 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-t-lg">
+              <CardTitle className="text-3xl font-bold flex items-center justify-center">
+                <span className="mr-3">📋</span>
+                Community Responses
+              </CardTitle>
+              <div className="w-24 h-1 bg-white/30 mx-auto mt-4 rounded-full"></div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-8">
               {isLoading ? (
                 <div className="space-y-4">
                   {[...Array(3)].map((_, i) => (
@@ -111,8 +125,8 @@ const FeedbackPage = () => {
               ) : feedbacks && feedbacks.length > 0 ? (
                 <div className="space-y-4">
                   {feedbacks.map((feedback: any) => (
-                    <Card key={feedback.id} className="border-l-4 border-l-blue-500">
-                      <CardContent className="p-4">
+                    <Card key={feedback.id} className="border-l-4 border-l-blue-500 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] bg-white dark:bg-gray-800">
+                      <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2">
                             {getTypeIcon(feedback.type)}
@@ -206,7 +220,8 @@ const FeedbackPage = () => {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 };

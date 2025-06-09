@@ -89,17 +89,20 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Suggestions & Feedbacks</CardTitle>
-        <CardDescription>
-          Let us know what's in your mind!
+    <Card className="shadow-xl border-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
+      <CardHeader className="text-center pb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+        <CardTitle className="text-3xl font-bold">
+          Suggestions & Feedbacks
+        </CardTitle>
+        <CardDescription className="text-blue-100 text-lg mt-2">
+          Let us know what's in your mind! 💭
         </CardDescription>
+        <div className="w-24 h-1 bg-white/30 mx-auto mt-4 rounded-full"></div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -237,9 +240,23 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
               )}
             />
 
-            <div className="flex justify-end">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+            <div className="flex justify-center pt-6">
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 rounded-xl"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Submitting...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <span>Submit Feedback</span>
+                    <span className="ml-2">✨</span>
+                  </div>
+                )}
               </Button>
             </div>
           </form>
