@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, Plus, RefreshCw, Search } from 'lucide-react';
+import { Edit, Trash2, Plus, RefreshCw, Search, Trophy, Star, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -39,6 +39,160 @@ const categories = [
   { value: 'university', label: 'University' },
   { value: 'graduate', label: 'Graduate' },
 ];
+
+// Top Borrowers by Engagement Score Component
+const TopBorrowersEngagement = () => {
+  const { data: allBorrowers } = useQuery({ queryKey: ['/api/borrowers'] });
+  const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
+
+  const calculateEngagementScore = (borrowerId: number): number => {
+    try {
+      const userBorrowings = borrowings?.filter((b: any) => b.borrowerId === borrowerId) || [];
+      
+      if (!userBorrowings.length) return 0;
+
+      const totalBorrowings = userBorrowings.length;
+      const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
+      const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
+      const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
+
+      const onTimeBorrowings = returnedBorrowings.filter(b => {
+        const returnDate = new Date(b.returnDate);
+        const dueDate = new Date(b.dueDate);
+        return returnDate <= dueDate;
+      }).length;
+
+      // Calculate scores (max 10 points total)
+      const frequencyScore = Math.min(totalBorrowings / 3, 1) * 3; // max 3 points
+      const timelinessScore = returnedBorrowings.length > 0 
+        ? (onTimeBorrowings / returnedBorrowings.length) * 3 
+        : 0; // max 3 points
+      const ratingScore = (ratedBorrowings / totalBorrowings) * 2; // max 2 points
+      const activityScore = (activeBorrowings / Math.max(1, totalBorrowings)) * 2; // max 2 points
+
+      const totalScore = frequencyScore + timelinessScore + ratingScore + activityScore;
+      return Number(Math.min(totalScore, 10).toFixed(2));
+    } catch (error) {
+      console.error('Error calculating engagement score:', error);
+      return 0;
+    }
+  };
+
+  const topBorrowers = allBorrowers
+    ?.map((borrower: any) => ({
+      ...borrower,
+      engagementScore: calculateEngagementScore(borrower.id),
+      totalBorrowings: borrowings?.filter((b: any) => b.borrowerId === borrower.id).length || 0
+    }))
+    .sort((a: any, b: any) => b.engagementScore - a.engagementScore)
+    .slice(0, 10) || [];
+
+  const getScoreColor = (score: number) => {
+    if (score >= 8) return 'text-green-600 dark:text-green-400';
+    if (score >= 6) return 'text-blue-600 dark:text-blue-400';
+    if (score >= 4) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-gray-600 dark:text-gray-400';
+  };
+
+  const getScoreBadge = (score: number) => {
+    if (score >= 8) return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+    if (score >= 6) return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+    if (score >= 4) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+    return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+  };
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg border p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <Trophy className="h-5 w-5 text-yellow-500" />
+          <h3 className="text-lg font-semibold">Top Borrowers by Engagement Score</h3>
+        </div>
+        <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+          <TrendingUp className="h-3 w-3 mr-1" />
+          Top 10
+        </Badge>
+      </div>
+      
+      <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <div className="flex items-center space-x-1">
+          <Star className="h-4 w-4" />
+          <span>Engagement score is calculated based on borrowing frequency, return timeliness, rating participation, and current activity (max 10 points)</span>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Rank</th>
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Borrower</th>
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Category</th>
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Total Books</th>
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Engagement Score</th>
+              <th className="text-left py-2 font-medium text-gray-700 dark:text-gray-300">Performance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {topBorrowers.map((borrower: any, index: number) => (
+              <tr key={borrower.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="py-3">
+                  <div className="flex items-center">
+                    {index === 0 && <Trophy className="h-4 w-4 text-yellow-500 mr-1" />}
+                    {index === 1 && <Trophy className="h-4 w-4 text-gray-400 mr-1" />}
+                    {index === 2 && <Trophy className="h-4 w-4 text-amber-600 mr-1" />}
+                    <span className="font-medium">#{index + 1}</span>
+                  </div>
+                </td>
+                <td className="py-3">
+                  <div className="flex items-center">
+                    <Avatar>
+                      <AvatarFallback className={getAvatarColor(borrower.category)}>
+                        {getInitials(borrower.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="ml-3">
+                      <div className="text-sm font-medium">{borrower.name}</div>
+                      <div className="text-xs text-gray-500">ID: {borrower.memberId || `BRW-${borrower.id}`}</div>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3">
+                  <span className="capitalize text-sm">{borrower.category}</span>
+                </td>
+                <td className="py-3">
+                  <span className="text-sm font-medium">{borrower.totalBorrowings}</span>
+                </td>
+                <td className="py-3">
+                  <div className="flex items-center space-x-2">
+                    <span className={`text-lg font-bold ${getScoreColor(borrower.engagementScore)}`}>
+                      {borrower.engagementScore}
+                    </span>
+                    <span className="text-xs text-gray-500">/ 10</span>
+                  </div>
+                </td>
+                <td className="py-3">
+                  <Badge variant="outline" className={getScoreBadge(borrower.engagementScore)}>
+                    {borrower.engagementScore >= 8 ? 'Excellent' : 
+                     borrower.engagementScore >= 6 ? 'Good' : 
+                     borrower.engagementScore >= 4 ? 'Average' : 'Needs Improvement'}
+                  </Badge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {topBorrowers.length === 0 && (
+        <div className="text-center py-8">
+          <Trophy className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+          <p className="text-gray-500 dark:text-gray-400">No borrowing data available for engagement scoring</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 // Calculate days until expiry
 const getDaysUntilExpiry = (expiryDate: string) => {
@@ -495,7 +649,7 @@ const BorrowersPage = () => {
             />
 
             {category.value === 'all' && (
-              <div className="mt-6">
+              <div className="mt-6 space-y-6">
                 {formatBorrowerDistribution().length > 0 ? (
                   <ChartContainer
                     title="Borrowers Distribution by Category"
@@ -520,6 +674,8 @@ const BorrowersPage = () => {
                     </div>
                   </div>
                 )}
+
+                <TopBorrowersEngagement />
               </div>
             )}
           </TabsContent>
