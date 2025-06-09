@@ -66,10 +66,12 @@ const MostBorrowedBooksChart = () => {
     monthlyData.forEach(monthData => {
       topBooks.forEach(({ bookId }) => {
         const book = books.find((b: any) => b.id === parseInt(bookId));
-        const bookName = book ? (book.title || book.name || `Book ${bookId}`) : `Book ${bookId}`;
-        const shortName = bookName.length > 20 ? bookName.substring(0, 20) + '...' : bookName;
-        
-        monthData[shortName] = bookBorrowCounts[bookId]?.[monthData.month] || 0;
+        if (book) {
+          const bookName = book.title || book.name || `Unknown Book`;
+          const shortName = bookName.length > 25 ? bookName.substring(0, 25) + '...' : bookName;
+          
+          monthData[shortName] = bookBorrowCounts[bookId]?.[monthData.month] || 0;
+        }
       });
     });
 
