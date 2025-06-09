@@ -128,78 +128,6 @@ const PREDEFINED_PUBLISHERS = [
   "بتانة"
 ];
 
-const PREDEFINED_TAGS = [
-  "Classic Literature",
-  "Educational",
-  "Reference",
-  "Biography",
-  "Academic",
-  "Religious Studies",
-  "Philosophy",
-  "History",
-  "Theology",
-  "Spiritual",
-  "Biblical Studies",
-  "Patristic",
-  "Liturgy",
-  "Prayer",
-  "Saints",
-  "Martyrs",
-  "Monasticism",
-  "Ethics",
-  "Apologetics",
-  "Comparative Religion",
-  "Psychology",
-  "Sociology",
-  "Anthropology",
-  "Archaeology",
-  "Manuscripts",
-  "Commentary",
-  "Hermeneutics",
-  "Exegesis",
-  "Church Fathers",
-  "Eastern Orthodox",
-  "Coptic",
-  "Byzantine",
-  "Medieval",
-  "Modern",
-  "Contemporary",
-  "Arabic",
-  "English",
-  "Bilingual",
-  "Translation",
-  "Critical Edition",
-  "Popular",
-  "Academic Level",
-  "Beginner Friendly",
-  "Advanced",
-  "Research",
-  "Devotional",
-  "Pastoral",
-  "Youth",
-  "Family",
-  "Women Studies",
-  "Men Studies",
-  "Marriage",
-  "Parenting",
-  "Social Issues",
-  "Politics",
-  "Economics",
-  "Science",
-  "Art",
-  "Music",
-  "Poetry",
-  "Drama",
-  "Fiction",
-  "Non-Fiction",
-  "Rare Book",
-  "First Edition",
-  "Illustrated",
-  "Maps",
-  "Charts",
-  "Photographs"
-];
-
 const bookSchema = insertBookSchema.extend({
   name: z.string().optional(),
   author: z.string().optional(),
@@ -216,7 +144,6 @@ const bookSchema = insertBookSchema.extend({
   addedDate: z.string().optional(),
   publishedDate: z.string().optional(),
   genres: z.string().optional(),
-  tags: z.string().optional(),
   comments: z.string().optional(),
 });
 
@@ -310,17 +237,12 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [selectedPublishers, setSelectedPublishers] = useState<string[]>(
     book?.publisher ? book.publisher.split(',').map((p: string) => p.trim()) : []
   );
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    book?.tags ? book.tags.split(',').map((t: string) => t.trim()) : []
-  );
   const [genresOpen, setGenresOpen] = useState(false);
   const [authorsOpen, setAuthorsOpen] = useState(false);
   const [publishersOpen, setPublishersOpen] = useState(false);
-  const [tagsOpen, setTagsOpen] = useState(false);
   const [newAuthor, setNewAuthor] = useState('');
   const [newPublisher, setNewPublisher] = useState('');
   const [newGenre, setNewGenre] = useState('');
-  const [newTag, setNewTag] = useState('');
 
   // Quotes management
   const [quotes, setQuotes] = useState<Array<{
@@ -379,7 +301,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       addedDate: new Date().toISOString().split('T')[0],
       publishedDate: '',
       genres: '',
-      tags: '',
       comments: '',
     },
   });
@@ -488,7 +409,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       genres: selectedGenres.join(', '),
       author: selectedAuthors.join(', '),
       publisher: selectedPublishers.join(', '),
-      tags: selectedTags.join(', '),
     };
 
       if (isEditing && book) {
@@ -977,162 +897,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     <p className="text-sm text-gray-500 mt-1">
                       Select multiple genres for this book
                     </p>
-                  </FormItem>
-                )}
-              />
-
-            {/* Tags Field */}
-            <FormField
-                control={form.control}
-                name="tags"
-                render={() => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2">
-                      <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-1 rounded">
-                        <span className="text-white text-xs">🏷️</span>
-                      </div>
-                      Book Tags
-                      {selectedTags.length > 0 && (
-                        <Badge variant="secondary" className="ml-2 bg-pink-100 text-pink-800">
-                          {selectedTags.length} selected
-                        </Badge>
-                      )}
-                    </FormLabel>
-                    <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={tagsOpen}
-                          className="w-full justify-between mt-1 h-auto min-h-[50px] text-left border-2 border-pink-200 hover:border-pink-300 focus:border-pink-400"
-                        >
-                          <div className="flex flex-wrap gap-1 max-w-[calc(100%-2rem)]">
-                            {selectedTags.length === 0 && (
-                              <span className="text-muted-foreground">Select tags to categorize this book...</span>
-                            )}
-                            {selectedTags.map((tag, index) => (
-                              <Badge 
-                                key={index} 
-                                variant="secondary" 
-                                className="text-xs bg-gradient-to-r from-pink-100 to-rose-100 text-pink-800 border border-pink-200 hover:bg-pink-200"
-                              >
-                                {tag}
-                                <X 
-                                  className="ml-1 h-3 w-3 cursor-pointer hover:bg-pink-300 rounded-full" 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedTags(selectedTags.filter((_, i) => i !== index));
-                                  }}
-                                />
-                              </Badge>
-                            ))}
-                          </div>
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-full p-0 max-h-80">
-                        <Command>
-                          <CommandInput 
-                            placeholder="Search tags or type to add new..." 
-                            value={newTag}
-                            onValueChange={setNewTag}
-                            className="border-pink-200 focus:border-pink-400"
-                          />
-                          <CommandEmpty>
-                            <div className="p-3 space-y-2">
-                              <p className="text-sm text-gray-500">No tag found.</p>
-                              {newTag && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    if (newTag.trim() && !selectedTags.includes(newTag.trim())) {
-                                      setSelectedTags([...selectedTags, newTag.trim()]);
-                                      setNewTag('');
-                                    }
-                                  }}
-                                  className="w-full bg-pink-50 hover:bg-pink-100 border-pink-200 text-pink-700"
-                                >
-                                  <Plus className="h-3 w-3 mr-1" />
-                                  Add "{newTag}" as new tag
-                                </Button>
-                              )}
-                            </div>
-                          </CommandEmpty>
-                          <CommandGroup className="max-h-64 overflow-auto">
-                            <div className="p-2">
-                              <div className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
-                                <span className="w-2 h-2 bg-pink-500 rounded-full"></span>
-                                Popular Tags
-                              </div>
-                              <div className="grid grid-cols-2 gap-1">
-                                {PREDEFINED_TAGS.slice(0, 8).map((tag) => (
-                                  <CommandItem
-                                    key={tag}
-                                    onSelect={() => {
-                                      if (selectedTags.includes(tag)) {
-                                        setSelectedTags(selectedTags.filter(t => t !== tag));
-                                      } else {
-                                        setSelectedTags([...selectedTags, tag]);
-                                      }
-                                    }}
-                                    className="text-xs p-2 cursor-pointer hover:bg-pink-50"
-                                  >
-                                    <div className="flex items-center gap-2 w-full">
-                                      <Check
-                                        className={cn(
-                                          "h-3 w-3",
-                                          selectedTags.includes(tag) ? "opacity-100 text-pink-600" : "opacity-0"
-                                        )}
-                                      />
-                                      <span className="truncate">{tag}</span>
-                                    </div>
-                                  </CommandItem>
-                                ))}
-                              </div>
-                            </div>
-                            
-                            <div className="border-t border-gray-200 p-2">
-                              <div className="text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
-                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                All Tags ({PREDEFINED_TAGS.length})
-                              </div>
-                              {PREDEFINED_TAGS.map((tag) => (
-                                <CommandItem
-                                  key={tag}
-                                  onSelect={() => {
-                                    if (selectedTags.includes(tag)) {
-                                      setSelectedTags(selectedTags.filter(t => t !== tag));
-                                    } else {
-                                      setSelectedTags([...selectedTags, tag]);
-                                    }
-                                  }}
-                                  className="text-sm p-2 cursor-pointer hover:bg-pink-50"
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      selectedTags.includes(tag) ? "opacity-100 text-pink-600" : "opacity-0"
-                                    )}
-                                  />
-                                  {tag}
-                                </CommandItem>
-                              ))}
-                            </div>
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                    <div className="text-sm text-gray-500 mt-2 p-2 bg-pink-50 dark:bg-pink-900/20 rounded border border-pink-200 dark:border-pink-800">
-                      <p className="font-medium text-pink-800 dark:text-pink-300 mb-1">💡 Tagging Tips:</p>
-                      <ul className="text-xs space-y-1 text-pink-700 dark:text-pink-400">
-                        <li>• Use specific tags to help readers find exactly what they need</li>
-                        <li>• Combine subject tags (e.g., "Theology") with format tags (e.g., "Academic")</li>
-                        <li>• Add difficulty level tags like "Beginner Friendly" or "Advanced"</li>
-                        <li>• Include language tags for bilingual or translated works</li>
-                      </ul>
-                    </div>
                   </FormItem>
                 )}
               />
@@ -1725,9 +1489,9 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </Card>
               )}
 
-              {/* Index Items Display with Enhanced Hierarchy */}
+              {/* Index Items Display */}
               <ScrollArea className="max-h-[400px] pr-4">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   {indexItems.length > 0 ? (
                     indexItems
                       .sort((a, b) => {
@@ -1738,91 +1502,36 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       .map((item, index) => (
                         <div
                           key={index}
-                          className={`group relative border rounded-lg transition-all duration-200 hover:shadow-md ${
-                            item.level === 1 
-                              ? 'bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200 hover:border-blue-400 dark:from-blue-900/20 dark:to-blue-800/30 dark:border-blue-700' :
-                            item.level === 2 
-                              ? 'bg-gradient-to-r from-green-50 to-green-100 border-green-200 hover:border-green-400 dark:from-green-900/20 dark:to-green-800/30 dark:border-green-700 ml-6' :
-                              'bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200 hover:border-purple-400 dark:from-purple-900/20 dark:to-purple-800/30 dark:border-purple-700 ml-12'
-                          } p-3`}
+                          className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-md transition-all duration-200 hover:border-blue-300"
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3 flex-1">
-                              {/* Hierarchical Icon */}
-                              <div className={`flex items-center justify-center rounded-lg p-1.5 ${
-                                item.level === 1 ? 'bg-blue-500 text-white' :
-                                item.level === 2 ? 'bg-green-500 text-white' :
-                                'bg-purple-500 text-white'
-                              }`}>
-                                {item.level === 1 ? (
-                                  <BookOpen className="h-3 w-3" />
-                                ) : item.level === 2 ? (
-                                  <FileText className="h-3 w-3" />
-                                ) : (
-                                  <Minus className="h-3 w-3" />
+                              <div className={`w-2 h-2 rounded-full ${
+                                item.level === 1 ? 'bg-blue-500' : 
+                                item.level === 2 ? 'bg-green-500' : 'bg-purple-500'
+                              }`} />
+                              <div className="flex-1">
+                                <div className={`font-medium ${
+                                  item.level === 1 ? 'text-lg text-blue-700 dark:text-blue-300' :
+                                  item.level === 2 ? 'text-base text-green-700 dark:text-green-300 ml-4' :
+                                  'text-sm text-purple-700 dark:text-purple-300 ml-8'
+                                }`}>
+                                  {item.title}
+                                </div>
+                                {item.page && (
+                                  <div className="text-xs text-muted-foreground mt-1">
+                                    Page {item.page}
+                                  </div>
                                 )}
                               </div>
-
-                              {/* Hierarchy Lines */}
-                              {item.level > 1 && (
-                                <div className="absolute left-0 top-0 bottom-0 w-px bg-gray-300 dark:bg-gray-600" style={{
-                                  left: item.level === 2 ? '12px' : '36px'
-                                }} />
-                              )}
-
-                              <div className="flex-1">
-                                {/* Title with Level Styling */}
-                                <div className={`font-medium flex items-center gap-2 ${
-                                  item.level === 1 ? 'text-lg text-blue-800 dark:text-blue-200' :
-                                  item.level === 2 ? 'text-base text-green-800 dark:text-green-200' :
-                                  'text-sm text-purple-800 dark:text-purple-200'
-                                }`}>
-                                  {/* Level Prefix */}
-                                  <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${
-                                    item.level === 1 ? 'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200' :
-                                    item.level === 2 ? 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200' :
-                                    'bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200'
-                                  }`}>
-                                    {item.level === 1 ? 'CH' : item.level === 2 ? 'SEC' : 'SUB'}
-                                  </span>
-                                  
-                                  <span className="flex-1">{item.title}</span>
-                                  
-                                  {/* Page Number Badge */}
-                                  {item.page && (
-                                    <Badge variant="outline" className={`text-xs ${
-                                      item.level === 1 ? 'border-blue-300 text-blue-700' :
-                                      item.level === 2 ? 'border-green-300 text-green-700' :
-                                      'border-purple-300 text-purple-700'
-                                    }`}>
-                                      p. {item.page}
-                                    </Badge>
-                                  )}
-                                </div>
-
-                                {/* Level Description */}
-                                <div className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
-                                  <span className={`w-2 h-2 rounded-full ${
-                                    item.level === 1 ? 'bg-blue-400' :
-                                    item.level === 2 ? 'bg-green-400' :
-                                    'bg-purple-400'
-                                  }`} />
-                                  <span>
-                                    {item.level === 1 ? 'Chapter' : item.level === 2 ? 'Section' : 'Subsection'}
-                                    {item.page && ` • Starts at page ${item.page}`}
-                                  </span>
-                                </div>
-                              </div>
                             </div>
-                            
-                            {/* Action Buttons */}
                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               <Button
                                 type="button"
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => handleEditIndexItem(item)}
-                                className="h-8 w-8 p-0 hover:bg-white/50"
+                                className="h-8 w-8 p-0"
                               >
                                 <Edit className="h-3 w-3" />
                               </Button>
