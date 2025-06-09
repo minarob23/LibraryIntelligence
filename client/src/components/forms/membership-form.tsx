@@ -39,7 +39,7 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
     defaultValues: {
       id: '',
       name: '',
-      stage: 'primary',
+      stage: 'medium',
       birthdate: '',
       phone: '',
       additionalPhone: '',
@@ -276,38 +276,28 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                       <FormItem>
                         <FormLabel>Select your stage</FormLabel>
                         <FormDescription>
-                          Please select one category that best describes your current educational level.
+                          Choose your membership level: Basic (beginner readers), Medium (regular readers), or Advanced (research/academic users).
                         </FormDescription>
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-2">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                           <FormControl>
                             <RadioGroup 
                               onValueChange={field.onChange} 
                               defaultValue={field.value}
-                              className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full"
+                              className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4 w-full"
                             >
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="primary" id="primary" />
-                                <Label htmlFor="primary">Primary</Label>
+                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <RadioGroupItem value="basic" id="basic" />
+                                <Label htmlFor="basic" className="font-medium">Basic</Label>
                               </div>
 
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="middle" id="middle" />
-                                <Label htmlFor="middle">Middle</Label>
+                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <RadioGroupItem value="medium" id="medium" />
+                                <Label htmlFor="medium" className="font-medium">Medium</Label>
                               </div>
 
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="secondary" id="secondary" />
-                                <Label htmlFor="secondary">Secondary</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="university" id="university" />
-                                <Label htmlFor="university">University</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="graduate" id="graduate" />
-                                <Label htmlFor="graduate">Graduate</Label>
+                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <RadioGroupItem value="advanced" id="advanced" />
+                                <Label htmlFor="advanced" className="font-medium">Advanced</Label>
                               </div>
                             </RadioGroup>
                           </FormControl>
