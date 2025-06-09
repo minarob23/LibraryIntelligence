@@ -1171,7 +1171,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      const quote = `"${quotes.map(q => q.content).join('"\n\n"')}"`;
+                      const quote = quotes.map(q => `"${q.content}"`).join('\n\n');
                       navigator.clipboard.writeText(quote);
                       toast({ title: 'Quotes copied to clipboard!' });
                     }}
