@@ -31,10 +31,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
   const tags = quote.tags ? quote.tags.split(',').map(tag => tag.trim()) : [];
 
   return (
-    <Card 
-      className="relative group hover:shadow-md transition-shadow cursor-pointer"
-      onClick={() => onEdit && onEdit(quote)}
-    >
+    <Card className="relative group hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <div className="flex-1">
@@ -76,10 +73,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleFavorite(quote.id || 0);
-                }}
+                onClick={() => onToggleFavorite(quote.id || 0)}
                 className="h-8 w-8 p-0"
                 title={quote.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -96,12 +90,8 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(quote);
-                }}
+                onClick={() => onEdit(quote)}
                 className="h-8 w-8 p-0"
-                title="Edit quote"
               >
                 <Edit className="h-4 w-4" />
               </Button>
@@ -110,12 +100,8 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(quote.id || 0);
-                }}
+                onClick={() => onDelete(quote.id || 0)}
                 className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-                title="Delete quote"
               >
                 <X className="h-4 w-4" />
               </Button>

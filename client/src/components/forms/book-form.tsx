@@ -427,16 +427,11 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       toast({
         title: isBecomingFavorite ? '❤️ Added to Favorites' : '💔 Removed from Favorites',
         description: isBecomingFavorite 
-          ? 'Quote has been added to your favorites.' 
-          : 'Quote has been removed from your favorites.',
+          ? 'Quote has been marked as favorite and saved.' 
+          : 'Quote has been removed from favorites and saved.',
       });
     } catch (error) {
       console.error('Error saving quotes after favorite toggle:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update favorite status. Please try again.',
-        variant: 'destructive',
-      });
     }
   };
 
