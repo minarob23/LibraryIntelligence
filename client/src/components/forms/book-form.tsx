@@ -415,6 +415,9 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   };
 
   const handleToggleQuoteFavorite = async (id: number | string) => {
+    const quote = quotes.find(q => q.id === id);
+    const isBecomingFavorite = !quote?.isFavorite;
+    
     const updatedQuotes = quotes.map(q => q.id === id ? { ...q, isFavorite: !q.isFavorite } : q);
     setQuotes(updatedQuotes);
     
@@ -422,8 +425,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     try {
       localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
       toast({
-        title: 'Quote Updated',
-        description: 'Favorite status has been automatically saved.',
+        title: isBecomingFavorite ? '❤️ Added to Favorites' : '💔 Removed from Favorites',
+        description: isBecomingFavorite 
+          ? 'Quote has been marked as favorite and saved.' 
+          : 'Quote has been removed from favorites and saved.',
       });
     } catch (error) {
       console.error('Error saving quotes after favorite toggle:', error);
