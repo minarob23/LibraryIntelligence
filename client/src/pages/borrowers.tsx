@@ -371,8 +371,12 @@ const BorrowersPage = () => {
 
       {/* Top Borrowers Sections */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
-        <TopBorrowers />
-        <TopBorrowersByEngagement />
+        <div className="order-1">
+          <TopBorrowers />
+        </div>
+        <div className="order-2">
+          <TopBorrowersByEngagement />
+        </div>
       </div>
 
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">

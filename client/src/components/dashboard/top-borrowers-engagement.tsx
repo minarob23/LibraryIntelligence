@@ -108,7 +108,12 @@ const TopBorrowersByEngagement = () => {
     engagementScore: calculateEngagementScore(borrower.id),
     metrics: getEngagementMetrics(borrower.id)
   }))
-  .sort((a: any, b: any) => b.engagementScore - a.engagementScore)
+  .sort((a: any, b: any) => {
+    // Prioritize Graduate category borrowers
+    if (a.category === 'graduate' && b.category !== 'graduate') return -1;
+    if (b.category === 'graduate' && a.category !== 'graduate') return 1;
+    return b.engagementScore - a.engagementScore;
+  })
   .slice(0, 10);
 
   return (
@@ -119,7 +124,7 @@ const TopBorrowersByEngagement = () => {
           Top Borrowers by Engagement Score
         </CardTitle>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Ranked by frequency, timeliness, participation, and activity
+          Ranked by frequency, timeliness, participation, and activity • Graduate students prioritized
         </p>
       </CardHeader>
       <CardContent>
@@ -162,7 +167,13 @@ const TopBorrowersByEngagement = () => {
               topBorrowersByEngagement?.map((borrower: any, index: number) => {
                 const engagementLevel = getEngagementLevel(borrower.engagementScore);
                 return (
-                  <TableRow key={borrower.id} className={index < 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20' : ''}>
+                  <TableRow key={borrower.id} className={`${
+                    borrower.category === 'graduate' 
+                      ? 'bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-l-4 border-purple-400' 
+                      : index < 3 
+                        ? 'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20' 
+                        : ''
+                  }`}>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {index < 3 && (
@@ -189,7 +200,14 @@ const TopBorrowersByEngagement = () => {
                           </AvatarFallback>
                         </Avatar>
                         <div className="ml-3">
-                          <div className="text-sm font-medium">{borrower.name}</div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">{borrower.name}</div>
+                            {borrower.category === 'graduate' && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 dark:from-purple-900/30 dark:to-pink-900/30 dark:text-purple-300">
+                                Graduate
+                              </span>
+                            )}
+                          </div>
                           <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">
                             {borrower.category} • ID: {borrower.id}
                           </div>
