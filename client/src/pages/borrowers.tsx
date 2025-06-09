@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -369,16 +370,6 @@ const BorrowersPage = () => {
         </Dialog>
       </div>
 
-      {/* Top Borrowers Sections */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
-        <div className="order-1">
-          <TopBorrowers />
-        </div>
-        <div className="order-2">
-          <TopBorrowersByEngagement />
-        </div>
-      </div>
-
       <Tabs defaultValue="all" onValueChange={setSelectedCategory} className="mb-6">
         <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
           {categories.map((category) => {
@@ -537,6 +528,33 @@ const BorrowersPage = () => {
           </TabsContent>
         ))}
       </Tabs>
+
+      {/* Top Borrowers Section */}
+      <Card className="border-none shadow-lg bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 mb-6">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-white bg-clip-text text-transparent flex items-center gap-2">
+            <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+              <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+              </svg>
+            </div>
+            Top Borrowers
+          </CardTitle>
+          <p className="text-gray-600 dark:text-gray-400">
+            Most active library members and their engagement metrics
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="order-1">
+              <TopBorrowers />
+            </div>
+            <div className="order-2">
+              <TopBorrowersByEngagement />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
