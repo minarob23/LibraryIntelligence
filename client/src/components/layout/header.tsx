@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Menu, User } from 'lucide-react';
 import { useLocation } from 'wouter';
 import ThemeToggle from './theme-toggle';
-import NotificationDropdown from './notification-dropdown';
 import {
   Dialog,
   DialogContent,
@@ -48,7 +47,6 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <NotificationDropdown />
           <ThemeToggle />
           {/* User Menu */}
           <UserMenu />

@@ -128,6 +128,17 @@ const PREDEFINED_PUBLISHERS = [
   "بتانة"
 ];
 
+const PREDEFINED_TAGS = [
+  "Academic", "Research", "Reference", "Textbook", "Popular", "Classic", "Contemporary",
+  "Beginner", "Advanced", "Comprehensive", "Introduction", "Guide", "Manual", "Handbook",
+  "Philosophy", "History", "Science", "Technology", "Literature", "Poetry", "Fiction",
+  "Non-fiction", "Biography", "Autobiography", "Memoir", "Essay", "Article", "Journal",
+  "Educational", "Religious", "Spiritual", "Cultural", "Social", "Political", "Economic",
+  "Arabic", "English", "Bilingual", "Translation", "Original", "Revised", "Updated",
+  "Illustrated", "Charts", "Diagrams", "Maps", "Tables", "Index", "Bibliography",
+  "Rare", "Valuable", "Limited Edition", "First Edition", "Reprinted", "Digital Available"
+];
+
 const bookSchema = insertBookSchema.extend({
   name: z.string().optional(),
   author: z.string().optional(),
@@ -237,12 +248,17 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [selectedPublishers, setSelectedPublishers] = useState<string[]>(
     book?.publisher ? book.publisher.split(',').map((p: string) => p.trim()) : []
   );
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    book?.tags ? book.tags.split(',').map((t: string) => t.trim()) : []
+  );
   const [genresOpen, setGenresOpen] = useState(false);
   const [authorsOpen, setAuthorsOpen] = useState(false);
   const [publishersOpen, setPublishersOpen] = useState(false);
+  const [tagsOpen, setTagsOpen] = useState(false);
   const [newAuthor, setNewAuthor] = useState('');
   const [newPublisher, setNewPublisher] = useState('');
   const [newGenre, setNewGenre] = useState('');
+  const [newTag, setNewTag] = useState('');
 
   // Quotes management
   const [quotes, setQuotes] = useState<Array<{
@@ -409,6 +425,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       genres: selectedGenres.join(', '),
       author: selectedAuthors.join(', '),
       publisher: selectedPublishers.join(', '),
+      tags: selectedTags.join(', '),
     };
 
       if (isEditing && book) {
@@ -900,6 +917,151 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </FormItem>
                 )}
               />
+
+            {/* Beautiful Tags Field */}
+            <FormField
+              control={form.control}
+              name="tags"
+              render={() => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <div className="bg-gradient-to-r from-orange-500 to-pink-500 p-1 rounded">
+                      <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Tags
+                  </FormLabel>
+                  
+                  <div className="space-y-3">
+                    <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={tagsOpen}
+                          className="w-full justify-between mt-1 h-auto min-h-[50px] text-left bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 border-orange-200 dark:border-orange-700 hover:from-orange-100 hover:to-pink-100"
+                        >
+                          <div className="flex flex-wrap gap-1 max-w-full">
+                            {selectedTags.length === 0 && (
+                              <span className="text-gray-500">Add tags to categorize this book...</span>
+                            )}
+                            {selectedTags.map((tag, index) => (
+                              <Badge 
+                                key={index} 
+                                variant="secondary" 
+                                className="text-xs bg-gradient-to-r from-orange-100 to-pink-100 text-orange-800 dark:from-orange-900/50 dark:to-pink-900/50 dark:text-orange-300 hover:from-orange-200 hover:to-pink-200 transition-colors border border-orange-200 dark:border-orange-700"
+                              >
+                                🏷️ {tag}
+                                <X 
+                                  className="ml-1 h-3 w-3 cursor-pointer hover:text-red-600 transition-colors" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedTags(selectedTags.filter((_, i) => i !== index));
+                                  }}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput 
+                            placeholder="Search or add new tags..." 
+                            value={newTag}
+                            onValueChange={setNewTag}
+                          />
+                          <CommandEmpty>
+                            <div className="p-3">
+                              <p className="text-sm text-gray-500 mb-3">No tag found.</p>
+                              {newTag && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (newTag.trim() && !selectedTags.includes(newTag.trim())) {
+                                      setSelectedTags([...selectedTags, newTag.trim()]);
+                                      setNewTag('');
+                                    }
+                                  }}
+                                  className="w-full bg-gradient-to-r from-orange-50 to-pink-50 border-orange-200 text-orange-800 hover:from-orange-100 hover:to-pink-100"
+                                >
+                                  <Plus className="h-3 w-3 mr-1" />
+                                  Create "{newTag}"
+                                </Button>
+                              )}
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup className="max-h-64 overflow-auto">
+                            <div className="p-2 border-b">
+                              <p className="text-xs font-medium text-gray-600 mb-2">📚 Popular Tags</p>
+                            </div>
+                            {PREDEFINED_TAGS.map((tag) => (
+                              <CommandItem
+                                key={tag}
+                                onSelect={() => {
+                                  if (selectedTags.includes(tag)) {
+                                    setSelectedTags(selectedTags.filter(t => t !== tag));
+                                  } else {
+                                    setSelectedTags([...selectedTags, tag]);
+                                  }
+                                }}
+                                className="flex items-center px-3 py-2 hover:bg-gradient-to-r hover:from-orange-50 hover:to-pink-50"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedTags.includes(tag) ? "opacity-100 text-orange-600" : "opacity-0"
+                                  )}
+                                />
+                                <span className="mr-2">🏷️</span>
+                                {tag}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
+                    {/* Tags Preview */}
+                    {selectedTags.length > 0 && (
+                      <div className="bg-gradient-to-r from-orange-50/50 to-pink-50/50 dark:from-orange-900/10 dark:to-pink-900/10 p-3 rounded-lg border border-dashed border-orange-200 dark:border-orange-700">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-sm font-medium text-orange-800 dark:text-orange-300">
+                            Selected Tags ({selectedTags.length})
+                          </p>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedTags([])}
+                            className="h-6 px-2 text-xs text-orange-600 hover:text-orange-800 hover:bg-orange-100"
+                          >
+                            Clear All
+                          </Button>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {selectedTags.map((tag, index) => (
+                            <span 
+                              key={index} 
+                              className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-700 rounded-full text-orange-700 dark:text-orange-300"
+                            >
+                              🏷️ {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <FormMessage />
+                  <p className="text-sm text-gray-500 mt-1">
+                    Add relevant tags to help categorize and discover this book
+                  </p>
+                </FormItem>
+              )}
+            />
 
             {/* Table of Contents Modal Button */}
             <div className="space-y-4">
@@ -1502,27 +1664,54 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       .map((item, index) => (
                         <div
                           key={index}
-                          className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-md transition-all duration-200 hover:border-blue-300"
+                          className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-blue-300"
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3 flex-1">
-                              <div className={`w-2 h-2 rounded-full ${
-                                item.level === 1 ? 'bg-blue-500' : 
-                                item.level === 2 ? 'bg-green-500' : 'bg-purple-500'
-                              }`} />
+                              {/* Level Indicator */}
+                              <div className="flex flex-col items-center">
+                                <div className={`w-3 h-3 rounded-full ${
+                                  item.level === 1 ? 'bg-blue-500' : 
+                                  item.level === 2 ? 'bg-green-500' : 'bg-purple-500'
+                                }`} />
+                                {item.level > 1 && (
+                                  <div className={`w-0.5 h-4 ${
+                                    item.level === 2 ? 'bg-green-300' : 'bg-purple-300'
+                                  }`} />
+                                )}
+                              </div>
+                              
                               <div className="flex-1">
+                                {/* Level Badge */}
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`text-xs px-2 py-0 ${
+                                      item.level === 1 ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                      item.level === 2 ? 'bg-green-50 text-green-700 border-green-200' :
+                                      'bg-purple-50 text-purple-700 border-purple-200'
+                                    }`}
+                                  >
+                                    {item.level === 1 ? 'Chapter' : item.level === 2 ? 'Section' : 'Subsection'}
+                                  </Badge>
+                                  {item.page && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      Page {item.page}
+                                    </Badge>
+                                  )}
+                                </div>
+                                
+                                {/* Title with proper indentation */}
                                 <div className={`font-medium ${
                                   item.level === 1 ? 'text-lg text-blue-700 dark:text-blue-300' :
                                   item.level === 2 ? 'text-base text-green-700 dark:text-green-300 ml-4' :
                                   'text-sm text-purple-700 dark:text-purple-300 ml-8'
                                 }`}>
+                                  {item.level === 1 && '📖 '}
+                                  {item.level === 2 && '📄 '}
+                                  {item.level === 3 && '📝 '}
                                   {item.title}
                                 </div>
-                                {item.page && (
-                                  <div className="text-xs text-muted-foreground mt-1">
-                                    Page {item.page}
-                                  </div>
-                                )}
                               </div>
                             </div>
                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

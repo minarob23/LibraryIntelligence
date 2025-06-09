@@ -25,6 +25,7 @@ export const books = pgTable("books", {
   addedDate: date("added_date").default(sql`CURRENT_DATE`),
   publishedDate: date("published_date"),
   genres: text("genres"),
+  tags: text("tags"),
   comments: text("comments"),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });

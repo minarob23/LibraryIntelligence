@@ -177,6 +177,26 @@ const BooksPage = () => {
       ),
     },
     {
+      key: 'tags',
+      header: 'Tags',
+      cell: (row: any) => row.tags ? (
+        <div className="flex flex-wrap gap-1">
+          {row.tags.split(',').slice(0, 3).map((tag: string, index: number) => (
+            <Badge key={index} variant="secondary" className="text-xs bg-gradient-to-r from-orange-100 to-pink-100 text-orange-800 border border-orange-200">
+              🏷️ {tag.trim()}
+            </Badge>
+          ))}
+          {row.tags.split(',').length > 3 && (
+            <Badge variant="outline" className="text-xs text-gray-500">
+              +{row.tags.split(',').length - 3} more
+            </Badge>
+          )}
+        </div>
+      ) : (
+        <span className="text-gray-500 text-xs">No tags</span>
+      ),
+    },
+    {
       key: 'bookCode',
       header: 'Book Code',
       cell: (row: any) => (
@@ -247,11 +267,14 @@ const BooksPage = () => {
   const [selectedAuthor, setSelectedAuthor] = useState('all');
   const [selectedAvailability, setSelectedAvailability] = useState('all');
 
-  // Get unique authors, publishers, and genres from books
+  // Get unique authors, publishers, genres, and tags from books
   const authors = [...new Set(books?.map(book => book.author) || [])];
   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
   const genres = [...new Set(books?.flatMap(book => 
     book.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
+  ) || [])];
+  const tags = [...new Set(books?.flatMap(book => 
+    book.tags ? book.tags.split(',').map((t: string) => t.trim()) : []
   ) || [])];
 
   const [filterType, setFilterType] = useState('publisher');
@@ -270,6 +293,7 @@ const BooksPage = () => {
           <SelectItem value="publisher">Publisher</SelectItem>
           <SelectItem value="author">Author</SelectItem>
           <SelectItem value="genres">Genres</SelectItem>
+          <SelectItem value="tags">Tags</SelectItem>
           <SelectItem value="code">Book Code</SelectItem>
         </SelectContent>
       </Select>
@@ -288,6 +312,13 @@ const BooksPage = () => {
           ))}
           {filterType === 'genres' && genres.map(genre => (
             <SelectItem key={genre} value={genre}>{genre}</SelectItem>
+          ))}
+          {filterType === 'tags' && tags.map(tag => (
+            <SelectItem key={tag} value={tag}>
+              <div className="flex items-center gap-1">
+                🏷️ {tag}
+              </div>
+            </SelectItem>
           ))}
           {filterType === 'code' && books?.map(book => (
             <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
@@ -325,6 +356,9 @@ const BooksPage = () => {
           break;
         case 'genres':
           filterMatch = book.genres && book.genres.split(',').map((g: string) => g.trim()).includes(filterValue);
+          break;
+        case 'tags':
+          filterMatch = book.tags && book.tags.split(',').map((t: string) => t.trim()).includes(filterValue);
           break;
         case 'code':
           filterMatch = book.bookCode === filterValue;
@@ -796,10 +830,19 @@ const BooksPage = () => {
                             {book.author}
                           </p>
                           {book.genres && (
-                            <div className="flex flex-wrap gap-1">
+                            <div className="flex flex-wrap gap-1 mb-1">
                               {book.genres.split(',').slice(0, 2).map((genre: string, index: number) => (
                                 <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
                                   {genre.trim()}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          {book.tags && (
+                            <div className="flex flex-wrap gap-1">
+                              {book.tags.split(',').slice(0, 2).map((tag: string, index: number) => (
+                                <Badge key={index} variant="secondary" className="text-xs bg-gradient-to-r from-orange-100 to-pink-100 text-orange-800 dark:from-orange-900/30 dark:to-pink-900/30 dark:text-orange-300">
+                                  🏷️ {tag.trim()}
                                 </Badge>
                               ))}
                             </div>
