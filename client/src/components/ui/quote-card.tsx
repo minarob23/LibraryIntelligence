@@ -73,7 +73,10 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => onToggleFavorite(quote.id || 0)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite(quote.id || 0);
+                }}
                 className="h-8 w-8 p-0"
                 title={quote.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -90,8 +93,12 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => onEdit(quote)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(quote);
+                }}
                 className="h-8 w-8 p-0"
+                title="Edit quote"
               >
                 <Edit className="h-4 w-4" />
               </Button>
@@ -100,8 +107,12 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => onDelete(quote.id || 0)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(quote.id || 0);
+                }}
                 className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+                title="Delete quote"
               >
                 <X className="h-4 w-4" />
               </Button>
