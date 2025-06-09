@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, User } from 'lucide-react';
 import { useLocation } from 'wouter';
 import ThemeToggle from './theme-toggle';
@@ -47,12 +47,52 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
         </div>
 
         <div className="flex items-center space-x-4">
+          <DateTimeDisplay />
           <ThemeToggle />
           {/* User Menu */}
           <UserMenu />
         </div>
       </div>
     </header>
+  );
+};
+
+const DateTimeDisplay = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  return (
+    <div className="hidden md:flex flex-col items-end text-right bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 px-3 py-2 rounded-lg border border-blue-100 dark:border-gray-600 shadow-sm">
+      <div className="text-xs font-medium text-blue-600 dark:text-blue-300 leading-none">
+        {formatDate(currentTime)}
+      </div>
+      <div className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-none mt-0.5">
+        {formatTime(currentTime)}
+      </div>
+    </div>
   );
 };
 
