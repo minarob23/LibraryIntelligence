@@ -343,13 +343,10 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                                 { value: 'university', label: 'University', color: 'from-blue-400 to-cyan-500' },
                                 { value: 'graduate', label: 'Graduate', color: 'from-purple-400 to-violet-500' }
                               ].map((stage) => (
-                                <div key={stage.value} className="relative">
-                                  <RadioGroupItem value={stage.value} id={stage.value} className="peer sr-only" />
-                                  <Label 
-                                    htmlFor={stage.value} 
-                                    className={`flex items-center justify-center space-x-2 border-2 border-gray-300 dark:border-gray-600 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all duration-300 peer-checked:border-transparent peer-checked:bg-gradient-to-r peer-checked:${stage.color} peer-checked:text-white peer-checked:shadow-xl peer-checked:scale-105 hover:scale-[1.02]`}
-                                  >
-                                    <span className="font-medium text-center">{stage.label}</span>
+                                <div key={stage.value} className="flex items-center space-x-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20">
+                                  <RadioGroupItem value={stage.value} id={stage.value} className="text-blue-600" />
+                                  <Label htmlFor={stage.value} className="font-medium cursor-pointer flex-1">
+                                    {stage.label}
                                   </Label>
                                 </div>
                               ))}

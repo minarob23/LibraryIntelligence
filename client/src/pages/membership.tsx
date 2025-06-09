@@ -82,25 +82,7 @@ const MembershipPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Library Hours - Compact */}
-              <Card className="shadow-lg border-0">
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-blue-500" />
-                    Opening Hours
-                  </h3>
-                  <div className="space-y-1 text-sm">
-                    {Object.entries(JSON.parse(localStorage.getItem('libraryHours') || '{}')).map(([day, hours]: [string, any]) => (
-                      <div key={day} className="flex justify-between py-1 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-                        <span className="capitalize font-medium">{day}</span>
-                        <span className="text-gray-600 dark:text-gray-400">
-                          {hours.open === 'Closed' ? 'Closed' : `${hours.open} - ${hours.close}`}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              
 
               {/* Image Gallery - Compact */}
               <Card className="shadow-lg border-0 overflow-hidden">
