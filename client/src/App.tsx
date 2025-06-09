@@ -18,6 +18,7 @@ import Login from "@/pages/login";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { initializeSampleData } from "./lib/sampleData";
+import FeedbackPage from './pages/feedback';
 
 function Router() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('isAuthenticated'));
@@ -105,6 +106,15 @@ function Router() {
           <PrivateRoute>
             <Layout>
               <Settings />
+            </Layout>
+          </PrivateRoute>
+        )}
+      </Route>
+      <Route path="/feedback">
+        {() => (
+          <PrivateRoute>
+            <Layout>
+              <FeedbackPage />
             </Layout>
           </PrivateRoute>
         )}

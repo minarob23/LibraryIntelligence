@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -116,6 +115,15 @@ const LibraryPolicy = ({ onClose, showCloseButton = false }: LibraryPolicyProps)
             </h3>
             <p className="text-blue-100">
               Please contact the librarian directly <strong>or</strong> fill out the <strong>feedback form</strong> available on the library's website.
+
+          <div className="mt-4">
+            <a 
+              href="/feedback" 
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              📝 Submit Feedback
+            </a>
+          </div>
             </p>
           </div>
 
