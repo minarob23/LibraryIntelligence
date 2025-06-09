@@ -17,49 +17,14 @@ const Dashboard = () => {
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
 
-  // Data integrity check and cleanup on component mount
+  // Prevent any automatic data manipulation on mount
   useEffect(() => {
-    // Clean up any corrupted data on dashboard load
-    const cleanupCorruptedData = () => {
-      try {
-        // Check for duplicate entries and clean them up
-        const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
-        const borrowers = JSON.parse(localStorage.getItem('borrowers') || '[]');
-        const books = JSON.parse(localStorage.getItem('books') || '[]');
-
-        // Remove duplicates based on ID
-        const uniqueBorrowings = borrowings.filter((item: any, index: number, self: any[]) => 
-          index === self.findIndex(b => b.id === item.id)
-        );
-        const uniqueBorrowers = borrowers.filter((item: any, index: number, self: any[]) => 
-          index === self.findIndex(b => b.id === item.id)
-        );
-        const uniqueBooks = books.filter((item: any, index: number, self: any[]) => 
-          index === self.findIndex(b => b.id === item.id)
-        );
-
-        // Update localStorage with cleaned data if duplicates were found
-        if (uniqueBorrowings.length !== borrowings.length) {
-          localStorage.setItem('borrowings', JSON.stringify(uniqueBorrowings));
-          console.log('Cleaned up duplicate borrowings');
-        }
-        if (uniqueBorrowers.length !== borrowers.length) {
-          localStorage.setItem('borrowers', JSON.stringify(uniqueBorrowers));
-          console.log('Cleaned up duplicate borrowers');
-        }
-        if (uniqueBooks.length !== books.length) {
-          localStorage.setItem('books', JSON.stringify(uniqueBooks));
-          console.log('Cleaned up duplicate books');
-        }
-      } catch (error) {
-        console.error('Error during data cleanup:', error);
-      }
-    };
-
-    cleanupCorruptedData();
-
-    // Disable automatic refresh to prevent data corruption
-  }, [queryClient]);
+    // Only run once to prevent data corruption on refresh
+    const hasRun = sessionStorage.getItem('dashboard-initialized');
+    if (!hasRun) {
+      sessionStorage.setItem('dashboard-initialized', 'true');
+    }
+  }, []);
 
   const refreshData = () => {
     // Invalidate specific queries instead of full page reload

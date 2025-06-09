@@ -213,36 +213,7 @@ class LocalStorage {
   // Borrowings
   getBorrowings(): any[] {
     const data = this.getData();
-    let borrowings = data.borrowings || [];
-
-    // Filter out corrupted entries immediately
-    borrowings = borrowings.filter(borrowing => {
-      // Check if borrowing is corrupted (has numeric keys)
-      if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
-        return false;
-      }
-
-      const keys = Object.keys(borrowing);
-      const hasNumericKeys = keys.some(key => !isNaN(parseInt(key)) && key.length <= 3);
-
-      if (hasNumericKeys) {
-        console.log('Found corrupted borrowing entry, removing:', borrowing);
-        return false;
-      }
-
-      // Ensure essential fields exist
-      return typeof borrowing.id === 'number' &&
-             typeof borrowing.borrowerId === 'number' &&
-             typeof borrowing.bookId === 'number';
-    });
-
-    // If we filtered out corrupted data, save the clean data immediately
-    if (borrowings.length !== (data.borrowings || []).length) {
-      console.log('Saving cleaned borrowings data...');
-      this.saveData({ ...data, borrowings });
-    }
-
-    return borrowings;
+    return data.borrowings || [];
   }
 
   getBorrowing(id: number) {
@@ -350,143 +321,21 @@ class LocalStorage {
     };
   }
 
-  // Dashboard analytics with corruption prevention
+  // Dashboard analytics - read-only, no data manipulation
   getMostBorrowedBooksAnalytics(limit: number = 5) {
-    try {
-      const borrowings = this.getBorrowings();
-      const books = this.getBooks();
-
-      if (!borrowings || !books || !Array.isArray(borrowings) || !Array.isArray(books)) {
-        return [];
-      }
-
-      // Deduplicate borrowings to prevent corruption
-      const uniqueBorrowings = borrowings.filter((borrowing, index, self) => 
-        index === self.findIndex(b => b.id === borrowing.id)
-      );
-
-      const bookBorrowCounts = uniqueBorrowings.reduce((acc, borrowing) => {
-        if (borrowing && borrowing.bookId) {
-          acc[borrowing.bookId] = (acc[borrowing.bookId] || 0) + 1;
-        }
-        return acc;
-      }, {} as Record<number, number>);
-
-      const mostBorrowed = Object.entries(bookBorrowCounts)
-        .map(([bookId, count]) => {
-          const book = books.find(b => b && b.id === parseInt(bookId));
-          return book ? { ...book, borrowCount: count } : null;
-        })
-        .filter(Boolean)
-        .sort((a, b) => (b?.borrowCount || 0) - (a?.borrowCount || 0))
-        .slice(0, limit);
-
-      return mostBorrowed;
-    } catch (error) {
-      console.error('Error in getMostBorrowedBooksAnalytics:', error);
-      return [];
-    }
+    return this.getMostBorrowedBooks(limit);
   }
 
   getPopularBooksAnalytics(limit: number = 4) {
-    try {
-      const books = this.getBooks();
-      const borrowings = this.getBorrowings();
-
-      if (!books || !borrowings || !Array.isArray(books) || !Array.isArray(borrowings)) {
-        return [];
-      }
-
-      // Deduplicate borrowings
-      const uniqueBorrowings = borrowings.filter((borrowing, index, self) => 
-        index === self.findIndex(b => b.id === borrowing.id)
-      );
-
-      return books.slice(0, limit).map(book => {
-        const bookBorrowings = uniqueBorrowings.filter(b => b && b.bookId === book.id);
-        return {
-          ...book,
-          timesBorrowed: bookBorrowings.length,
-          lastBorrowed: bookBorrowings.length > 0 
-            ? Math.max(...bookBorrowings.map(b => new Date(b.borrowDate).getTime()))
-            : null
-        };
-      });
-    } catch (error) {
-      console.error('Error in getPopularBooksAnalytics:', error);
-      return [];
-    }
+    return this.getPopularBooks(limit);
   }
 
   getTopBorrowersAnalytics(limit: number = 5) {
-    try {
-      const borrowers = this.getBorrowers();
-      const borrowings = this.getBorrowings();
-
-      if (!borrowers || !borrowings || !Array.isArray(borrowers) || !Array.isArray(borrowings)) {
-        return [];
-      }
-
-      // Deduplicate borrowings and borrowers
-      const uniqueBorrowings = borrowings.filter((borrowing, index, self) => 
-        index === self.findIndex(b => b.id === borrowing.id)
-      );
-
-      const uniqueBorrowers = borrowers.filter((borrower, index, self) => 
-        index === self.findIndex(b => b.id === borrower.id)
-      );
-
-      const borrowerBorrowCounts = uniqueBorrowings.reduce((acc, borrowing) => {
-        if (borrowing && borrowing.borrowerId) {
-          acc[borrowing.borrowerId] = (acc[borrowing.borrowerId] || 0) + 1;
-        }
-        return acc;
-      }, {} as Record<number, number>);
-
-      const topBorrowers = uniqueBorrowers
-        .map(borrower => ({
-          ...borrower,
-          borrowCount: borrowerBorrowCounts[borrower.id] || 0
-        }))
-        .sort((a, b) => (b?.borrowCount || 0) - (a?.borrowCount || 0))
-        .slice(0, limit);
-
-      return topBorrowers;
-    } catch (error) {
-      console.error('Error in getTopBorrowersAnalytics:', error);
-      return [];
-    }
+    return this.getTopBorrowers(limit);
   }
 
   getBorrowerDistributionAnalytics() {
-    try {
-      const borrowers = this.getBorrowers();
-
-      if (!borrowers || !Array.isArray(borrowers)) {
-        return [];
-      }
-
-      // Deduplicate borrowers
-      const uniqueBorrowers = borrowers.filter((borrower, index, self) => 
-        index === self.findIndex(b => b.id === borrower.id)
-      );
-
-      const distribution = uniqueBorrowers.reduce((acc, borrower) => {
-        if (borrower && borrower.category) {
-          const category = borrower.category || 'unknown';
-          acc[category] = (acc[category] || 0) + 1;
-        }
-        return acc;
-      }, {} as Record<string, number>);
-
-      return Object.entries(distribution).map(([category, count]) => ({
-        category,
-        count
-      }));
-    } catch (error) {
-      console.error('Error in getBorrowerDistributionAnalytics:', error);
-      return [];
-    }
+    return this.getBorrowerDistribution();
   }
 
   getMostBorrowedBooks(limit: number = 5) {
