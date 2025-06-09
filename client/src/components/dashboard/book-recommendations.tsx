@@ -153,7 +153,7 @@ const BookRecommendations = () => {
     return scoredBooks
       .filter(book => book.recommendationScore > 0)
       .sort((a, b) => b.recommendationScore - a.recommendationScore)
-      .slice(0, 12);
+      .slice(0, 6);
   };
 
   // Get reasons why a book was recommended
