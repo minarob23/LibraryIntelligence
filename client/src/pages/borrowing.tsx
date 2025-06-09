@@ -263,11 +263,27 @@ const BorrowingManagement = () => {
       key: 'borrowDate',
       header: 'Borrow Date',
       cell: (row: any) => {
-        if (!row?.borrowDate) return '-';
+        if (!row?.borrowDate) return <span className="text-gray-400">-</span>;
         try {
-          return new Date(row.borrowDate).toLocaleDateString();
+          const borrowDate = new Date(row.borrowDate);
+          const daysAgo = Math.floor((new Date().getTime() - borrowDate.getTime()) / (1000 * 60 * 60 * 24));
+          
+          return (
+            <div className="flex flex-col">
+              <span className="font-medium">
+                {borrowDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {daysAgo === 0 ? 'Today' : `${daysAgo} days ago`}
+              </span>
+            </div>
+          );
         } catch {
-          return '-';
+          return <span className="text-gray-400">-</span>;
         }
       },
     },
@@ -275,11 +291,39 @@ const BorrowingManagement = () => {
       key: 'dueDate',
       header: 'Due Date',
       cell: (row: any) => {
-        if (!row?.dueDate) return '-';
+        if (!row?.dueDate) return <span className="text-gray-400">-</span>;
         try {
-          return new Date(row.dueDate).toLocaleDateString();
+          const dueDate = new Date(row.dueDate);
+          const today = new Date();
+          const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          
+          return (
+            <div className="flex flex-col">
+              <span className="font-medium">
+                {dueDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+              <span className={`text-xs ${
+                daysUntilDue < 0 
+                  ? 'text-red-500 dark:text-red-400' 
+                  : daysUntilDue <= 3 
+                    ? 'text-yellow-600 dark:text-yellow-400' 
+                    : 'text-green-600 dark:text-green-400'
+              }`}>
+                {daysUntilDue < 0 
+                  ? `Overdue by ${Math.abs(daysUntilDue)} days`
+                  : daysUntilDue === 0
+                    ? 'Due today'
+                    : `${daysUntilDue} days left`
+                }
+              </span>
+            </div>
+          );
         } catch {
-          return '-';
+          return <span className="text-gray-400">-</span>;
         }
       },
     },
@@ -287,11 +331,34 @@ const BorrowingManagement = () => {
       key: 'returnDate',
       header: 'Return Date',
       cell: (row: any) => {
-        if (!row?.returnDate) return '-';
+        if (!row?.returnDate) {
+          return (
+            <div className="flex items-center text-gray-500 dark:text-gray-400">
+              <Calendar className="h-4 w-4 mr-1" />
+              <span className="text-sm">Not returned</span>
+            </div>
+          );
+        }
         try {
-          return new Date(row.returnDate).toLocaleDateString();
+          const returnDate = new Date(row.returnDate);
+          const daysAgo = Math.floor((new Date().getTime() - returnDate.getTime()) / (1000 * 60 * 60 * 24));
+          
+          return (
+            <div className="flex flex-col">
+              <span className="font-medium text-green-700 dark:text-green-400">
+                {returnDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {daysAgo === 0 ? 'Today' : `${daysAgo} days ago`}
+              </span>
+            </div>
+          );
         } catch {
-          return '-';
+          return <span className="text-gray-400">-</span>;
         }
       },
     },

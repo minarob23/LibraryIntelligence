@@ -1245,6 +1245,16 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
 
              {/* Book Statistics Section - Read Only */}
             <div className="space-y-4 pt-6 border-t">
+              {/* Additional Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <strong>ℹ️ Note:</strong> {isEditing 
+                    ? 'These statistics are automatically calculated based on borrowing history and user ratings. They update in real-time as the book is borrowed and returned.'
+                    : 'Statistics will be calculated automatically once the book is added and starts being borrowed by members.'
+                  }
+                </p>
+              </div>
+
               <Label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 📊 Book Statistics & Information
               </Label>
@@ -1381,16 +1391,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 </div>
               )}
 
-              {/* Additional Info */}
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-300">
-                  <strong>ℹ️ Note:</strong> {isEditing 
-                    ? 'These statistics are automatically calculated based on borrowing history and user ratings. They update in real-time as the book is borrowed and returned.'
-                    : 'Statistics will be calculated automatically once the book is added and starts being borrowed by members.'
-                  }
-                </p>
               </div>
-            </div>
 
             <FormField
               control={form.control}

@@ -253,7 +253,18 @@ const BorrowersPage = () => {
     {
       key: 'category',
       header: 'Category',
-      cell: (row: any) => <span className="capitalize">{row.category}</span>,
+      cell: (row: any) => (
+        <div className="flex flex-col">
+          <span className="capitalize font-medium">{row.category}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            {row.category === 'primary' && 'Elementary School'}
+            {row.category === 'middle' && 'Middle School'}
+            {row.category === 'secondary' && 'High School'}
+            {row.category === 'university' && 'University Student'}
+            {row.category === 'graduate' && 'Graduate Student'}
+          </span>
+        </div>
+      ),
     },
     {
       key: 'phone',
@@ -263,12 +274,55 @@ const BorrowersPage = () => {
     {
       key: 'joinedDate',
       header: 'Joined Date',
-      cell: (row: any) => new Date(row.joinedDate).toLocaleDateString(),
+      cell: (row: any) => (
+        <div className="flex flex-col">
+          <span className="font-medium">
+            {new Date(row.joinedDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}
+          </span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            {Math.floor((new Date().getTime() - new Date(row.joinedDate).getTime()) / (1000 * 60 * 60 * 24))} days ago
+          </span>
+        </div>
+      ),
     },
     {
       key: 'expiryDate',
       header: 'Membership Expiry',
-      cell: (row: any) => new Date(row.expiryDate).toLocaleDateString(),
+      cell: (row: any) => {
+        const expiryDate = new Date(row.expiryDate);
+        const today = new Date();
+        const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        
+        return (
+          <div className="flex flex-col">
+            <span className="font-medium">
+              {expiryDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}
+            </span>
+            <span className={`text-xs ${
+              daysUntilExpiry < 0 
+                ? 'text-red-500 dark:text-red-400' 
+                : daysUntilExpiry < 30 
+                  ? 'text-yellow-600 dark:text-yellow-400' 
+                  : 'text-green-600 dark:text-green-400'
+            }`}>
+              {daysUntilExpiry < 0 
+                ? `Expired ${Math.abs(daysUntilExpiry)} days ago`
+                : daysUntilExpiry === 0
+                  ? 'Expires today'
+                  : `${daysUntilExpiry} days remaining`
+              }
+            </span>
+          </div>
+        );
+      },
     },
     {
       key: 'status',
