@@ -94,13 +94,7 @@ const NotificationDropdown = () => {
     if (borrowers && borrowings) {
       const notifications = checkExpiryAndOverdue(borrowers, borrowings);
       notifications.forEach(notification => {
-        let category = 'info';
-        if (notification.message.includes('membership')) {
-          category = 'membership_expiry';
-        } else if (notification.message.includes('Overdue') || notification.message.includes('Due soon')) {
-          category = 'due_date';
-        }
-        addNotification(notification.message, notification.type || 'info', category);
+        addNotification(notification.message);
       });
     }
   }, [borrowers, borrowings]);

@@ -45,10 +45,6 @@ const Settings = () => {
     saturday: { open: '10:00', close: '16:00' },
     sunday: { open: 'Closed', close: 'Closed' },
   });
-    const [membershipExpiryAlerts, setMembershipExpiryAlerts] = useState(true);
-    const [dueDateReminders, setDueDateReminders] = useState(true);
-    const [actionHistoryNotifications, setActionHistoryNotifications] = useState(true);
-    const [employmentStatusNotifications, setEmploymentStatusNotifications] = useState(true);
 
   // Fetch data for export
   const { data: books } = useQuery({ 
@@ -226,23 +222,6 @@ const Settings = () => {
 
     // Save library hours to localStorage for membership page
     localStorage.setItem('libraryHours', JSON.stringify(libraryHours));
-
-    const settings = {
-      profileImage,
-      backupFrequency,
-      isDarkMode,
-      isCompactView,
-      emailNotifications,
-      expiryReminders,
-      overdueItems,
-      membershipExpiryAlerts,
-      dueDateReminders,
-      actionHistoryNotifications,
-      employmentStatusNotifications,
-      autoBackup,
-      fontSizePreference,
-      libraryHours,
-    };
 
     toast({
       title: "Preferences saved",
@@ -746,46 +725,6 @@ const Settings = () => {
                       onCheckedChange={setExpiryReminders}
                     />
                   </div>
-                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Membership Expiry Alerts</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Alerts for expiring memberships</p>
-                    </div>
-                    <Switch
-                      checked={membershipExpiryAlerts}
-                      onCheckedChange={setMembershipExpiryAlerts}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Due Date Reminders</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for item due dates</p>
-                    </div>
-                    <Switch
-                      checked={dueDateReminders}
-                      onCheckedChange={setDueDateReminders}
-                    />
-                  </div>
-                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Action History Notifications</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for action history</p>
-                    </div>
-                    <Switch
-                      checked={actionHistoryNotifications}
-                      onCheckedChange={setActionHistoryNotifications}
-                    />
-                  </div>
-                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">Employment Status Notifications</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Notifications for employment status</p>
-                    </div>
-                    <Switch
-                      checked={employmentStatusNotifications}
-                      onCheckedChange={setEmploymentStatusNotifications}
-                    />
-                  </div>
 
                   <div className="flex items-center justify-between">
                     <div>
@@ -883,7 +822,7 @@ const Settings = () => {
                       <AlertDialogAction
                         onClick={async () => {
                           try {
-                            const reset = awaitfetch('/api/reset-ui', {
+                            const reset = await fetch('/api/reset-ui', {
                               method: 'POST'
                             });
                             if (!reset.ok) {
