@@ -5,7 +5,6 @@ import * as z from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { useNotifications } from '@/lib/hooks/use-notifications';
 import { apiRequest } from '@/lib/queryClient';
-import { insertLibrarianSchema } from '@shared/schema';
 import { 
   Form, 
   FormControl, 
