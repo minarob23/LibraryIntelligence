@@ -98,6 +98,18 @@ export const useNotifications = () => {
     setNotifications([]);
   };
 
+  const trackAction = (action: string, details: string) => {
+    const recentActions = JSON.parse(localStorage.getItem('recentActions') || '[]');
+    const newAction = {
+      action,
+      details,
+      timestamp: new Date().toLocaleTimeString()
+    };
+    recentActions.unshift(newAction);
+    // Keep only last 10 actions
+    localStorage.setItem('recentActions', JSON.stringify(recentActions.slice(0, 10)));
+  };
+
   const unreadCount = notifications.filter(notification => !notification.read).length;
 
   return {
@@ -108,5 +120,6 @@ export const useNotifications = () => {
     addNotification,
     removeNotification,
     clearAllNotifications,
+    trackAction,
   };
 };
