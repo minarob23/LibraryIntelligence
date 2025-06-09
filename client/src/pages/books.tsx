@@ -396,12 +396,13 @@ const BooksPage = () => {
       </div>
 
       <Tabs defaultValue="all" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
           <TabsTrigger value="borrowed">Borrowed ({borrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="most-borrowed">Most Borrowed ({mostBorrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="popular">Popular ({popularBooks.length})</TabsTrigger>
           <TabsTrigger value="top-rated">Top Rated ({topRatedBooks.length})</TabsTrigger>
+          <TabsTrigger value="gallery">Gallery ({books?.length || 0})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -700,6 +701,120 @@ const BooksPage = () => {
                   </Dialog>
                 )}
               />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="gallery" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Books Gallery</CardTitle>
+              <div className="flex items-center gap-4">
+                {filterComponent}
+              </div>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="aspect-[3/4] bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+                    </div>
+                  ))}
+                </div>
+              ) : filteredBooks && filteredBooks.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {filteredBooks.map((book) => {
+                    const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+                    const avgRating = getAverageRating(book.id);
+                    const timesBorrowed = getTimesBorrowed(book.id);
+
+                    return (
+                      <div key={book.id} className="group relative cursor-pointer">
+                        <div className="aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-transparent group-hover:border-blue-500 transition-all duration-300 group-hover:shadow-lg">
+                          <img 
+                            src={book.coverImage} 
+                            alt={`Cover of ${book.name}`}
+                            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          
+                          {/* Status Badge */}
+                          <div className="absolute top-2 left-2">
+                            {isBorrowed ? (
+                              <Badge variant="outline" className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 text-xs">
+                                Borrowed
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 text-xs">
+                                Available
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Rating Badge */}
+                          {avgRating && (
+                            <div className="absolute top-2 right-2">
+                              <div className="flex items-center bg-black/70 text-white px-2 py-1 rounded-full text-xs">
+                                <Star className="h-3 w-3 text-yellow-400 mr-1 fill-current" />
+                                {avgRating}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Hover Overlay */}
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="text-center text-white p-4">
+                              <Button 
+                                variant="secondary" 
+                                size="sm"
+                                onClick={() => {
+                                  setEditingBook(book);
+                                  setOpenEditDialog(true);
+                                }}
+                                className="mb-2 w-full"
+                              >
+                                <Edit className="h-3 w-3 mr-1" />
+                                Edit
+                              </Button>
+                              <div className="text-xs space-y-1">
+                                <div>Code: {book.bookCode}</div>
+                                <div>Copies: {book.copies}</div>
+                                <div>Borrowed: {timesBorrowed}x</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Book Info */}
+                        <div className="mt-2 space-y-1">
+                          <h4 className="font-semibold text-sm line-clamp-2 text-gray-900 dark:text-gray-100">
+                            {book.name}
+                          </h4>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
+                            {book.author}
+                          </p>
+                          {book.genres && (
+                            <div className="flex flex-wrap gap-1">
+                              {book.genres.split(',').slice(0, 2).map((genre: string, index: number) => (
+                                <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
+                                  {genre.trim()}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-gray-500 dark:text-gray-400 text-lg mb-2">No books found</div>
+                  <p className="text-gray-400 dark:text-gray-500">{getEmptyMessage()}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
