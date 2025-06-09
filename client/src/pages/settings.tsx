@@ -796,62 +796,10 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div className="pt-6 flex space-x-2">
+              <div className="pt-6">
                 <Button onClick={handleSavePreferences}>
                   Save Preferences
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                        variant="destructive" 
-                        size="default"
-                        className="flex items-center"
-                      >
-                        Reset All Systems
-                      </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will reset all systems and databases to become clear.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={async () => {
-                          try {
-                            const reset = await fetch('/api/reset-ui', {
-                              method: 'POST'
-                            });
-                            if (!reset.ok) {
-                              throw new Error('Failed to reset UI');
-                            }
-                            toast({
-                              title: "System Reset",
-                              description: "Interface has been reset. Redirecting to login...",
-                            });
-                            // Store flag in localStorage to trigger restore after login
-                            localStorage.setItem('shouldRestoreAfterReset', 'true');
-                            setTimeout(() => {
-                              window.location.href = '/login';
-                            }, 1500);
-                          } catch (error) {
-                            toast({
-                              title: "Error",
-                              description: "Failed to reset database.",
-                              variant: "destructive"
-                            });
-                          }
-                        }}
-                        className="bg-red-500 hover:bg-red-600"
-                      >
-                        Yes, Reset all Systems
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
               </div>
             </div>
           </CardContent>
