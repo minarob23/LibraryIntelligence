@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { User, School, Heart, CheckCircle, Loader2, Sparkles } from 'lucide-react';
 
 type MembershipFormValues = z.infer<typeof membershipApplicationSchema>;
 
@@ -123,15 +125,21 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
 
   if (isSuccess) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Application Submitted</CardTitle>
-          <CardDescription>
+      <Card className="shadow-xl border-0 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-green-900">
+        <CardHeader className="text-center pb-6">
+          <div className="mx-auto w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle className="h-8 w-8 text-white" />
+          </div>
+          <CardTitle className="text-2xl font-bold text-green-700 dark:text-green-400">Application Submitted!</CardTitle>
+          <CardDescription className="text-base text-green-600 dark:text-green-300">
             Thank you for your membership application. We will review your application and get back to you soon.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Button onClick={() => setIsSuccess(false)}>
+        <CardContent className="text-center">
+          <Button 
+            onClick={() => setIsSuccess(false)}
+            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+          >
             Submit Another Application
           </Button>
         </CardContent>
@@ -140,307 +148,371 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
   }
 
   return (
-    <div className="membership-form-container max-w-4xl mx-auto">
-      <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-      <CardHeader className="text-center pb-6">
-        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Membership Registration
-        </CardTitle>
-        <CardDescription className="text-base text-gray-600 dark:text-gray-400 mt-2">
-          Join our library community and unlock a world of knowledge
-        </CardDescription>
-        <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-3 rounded-full"></div>
-      </CardHeader>
-      <CardContent className="px-6 pb-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <ScrollArea className="h-[500px] w-full pr-4">
-              <div className="space-y-6 pb-4">
-                {/* Personal Information */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">1</div>
-                    Personal Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField
-                      control={form.control}
-                      name="id"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Member ID</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your member ID" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+    <div className="membership-form-container">
+      <Card className="shadow-xl border-0 bg-gradient-to-br from-white via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
+        <CardHeader className="text-center pb-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 animate-pulse"></div>
+          <div className="relative z-10">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+              <Sparkles className="h-10 w-10 text-white" />
+            </div>
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Join Our Library Family
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-600 dark:text-gray-400 mt-3 max-w-md mx-auto">
+              Unlock a world of knowledge and become part of our vibrant reading community
+            </CardDescription>
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-100"></div>
+              <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce delay-200"></div>
+            </div>
+          </div>
+        </CardHeader>
+        
+        <CardContent className="px-8 pb-8">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="space-y-8 pb-4">
+                  {/* Personal Information */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-blue-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <h3 className="text-xl font-bold mb-6 pb-3 border-b-2 border-gradient-to-r from-blue-500 to-purple-500 text-gray-800 dark:text-gray-200 flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 shadow-md">
+                        <User className="h-4 w-4" />
+                      </div>
+                      Personal Information
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="id"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Member ID</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Enter your unique member ID" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your full name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Full Name</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Enter your complete name" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="birthdate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Birthdate</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="birthdate"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Date of Birth</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="date" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your phone number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Primary Phone</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Your main phone number" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="additionalPhone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Additional Phone (Optional)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter additional phone number" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="additionalPhone"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Secondary Phone <span className="text-gray-400">(Optional)</span></FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Alternative contact number" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your email address" type="email" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email Address</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="your.email@example.com" 
+                                type="email" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Address</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your address" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2 md:col-span-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Home Address</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Complete residential address" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Membership Category */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-7 h-7 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">2</div>
-                    Membership Category
-                  </h3>
-                  <FormField
-                    control={form.control}
-                    name="stage"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Select your stage</FormLabel>
-                        <FormDescription>
-                          Please select one category that best describes your current educational level.
-                        </FormDescription>
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-2">
+                  {/* Education Level */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-green-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <h3 className="text-xl font-bold mb-6 pb-3 border-b-2 border-gradient-to-r from-green-500 to-teal-500 text-gray-800 dark:text-gray-200 flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 shadow-md">
+                        <School className="h-4 w-4" />
+                      </div>
+                      Education Level
+                    </h3>
+                    <FormField
+                      control={form.control}
+                      name="stage"
+                      render={({ field }) => (
+                        <FormItem className="space-y-4">
+                          <FormLabel className="text-lg font-semibold text-gray-700 dark:text-gray-300">Select Your Current Educational Stage</FormLabel>
+                          <FormDescription className="text-gray-600 dark:text-gray-400">
+                            Choose the category that best matches your current educational level or background.
+                          </FormDescription>
                           <FormControl>
                             <RadioGroup 
                               onValueChange={field.onChange} 
                               defaultValue={field.value}
-                              className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full"
+                              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
                             >
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="primary" id="primary" />
-                                <Label htmlFor="primary">Primary</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="middle" id="middle" />
-                                <Label htmlFor="middle">Middle</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="secondary" id="secondary" />
-                                <Label htmlFor="secondary">Secondary</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="university" id="university" />
-                                <Label htmlFor="university">University</Label>
-                              </div>
-
-                              <div className="flex items-center space-x-2 border border-gray-300 dark:border-gray-600 rounded-md p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <RadioGroupItem value="graduate" id="graduate" />
-                                <Label htmlFor="graduate">Graduate</Label>
-                              </div>
+                              {[
+                                { value: 'primary', label: 'Primary', color: 'from-red-400 to-pink-500' },
+                                { value: 'middle', label: 'Middle', color: 'from-orange-400 to-yellow-500' },
+                                { value: 'secondary', label: 'Secondary', color: 'from-green-400 to-emerald-500' },
+                                { value: 'university', label: 'University', color: 'from-blue-400 to-cyan-500' },
+                                { value: 'graduate', label: 'Graduate', color: 'from-purple-400 to-violet-500' }
+                              ].map((stage) => (
+                                <div key={stage.value} className="relative">
+                                  <RadioGroupItem value={stage.value} id={stage.value} className="peer sr-only" />
+                                  <Label 
+                                    htmlFor={stage.value} 
+                                    className={`flex items-center justify-center space-x-2 border-2 border-gray-300 dark:border-gray-600 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all duration-300 peer-checked:border-transparent peer-checked:bg-gradient-to-r peer-checked:${stage.color} peer-checked:text-white peer-checked:shadow-xl peer-checked:scale-105 hover:scale-[1.02]`}
+                                  >
+                                    <span className="font-medium text-center">{stage.label}</span>
+                                  </Label>
+                                </div>
+                              ))}
                             </RadioGroup>
                           </FormControl>
                           <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Additional Information */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">3</div>
-                    Additional Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField
-                      control={form.control}
-                      name="churchName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Church Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your church name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="fatherOfConfession"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Father of Confession</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter father of confession" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="studies"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Studies</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your studies" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="job"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Job</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your job" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="hobbies"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Hobbies</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Enter your hobbies" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="favoriteBooks"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Favourite Books</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Enter your favourite books" {...field} />
-                          </FormControl>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
+
+                  {/* Additional Information */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-orange-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <h3 className="text-xl font-bold mb-6 pb-3 border-b-2 border-gradient-to-r from-orange-500 to-red-500 text-gray-800 dark:text-gray-200 flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 shadow-md">
+                        <Heart className="h-4 w-4" />
+                      </div>
+                      Tell Us More About You
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="churchName"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Church Name</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Your church community" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="fatherOfConfession"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Father of Confession</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Your spiritual father" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="studies"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Field of Study</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="What do you study?" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="job"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Occupation</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Your profession or job" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="hobbies"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Hobbies & Interests</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="What do you enjoy doing in your free time?" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200 min-h-[80px]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="favoriteBooks"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Favorite Books & Authors</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Share some books or authors you love!" 
+                                {...field} 
+                                className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200 min-h-[80px]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                 </div>
+              </ScrollArea>
+
+              <div className="flex justify-end space-x-4 pt-6 border-t-2 border-gray-200 dark:border-gray-700">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={onCancel}
+                  className="px-8 py-3 border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 rounded-lg"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="px-8 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 rounded-lg font-semibold"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center">
+                      <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                      Processing...
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <Sparkles className="h-5 w-5 mr-2" />
+                      Complete Registration
+                    </div>
+                  )}
+                </Button>
               </div>
-            </ScrollArea>
-
-            <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onCancel}
-                className="px-6 py-2 border hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Submitting...
-                  </div>
-                ) : (
-                  'Submit Registration'
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
