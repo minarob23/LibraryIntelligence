@@ -74,53 +74,39 @@ const Dashboard = () => {
     const growthBorrowers = memberGrowthData || borrowers;
     if (!growthBorrowers) return [];
 
-    const monthlyGrowth: { month: string; [key: string]: any }[] = [];
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const categories = ['Primary', 'Middle', 'Secondary', 'University', 'Graduate'];
+    const categoryTotals: { [key: string]: number } = {};
 
-    // Initialize last 6 months with 0 for each category
-    const today = new Date();
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-      const categoryData: any = { month: monthKey };
-      categories.forEach(category => {
-        categoryData[category] = 0;
-      });
-      monthlyGrowth.push(categoryData);
-    }
+    // Initialize category counts
+    categories.forEach(category => {
+      categoryTotals[category] = 0;
+    });
 
-    // Count new borrowers by category for each month
+    // Count total borrowers by category (last 6 months)
     if (growthBorrowers && Array.isArray(growthBorrowers)) {
+      const cutoffDate = new Date();
+      cutoffDate.setMonth(cutoffDate.getMonth() - 5);
+      cutoffDate.setDate(1);
+
       growthBorrowers.forEach((borrower: any) => {
         if (borrower.joinedDate) {
           const joinedDate = new Date(borrower.joinedDate);
-          const borrowerMonth = joinedDate.getMonth();
-          const borrowerYear = joinedDate.getFullYear();
-
-          // Only count borrowers from the last 6 months
-          const cutoffDate = new Date();
-          cutoffDate.setMonth(cutoffDate.getMonth() - 5);
-          cutoffDate.setDate(1);
-
+          
           if (joinedDate >= cutoffDate) {
-            // Find the matching month in our data
-            const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
-            const monthData = monthlyGrowth.find(m => m.month === monthKey);
-
-            if (monthData) {
-              const category = borrower.category || 'primary';
-              const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
-              if (categories.includes(categoryKey)) {
-                monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
-              }
+            const category = borrower.category || 'primary';
+            const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
+            if (categories.includes(categoryKey)) {
+              categoryTotals[categoryKey] = (categoryTotals[categoryKey] || 0) + 1;
             }
           }
         }
       });
     }
 
-    return monthlyGrowth;
+    // Convert to format suitable for doughnut chart
+    return Object.entries(categoryTotals)
+      .filter(([_, value]) => value > 0)
+      .map(([name, value]) => ({ name, value }));
   };
 
   // Format borrower distribution data for chart
@@ -253,7 +239,7 @@ const Dashboard = () => {
         ) : (
           <ChartContainer
             title="Member's Growth"
-            type="bar"
+            type="doughnut"
             data={formatBorrowerGrowth()}
             nameKey="month"
             categories={['Primary', 'Middle', 'Secondary', 'University', 'Graduate']}
