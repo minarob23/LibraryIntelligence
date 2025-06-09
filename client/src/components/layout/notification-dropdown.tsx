@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
+const checkAllNotifications = (borrowers: any[], borrowings: any[], librarians: any[]) => {
   const notifications: any[] = [];
   const today = new Date();
 
@@ -33,49 +33,79 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[]) => {
     if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
+        message: `📅 ${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
         time: 'Today',
         read: false,
-        type: 'warning',
+        type: daysUntilExpiry <= 7 ? 'warning' : 'info',
+        category: 'membership',
       });
     } else if (daysUntilExpiry <= 0) {
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `${borrower.name}'s membership has expired`,
+        message: `⚠️ ${borrower.name}'s membership has expired ${Math.abs(daysUntilExpiry)} days ago`,
         time: 'Today',
         read: false,
         type: 'error',
+        category: 'membership',
       });
     } else if (daysUntilExpiry <= 60) {
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
+        message: `📋 ${borrower.name}'s membership expires in ${daysUntilExpiry} days`,
         time: 'Today',
         read: false,
         type: 'info',
+        category: 'membership',
       });
     }
   });
 
-  // Check overdue items
+  // Check overdue items and due dates
   borrowings?.forEach(borrowing => {
     const dueDate = new Date(borrowing.dueDate);
     const daysOverdue = Math.ceil((today.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24));
+    
     if (dueDate < today && borrowing.status !== 'returned') {
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `Overdue: ${borrowing.bookTitle || 'Item'} (${daysOverdue} days)`,
+        message: `📚 Overdue: ${borrowing.bookTitle || 'Item'} (${daysOverdue} days overdue)`,
         time: 'Today',
         read: false,
-        type: daysOverdue > 30 ? 'error' : daysOverdue > 14 ? 'warning' : 'info'
+        type: daysOverdue > 30 ? 'error' : daysOverdue > 14 ? 'warning' : 'info',
+        category: 'borrowing',
       });
-    } else if (dueDate > today && daysOverdue > -7) {
+    } else if (dueDate > today && daysOverdue >= -7) {
+      const daysRemaining = Math.abs(daysOverdue);
       notifications.push({
         id: Date.now() + Math.random(),
-        message: `Due soon: ${borrowing.bookTitle || 'Item'} (${Math.abs(daysOverdue)} days remaining)`,
+        message: `⏰ Due soon: ${borrowing.bookTitle || 'Item'} (${daysRemaining} days remaining)`,
         time: 'Today',
         read: false,
-        type: 'info'
+        type: daysRemaining <= 3 ? 'warning' : 'info',
+        category: 'borrowing',
+      });
+    }
+  });
+
+  // Check librarian employment status
+  librarians?.forEach(librarian => {
+    if (librarian.membershipStatus === 'inactive') {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `👨‍💼 ${librarian.name} has inactive employment status`,
+        time: 'Today',
+        read: false,
+        type: 'warning',
+        category: 'employment',
+      });
+    } else if (librarian.membershipStatus === 'temporary') {
+      notifications.push({
+        id: Date.now() + Math.random(),
+        message: `📋 ${librarian.name} is on temporary employment`,
+        time: 'Today',
+        read: false,
+        type: 'info',
+        category: 'employment',
       });
     }
   });
@@ -89,15 +119,16 @@ const NotificationDropdown = () => {
   
   const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
   const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
+  const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
 
   useEffect(() => {
-    if (borrowers && borrowings) {
-      const notifications = checkExpiryAndOverdue(borrowers, borrowings);
-      notifications.forEach(notification => {
-        addNotification(notification.message);
+    if (borrowers && borrowings && librarians) {
+      const systemNotifications = checkAllNotifications(borrowers, borrowings, librarians);
+      systemNotifications.forEach(notification => {
+        addNotification(notification.message, notification.type, notification.category);
       });
     }
-  }, [borrowers, borrowings]);
+  }, [borrowers, borrowings, librarians]);
 
   return (
     <div className="flex items-center">
@@ -143,8 +174,18 @@ const NotificationDropdown = () => {
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                           {notification.message}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {notification.time}
+                        <div className="flex items-center justify-between mt-1">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {notification.time}
+                          </div>
+                          {notification.category && (
+                            <div className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                              {notification.category === 'membership' && '👥 Membership'}
+                              {notification.category === 'borrowing' && '📚 Borrowing'}
+                              {notification.category === 'employment' && '👨‍💼 Employment'}
+                              {notification.category === 'action' && '📝 Action'}
+                            </div>
+                          )}
                         </div>
                       </div>
                       {!notification.read && (
@@ -221,8 +262,18 @@ const NotificationDropdown = () => {
                           <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                             {notification.message}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {notification.time}
+                          <div className="flex items-center justify-between mt-1">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              {notification.time}
+                            </div>
+                            {notification.category && (
+                              <div className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                                {notification.category === 'membership' && '👥 Membership'}
+                                {notification.category === 'borrowing' && '📚 Borrowing'}
+                                {notification.category === 'employment' && '👨‍💼 Employment'}
+                                {notification.category === 'action' && '📝 Action'}
+                              </div>
+                            )}
                           </div>
                         </div>
                         {!notification.read && (
