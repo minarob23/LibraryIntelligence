@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { IndexItem } from '@/components/ui/index-item';
@@ -128,18 +129,18 @@ const PREDEFINED_PUBLISHERS = [
 ];
 
 const bookSchema = insertBookSchema.extend({
-  name: z.string().min(2, 'Book name must be at least 2 characters'),
-  author: z.string().min(2, 'Author name must be at least 2 characters'),
-  publisher: z.string().min(2, 'Publisher name must be at least 2 characters'),
-  bookCode: z.string().min(2, 'Book code must be at least 2 characters'),
+  name: z.string().optional(),
+  author: z.string().optional(),
+  publisher: z.string().optional(),
+  bookCode: z.string().optional(),
   index: z.string().optional(),
-  copies: z.number().min(1, 'Number of copies must be at least 1'),
+  copies: z.number().optional(),
   description: z.string().optional(),
-  coverImage: z.string().min(1, 'Cover image is required'),
-  totalPages: z.number().min(1, 'Total pages must be at least 1').optional(),
-  cabinet: z.string().min(1, 'Cabinet is required'),
-  shelf: z.string().min(1, 'Shelf is required'),
-  num: z.string().min(1, 'Number is required'),
+  coverImage: z.string().optional(),
+  totalPages: z.number().optional(),
+  cabinet: z.string().optional(),
+  shelf: z.string().optional(),
+  num: z.string().optional(),
   addedDate: z.string().optional(),
   publishedDate: z.string().optional(),
   genres: z.string().optional(),
@@ -241,6 +242,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const [publishersOpen, setPublishersOpen] = useState(false);
   const [newAuthor, setNewAuthor] = useState('');
   const [newPublisher, setNewPublisher] = useState('');
+  const [newGenre, setNewGenre] = useState('');
 
   // Quotes management
   const [quotes, setQuotes] = useState<Array<{
@@ -279,6 +281,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     level: 1,
     order: 0
   });
+  const [showIndexModal, setShowIndexModal] = useState(false);
 
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
@@ -841,8 +844,30 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       </PopoverTrigger>
                       <PopoverContent className="w-full p-0">
                         <Command>
-                          <CommandInput placeholder="Search genres..." />
-                          <CommandEmpty>No genre found.</CommandEmpty>
+                          <CommandInput 
+                            placeholder="Search genres..." 
+                            value={newGenre}
+                            onValueChange={setNewGenre}
+                          />
+                          <CommandEmpty>
+                            <div className="p-2">
+                              <p className="text-sm text-gray-500 mb-2">No genre found.</p>
+                              {newGenre && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (newGenre.trim() && !selectedGenres.includes(newGenre.trim())) {
+                                      setSelectedGenres([...selectedGenres, newGenre.trim()]);
+                                      setNewGenre('');
+                                    }
+                                  }}
+                                >
+                                  Add "{newGenre}"
+                                </Button>
+                              )}
+                            </div>
+                          </CommandEmpty>
                           <CommandGroup className="max-h-64 overflow-auto">
                             {PREDEFINED_GENRES.map((genre) => (
                               <CommandItem
@@ -876,7 +901,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                 )}
               />
 
-            {/* Book Index Section */}
+            {/* Table of Contents Modal Button */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label className="text-base font-semibold flex items-center gap-2">
@@ -888,178 +913,24 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     </Badge>
                   )}
                 </Label>
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      const toc = indexItems
-                        .sort((a, b) => (a.page || 0) - (b.page || 0))
-                        .map(item => `${'  '.repeat(item.level - 1)}${item.title}${item.page ? ` ..................... ${item.page}` : ''}`)
-                        .join('\n');
-                      navigator.clipboard.writeText(toc);
-                      toast({ title: 'Table of contents copied to clipboard!' });
-                    }}
-                    disabled={indexItems.length === 0}
-                  >
-                    <Copy className="h-4 w-4 mr-1" />
-                    Copy TOC
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowIndexForm(true)}
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Chapter
-                  </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowIndexModal(true)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 border-0"
+                >
+                  <List className="h-4 w-4 mr-2" />
+                  Table of Contents
+                </Button>
+              </div>
+
+              {indexItems.length > 0 && (
+                <div className="bg-muted/30 p-3 rounded-lg border border-dashed">
+                  <p className="text-sm text-muted-foreground text-center">
+                    {indexItems.length} items • Click "Table of Contents" to view and edit
+                  </p>
                 </div>
-              </div>
-
-              {showIndexForm && (
-                <Card className="p-4 border-dashed border-2 bg-muted/20">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <List className="h-4 w-4 text-muted-foreground" />
-                      <Label className="font-medium">
-                        {editingIndexItem ? 'Edit Index Item' : 'Add New Index Item'}
-                      </Label>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="space-y-1">
-                        <Label className="text-xs text-muted-foreground">Title</Label>
-                        <Input
-                          placeholder="e.g., Introduction, Chapter 1: The Beginning"
-                          value={indexForm.title}
-                          onChange={(e) => setIndexForm({ ...indexForm, title: e.target.value })}
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <Label className="text-xs text-muted-foreground">Page Number</Label>
-                          <Input
-                            type="number"
-                            placeholder="e.g., 1"
-                            value={indexForm.page}
-                            onChange={(e) => setIndexForm({ ...indexForm, page: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <Label className="text-xs text-muted-foreground">Hierarchy Level</Label>
-                          <Select 
-                            value={indexForm.level.toString()} 
-                            onValueChange={(value) => setIndexForm({ ...indexForm, level: parseInt(value) })}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select level" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="1">
-                                <div className="flex items-center gap-2">
-                                  <BookOpen className="h-3 w-3" />
-                                  Level 1 - Chapter/Part
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="2">
-                                <div className="flex items-center gap-2 ml-4">
-                                  <FileText className="h-3 w-3" />
-                                  Level 2 - Section
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="3">
-                                <div className="flex items-center gap-2 ml-8">
-                                  <Minus className="h-3 w-3" />
-                                  Level 3 - Subsection
-                                </div>
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 mt-4 pt-3 border-t">
-                    <Button 
-                      type="button" 
-                      size="sm" 
-                      onClick={handleAddIndexItem}
-                      disabled={!indexForm.title.trim()}
-                    >
-                      {editingIndexItem ? (
-                        <>
-                          <Edit className="h-3 w-3 mr-1" />
-                          Update Item
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="h-3 w-3 mr-1" />
-                          Add Item
-                        </>
-                      )}
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => {
-                        setShowIndexForm(false);
-                        setEditingIndexItem(null);
-                        setIndexForm({ title: '', page: '', level: 1 });
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </Card>
               )}
-
-              <div className="space-y-3">
-                {indexItems.length > 0 && (
-                  <div className="flex gap-2 text-xs text-muted-foreground">
-                    <span>Total items: {indexItems.length}</span>
-                    <span>•</span>
-                    <span>Chapters: {indexItems.filter(item => item.level === 1).length}</span>
-                    <span>•</span>
-                    <span>Sections: {indexItems.filter(item => item.level === 2).length}</span>
-                    <span>•</span>
-                    <span>Subsections: {indexItems.filter(item => item.level === 3).length}</span>
-                  </div>
-                )}
-
-                <ScrollArea className="max-h-[400px]">
-                  <div className="space-y-1">
-                    {indexItems
-                      .sort((a, b) => {
-                        // Sort by page number, then by order
-                        if (a.page && b.page) return Number(a.page) - Number(b.page);
-                        return a.order - b.order;
-                      })
-                      .map((item, index) => (
-                        <IndexItemCard
-                          key={index}
-                          item={{ ...item, id: index }}
-                          onEdit={handleEditIndexItem}
-                          onDelete={handleDeleteIndexItem}
-                        />
-                      ))}
-                  </div>
-                </ScrollArea>
-
-                {indexItems.length === 0 && (
-                  <Card className="p-6 border-dashed border-2">
-                    <div className="text-center text-muted-foreground">
-                      <List className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm mb-1">No table of contents added yet</p>
-                      <p className="text-xs">Organize chapters and sections for easy navigation</p>
-                    </div>
-                  </Card>
-                )}
-              </div>
             </div>
 
             {/* Quotes Section */}
@@ -1441,6 +1312,267 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
             </div>
           </form>
         </Form>
+
+        {/* Beautiful Table of Contents Modal */}
+        <Dialog open={showIndexModal} onOpenChange={setShowIndexModal}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-xl">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
+                  <List className="h-5 w-5 text-white" />
+                </div>
+                Table of Contents
+                {indexItems.length > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {indexItems.length} items
+                  </Badge>
+                )}
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-6">
+              {/* Statistics */}
+              {indexItems.length > 0 && (
+                <div className="grid grid-cols-3 gap-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">{indexItems.filter(item => item.level === 1).length}</div>
+                    <div className="text-sm text-muted-foreground">Chapters</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">{indexItems.filter(item => item.level === 2).length}</div>
+                    <div className="text-sm text-muted-foreground">Sections</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">{indexItems.filter(item => item.level === 3).length}</div>
+                    <div className="text-sm text-muted-foreground">Subsections</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowIndexForm(true)}
+                  className="bg-green-50 hover:bg-green-100 border-green-200 text-green-700"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Chapter
+                </Button>
+
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const toc = indexItems
+                        .sort((a, b) => (a.page || 0) - (b.page || 0))
+                        .map(item => `${'  '.repeat(item.level - 1)}${item.title}${item.page ? ` ..................... ${item.page}` : ''}`)
+                        .join('\n');
+                      navigator.clipboard.writeText(toc);
+                      toast({ title: 'Table of contents copied to clipboard!' });
+                    }}
+                    disabled={indexItems.length === 0}
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy TOC
+                  </Button>
+                </div>
+              </div>
+
+              {/* Add Index Form */}
+              {showIndexForm && (
+                <Card className="p-4 border-2 border-dashed border-green-200 bg-green-50/50 dark:bg-green-900/10">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="bg-green-500 p-1 rounded">
+                        <List className="h-3 w-3 text-white" />
+                      </div>
+                      <Label className="font-medium text-green-800 dark:text-green-300">
+                        {editingIndexItem ? 'Edit Index Item' : 'Add New Index Item'}
+                      </Label>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Title</Label>
+                        <Input
+                          placeholder="e.g., Introduction, Chapter 1: The Beginning"
+                          value={indexForm.title}
+                          onChange={(e) => setIndexForm({ ...indexForm, title: e.target.value })}
+                          className="border-green-200 focus:border-green-400"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Page Number</Label>
+                          <Input
+                            type="number"
+                            placeholder="e.g., 1"
+                            value={indexForm.page}
+                            onChange={(e) => setIndexForm({ ...indexForm, page: e.target.value })}
+                            className="border-green-200 focus:border-green-400"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Hierarchy Level</Label>
+                          <Select 
+                            value={indexForm.level.toString()} 
+                            onValueChange={(value) => setIndexForm({ ...indexForm, level: parseInt(value) })}
+                          >
+                            <SelectTrigger className="border-green-200 focus:border-green-400">
+                              <SelectValue placeholder="Select level" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">
+                                <div className="flex items-center gap-2">
+                                  <BookOpen className="h-3 w-3" />
+                                  Level 1 - Chapter/Part
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="2">
+                                <div className="flex items-center gap-2 ml-4">
+                                  <FileText className="h-3 w-3" />
+                                  Level 2 - Section
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="3">
+                                <div className="flex items-center gap-2 ml-8">
+                                  <Minus className="h-3 w-3" />
+                                  Level 3 - Subsection
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-4 pt-3 border-t border-green-200">
+                      <Button 
+                        type="button" 
+                        size="sm" 
+                        onClick={handleAddIndexItem}
+                        disabled={!indexForm.title.trim()}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        {editingIndexItem ? (
+                          <>
+                            <Edit className="h-3 w-3 mr-1" />
+                            Update Item
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="h-3 w-3 mr-1" />
+                            Add Item
+                          </>
+                        )}
+                      </Button>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => {
+                          setShowIndexForm(false);
+                          setEditingIndexItem(null);
+                          setIndexForm({ title: '', page: '', level: 1, order: 0 });
+                        }}
+                        className="border-green-200 text-green-700 hover:bg-green-50"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              {/* Index Items Display */}
+              <ScrollArea className="max-h-[400px] pr-4">
+                <div className="space-y-2">
+                  {indexItems.length > 0 ? (
+                    indexItems
+                      .sort((a, b) => {
+                        // Sort by page number, then by order
+                        if (a.page && b.page) return Number(a.page) - Number(b.page);
+                        return a.order - b.order;
+                      })
+                      .map((item, index) => (
+                        <div
+                          key={index}
+                          className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-md transition-all duration-200 hover:border-blue-300"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 flex-1">
+                              <div className={`w-2 h-2 rounded-full ${
+                                item.level === 1 ? 'bg-blue-500' : 
+                                item.level === 2 ? 'bg-green-500' : 'bg-purple-500'
+                              }`} />
+                              <div className="flex-1">
+                                <div className={`font-medium ${
+                                  item.level === 1 ? 'text-lg text-blue-700 dark:text-blue-300' :
+                                  item.level === 2 ? 'text-base text-green-700 dark:text-green-300 ml-4' :
+                                  'text-sm text-purple-700 dark:text-purple-300 ml-8'
+                                }`}>
+                                  {item.title}
+                                </div>
+                                {item.page && (
+                                  <div className="text-xs text-muted-foreground mt-1">
+                                    Page {item.page}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditIndexItem(item)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit className="h-3 w-3" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteIndexItem(index)}
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  ) : (
+                    <Card className="p-8 border-dashed border-2 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
+                      <div className="text-center text-muted-foreground">
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                          <List className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">No table of contents yet</h3>
+                        <p className="text-sm mb-4">Organize chapters and sections for easy navigation</p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setShowIndexForm(true)}
+                          className="bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Your First Chapter
+                        </Button>
+                      </div>
+                    </Card>
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
     </ScrollArea>
