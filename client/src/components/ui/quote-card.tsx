@@ -75,12 +75,13 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
                 size="sm"
                 onClick={() => onToggleFavorite(quote.id || 0)}
                 className="h-8 w-8 p-0"
+                title={quote.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
                 <Heart
-                  className={`h-4 w-4 ${
+                  className={`h-4 w-4 transition-colors ${
                     quote.isFavorite
                       ? 'fill-red-500 text-red-500'
-                      : 'text-gray-400'
+                      : 'text-gray-400 hover:text-red-400'
                   }`}
                 />
               </Button>

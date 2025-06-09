@@ -369,7 +369,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
       const updatedQuotes = editingQuote 
         ? quotes.map(q => q.id === editingQuote.id ? { ...newQuote, id: editingQuote.id } : q)
         : [...quotes, newQuote];
-      
+
       try {
         localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
         toast({
@@ -401,7 +401,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const handleDeleteQuote = async (id: number | string) => {
     const updatedQuotes = quotes.filter(q => q.id !== id);
     setQuotes(updatedQuotes);
-    
+
     // Auto-save to localStorage
     try {
       localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
@@ -417,10 +417,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const handleToggleQuoteFavorite = async (id: number | string) => {
     const quote = quotes.find(q => q.id === id);
     const isBecomingFavorite = !quote?.isFavorite;
-    
+
     const updatedQuotes = quotes.map(q => q.id === id ? { ...q, isFavorite: !q.isFavorite } : q);
     setQuotes(updatedQuotes);
-    
+
     // Auto-save to localStorage
     try {
       localStorage.setItem(`book-quotes-${book?.id || 'new'}`, JSON.stringify(updatedQuotes));
@@ -906,6 +906,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                 <X 
                                   className="ml-1 h-3 w-3 cursor-pointer" 
                                   onClick={(e) => {
+                                    ```python
                                     e.stopPropagation();
                                     setSelectedGenres(selectedGenres.filter((_, i) => i !== index));
                                   }}
@@ -989,7 +990,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     </div>
                     Tags
                   </FormLabel>
-                  
+
                   <div className="space-y-3">
                     <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
                       <PopoverTrigger asChild>
@@ -1311,15 +1312,15 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     if (a.page && b.page) return Number(a.page) - Number(b.page);
                     return 0;
                   })
-                  .map((quote, index) => (
-                    <QuoteCard
-                      key={index}
-                      quote={{ ...quote, id: index }}
-                      onEdit={handleEditQuote}
-                      onDelete={handleDeleteQuote}
-                      onToggleFavorite={handleToggleQuoteFavorite}
-                    />
-                  ))}
+                  .map((quote) => (
+                  <QuoteCard
+                    key={quote.id}
+                    quote={quote}
+                    onEdit={handleEditQuote}
+                    onDelete={handleDeleteQuote}
+                    onToggleFavorite={handleToggleQuoteFavorite}
+                  />
+                ))}
 
                 {quotes.length === 0 && (
                   <Card className="p-6 border-dashed border-2">
@@ -1765,13 +1766,13 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       // Group items hierarchically
                       const renderHierarchy = () => {
                         const chapters = filteredItems.filter(item => item.level === 1);
-                        
+
                         return chapters.map((chapter, chapterIndex) => {
                           const sections = filteredItems.filter(item => 
                             item.level === 2 && 
                             (!item.page || !chapter.page || item.page > chapter.page)
                           );
-                          
+
                           return (
                             <div key={chapterIndex} className="mb-2">
                               {/* Chapter */}
