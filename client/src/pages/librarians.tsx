@@ -27,9 +27,11 @@ import {
 import DataTable from '@/components/tables/data-table';
 import LibrarianForm from '@/components/forms/librarian-form';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useNotifications } from '@/lib/hooks/use-notifications';
 
 const LibrariansPage = () => {
   const { toast } = useToast();
+  const { addNotification } = useNotifications();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingLibrarian, setEditingLibrarian] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -46,6 +48,7 @@ const LibrariansPage = () => {
         title: 'Success',
         description: 'Librarian deleted successfully',
       });
+      addNotification(`Librarian removed from system`, 'info', 'employment_status');
     } catch (error) {
       console.error('Error deleting librarian:', error);
       toast({
