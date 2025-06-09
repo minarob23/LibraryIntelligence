@@ -45,21 +45,12 @@ const Settings = () => {
   });
 
   // Fetch data for export
-  const { data: books } = useQuery({ 
-    queryKey: ['/api/books'],
-  });
-
-  const { data: borrowers } = useQuery({ 
-    queryKey: ['/api/borrowers'],
-  });
-
-  const { data: librarians } = useQuery({ 
-    queryKey: ['/api/librarians'],
-  });
-
-  const { data: borrowings } = useQuery({ 
-    queryKey: ['/api/borrowings'],
-  });
+  const { data: books } = useQuery({ queryKey: ['/api/books'] });
+  const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
+  const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
+  const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
+  const { data: feedback } = useQuery({ queryKey: ['/api/feedback'] });
+  const { data: research } = useQuery({ queryKey: ['/api/research'] });
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -553,12 +544,56 @@ const Settings = () => {
                             </div>
                           </div>
                           <Button 
-                            variant="outline"
+                            variant="outline" 
                             className="w-full bg-purple-500/5 hover:bg-purple-500/10"
                             onClick={() => handleImport('librarians')}
                           >
                             <Upload className="mr-2 h-4 w-4" />
                             Import Librarians
+                          </Button>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-primary" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Feedback</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import feedback data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            className="w-full bg-primary/5 hover:bg-primary/10"
+                            onClick={() => handleImport('feedback')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Feedback
+                          </Button>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border border-gray-200 dark:border-gray-800">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center space-x-4 mb-4">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                              <FileText className="h-6 w-6 text-primary" />
+                            </div>
+                            <div>
+                              <h5 className="font-medium">Research</h5>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">Import research data</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            className="w-full bg-primary/5 hover:bg-primary/10"
+                            onClick={() => handleImport('research')}
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Import Research
                           </Button>
                         </CardContent>
                       </Card>
@@ -710,7 +745,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              
+
 
               <div>
                 <h4 className="text-md font-medium mb-3">Data Management</h4>

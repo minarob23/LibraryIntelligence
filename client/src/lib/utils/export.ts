@@ -1,3 +1,4 @@
+
 import { toast } from "@/hooks/use-toast";
 
 /**
@@ -7,6 +8,10 @@ import { toast } from "@/hooks/use-toast";
  */
 export const exportToExcel = (data: any[], fileName: string = 'export') => {
   try {
+    if (!data || data.length === 0) {
+      throw new Error('No data to export');
+    }
+
     // Convert data to CSV format
     const headers = Object.keys(data[0]);
     const csvContent = [
@@ -35,6 +40,7 @@ export const exportToExcel = (data: any[], fileName: string = 'export') => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Error exporting to Excel:', error);
     toast({
@@ -43,6 +49,137 @@ export const exportToExcel = (data: any[], fileName: string = 'export') => {
       variant: "destructive"
     });
   }
+};
+
+/**
+ * Export all database data to a single JSON file
+ * @param allData Object containing all database tables
+ * @param fileName Name of the file without extension
+ */
+export const exportAllDataToJSON = (allData: any, fileName: string = 'complete-library-data') => {
+  try {
+    const jsonContent = JSON.stringify(allData, null, 2);
+    
+    // Create blob and download
+    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${fileName}.json`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error exporting all data:', error);
+    toast({
+      title: "Export Error",
+      description: "There was an error exporting all data. Please try again.",
+      variant: "destructive"
+    });
+  }
+};
+
+/**
+ * Export all database data to multiple Excel files (one per table)
+ * @param allData Object containing all database tables
+ */
+export const exportAllDataToExcel = (allData: any) => {
+  try {
+    const tables = Object.keys(allData);
+    
+    tables.forEach(tableName => {
+      const tableData = allData[tableName];
+      if (Array.isArray(tableData) && tableData.length > 0) {
+        exportToExcel(tableData, `${tableName}_export`);
+      }
+    });
+
+    toast({
+      title: "Export Successful",
+      description: `Exported ${tables.length} tables to Excel files`,
+    });
+  } catch (error) {
+    console.error('Error exporting all data to Excel:', error);
+    toast({
+      title: "Export Error",
+      description: "There was an error exporting all data to Excel. Please try again.",
+      variant: "destructive"
+    });
+  }
+};
+
+/**
+ * Import data from JSON file
+ * @param file File to import
+ * @returns Promise that resolves with the imported data
+ */
+export const importFromJSON = (file: File): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const data = JSON.parse(content);
+        resolve(data);
+      } catch (error) {
+        console.error('Error parsing JSON file:', error);
+        reject(new Error('Error parsing JSON file. Please check the file format and try again.'));
+      }
+    };
+    
+    reader.onerror = () => {
+      reject(new Error('Error reading file. Please try again.'));
+    };
+    
+    reader.readAsText(file);
+  });
+};
+
+/**
+ * Import data from CSV file
+ * @param file File to import
+ * @returns Promise that resolves with the imported data
+ */
+export const importFromCSV = (file: File): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const rows = content.split('\n').filter(row => row.trim());
+        
+        if (rows.length < 2) {
+          reject(new Error('CSV file must contain at least a header row and one data row.'));
+          return;
+        }
+        
+        const headers = rows[0].split(',').map(h => h.trim().replace(/"/g, ''));
+        
+        const data = rows.slice(1).map(row => {
+          const values = row.split(',').map(v => v.trim().replace(/"/g, ''));
+          return headers.reduce((obj, header, index) => {
+            obj[header] = values[index] || '';
+            return obj;
+          }, {} as Record<string, string>);
+        });
+        
+        resolve(data);
+      } catch (error) {
+        console.error('Error parsing CSV file:', error);
+        reject(new Error('Error parsing CSV file. Please check the file format and try again.'));
+      }
+    };
+    
+    reader.onerror = () => {
+      reject(new Error('Error reading file. Please try again.'));
+    };
+    
+    reader.readAsText(file);
+  });
 };
 
 /**
@@ -65,56 +202,6 @@ export const exportToNotion = async (data: any[]): Promise<void> => {
     } catch (error) {
       console.error('Error exporting to Notion:', error);
       reject(new Error("Failed to export to Notion. Please check your API key and try again."));
-    }
-  });
-};
-
-/**
- * Import data from Excel or CSV file
- * @param file File to import
- * @returns Promise that resolves with the imported data
- */
-export const importFromFile = (file: File): Promise<any[]> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    
-    reader.onload = (event) => {
-      try {
-        const content = event.target?.result as string;
-        
-        if (file.name.endsWith('.csv')) {
-          const rows = content.split('\n');
-          const headers = rows[0].split(',');
-          
-          const data = rows.slice(1).map(row => {
-            const values = row.split(',');
-            return headers.reduce((obj, header, index) => {
-              obj[header] = values[index] || '';
-              return obj;
-            }, {} as Record<string, string>);
-          });
-          
-          resolve(data);
-        } else if (file.name.endsWith('.json')) {
-          const data = JSON.parse(content);
-          resolve(data);
-        } else {
-          reject(new Error('Unsupported file format. Please use CSV or JSON.'));
-        }
-      } catch (error) {
-        console.error('Error parsing file:', error);
-        reject(new Error('Error parsing file. Please check the file format and try again.'));
-      }
-    };
-    
-    reader.onerror = () => {
-      reject(new Error('Error reading file. Please try again.'));
-    };
-    
-    if (file.name.endsWith('.csv') || file.name.endsWith('.json')) {
-      reader.readAsText(file);
-    } else {
-      reject(new Error('Unsupported file format. Please use CSV or JSON.'));
     }
   });
 };
