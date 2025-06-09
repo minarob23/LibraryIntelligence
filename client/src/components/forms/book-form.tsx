@@ -906,7 +906,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                                 <X 
                                   className="ml-1 h-3 w-3 cursor-pointer" 
                                   onClick={(e) => {
-                                    ```python
                                     e.stopPropagation();
                                     setSelectedGenres(selectedGenres.filter((_, i) => i !== index));
                                   }}
