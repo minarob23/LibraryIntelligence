@@ -5,7 +5,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -49,19 +48,6 @@ const getDaysUntilExpiry = (expiryDate: string) => {
   const today = new Date();
   const diffTime = expiry.getTime() - today.getTime();
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-};
-
-// Calculate engagement score
-const calculateEngagementScore = (borrowerId: number): number => {
-  try {
-    // For this simplified version, we'll use a mock calculation
-    // You can integrate with actual borrowing data if available
-    const mockScore = Math.random() * 10;
-    return Number(mockScore.toFixed(1));
-  } catch (error) {
-    console.error('Error calculating engagement score:', error);
-    return 0;
-  }
 };
 
 const BorrowersPage = () => {
@@ -383,88 +369,13 @@ const BorrowersPage = () => {
         </Dialog>
       </div>
 
-      {/* Top Borrowers Section */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-        <div className="xl:col-span-2">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TopBorrowers />
-            <TopBorrowersByEngagement />
-          </div>
+      {/* Top Borrowers Sections */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+        <div className="order-1">
+          <TopBorrowers />
         </div>
-        <div className="xl:col-span-1">
-          <Card className="border-none shadow-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold bg-gradient-to-r from-purple-700 to-pink-700 dark:from-purple-300 dark:to-pink-300 bg-clip-text text-transparent flex items-center gap-2">
-                <div className="p-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
-                  <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                Top Borrowers (Graduate)
-              </CardTitle>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Graduate students with highest engagement scores
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredBorrowers?.filter(borrower => borrower.category === 'graduate')
-                  .sort((a, b) => {
-                    const scoreA = calculateEngagementScore(a.id);
-                    const scoreB = calculateEngagementScore(b.id);
-                    return scoreB - scoreA;
-                  })
-                  .slice(0, 5)
-                  .map((borrower, index) => {
-                    const engagementScore = calculateEngagementScore(borrower.id);
-                    const daysUntilExpiry = getDaysUntilExpiry(borrower.expiryDate);
-                    return (
-                      <div key={borrower.id} className="flex items-center justify-between p-3 bg-white/60 dark:bg-gray-800/60 rounded-lg border border-purple-200 dark:border-purple-800">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                            index === 0 ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900' :
-                            index === 1 ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700' :
-                            index === 2 ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-orange-900' :
-                            'bg-gradient-to-r from-purple-400 to-pink-400 text-white'
-                          }`}>
-                            {index + 1}
-                          </div>
-                          <Avatar>
-                            <AvatarFallback className="bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 text-purple-700 dark:text-purple-300">
-                              {getInitials(borrower.name)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="text-sm font-medium">{borrower.name}</div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">ID: {borrower.id}</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            {engagementScore.toFixed(1)}
-                          </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">engagement</div>
-                          {getStatusBadge(borrower.expiryDate)}
-                        </div>
-                      </div>
-                    );
-                  })}
-                {(!filteredBorrowers?.filter(borrower => borrower.category === 'graduate').length || 
-                  filteredBorrowers?.filter(borrower => borrower.category === 'graduate').length === 0) && (
-                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                    <div className="p-4 bg-white/40 dark:bg-gray-800/40 rounded-lg border border-dashed border-purple-300 dark:border-purple-700">
-                      <div className="text-purple-400 mb-2">
-                        <svg className="h-8 w-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                        </svg>
-                      </div>
-                      <p className="text-sm">No graduate borrowers found</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+        <div className="order-2">
+          <TopBorrowersByEngagement />
         </div>
       </div>
 
