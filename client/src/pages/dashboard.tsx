@@ -17,18 +17,48 @@ const Dashboard = () => {
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
 
-  // Refresh data every 30 seconds (disabled to prevent unwanted increments)
+  // Data integrity check and cleanup on component mount
   useEffect(() => {
-    // Commenting out automatic refresh to prevent data corruption
-    // const interval = setInterval(() => {
-    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
-    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
-    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
-    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/popular-books'] });
-    //   queryClient.invalidateQueries({ queryKey: ['/api/dashboard/top-borrowers'] });
-    // }, 30000);
+    // Clean up any corrupted data on dashboard load
+    const cleanupCorruptedData = () => {
+      try {
+        // Check for duplicate entries and clean them up
+        const borrowings = JSON.parse(localStorage.getItem('borrowings') || '[]');
+        const borrowers = JSON.parse(localStorage.getItem('borrowers') || '[]');
+        const books = JSON.parse(localStorage.getItem('books') || '[]');
 
-    // return () => clearInterval(interval);
+        // Remove duplicates based on ID
+        const uniqueBorrowings = borrowings.filter((item: any, index: number, self: any[]) => 
+          index === self.findIndex(b => b.id === item.id)
+        );
+        const uniqueBorrowers = borrowers.filter((item: any, index: number, self: any[]) => 
+          index === self.findIndex(b => b.id === item.id)
+        );
+        const uniqueBooks = books.filter((item: any, index: number, self: any[]) => 
+          index === self.findIndex(b => b.id === item.id)
+        );
+
+        // Update localStorage with cleaned data if duplicates were found
+        if (uniqueBorrowings.length !== borrowings.length) {
+          localStorage.setItem('borrowings', JSON.stringify(uniqueBorrowings));
+          console.log('Cleaned up duplicate borrowings');
+        }
+        if (uniqueBorrowers.length !== borrowers.length) {
+          localStorage.setItem('borrowers', JSON.stringify(uniqueBorrowers));
+          console.log('Cleaned up duplicate borrowers');
+        }
+        if (uniqueBooks.length !== books.length) {
+          localStorage.setItem('books', JSON.stringify(uniqueBooks));
+          console.log('Cleaned up duplicate books');
+        }
+      } catch (error) {
+        console.error('Error during data cleanup:', error);
+      }
+    };
+
+    cleanupCorruptedData();
+
+    // Disable automatic refresh to prevent data corruption
   }, [queryClient]);
 
   const refreshData = () => {

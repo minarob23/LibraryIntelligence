@@ -265,7 +265,10 @@ export const queryClient = new QueryClient({
       queryFn: getQueryFn({ on401: "returnNull" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
-      staleTime: Infinity,
+      refetchOnMount: false, // Prevent refetch on component mount
+      refetchOnReconnect: false, // Prevent refetch on reconnect
+      staleTime: 10 * 60 * 1000, // 10 minutes
+      cacheTime: 15 * 60 * 1000, // 15 minutes
       retry: false,
       throwOnError: false, // Prevent throwing errors that cause unhandled rejections
     },
