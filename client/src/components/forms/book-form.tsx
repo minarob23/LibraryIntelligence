@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { insertBookSchema } from '@shared/schema';
 import { z } from 'zod';
 import { Calendar, Upload, X, Check, ChevronsUpDown, Plus, BookOpen, Quote, List } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -166,6 +167,63 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!book;
+
+  // Fetch borrowings data for statistics calculation
+  const { data: borrowings } = useQuery({ 
+    queryKey: ['/api/borrowings'],
+    refetchInterval: 2000,
+  });
+
+  // Helper functions for statistics calculation
+  const getBookBorrowings = (bookId: number) => {
+    if (!borrowings || !bookId) return [];
+    return borrowings.filter((b: any) => b.bookId === bookId) || [];
+  };
+
+  const getTimesBorrowed = (bookId: number) => {
+    return getBookBorrowings(bookId).length;
+  };
+
+  const getLastBorrowedDate = (bookId: number) => {
+    const bookBorrowings = getBookBorrowings(bookId);
+    if (bookBorrowings.length === 0) return null;
+
+    const dates = bookBorrowings.map((b: any) => new Date(b.borrowDate));
+    return new Date(Math.max(...dates.map(d => d.getTime())));
+  };
+
+  const getAverageRating = (bookId: number) => {
+    const bookBorrowings = getBookBorrowings(bookId).filter((b: any) => b.rating);
+    if (bookBorrowings.length === 0) return null;
+
+    const sum = bookBorrowings.reduce((acc: number, b: any) => acc + b.rating, 0);
+    return (sum / bookBorrowings.length).toFixed(1);
+  };
+
+  const getPopularityScore = (bookId: number) => {
+    const timesBorrowed = getTimesBorrowed(bookId);
+    const avgRating = getAverageRating(bookId);
+    const lastBorrowed = getLastBorrowedDate(bookId);
+
+    if (timesBorrowed === 0) return 0;
+
+    // Base score from borrowing frequency (max 50 points)
+    let score = Math.min(timesBorrowed * 10, 50);
+
+    // Add rating bonus (max 30 points)
+    if (avgRating) {
+      score += parseFloat(avgRating) * 6;
+    }
+
+    // Add recency bonus (max 20 points)
+    if (lastBorrowed) {
+      const daysSince = Math.floor((new Date().getTime() - lastBorrowed.getTime()) / (1000 * 60 * 60 * 24));
+      const recencyBonus = Math.max(0, 20 - (daysSince / 7));
+      score += recencyBonus;
+    }
+
+    return Math.round(score);
+  };
   const [uploadedImage, setUploadedImage] = useState<string | null>(
     book?.coverImage || null
   );
@@ -1231,9 +1289,11 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md border border-blue-200 dark:border-blue-800">
                     <span className="text-sm font-mono text-blue-800 dark:text-blue-300">
-                      {isEditing && book?.lastBorrowedDate 
-                        ? new Date(book.lastBorrowedDate).toLocaleDateString() 
-                        : 'Never borrowed'
+                      {isEditing && book?.id ? 
+                        (getLastBorrowedDate(book.id) 
+                          ? getLastBorrowedDate(book.id)?.toLocaleDateString() 
+                          : 'Never borrowed'
+                        ) : 'Never borrowed'
                       }
                     </span>
                   </div>
@@ -1246,10 +1306,10 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-md border border-green-200 dark:border-green-800">
                     <span className="text-lg font-bold text-green-800 dark:text-green-300">
-                      {isEditing ? (book?.timesBorrowed ?? 0) : 0}
+                      {isEditing && book?.id ? getTimesBorrowed(book.id) : 0}
                     </span>
                     <span className="text-xs text-green-600 dark:text-green-400 ml-2">
-                      {((isEditing ? (book?.timesBorrowed ?? 0) : 0) === 1) ? 'time' : 'times'}
+                      {((isEditing && book?.id ? getTimesBorrowed(book.id) : 0) === 1) ? 'time' : 'times'}
                     </span>
                   </div>
                 </div>
@@ -1261,7 +1321,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </Label>
                   <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-md border border-purple-200 dark:border-purple-800">
                     <span className="text-lg font-bold text-purple-800 dark:text-purple-300">
-                      {isEditing ? (book?.popularityScore ?? 0) : 0}
+                      {isEditing && book?.id ? getPopularityScore(book.id) : 0}
                     </span>
                     <span className="text-xs text-purple-600 dark:text-purple-400 ml-2">
                       / 100
@@ -1269,22 +1329,22 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </div>
                 </div>
 
-                {/* Rate */}
+                {/* Average Rating */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     ⭐ Average Rating
                   </Label>
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800">
                     <span className="text-lg font-bold text-yellow-800 dark:text-yellow-300">
-                      {isEditing && book?.rate ? `${book.rate}/10` : 'No ratings'}
+                      {isEditing && book?.id && getAverageRating(book.id) ? `${getAverageRating(book.id)}/10` : 'No ratings'}
                     </span>
-                    {isEditing && book?.rate && (
+                    {isEditing && book?.id && getAverageRating(book.id) && (
                       <div className="flex items-center mt-1">
                         {[...Array(5)].map((_, i) => (
                           <Star 
                             key={i} 
                             className={`h-3 w-3 ${
-                              i < Math.floor((book.rate || 0) / 2) 
+                              i < Math.floor((parseFloat(getAverageRating(book.id) || '0')) / 2) 
                                 ? 'text-yellow-500 fill-current' 
                                 : 'text-gray-300'
                             }`} 
@@ -1295,6 +1355,31 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   </div>
                 </div>
               </div>
+
+              {/* Current Status */}
+              {isEditing && book?.id && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    📋 Current Status
+                  </Label>
+                  <div className={`p-3 rounded-md border ${
+                    borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                      ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                      : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                  }`}>
+                    <span className={`text-sm font-medium ${
+                      borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                        ? 'text-yellow-800 dark:text-yellow-300'
+                        : 'text-green-800 dark:text-green-300'
+                    }`}>
+                      {borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                        ? '📤 Currently Borrowed'
+                        : '📥 Available for Borrowing'
+                      }
+                    </span>
+                  </div>
+                </div>
+              )}
 
               {/* Additional Info */}
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
