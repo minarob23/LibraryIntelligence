@@ -140,29 +140,29 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
   }
 
   return (
-    <div className="membership-form-container">
+    <div className="membership-form-container max-w-4xl mx-auto">
       <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-      <CardHeader className="text-center pb-8">
-        <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      <CardHeader className="text-center pb-6">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Membership Registration
         </CardTitle>
-        <CardDescription className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+        <CardDescription className="text-base text-gray-600 dark:text-gray-400 mt-2">
           Join our library community and unlock a world of knowledge
         </CardDescription>
-        <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+        <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-3 rounded-full"></div>
       </CardHeader>
-      <CardContent className="px-8 pb-8">
+      <CardContent className="px-6 pb-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <ScrollArea className="h-[600px] w-full pr-4">
-              <div className="space-y-8 pb-4">
+            <ScrollArea className="h-[500px] w-full pr-4">
+              <div className="space-y-6 pb-4">
                 {/* Personal Information */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-xl font-semibold mb-6 pb-3 border-b-2 border-gradient-to-r from-blue-500 to-purple-500 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">1</div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
+                    <div className="w-7 h-7 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">1</div>
                     Personal Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name="id"
@@ -264,9 +264,9 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                 </div>
 
                 {/* Membership Category */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-xl font-semibold mb-6 pb-3 border-b-2 border-gradient-to-r from-green-500 to-teal-500 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">2</div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
+                    <div className="w-7 h-7 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">2</div>
                     Membership Category
                   </h3>
                   <FormField
@@ -319,12 +319,12 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                 </div>
 
                 {/* Additional Information */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                  <h3 className="text-xl font-semibold mb-6 pb-3 border-b-2 border-gradient-to-r from-orange-500 to-red-500 text-gray-800 dark:text-gray-200 flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">3</div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-sm border border-gray-100 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold mb-5 pb-2 border-b border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 flex items-center">
+                    <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">3</div>
                     Additional Information
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name="churchName"
@@ -413,19 +413,19 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
               </div>
             </ScrollArea>
 
-            <div className="flex justify-end space-x-4 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
               <Button 
                 type="button" 
                 variant="outline" 
                 onClick={onCancel}
-                className="px-8 py-3 border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
+                className="px-6 py-2 border hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
               >
                 Cancel
               </Button>
               <Button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
               >
                 {isSubmitting ? (
                   <div className="flex items-center">

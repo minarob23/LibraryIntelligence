@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -57,7 +56,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
   const onSubmit = async (data: FeedbackFormValues) => {
     try {
       setIsSubmitting(true);
-      
+
       const feedbackData = {
         ...data,
         submittedAt: new Date().toISOString(),
@@ -89,20 +88,20 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
   };
 
   return (
-    <Card className="shadow-xl border-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
-      <CardHeader className="text-center pb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
-        <CardTitle className="text-3xl font-bold">
+    <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-blue-900/20 max-w-3xl mx-auto">
+      <CardHeader className="text-center pb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+        <CardTitle className="text-2xl font-bold">
           Suggestions & Feedbacks
         </CardTitle>
-        <CardDescription className="text-blue-100 text-lg mt-2">
+        <CardDescription className="text-blue-100 text-base mt-2">
           Let us know what's in your mind! 💭
         </CardDescription>
-        <div className="w-24 h-1 bg-white/30 mx-auto mt-4 rounded-full"></div>
+        <div className="w-20 h-1 bg-white/30 mx-auto mt-3 rounded-full"></div>
       </CardHeader>
-      <CardContent className="p-8">
+      <CardContent className="p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <FormField
                 control={form.control}
                 name="name"
@@ -240,11 +239,11 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
               )}
             />
 
-            <div className="flex justify-center pt-6">
+            <div className="flex justify-center pt-5">
               <Button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 rounded-xl"
+                className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-md hover:shadow-lg transition-all duration-200 rounded-lg"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center">
