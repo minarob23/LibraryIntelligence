@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Edit, Trash2, Plus, Star } from 'lucide-react';
+import { Edit, Trash2, Plus, Star, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -246,12 +246,18 @@ const BooksPage = () => {
   const [selectedPublisher, setSelectedPublisher] = useState('all');
   const [selectedAuthor, setSelectedAuthor] = useState('all');
   const [selectedAvailability, setSelectedAvailability] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTag, setSelectedTag] = useState('all');
 
   // Get unique authors, publishers, and genres from books
   const authors = [...new Set(books?.map(book => book.author) || [])];
   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
   const genres = [...new Set(books?.flatMap(book => 
     book.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
+  ) || [])];
+    
+  const tags = [...new Set(books?.flatMap(book =>
+    book.tags ? book.tags.split(',').map((tag: string) => tag.trim()) : []
   ) || [])];
 
   const [filterType, setFilterType] = useState('publisher');
@@ -739,7 +745,7 @@ const BooksPage = () => {
                             alt={`Cover of ${book.name}`}
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                          
+
                           {/* Status Badge */}
                           <div className="absolute top-2 left-2">
                             {isBorrowed ? (
