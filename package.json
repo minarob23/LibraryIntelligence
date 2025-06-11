@@ -10,7 +10,7 @@
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "electron": "electron electron/main.js",
-    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5001 && electron electron/main.js\"",
+    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5001 --timeout 30000 && electron electron/main.js\"",
     "electron-pack": "npm run build && electron-builder",
     "preelectron-pack": "npm run build"
   },

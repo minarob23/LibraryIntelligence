@@ -27,13 +27,16 @@ function createWindow() {
 
   // Load the app
   if (isDev) {
-    // Try to detect the correct server URL for Replit environment
-    const serverUrl = process.env.REPL_SLUG ? 
-      `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co` : 
-      'http://localhost:5001';
+    // For local development, always use localhost:5001
+    const serverUrl = 'http://localhost:5001';
     
     console.log('Loading URL:', serverUrl);
-    mainWindow.loadURL(serverUrl);
+    
+    // Wait a bit for the server to be ready, then load
+    setTimeout(() => {
+      mainWindow.loadURL(serverUrl);
+    }, 2000);
+    
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/public/index.html'));
@@ -44,16 +47,25 @@ function createWindow() {
   });
 
   mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
-    console.error('Failed to load:', validatedURL, errorDescription);
-    // Fallback to localhost if the Replit URL fails
-    if (validatedURL.includes('.repl.co')) {
-      console.log('Falling back to localhost...');
-      mainWindow.loadURL('http://localhost:5001');
-    }
+    console.error('Failed to load:', validatedURL, errorDescription, 'Error code:', errorCode);
+    
+    // Retry loading after a delay
+    setTimeout(() => {
+      console.log('Retrying to load:', validatedURL);
+      mainWindow.loadURL(validatedURL);
+    }, 3000);
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
     console.log('Page loaded successfully');
+  });
+
+  mainWindow.webContents.on('dom-ready', () => {
+    console.log('DOM is ready');
+  });
+
+  mainWindow.webContents.on('did-navigate', (event, url) => {
+    console.log('Navigated to:', url);
   });
 
   mainWindow.on('closed', () => {
