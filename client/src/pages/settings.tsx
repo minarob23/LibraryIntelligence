@@ -698,32 +698,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-md font-medium mb-3">{t.notifications}</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">{t.emailNotifications}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive email alerts for important events</p>
-                    </div>
-                    <Switch
-                      checked={emailNotifications}
-                      onCheckedChange={setEmailNotifications}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">{t.enableSounds}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Play sound effects for actions</p>
-                    </div>
-                    <Switch
-                      checked={enableSounds}
-                      onCheckedChange={setEnableSounds}
-                    />
-                  </div>
-                </div>
-              </div>
+              
 
               {/* Text Size Settings */}
               <div className="mt-6">
@@ -748,154 +723,57 @@ const Settings = () => {
                 </div>
               </div>
 
-              {/* Language Settings */}
-              <div className="mt-6">
-                <h4 className="text-md font-medium mb-3 flex items-center gap-2">
-                  <Globe className="h-5 w-5 text-blue-500" />
-                  {t.language}
-                </h4>
-                <div className="space-y-3">
-                  <div>
-                    <Label htmlFor="language" className="text-sm">{t.displayLanguage}</Label>
-                    <Select 
-                      value={selectedLanguage}
-                      onValueChange={(value) => {
-                        setSelectedLanguage(value);
-                        localStorage.setItem('selectedLanguage', value);
-                        // Apply language direction for Arabic
-                        if (value === 'ar') {
-                          document.documentElement.setAttribute('dir', 'rtl');
-                          document.documentElement.setAttribute('lang', 'ar');
-                        } else {
-                          document.documentElement.setAttribute('dir', 'ltr');
-                          document.documentElement.setAttribute('lang', value);
-                        }
-                        toast({
-                          title: t.preferencesUpdated,
-                          description: `${t.languageChanged} ${getLanguageDisplayName(value)}`
-                        });
-                      }}
-                    >
-                      <SelectTrigger id="language" className="mt-1">
-                        <SelectValue placeholder="Select language" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ar">العربية</SelectItem>
-                        <SelectItem value="es">Español</SelectItem>
-                        <SelectItem value="fr">Français</SelectItem>
-                        <SelectItem value="de">Deutsch</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </CardContent>
         </Card>
 
-        {/* Data Management Settings */}
+        {/* Language Settings */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Database className="h-5 w-5 text-orange-500" />
-              {t.dataManagement}
+              <Globe className="h-5 w-5 text-blue-500" />
+              {t.language}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div>
-                <h4 className="text-md font-medium mb-3">{t.systemSettings}</h4>
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium">{t.refreshInterval}</Label>
-                    <div className="flex items-center space-x-4 mt-2">
-                      <Slider
-                        value={[refreshInterval]}
-                        onValueChange={(value) => setRefreshInterval(value[0])}
-                        max={10}
-                        min={1}
-                        step={1}
-                        className="flex-1"
-                      />
-                      <span className="text-sm text-gray-500 min-w-[60px]">{refreshInterval} {t.seconds}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-sm font-medium">{t.tableRowsPerPage}</Label>
-                    <div className="flex items-center space-x-4 mt-2">
-                      <Slider
-                        value={[tableRowsPerPage]}
-                        onValueChange={(value) => setTableRowsPerPage(value[0])}
-                        max={50}
-                        min={5}
-                        step={5}
-                        className="flex-1"
-                      />
-                      <span className="text-sm text-gray-500 min-w-[60px]">{tableRowsPerPage} {t.rows}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-sm font-medium">{t.backupFrequency}</Label>
-                    <Select value={backupFrequency} onValueChange={setBackupFrequency}>
-                      <SelectTrigger className="mt-2">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="daily">{t.daily}</SelectItem>
-                        <SelectItem value="weekly">{t.weekly}</SelectItem>
-                        <SelectItem value="monthly">{t.monthly}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
+                <Label htmlFor="language" className="text-sm">{t.displayLanguage}</Label>
+                <Select 
+                  value={selectedLanguage}
+                  onValueChange={(value) => {
+                    setSelectedLanguage(value);
+                    localStorage.setItem('selectedLanguage', value);
+                    // Apply language direction for Arabic
+                    if (value === 'ar') {
+                      document.documentElement.setAttribute('dir', 'rtl');
+                      document.documentElement.setAttribute('lang', 'ar');
+                    } else {
+                      document.documentElement.setAttribute('dir', 'ltr');
+                      document.documentElement.setAttribute('lang', value);
+                    }
+                    toast({
+                      title: t.preferencesUpdated,
+                      description: `${t.languageChanged} ${getLanguageDisplayName(value)}`
+                    });
+                  }}
+                >
+                  <SelectTrigger id="language" className="mt-1">
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="ar">العربية</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                    <SelectItem value="fr">Français</SelectItem>
+                    <SelectItem value="de">Deutsch</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-
-              <div>
-                <h4 className="text-md font-medium mb-3">{t.behaviorSettings}</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">{t.doubleClickEdit}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Double-click rows to edit</p>
-                    </div>
-                    <Switch
-                      checked={doubleClickEdit}
-                      onCheckedChange={setDoubleClickEdit}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">{t.confirmDelete}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Show confirmation dialog before deleting</p>
-                    </div>
-                    <Switch
-                      checked={confirmDelete}
-                      onCheckedChange={setConfirmDelete}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm">{t.autoBackup}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Automatically backup data</p>
-                    </div>
-                    <Switch
-                      checked={autoBackup}
-                      onCheckedChange={setAutoBackup}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-6">
-                <Button onClick={handleSavePreferences} className="w-full">
-                  {t.savePreferences}
-                </Button>
-              </div>
+              <Button onClick={handleSavePreferences} className="w-full">
+                {t.savePreferences}
+              </Button>
             </div>
           </CardContent>
         </Card>
