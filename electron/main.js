@@ -1,4 +1,3 @@
-
 import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -18,7 +17,8 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false // Disable web security for development
     },
     icon: path.join(__dirname, '../generated-icon.png'),
     titleBarStyle: 'default',
@@ -29,14 +29,14 @@ function createWindow() {
   if (isDev) {
     // For local development, always use localhost:5001
     const serverUrl = 'http://localhost:5001';
-    
+
     console.log('Loading URL:', serverUrl);
-    
+
     // Wait a bit for the server to be ready, then load
     setTimeout(() => {
       mainWindow.loadURL(serverUrl);
     }, 2000);
-    
+
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/public/index.html'));
@@ -48,7 +48,7 @@ function createWindow() {
 
   mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
     console.error('Failed to load:', validatedURL, errorDescription, 'Error code:', errorCode);
-    
+
     // Retry loading after a delay
     setTimeout(() => {
       console.log('Retrying to load:', validatedURL);
