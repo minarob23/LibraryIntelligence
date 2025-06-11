@@ -296,15 +296,34 @@ const translations = {
 const Settings = () => {
   const { toast } = useToast();
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [backupFrequency, setBackupFrequency] = useState('daily');
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const { isCompactView, setIsCompactView } = useCompactView();
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [autoBackup, setAutoBackup] = useState(true);
   const [fontSizePreference, setFontSizePreference] = useState('medium');
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     return localStorage.getItem('selectedLanguage') || 'en';
   });
   
+  // New settings states
+  const [refreshInterval, setRefreshInterval] = useState(() => {
+    return parseInt(localStorage.getItem('refreshInterval') || '2');
+  });
+  const [tableRowsPerPage, setTableRowsPerPage] = useState(() => {
+    return parseInt(localStorage.getItem('tableRowsPerPage') || '10');
+  });
   const [showBookCovers, setShowBookCovers] = useState(() => {
     return localStorage.getItem('showBookCovers') !== 'false';
+  });
+  const [enableSounds, setEnableSounds] = useState(() => {
+    return localStorage.getItem('enableSounds') !== 'false';
+  });
+  const [doubleClickEdit, setDoubleClickEdit] = useState(() => {
+    return localStorage.getItem('doubleClickEdit') !== 'false';
+  });
+  const [confirmDelete, setConfirmDelete] = useState(() => {
+    return localStorage.getItem('confirmDelete') !== 'false';
   });
 
   const [libraryHours, setLibraryHours] = useState({
@@ -361,8 +380,13 @@ const Settings = () => {
     // Save all settings to localStorage
     localStorage.setItem('libraryHours', JSON.stringify(libraryHours));
     localStorage.setItem('selectedLanguage', selectedLanguage);
+    localStorage.setItem('refreshInterval', refreshInterval.toString());
+    localStorage.setItem('tableRowsPerPage', tableRowsPerPage.toString());
     localStorage.setItem('showBookCovers', showBookCovers.toString());
-    localStorage.setItem('fontSizePreference', fontSizePreference);
+    localStorage.setItem('enableSounds', enableSounds.toString());
+    localStorage.setItem('doubleClickEdit', doubleClickEdit.toString());
+    localStorage.setItem('confirmDelete', confirmDelete.toString());
+    localStorage.setItem('backupFrequency', backupFrequency);
 
     toast({
       title: t.preferencesUpdated,
@@ -674,7 +698,32 @@ const Settings = () => {
                 </div>
               </div>
 
-              
+              <div>
+                <h4 className="text-md font-medium mb-3">{t.notifications}</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">{t.emailNotifications}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive email alerts for important events</p>
+                    </div>
+                    <Switch
+                      checked={emailNotifications}
+                      onCheckedChange={setEmailNotifications}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">{t.enableSounds}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Play sound effects for actions</p>
+                    </div>
+                    <Switch
+                      checked={enableSounds}
+                      onCheckedChange={setEnableSounds}
+                    />
+                  </div>
+                </div>
+              </div>
 
               {/* Text Size Settings */}
               <div className="mt-6">
@@ -741,6 +790,106 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Data Management Settings */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Database className="h-5 w-5 text-orange-500" />
+              {t.dataManagement}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-md font-medium mb-3">{t.systemSettings}</h4>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium">{t.refreshInterval}</Label>
+                    <div className="flex items-center space-x-4 mt-2">
+                      <Slider
+                        value={[refreshInterval]}
+                        onValueChange={(value) => setRefreshInterval(value[0])}
+                        max={10}
+                        min={1}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="text-sm text-gray-500 min-w-[60px]">{refreshInterval} {t.seconds}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="text-sm font-medium">{t.tableRowsPerPage}</Label>
+                    <div className="flex items-center space-x-4 mt-2">
+                      <Slider
+                        value={[tableRowsPerPage]}
+                        onValueChange={(value) => setTableRowsPerPage(value[0])}
+                        max={50}
+                        min={5}
+                        step={5}
+                        className="flex-1"
+                      />
+                      <span className="text-sm text-gray-500 min-w-[60px]">{tableRowsPerPage} {t.rows}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="text-sm font-medium">{t.backupFrequency}</Label>
+                    <Select value={backupFrequency} onValueChange={setBackupFrequency}>
+                      <SelectTrigger className="mt-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">{t.daily}</SelectItem>
+                        <SelectItem value="weekly">{t.weekly}</SelectItem>
+                        <SelectItem value="monthly">{t.monthly}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-md font-medium mb-3">{t.behaviorSettings}</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">{t.doubleClickEdit}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Double-click rows to edit</p>
+                    </div>
+                    <Switch
+                      checked={doubleClickEdit}
+                      onCheckedChange={setDoubleClickEdit}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">{t.confirmDelete}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Show confirmation dialog before deleting</p>
+                    </div>
+                    <Switch
+                      checked={confirmDelete}
+                      onCheckedChange={setConfirmDelete}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">{t.autoBackup}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Automatically backup data</p>
+                    </div>
+                    <Switch
+                      checked={autoBackup}
+                      onCheckedChange={setAutoBackup}
+                    />
+                  </div>
+                </div>
+              </div>
 
               <div className="pt-6">
                 <Button onClick={handleSavePreferences} className="w-full">
@@ -750,8 +899,6 @@ const Settings = () => {
             </div>
           </CardContent>
         </Card>
-
-        
       </div>
     </div>
   );

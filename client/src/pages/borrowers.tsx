@@ -33,7 +33,6 @@ import TopBorrowers from '@/components/dashboard/top-borrowers';
 import TopBorrowersByEngagement from '@/components/dashboard/top-borrowers-engagement';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { Input } from "@/components/ui/input"
-import { useTranslation } from '@/lib/settings';
 
 const categories = [
   { value: 'all', label: 'All' },
@@ -54,7 +53,6 @@ const getDaysUntilExpiry = (expiryDate: string) => {
 
 const BorrowersPage = () => {
   const { toast } = useToast();
-  const { t } = useTranslation();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBorrower, setEditingBorrower] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -301,7 +299,7 @@ const BorrowersPage = () => {
         const expiryDate = new Date(row.expiryDate);
         const today = new Date();
         const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
+        
         return (
           <div className="flex flex-col">
             <span className="font-medium">
@@ -340,10 +338,8 @@ const BorrowersPage = () => {
     <div className="animate-fade-in">
       <div className="mb-6 flex justify-between items-center animate-slide-up">
         <div>
-          <h2 className="text-2xl font-bold">{t.borrowersManagement}</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            {t.manageBorrowers}
-          </p>
+          <h2 className="text-2xl font-bold">Borrowers Management</h2>
+          <p className="text-gray-600 dark:text-gray-400">Browse and manage library borrowers</p>
         </div>
         <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
           <DialogTrigger asChild>
