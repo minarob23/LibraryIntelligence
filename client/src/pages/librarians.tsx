@@ -27,13 +27,15 @@ import {
 import DataTable from '@/components/tables/data-table';
 import LibrarianForm from '@/components/forms/librarian-form';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useTranslation } from '@/lib/settings';
 
 const LibrariansPage = () => {
   const { toast } = useToast();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingLibrarian, setEditingLibrarian] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  
+  const { t } = useTranslation();
+
   const { data: librarians, isLoading } = useQuery({ 
     queryKey: ['/api/librarians'],
   });
@@ -150,7 +152,7 @@ const LibrariansPage = () => {
       cell: (row: any) => {
         const appointmentDate = new Date(row.appointmentDate);
         const yearsOfService = Math.floor((new Date().getTime() - appointmentDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
-        
+
         return (
           <div className="space-y-1">
             <div className="text-sm font-medium">
@@ -183,8 +185,8 @@ const LibrariansPage = () => {
     <div className="animate-fade-in">
       <div className="mb-6 flex justify-between items-center animate-slide-up">
         <div>
-          <h2 className="text-2xl font-bold">Librarians Management</h2>
-          <p className="text-gray-600 dark:text-gray-400">Browse and manage library staff</p>
+          <h2 className="text-2xl font-bold">{t.librariansManagement}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{t.manageLibrarians}</p>
         </div>
         <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
           <DialogTrigger asChild>
@@ -203,7 +205,7 @@ const LibrariansPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <DataTable
         data={librarians || []}
         columns={columns}
@@ -239,7 +241,7 @@ const LibrariansPage = () => {
                 )}
               </DialogContent>
             </Dialog>
-            
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,9 +9,11 @@ import FeedbackForm from '@/components/forms/feedback-form';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { Trash2, MessageSquare, Lightbulb, User, Phone, Mail, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import { useTranslation } from '@/lib/settings';
 
 const FeedbackPage = () => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const { data: feedbacks, isLoading, refetch } = useQuery({
@@ -78,10 +79,10 @@ const FeedbackPage = () => {
     <div className="animate-fade-in min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="mb-6 animate-slide-up text-center py-6">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
-          Feedback & Suggestions
+          {t('feedbackSuggestions')}
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Your voice matters! Share your thoughts and help us improve our library services
+          {t('yourVoiceMatters')}
         </p>
         <div className="w-28 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
       </div>
@@ -90,10 +91,10 @@ const FeedbackPage = () => {
         <Tabs defaultValue="form" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8 bg-white dark:bg-gray-800 shadow-lg rounded-xl p-2">
             <TabsTrigger value="form" className="rounded-lg py-3 text-lg font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white transition-all duration-200">
-              💬 Submit Feedback
+              💬 {t('submitFeedback')}
             </TabsTrigger>
             <TabsTrigger value="responses" className="rounded-lg py-3 text-lg font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-teal-500 data-[state=active]:text-white transition-all duration-200">
-              📋 View Responses
+              📋 {t('viewResponses')}
             </TabsTrigger>
           </TabsList>
 
@@ -108,7 +109,7 @@ const FeedbackPage = () => {
             <CardHeader className="text-center pb-6 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-t-lg">
               <CardTitle className="text-3xl font-bold flex items-center justify-center">
                 <span className="mr-3">📋</span>
-                Community Responses
+                {t('communityResponses')}
               </CardTitle>
               <div className="w-24 h-1 bg-white/30 mx-auto mt-4 rounded-full"></div>
             </CardHeader>
@@ -153,18 +154,18 @@ const FeedbackPage = () => {
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Feedback</AlertDialogTitle>
+                                  <AlertDialogTitle>{t('deleteFeedback')}</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete this feedback? This action cannot be undone.
+                                    {t('deleteFeedbackConfirmation')}
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                                   <AlertDialogAction
                                     onClick={() => handleDelete(feedback.id)}
                                     className="bg-red-600 hover:bg-red-700"
                                   >
-                                    Delete
+                                    {t('delete')}
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
@@ -214,7 +215,7 @@ const FeedbackPage = () => {
               ) : (
                 <div className="text-center py-8">
                   <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No feedback submitted yet.</p>
+                  <p className="text-gray-500">{t('noFeedbackSubmitted')}</p>
                 </div>
               )}
             </CardContent>

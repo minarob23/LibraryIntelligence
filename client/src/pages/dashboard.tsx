@@ -12,11 +12,13 @@ import BorrowingTrends from '@/components/dashboard/borrowing-trends';
 import BookRecommendations from '@/components/dashboard/book-recommendations';
 import BorrowForm from '@/components/forms/borrow-form';
 import MembershipForm from '@/components/forms/membership-form';
+import { useTranslation } from '@/lib/settings';
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
   const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
   const [openMemberDialog, setOpenMemberDialog] = useState(false);
+  const { t } = useTranslation();
 
   // Prevent any automatic data manipulation on mount
   useEffect(() => {
@@ -158,55 +160,10 @@ const Dashboard = () => {
   return (
     <div>
       <div className="mb-6 animate-slide-up">
-        <div className="flex justify-between items-start">
-          <div>
-            <h2 className="text-2xl font-bold">Dashboard</h2>
-            <p className="text-gray-600 dark:text-gray-400">Overview of library statistics and activities</p>
-          </div>
-          <div className="flex gap-3">
-            <Dialog open={openBorrowDialog} onOpenChange={setOpenBorrowDialog}>
-              <DialogTrigger asChild>
-                <Button 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Borrow
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[700px]">
-                <DialogHeader>
-                  <DialogTitle>New Borrowing Record</DialogTitle>
-                </DialogHeader>
-                <BorrowForm 
-                  onSuccess={() => setOpenBorrowDialog(false)} 
-                  onCancel={() => setOpenBorrowDialog(false)} 
-                />
-              </DialogContent>
-            </Dialog>
-
-            <Dialog open={openMemberDialog} onOpenChange={setOpenMemberDialog}>
-              <DialogTrigger asChild>
-                <Button 
-                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-                >
-                  <Users className="mr-2 h-4 w-4" />
-                  New Member
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-hidden flex flex-col">
-                <DialogHeader className="flex-shrink-0">
-                  <DialogTitle>Membership Registration</DialogTitle>
-                </DialogHeader>
-                <div className="flex-1 overflow-y-auto pr-2">
-                  <MembershipForm 
-                    onSuccess={() => setOpenMemberDialog(false)} 
-                    onCancel={() => setOpenMemberDialog(false)} 
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
+        <h2 className="text-2xl font-bold">{t.dashboard}</h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          {t.overview}
+        </p>
       </div>
 
       {/* Statistics Cards */}

@@ -31,12 +31,15 @@ import DataTable from '@/components/tables/data-table';
 import BookForm from '@/components/forms/book-form';
 import BookRecommendations from '@/components/dashboard/book-recommendations';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useTranslation, getUserSettings } from '@/lib/settings';
 
 const BooksPage = () => {
   const { toast } = useToast();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingBook, setEditingBook] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const { t } = useTranslation();
+  const settings = getUserSettings();
 
   const { data: books, isLoading } = useQuery({ 
     queryKey: ['/api/books'],
@@ -124,11 +127,13 @@ const BooksPage = () => {
       header: 'Book',
       cell: (row: any) => (
         <div className="flex items-center">
+          {settings.showBookCovers && (
           <img 
             className="h-12 w-9 object-cover mr-3 rounded" 
             src={row.coverImage} 
             alt={`Cover of ${row.name}`} 
           />
+          )}
           <div>
             <div className="text-sm font-medium">{row.name}</div>
             <div className="text-xs text-gray-500">{row.genres}</div>
@@ -385,8 +390,8 @@ const BooksPage = () => {
     <div className="animate-fade-in">
       <div className="mb-6 flex justify-between items-center animate-slide-up">
         <div>
-          <h2 className="text-2xl font-bold">Books Management</h2>
-          <p className="text-gray-600 dark:text-gray-400">Browse and manage the library's book collection</p>
+          <h2 className="text-2xl font-bold">{t.booksManagement}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{t.browseBooks}</p>
         </div>
         <Dialog open={openAddDialog} onOpenChange={setOpenAddDialog}>
           <DialogTrigger asChild>
@@ -754,12 +759,14 @@ const BooksPage = () => {
                     return (
                       <div key={book.id} className="group relative cursor-pointer">
                         <div className="aspect-[3/4] overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-transparent group-hover:border-blue-500 transition-all duration-300 group-hover:shadow-lg">
+                           {settings.showBookCovers && (
                           <img 
                             src={book.coverImage} 
                             alt={`Cover of ${book.name}`}
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                          
+                           )}
+
                           {/* Status Badge */}
                           <div className="absolute top-2 left-2">
                             {isBorrowed ? (
@@ -818,7 +825,7 @@ const BooksPage = () => {
                           {book.genres && (
                             <div className="flex flex-wrap gap-1 mb-1">
                               {book.genres.split(',').slice(0, 2).map((genre: string, index: number) => (
-                                <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
+                                <Badge key={index} variant="secondary" className="text-xs bg-purple-100 text-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
                                   {genre.trim()}
                                 </Badge>
                               ))}
