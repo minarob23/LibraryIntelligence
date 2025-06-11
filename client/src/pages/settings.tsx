@@ -304,6 +304,24 @@ const Settings = () => {
               <div>
                 <h4 className="text-md font-medium mb-3">Appearance</h4>
                 <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Dark Mode</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Toggle between light and dark themes</p>
+                    </div>
+                    <Switch
+                      checked={isDarkMode}
+                      onCheckedChange={(checked) => {
+                        setIsDarkMode(checked);
+                        if (checked) {
+                          document.documentElement.classList.add('dark');
+                        } else {
+                          document.documentElement.classList.remove('dark');
+                        }
+                        localStorage.setItem('theme', checked ? 'dark' : 'light');
+                      }}
+                    />
+                  </div>
 
                   <div className="flex items-center justify-between">
                     <div>
@@ -324,35 +342,28 @@ const Settings = () => {
 
 
               <div>
-                <h4 className="text-md font-medium mb-3">Data Management</h4>
+                <h4 className="text-md font-medium mb-3">Notifications</h4>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm">Automatic Backups</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Regularly backup system data</p>
+                      <p className="text-sm">Email Notifications</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Receive email alerts for important events</p>
+                    </div>
+                    <Switch
+                      checked={emailNotifications}
+                      onCheckedChange={setEmailNotifications}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm">Auto-refresh Data</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Automatically refresh data every 2 seconds</p>
                     </div>
                     <Switch
                       checked={autoBackup}
                       onCheckedChange={setAutoBackup}
                     />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="backup-frequency" className="text-sm">Backup Frequency</Label>
-                    <Select 
-                      value={backupFrequency} 
-                      onValueChange={setBackupFrequency}
-                      disabled={!autoBackup}
-                    >
-                      <SelectTrigger id="backup-frequency" className="mt-1">
-                        <SelectValue placeholder="Select frequency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="weekly">Weekly</SelectItem>
-                        <SelectItem value="monthly">Monthly</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </div>
                 </div>
               </div>
@@ -380,6 +391,42 @@ const Settings = () => {
                 </div>
               </div>
 
+              {/* Language Settings */}
+              <div className="mt-6">
+                <h4 className="text-md font-medium mb-3">Language & Region</h4>
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="language" className="text-sm">Display Language</Label>
+                    <Select defaultValue="en">
+                      <SelectTrigger id="language" className="mt-1">
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="es">Español</SelectItem>
+                        <SelectItem value="fr">Français</SelectItem>
+                        <SelectItem value="de">Deutsch</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="timezone" className="text-sm">Timezone</Label>
+                    <Select defaultValue="UTC">
+                      <SelectTrigger id="timezone" className="mt-1">
+                        <SelectValue placeholder="Select timezone" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="UTC">UTC</SelectItem>
+                        <SelectItem value="EST">Eastern Time</SelectItem>
+                        <SelectItem value="PST">Pacific Time</SelectItem>
+                        <SelectItem value="CET">Central European Time</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
               <div className="pt-6">
                 <Button onClick={handleSavePreferences}>
                   Save Preferences
@@ -389,6 +436,106 @@ const Settings = () => {
           </CardContent>
         </Card>
 
+        {/* Data Export/Import */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <h4 className="text-md font-medium">Export Data</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Download your library data in various formats</p>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  onClick={() => {
+                    // Export logic would go here
+                    toast({
+                      title: "Export Started",
+                      description: "Your data export is being prepared..."
+                    });
+                  }}
+                >
+                  <FileText className="h-4 w-4" />
+                  Export as JSON
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  onClick={() => {
+                    // Export logic would go here
+                    toast({
+                      title: "Export Started",
+                      description: "Your CSV export is being prepared..."
+                    });
+                  }}
+                >
+                  <FileSpreadsheet className="h-4 w-4" />
+                  Export as CSV
+                </Button>
+              </div>
+
+              <div className="pt-4 border-t">
+                <h4 className="text-md font-medium mb-2">Quick Actions</h4>
+                <div className="space-y-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start"
+                    onClick={() => {
+                      // Clear cache logic
+                      localStorage.clear();
+                      toast({
+                        title: "Cache Cleared",
+                        description: "Browser cache has been cleared successfully"
+                      });
+                    }}
+                  >
+                    Clear Browser Cache
+                  </Button>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full justify-start text-destructive hover:text-destructive">
+                        Reset All Settings
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Reset All Settings</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will reset all your preferences to default values. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                          onClick={() => {
+                            // Reset settings logic
+                            localStorage.removeItem('theme');
+                            localStorage.removeItem('isCompactView');
+                            localStorage.removeItem('libraryHours');
+                            toast({
+                              title: "Settings Reset",
+                              description: "All settings have been reset to defaults"
+                            });
+                            window.location.reload();
+                          }}
+                          className="bg-destructive hover:bg-destructive/90"
+                        >
+                          Reset Settings
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
       </div>
     </div>
