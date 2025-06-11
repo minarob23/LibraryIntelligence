@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCompactView } from '@/lib/context/compact-view-context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,9 @@ const Settings = () => {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [autoBackup, setAutoBackup] = useState(true);
   const [fontSizePreference, setFontSizePreference] = useState('medium');
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    return localStorage.getItem('selectedLanguage') || 'en';
+  });
   const [libraryHours, setLibraryHours] = useState({
     monday: { open: '09:00', close: '18:00' },
     tuesday: { open: '09:00', close: '18:00' },
@@ -49,6 +52,21 @@ const Settings = () => {
   const { data: feedback } = useQuery({ queryKey: ['/api/feedback'] });
   const { data: research } = useQuery({ queryKey: ['/api/research'] });
 
+  // Initialize language settings on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    setSelectedLanguage(savedLanguage);
+    
+    // Apply language direction and attributes
+    if (savedLanguage === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.setAttribute('lang', 'ar');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.setAttribute('lang', savedLanguage);
+    }
+  }, []);
+
   const handleSavePreferences = () => {
     // Apply font size setting to document
     document.documentElement.classList.remove('text-sm', 'text-base', 'text-lg');
@@ -66,6 +84,9 @@ const Settings = () => {
 
     // Save library hours to localStorage for membership page
     localStorage.setItem('libraryHours', JSON.stringify(libraryHours));
+    
+    // Save language preference
+    localStorage.setItem('selectedLanguage', selectedLanguage);
 
     toast({
       title: "Preferences saved",
@@ -393,34 +414,38 @@ const Settings = () => {
 
               {/* Language Settings */}
               <div className="mt-6">
-                <h4 className="text-md font-medium mb-3">Language & Region</h4>
+                <h4 className="text-md font-medium mb-3">Language</h4>
                 <div className="space-y-3">
                   <div>
                     <Label htmlFor="language" className="text-sm">Display Language</Label>
-                    <Select defaultValue="en">
+                    <Select 
+                      value={selectedLanguage}
+                      onValueChange={(value) => {
+                        setSelectedLanguage(value);
+                        localStorage.setItem('selectedLanguage', value);
+                        // Apply language direction for Arabic
+                        if (value === 'ar') {
+                          document.documentElement.setAttribute('dir', 'rtl');
+                          document.documentElement.setAttribute('lang', 'ar');
+                        } else {
+                          document.documentElement.setAttribute('dir', 'ltr');
+                          document.documentElement.setAttribute('lang', value);
+                        }
+                        toast({
+                          title: "Language Updated",
+                          description: `Language changed to ${value === 'ar' ? 'العربية' : value === 'en' ? 'English' : value === 'es' ? 'Español' : value === 'fr' ? 'Français' : 'Deutsch'}`
+                        });
+                      }}
+                    >
                       <SelectTrigger id="language" className="mt-1">
                         <SelectValue placeholder="Select language" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="ar">العربية</SelectItem>
                         <SelectItem value="es">Español</SelectItem>
                         <SelectItem value="fr">Français</SelectItem>
                         <SelectItem value="de">Deutsch</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="timezone" className="text-sm">Timezone</Label>
-                    <Select defaultValue="UTC">
-                      <SelectTrigger id="timezone" className="mt-1">
-                        <SelectValue placeholder="Select timezone" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="UTC">UTC</SelectItem>
-                        <SelectItem value="EST">Eastern Time</SelectItem>
-                        <SelectItem value="PST">Pacific Time</SelectItem>
-                        <SelectItem value="CET">Central European Time</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -436,106 +461,7 @@ const Settings = () => {
           </CardContent>
         </Card>
 
-        {/* Data Export/Import */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Data Management</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <h4 className="text-md font-medium">Export Data</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Download your library data in various formats</p>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  variant="outline" 
-                  className="flex items-center gap-2"
-                  onClick={() => {
-                    // Export logic would go here
-                    toast({
-                      title: "Export Started",
-                      description: "Your data export is being prepared..."
-                    });
-                  }}
-                >
-                  <FileText className="h-4 w-4" />
-                  Export as JSON
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="flex items-center gap-2"
-                  onClick={() => {
-                    // Export logic would go here
-                    toast({
-                      title: "Export Started",
-                      description: "Your CSV export is being prepared..."
-                    });
-                  }}
-                >
-                  <FileSpreadsheet className="h-4 w-4" />
-                  Export as CSV
-                </Button>
-              </div>
-
-              <div className="pt-4 border-t">
-                <h4 className="text-md font-medium mb-2">Quick Actions</h4>
-                <div className="space-y-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full justify-start"
-                    onClick={() => {
-                      // Clear cache logic
-                      localStorage.clear();
-                      toast({
-                        title: "Cache Cleared",
-                        description: "Browser cache has been cleared successfully"
-                      });
-                    }}
-                  >
-                    Clear Browser Cache
-                  </Button>
-                  
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="outline" size="sm" className="w-full justify-start text-destructive hover:text-destructive">
-                        Reset All Settings
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Reset All Settings</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This will reset all your preferences to default values. This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction 
-                          onClick={() => {
-                            // Reset settings logic
-                            localStorage.removeItem('theme');
-                            localStorage.removeItem('isCompactView');
-                            localStorage.removeItem('libraryHours');
-                            toast({
-                              title: "Settings Reset",
-                              description: "All settings have been reset to defaults"
-                            });
-                            window.location.reload();
-                          }}
-                          className="bg-destructive hover:bg-destructive/90"
-                        >
-                          Reset Settings
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        
 
       </div>
     </div>
