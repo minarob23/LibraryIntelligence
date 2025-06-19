@@ -23,7 +23,7 @@ const predefinedCovers = [
   { src: coverImage6, alt: "Cover 6" }
 ];
 
-const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
+export const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [isUrlInput, setIsUrlInput] = useState(true);
   
@@ -155,4 +155,3 @@ const ImageUpload = ({ value, onChange, label }: ImageUploadProps) => {
   );
 };
 
-export default ImageUpload;

@@ -20,7 +20,7 @@ interface QuoteCardProps {
   onDelete?: (id: number | string) => void;
 }
 
-const QuoteCard: React.FC<QuoteCardProps> = ({
+export const QuoteCard: React.FC<QuoteCardProps> = ({
   quote,
   onDelete,
 }) => {
@@ -102,4 +102,4 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
   );
 };
 
-export default QuoteCard;
+

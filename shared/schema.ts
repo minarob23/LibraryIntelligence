@@ -250,6 +250,23 @@ export const insertBookIndexSchema = z.object({
   parentId: z.number().nullable().optional(),
 });
 
+export const membershipApplicationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  stage: z.string(),
+  birthdate: z.string(),
+  phone: z.string(),
+  additionalPhone: z.string().optional(),
+  email: z.string(),
+  address: z.string(),
+  churchName: z.string().optional(),
+  fatherOfConfession: z.string().optional(),
+  studies: z.string().optional(),
+  job: z.string().optional(),
+  hobbies: z.string().optional(),
+  favoriteBooks: z.string().optional(),
+});
+
 // Export type definitions
 export type InsertBook = z.infer<typeof insertBookSchema>;
 export type Book = typeof books.$inferSelect;
