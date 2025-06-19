@@ -4,16 +4,18 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { X, Plus, BookOpen, Calendar, User, Building2, Hash, FileText, Tag, MapPin, Star, ThumbsUp } from 'lucide-react';
 import { AlertTriangle, Trash2, Edit } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ImageUpload } from '@/components/ui/image-upload';
 import IndexItem from '@/components/ui/index-item';
@@ -24,8 +26,8 @@ import { cn } from '@/lib/utils';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Copy, Minus } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form';
 
 // Predefined values for dropdowns
 const PREDEFINED_GENRES = [
@@ -476,7 +478,7 @@ export default function BookForm({ book, onSuccess, onCancel, index }: BookFormP
   }, [showIndexModal, indexItems, form]);
 
   return (
-    
+
     <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -782,8 +784,8 @@ export default function BookForm({ book, onSuccess, onCancel, index }: BookFormP
 						  </PopoverContent>
 						</Popover>
 						<FormMessage />
-						<p className="text-sm text-gray-500 mt-1">
-						  Select multiple genres for this book
+						<p className="text-sm text-gray-500 mt-1">```text
+  Select multiple genres for this book
 						</p>
 					  </FormItem>
 					)}
@@ -1391,6 +1393,6 @@ export default function BookForm({ book, onSuccess, onCancel, index }: BookFormP
         </Form>
       </CardContent>
     </Card>
-    
+
   );
 }

@@ -18,9 +18,9 @@ const LibraryPolicy = ({ onClose, showCloseButton = false }: LibraryPolicyProps)
             <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             Library Policy
           </CardTitle>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
+          <div className="text-gray-600 dark:text-gray-300 text-lg">
             Welcome to our Library Management System
-          </p>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Membership Requirements */}
@@ -87,9 +87,9 @@ const LibraryPolicy = ({ onClose, showCloseButton = false }: LibraryPolicyProps)
                 <li>• Mutilate or damage books in any way</li>
               </ul>
             </div>
-            <p className="text-gray-700 dark:text-gray-300">
+            <div className="text-gray-700 dark:text-gray-300">
               If a book is <strong>damaged or lost</strong>, the member's <strong>account will be frozen</strong> until the applied fine is paid or the case is reviewed.
-            </p>
+            </div>
           </div>
 
           {/* Library Behavior */}
@@ -113,7 +113,7 @@ const LibraryPolicy = ({ onClose, showCloseButton = false }: LibraryPolicyProps)
               <Phone className="h-5 w-5" />
               Problems or Questions?
             </h3>
-            <p className="text-blue-100">
+            <div className="text-blue-100">
               Please contact the librarian directly <strong>or</strong> fill out the <strong>feedback form</strong> available on the library's website.
 
           <div className="mt-4">
@@ -124,7 +124,7 @@ const LibraryPolicy = ({ onClose, showCloseButton = false }: LibraryPolicyProps)
               📝 Submit Feedback
             </a>
           </div>
-            </p>
+            </div>
           </div>
 
           {showCloseButton && onClose && (
