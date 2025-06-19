@@ -1,0 +1,81 @@
+
+> rest-express@1.0.0 dev
+> concurrently "tsx server/index.ts" "vite"
+
+[1] 
+[1]   VITE v5.4.14  ready in 511 ms
+[1] 
+[1]   ➜  Local:   http://localhost:5173/
+[1]   ➜  Network: http://172.31.128.99:5173/
+[1] Error:   Failed to scan for dependencies from entries:
+[1]   /home/runner/workspace/client/index.html
+[1] 
+[1]   ✘ [ERROR] No matching export in "client/src/components/ui/image-upload.tsx" for import "ImageUpload"
+[1] 
+[1]     client/src/components/forms/book-form.tsx:18:9:
+[1]       18 │ import { ImageUpload } from '@/components/ui/image-upload';
+[1]          ╵          ~~~~~~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] No matching export in "client/src/components/ui/quote-card.tsx" for import "QuoteCard"
+[1] 
+[1]     client/src/components/forms/book-form.tsx:20:9:
+[1]       20 │ import { QuoteCard } from '@/components/ui/quote-card';
+[1]          ╵          ~~~~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] No matching export in "shared/schema.ts" for import "membershipApplicationSchema"
+[1] 
+[1]     client/src/components/forms/membership-form.tsx:5:9:
+[1]       5 │ import { membershipApplicationSchema } from '@shared/schema';
+[1]         ╵          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[1] 
+[1] 
+[1]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[1]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[1]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[1]     at new Promise (<anonymous>)
+[1]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[1]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[1]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[1]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] ✅ Database initialized successfully
+[0] 🚀 API routes initialized
+[0] 4:03:00 PM [express] serving on port 5001
+[0] Error:   Failed to scan for dependencies from entries:
+[0]   /home/runner/workspace/client/index.html
+[0] 
+[0]   ✘ [ERROR] No matching export in "client/src/components/ui/image-upload.tsx" for import "ImageUpload"
+[0] 
+[0]     client/src/components/forms/book-form.tsx:18:9:
+[0]       18 │ import { ImageUpload } from '@/components/ui/image-upload';
+[0]          ╵          ~~~~~~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] No matching export in "client/src/components/ui/quote-card.tsx" for import "QuoteCard"
+[0] 
+[0]     client/src/components/forms/book-form.tsx:20:9:
+[0]       20 │ import { QuoteCard } from '@/components/ui/quote-card';
+[0]          ╵          ~~~~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] No matching export in "shared/schema.ts" for import "membershipApplicationSchema"
+[0] 
+[0]     client/src/components/forms/membership-form.tsx:5:9:
+[0]       5 │ import { membershipApplicationSchema } from '@shared/schema';
+[0]         ╵          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0] 
+[0] 
+[0]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[0]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[0]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[0]     at new Promise (<anonymous>)
+[0]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[0]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[0]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[0]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] tsx server/index.ts exited with code 1
