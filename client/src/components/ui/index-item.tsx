@@ -1,76 +1,62 @@
-
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { X, Edit, GripVertical } from 'lucide-react';
-
-interface IndexItem {
-  id?: number;
-  title: string;
-  page?: number;
-  level: number;
-  order: number;
-}
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Trash2 } from 'lucide-react';
 
 interface IndexItemProps {
-  item: IndexItem;
-  onEdit?: (item: IndexItem) => void;
-  onDelete?: (id: number | string) => void;
+  item: {
+    id: number;
+    title: string;
+    page: string | number;
+    level: number;
+  };
+  onUpdate: (id: number, field: string, value: any) => void;
+  onRemove: (id: number) => void;
 }
 
-const IndexItemCard: React.FC<IndexItemProps> = ({
-  item,
-  onEdit,
-  onDelete,
-}) => {
-  const levelIndent = (item.level - 1) * 20;
-
+const IndexItem: React.FC<IndexItemProps> = ({ item, onUpdate, onRemove }) => {
   return (
-    <Card className="relative group hover:shadow-sm transition-shadow">
-      <CardContent className="p-3">
-        <div className="flex items-center gap-2">
-          <GripVertical className="h-4 w-4 text-gray-400 cursor-move" />
-          
-          <div 
-            className="flex-1 flex items-center justify-between"
-            style={{ marginLeft: `${levelIndent}px` }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">{item.title}</span>
-              {item.page && (
-                <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                  p. {item.page}
-                </span>
-              )}
-            </div>
+    <div className="flex items-center gap-2 p-2 border rounded">
+      <Select
+        value={item.level.toString()}
+        onValueChange={(value) => onUpdate(item.id, 'level', parseInt(value))}
+      >
+        <SelectTrigger className="w-24">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="0">Chapter</SelectItem>
+          <SelectItem value="1">Section</SelectItem>
+          <SelectItem value="2">Subsection</SelectItem>
+        </SelectContent>
+      </Select>
 
-            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              {onEdit && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEdit(item)}
-                  className="h-7 w-7 p-0"
-                >
-                  <Edit className="h-3 w-3" />
-                </Button>
-              )}
-              {onDelete && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onDelete(item.id || 0)}
-                  className="h-7 w-7 p-0 text-red-500 hover:text-red-700"
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      <Input
+        placeholder="Title"
+        value={item.title}
+        onChange={(e) => onUpdate(item.id, 'title', e.target.value)}
+        className="flex-1"
+      />
+
+      <Input
+        placeholder="Page"
+        type="number"
+        value={item.page}
+        onChange={(e) => onUpdate(item.id, 'page', e.target.value)}
+        className="w-20"
+      />
+
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => onRemove(item.id)}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
   );
 };
 
-export default IndexItemCard;
+export default IndexItem;
