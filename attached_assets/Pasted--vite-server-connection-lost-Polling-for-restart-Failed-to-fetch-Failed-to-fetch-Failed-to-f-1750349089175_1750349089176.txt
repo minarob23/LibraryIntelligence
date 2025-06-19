@@ -1,0 +1,87 @@
+[vite] server connection lost. Polling for restart...
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+🌐 Loading URL: https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/
+📄 DOM is ready
+Running immediate corruption cleanup...
+Initializing sample data...
+Created default librarian with ID: 1750349063690
+Syncing borrowers with database using POST: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ undefined
+Syncing borrowers with database using POST: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ undefined
+Syncing books with database using POST: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ undefined
+Syncing books with database using POST: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ undefined
+Syncing books with database using POST: 
+Object {coverImage: "/src/assets/book-covers/cover3.svg", title: "1984", name: "1984", author: "George Orwell", publisher: "Secker & Warburg", …}
+ undefined
+Creating borrowing with librarianId: 1750349063690
+Syncing borrowings with database using POST: 
+Object {borrowerId: 1, bookId: 1, borrowDate: "2024-01-20", dueDate: "2024-02-03", status: "borrowed", …}
+ undefined
+Creating borrowing with librarianId: 1750349063690
+Syncing borrowings with database using POST: 
+Object {borrowerId: 2, bookId: 2, borrowDate: "2024-02-15", dueDate: "2024-03-01", status: "borrowed", …}
+ undefined
+Sample data initialized successfully
+Failed to fetch
+✅ Page loaded successfully
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+at window.fetch (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:218642)
+at ping (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@vite/client:736:13)
+at waitForSuccessfulPing (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@vite/client:755:17)
+at async WebSocket.<anonymous> (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@vite/client:561:7)
+Failed to fetch
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at p
+    at div
+    at div
+    at _c9 (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/components/ui/card.tsx:106:12)
+    at div
+    at _c (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/components/ui/card.tsx:20:11)
+    at div
+    at LibraryPolicy (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/components/ui/library-policy.tsx:20:26)
+    at div
+    at div
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=3be2318c:42:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=3be2318c:61:7
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=3be2318c:79:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=3be2318c:56:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=3be2318c:42:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TQT7K6GT.js?v=3be2318c:29:5
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IS6R2PH4.js?v=3be2318c:235:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IS6R2PH4.js?v=3be2318c:158:58
+    at Presence (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=3be2318c:24:11)
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IS6R2PH4.js?v=3be2318c:149:64
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=3be2318c:79:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=3be2318c:56:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=3be2318c:42:13
+    at https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=3be2318c:260:22
+    at Presence (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=3be2318c:24:11)
+    at Provider (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=3be2318c:38:15)
+    at DialogPortal (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IS6R2PH4.js?v=3be2318c:111:11)
+    at _c3 (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/components/ui/dialog.tsx:50:12)
+    at Provider (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=3be2318c:38:15)
+    at Dialog (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IS6R2PH4.js?v=3be2318c:52:5)
+    at Login (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/pages/login.tsx:28:18)
+    at Route (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=3be2318c:280:16)
+    at Switch (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=3be2318c:336:17)
+    at Router (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/src/App.tsx?v=NrRQ-tje-6prfUssMW5Co:42:49)
+    at Provider (https://916c8717-c54c-412a-a413-990615a58142-00-n8pq410a6izy.spock.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=3be2318c:38:15)
+    at TooltipProvider…
