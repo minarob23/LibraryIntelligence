@@ -1,0 +1,585 @@
+vite v5.4.14 building for production...
+transforming (1) index.html[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/main.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (3) src\main.tsx[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/App.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/context/compact-view-context.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/feedback.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/toaster.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/tooltip.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/context/app-context.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/dashboard.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/not-found.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/books.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowers.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/librarians.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/membership.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/settings.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/sidebar.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/login.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/toast.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/button.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/dialog.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/stats-card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/chart-container.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/top-borrowers.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/popular-books.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/borrowing-trends.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/book-recommendations.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/borrow-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/membership-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/badge.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/avatar.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/alert-dialog.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/librarian-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/tables/data-table.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/tabs.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/library-policy.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (81) src\assets\student-images\student1.svg[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/input.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/return-book-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/most-borrowed-books-chart.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/header.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/feedback-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/borrower-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/top-borrowers-engagement.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/switch.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/label.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/select.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/import-books-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/book-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (1606) ..\node_modules\lucide-react\dist\esm\icons\square-arrow-out-down-left.js[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/skeleton.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/table.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/radio-group.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/textarea.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/scroll-area.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (1695) ..\node_modules\scheduler\cjs\scheduler.production.min.js[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/star-rating.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/tables/table-pagination.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/theme-toggle.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/dropdown-menu.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/alert.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/command.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/popover.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/quote-card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/image-upload.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/checkbox.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+✓ 3057 modules transformed.
+[plugin:vite:reporter] [plugin vite:reporter]
+(!) C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/localStorage.ts is dynamically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/return-book-form.tsx, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts but also statically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/sampleData.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx, dynamic import will not move module into another chunk.
+
+../dist/index.html                             33.04 kB │ gzip:  12.21 kB
+../dist/assets/index-DJtSz1Um.css             124.06 kB │ gzip:  18.76 kB
+../dist/assets/purify.es-BFmuJLeH.js           21.93 kB │ gzip:   8.62 kB
+../dist/assets/index.es-HNJS7kEK.js           150.53 kB │ gzip:  51.48 kB
+../dist/assets/html2canvas.esm-CBrSDip1.js    201.42 kB │ gzip:  48.03 kB
+../dist/assets/index-pHQg4hk6.js            1,965.49 kB │ gzip: 584.24 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.07s
+
+  dist\index.js  22.8kb
+
+⚡ Done in 75ms
+
+> rest-express@1.0.0 electron-pack
+> NODE_ENV=production npm run build && electron-builder
+
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.14 building for production...
+transforming (1) index.html[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/main.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (3) src\main.tsx[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/App.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/feedback.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/context/compact-view-context.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/tooltip.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/toaster.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/context/app-context.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/not-found.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/dashboard.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/membership.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowers.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/librarians.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/sidebar.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/settings.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/login.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/books.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/tabs.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/badge.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/button.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/alert-dialog.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/feedback-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/membership-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/library-policy.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/dialog.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/input.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/stats-card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/popular-books.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/chart-container.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/top-borrowers.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/borrowing-trends.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/borrow-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/book-recommendations.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/header.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/avatar.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/tables/data-table.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/return-book-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/most-borrowed-books-chart.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/toast.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/librarian-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/dashboard/top-borrowers-engagement.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/borrower-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/switch.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/label.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/select.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/book-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/import-books-form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (1634) ..\node_modules\lucide-react\dist\esm\icons\square-pi.js[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/form.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/radio-group.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/textarea.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/scroll-area.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/theme-toggle.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/dropdown-menu.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/star-rating.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/skeleton.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/table.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+transforming (1704) src\assets\book-covers\cover1.svg[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/tables/table-pagination.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/alert.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/command.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/popover.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/quote-card.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/image-upload.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+[replit-cartographer] Error processing C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/ui/checkbox.tsx: TypeError: traverse is not a function
+    at Object.transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/@replit/vite-plugin-cartographer/dist/index.mjs:53:9)
+    at async transform (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19640:16)
+    at async ModuleLoader.addModuleSource (file:///C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/rollup/dist/es/shared/node-entry.js:19856:36)
+✓ 3057 modules transformed.
+[plugin:vite:reporter] [plugin vite:reporter]
+(!) C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/localStorage.ts is dynamically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/return-book-form.tsx, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts but also statically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/sampleData.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx, dynamic import will not move module into another chunk.
+
+../dist/index.html                             33.04 kB │ gzip:  12.21 kB
+../dist/assets/index-DJtSz1Um.css             124.06 kB │ gzip:  18.76 kB
+../dist/assets/purify.es-BFmuJLeH.js           21.93 kB │ gzip:   8.62 kB
+../dist/assets/index.es-HNJS7kEK.js           150.53 kB │ gzip:  51.48 kB
+../dist/assets/html2canvas.esm-CBrSDip1.js    201.42 kB │ gzip:  48.03 kB
+../dist/assets/index-pHQg4hk6.js            1,965.49 kB │ gzip: 584.24 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 12.64s
+
+  dist\index.js  22.8kb
+
+⚡ Done in 5ms
+  • electron-builder  version=26.0.12 os=10.0.26100
+  • loaded configuration  file=C:\Users\Asus\Downloads\LibraryIntelligence\electron-builder.json
+  ⨯ Invalid configuration object. electron-builder 26.0.12 has been initialized using a configuration object that does not match the API schema.
+ - configuration has an unknown property 'main'. These properties are valid:
+   object { afterAllArtifactBuild?, afterExtract?, afterPack?, afterSign?, apk?, appId?, appImage?, appx?, appxManifestCreated?, artifactBuildCompleted?, artifactBuildStarted?, artifactName?, asar?, asarUnpack?, beforeBuild?, beforePack?, buildDependenciesFromSource?, buildNumber?, buildVersion?, compression?, copyright?, cscKeyPassword?, cscLink?, deb?, defaultArch?, detectUpdateChannel?, directories?, disableDefaultIgnoredFiles?, disableSanityCheckAsar?, dmg?, downloadAlternateFFmpeg?, electronBranding?, electronCompile?, electronDist?, electronDownload?, electronFuses?, electronLanguages?, electronUpdaterCompatibility?, electronVersion?, executableName?, extends?, extraFiles?, extraMetadata?, extraResources?, fileAssociations?, files?, flatpak?, forceCodeSigning?, framework?, freebsd?, generateUpdatesFilesForAllChannels?, icon?, includePdb?, launchUiVersion?, linux?, mac?, mas?, masDev?, msi?, msiProjectCreated?, msiWrapped?, nativeRebuilder?, nodeGypRebuild?, nodeVersion?, npmArgs?, npmRebuild?, nsis?, nsisWeb?, onNodeModuleFile?, p5p?, pacman?, pkg?, portable?, productName?, protocols?, publish?, releaseInfo?, removePackageKeywords?, removePackageScripts?, rpm?, snap?, squirrelWindows?, target?, win?, $schema? }
+     How to fix:
+     1. Open https://www.electron.build/configuration
+     2. Search the option name on the page (or type in into Search to find across the docs).
+       * Not found? The option was deprecated or not exists (check spelling).
+       * Found? Check that the option in the appropriate place. e.g. "title" only in the "dmg", not in the root.
+  failedTask=build stackTrace=ValidationError: Invalid configuration object. electron-builder 26.0.12 has been initialized using a configuration object that does not match the API schema.
+ - configuration has an unknown property 'main'. These properties are valid:
+   object { afterAllArtifactBuild?, afterExtract?, afterPack?, afterSign?, apk?, appId?, appImage?, appx?, appxManifestCreated?, artifactBuildCompleted?, artifactBuildStarted?, artifactName?, asar?, asarUnpack?, beforeBuild?, beforePack?, buildDependenciesFromSource?, buildNumber?, buildVersion?, compression?, copyright?, cscKeyPassword?, cscLink?, deb?, defaultArch?, detectUpdateChannel?, directories?, disableDefaultIgnoredFiles?, disableSanityCheckAsar?, dmg?, downloadAlternateFFmpeg?, electronBranding?, electronCompile?, electronDist?, electronDownload?, electronFuses?, electronLanguages?, electronUpdaterCompatibility?, electronVersion?, executableName?, extends?, extraFiles?, extraMetadata?, extraResources?, fileAssociations?, files?, flatpak?, forceCodeSigning?, framework?, freebsd?, generateUpdatesFilesForAllChannels?, icon?, includePdb?, launchUiVersion?, linux?, mac?, mas?, masDev?, msi?, msiProjectCreated?, msiWrapped?, nativeRebuilder?, nodeGypRebuild?, nodeVersion?, npmArgs?, npmRebuild?, nsis?, nsisWeb?, onNodeModuleFile?, p5p?, pacman?, pkg?, portable?, productName?, protocols?, publish?, releaseInfo?, removePackageKeywords?, removePackageScripts?, rpm?, snap?, squirrelWindows?, target?, win?, $schema? }
+     How to fix:
+     1. Open https://www.electron.build/configuration
+     2. Search the option name on the page (or type in into Search to find across the docs).
+       * Not found? The option was deprecated or not exists (check spelling).
+       * Found? Check that the option in the appropriate place. e.g. "title" only in the "dmg", not in the root.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              at validate (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@develar\schema-utils\dist\validate.js:86:11)
+    at validateConfiguration (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\util\config\config.ts:239:3)
+    at Packager.validateConfig (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\packager.ts:384:5)
+    at Packager.build (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\packager.ts:392:5)
+    at executeFinally (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\builder-util\src\promise.ts:12:14)

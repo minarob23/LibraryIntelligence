@@ -1,0 +1,73 @@
+[vite] connecting...
+[vite] connected.
+Warning: Received NaN for the &#x60;children&#x60; attribute. If this is expected, cast the value to a string.
+    at div
+    at div
+    at div
+    at td
+    at _c13 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:152:13)
+    at tr
+    at _c9 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:102:12)
+    at tbody
+    at _c5 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:55:12)
+    at table
+    at div
+    at _c (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:20:11)
+    at div
+    at _c9 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/card.tsx:20:11)
+    at TopBorrowers (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/dashboard/top-borrowers.tsx:28:31)
+    at div
+    at div
+    at Dashboard (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/pages/dashboard.tsx:28:23)
+    at main
+    at div
+    at div
+    at Layout (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/layout/sidebar.tsx:63:19)
+    at PrivateRoute (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/App.tsx?v=-N8W1F7L4I48g4-FzTb3D:46:27)
+    at Route (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=4d35e0cf:338:16)
+    at Switch (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=4d35e0cf:394:17)
+    at Router (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/App.tsx?v=-N8W1F7L4I48g4-FzTb3D:40:49)
+    at Provider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=12b6afa7:38:15)
+    at TooltipProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=69987376:63:5)
+    at ThemeProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=4426b21d:2875:3)
+    at App
+at div
+at div
+at div
+at td
+at _c13 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:152:13)
+at tr
+at _c9 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:102:12)
+at tbody
+at _c5 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:55:12)
+at table
+at div
+at _c (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/table.tsx:20:11)
+at div
+at _c9 (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/card.tsx:114:12)
+at div
+at _c (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/ui/card.tsx:20:11)
+at TopBorrowers (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/dashboard/top-borrowers.tsx:28:31)
+at div
+at div
+at Dashboard (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/pages/dashboard.tsx:28:23)
+at main
+at div
+at div
+at Layout (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/components/layout/sidebar.tsx:63:19)
+at PrivateRoute (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/App.tsx?v=-N8W1F7L4I48g4-FzTb3D:46:27)
+at Route (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=4d35e0cf:338:16)
+at Switch (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=4d35e0cf:394:17)
+at Router (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/App.tsx?v=-N8W1F7L4I48g4-FzTb3D:40:49)
+at Provider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=12b6afa7:38:15)
+at TooltipProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=69987376:63:5)
+at ThemeProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/src/lib/context/app-context.tsx:21:3)
+at QueryClientProvider (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=4426b21d:2875:3)
+at App
+at t.value (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://8d5d057b-f5d1-43c4-bd47-f97ee826084f-00-237u428wpd1mb.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400

@@ -1,0 +1,122 @@
+[vite] connecting...
+DOMException {}
+
+Running immediate corruption cleanup...
+Valid data already exists, skipping initialization
+Borrower cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "returned", …}
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749327181498
+Book cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "returned", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749327182174
+Borrower cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749327182016
+Book cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749327182113
+Borrowings raw data: 
+(2) [{…}, {…}]
+Borrowers raw data: 
+(2) [{…}, {…}]
+Books raw data: 
+(3) [{…}, {…}, {…}]
+API Request Error: 
+TypeError {}
+
+API Request Error: 
+TypeError {}
+
+Error submitting form: 
+TypeError {}
+
+Borrower cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "returned", …}
+Found borrower: 
+Object {name: "John Smith", phone: "+1234567890", category: "university", joinedDate: "2024-01-15", expiryDate: "2025-01-15", …}
+ for borrowerId: 1749327181498
+Book cell - row data: 
+Object {borrowerId: 1749327181498, bookId: 1749327182174, borrowDate: "2025-06-07", dueDate: "2025-06-21", status: "returned", …}
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover1.svg", title: "The Great Gatsby", name: "The Great Gatsby", author: "F. Scott Fitzgerald", publisher: "Scribner", …}
+ for bookId: 1749327182174
+Borrower cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+Found borrower: 
+Object {name: "Emily Johnson", phone: "+1234567892", category: "graduate", joinedDate: "2024-02-20", expiryDate: "2025-02-20", …}
+ for borrowerId: 1749327182016
+Book cell - row data: 
+Object {borrowerId: 1749327182016, bookId: 1749327182113, borrowDate: "2024-05-01", dueDate: "2024-05-15", returnDate: "2024-05-14", …}
+bookId: 1749327182113
+borrowDate: "2024-05-01"
+borrowerId: 1749327182016
+createdAt: "2025-06-07T20:13:01.361Z"
+dueDate: "2024-05-15"
+id: 1749327182085
+rating: 5
+returnDate: "2024-05-14"
+status: "returned"
+[[Prototype]]: Object
+Found book: 
+Object {coverImage: "/src/assets/book-covers/cover2.svg", title: "To Kill a Mockingbird", name: "To Kill a Mockingbird", author: "Harper Lee", publisher: "J.B. Lippincott & Co.", …}
+ for bookId: 1749327182113
+
+Welcome back, Admin
+
+
+profile
+A
+Admin
+Library MS
+Dashboard
+Books
+Borrowers
+Librarians
+Borrowing
+Membership
+Settings
+Borrowing Management
+Track and manage book borrowings
+
+Search borrowings...
+New Borrowing
+All
+2
+Active
+0
+Returned
+2
+Overdue
+0
+ID	Borrower	Book	Borrow Date	Due Date	Return Date	Status	Rating	Actions
+BRW-1749327182304	
+JS
+John Smith
+university
+The Great Gatsby
+F. Scott Fitzgerald
+6/7/2025	6/21/2025	6/7/2025	Returned	
+★
+9/10
+Edit
+Delete
+BRW-1749327182085	
+EJ
+Emily Johnson
+graduate
+To Kill a Mockingbird
+Harper Lee
+5/1/2024	5/15/2024	5/14/2024	Returned	
+★
+5/10
+Edit
+Delete
+0.25

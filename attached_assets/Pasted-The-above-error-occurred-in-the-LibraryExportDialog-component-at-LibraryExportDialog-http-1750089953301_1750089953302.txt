@@ -1,0 +1,79 @@
+The above error occurred in the <LibraryExportDialog> component:
+
+    at LibraryExportDialog (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/pages/books.tsx:582:41)
+    at div
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=7b8b32c3:61:7
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:79:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:56:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TQT7K6GT.js?v=7b8b32c3:29:5
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:235:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:158:58
+    at Presence (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=7b8b32c3:24:11)
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:149:64
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:79:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:56:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+    at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=7b8b32c3:260:22
+    at Presence (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=7b8b32c3:24:11)
+    at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+    at DialogPortal (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:111:11)
+    at _c3 (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+    at Dialog (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:52:5)
+    at div
+    at div
+    at div
+    at BooksPage (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/pages/books.tsx:65:21)
+    at main
+    at div
+    at div
+    at Layout (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/components/layout/sidebar.tsx:62:19)
+    at PrivateRoute (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/App.tsx?v=PmynCLLrcxUvoi6hLkLSX:48:27)
+    at Route (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=0a3b19f4:338:16)
+    at Switch (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=0a3b19f4:394:17)
+    at Router (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/App.tsx?v=PmynCLLrcxUvoi6hLkLSX:42:49)
+    at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+    at…
+
+at LibraryExportDialog (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/pages/books.tsx:582:41)
+at div
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=7b8b32c3:61:7
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:79:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:56:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TQT7K6GT.js?v=7b8b32c3:29:5
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:235:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:158:58
+at Presence (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=7b8b32c3:24:11)
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:149:64
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:79:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=7b8b32c3:56:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=7b8b32c3:42:13
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=7b8b32c3:260:22
+at Presence (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=7b8b32c3:24:11)
+at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+at DialogPortal (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:111:11)
+at _c3 (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/components/ui/dialog.tsx:52:12)
+at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+at Dialog (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=7b8b32c3:52:5)
+at div
+at div
+at div
+at BooksPage (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/pages/books.tsx:65:21)
+at main
+at div
+at div
+at Layout (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/components/layout/sidebar.tsx:62:19)
+at PrivateRoute (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/App.tsx?v=PmynCLLrcxUvoi6hLkLSX:48:27)
+at Route (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=0a3b19f4:338:16)
+at Switch (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=0a3b19f4:394:17)
+at Router (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/src/App.tsx?v=PmynCLLrcxUvoi6hLkLSX:42:49)
+at Provider (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=7b8b32c3:38:15)
+at…
+at t.value (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://75ba71c4-969c-42f8-9cb1-42d0e7c08c56-00-3be70bjaqtauo.janeway.replit.dev:3000/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400

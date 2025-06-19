@@ -1,0 +1,71 @@
+[vite] connecting...
+DOMException {}
+
+actions is not a function
+actions is not a function
+The above error occurred in the <DataTable> component:
+
+    at DataTable (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/tables/data-table.tsx:33:3)
+    at div
+    at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=175856fc:42:13
+    at Presence (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=175856fc:24:11)
+    at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=175856fc:175:13
+    at _c5 (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/ui/tabs.tsx:72:12)
+    at div
+    at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=175856fc:42:13
+    at Provider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+    at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=175856fc:53:7
+    at div
+    at BorrowingManagement (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/pages/borrowing.tsx:40:21)
+    at main
+    at div
+    at div
+    at Layout (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/layout/sidebar.tsx:62:19)
+    at PrivateRoute (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:47:27)
+    at Route (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:338:16)
+    at Switch (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:394:17)
+    at Router (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:41:49)
+    at Provider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+    at TooltipProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=175856fc:63:5)
+    at CompactViewProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/lib/context/compact-view-context.tsx:20:39)
+    at ThemeProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=175856fc:2875:3)
+    at App (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at DataTable (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/tables/data-table.tsx:33:3)
+at div
+at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=175856fc:42:13
+at Presence (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=175856fc:24:11)
+at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=175856fc:175:13
+at _c5 (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/ui/tabs.tsx:72:12)
+at div
+at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=175856fc:42:13
+at Provider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=175856fc:53:7
+at div
+at BorrowingManagement (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/pages/borrowing.tsx:40:21)
+at main
+at div
+at div
+at Layout (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/components/layout/sidebar.tsx:62:19)
+at PrivateRoute (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:47:27)
+at Route (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:338:16)
+at Switch (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=175856fc:394:17)
+at Router (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:41:49)
+at Provider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=175856fc:38:15)
+at TooltipProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=175856fc:63:5)
+at CompactViewProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/lib/context/compact-view-context.tsx:20:39)
+at ThemeProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/lib/context/app-context.tsx:21:3)
+at QueryClientProvider (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=175856fc:2875:3)
+at App (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/src/App.tsx?v=iojoNb-fXjyRTZqqTTPpO:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://a9ffe414-c8a1-48ee-a053-e0402a73b7e8-00-33c6wilgnmngj.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+actions is not a function

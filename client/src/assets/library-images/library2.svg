@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#F8FAFC" />
+  
+  <!-- Background - Library shelves -->
+  <rect x="0" y="0" width="400" height="300" fill="#F1F5F9" />
+  
+  <!-- Bookshelves - rows -->
+  <rect x="30" y="40" width="340" height="2" fill="#94A3B8" />
+  <rect x="30" y="90" width="340" height="2" fill="#94A3B8" />
+  <rect x="30" y="140" width="340" height="2" fill="#94A3B8" />
+  <rect x="30" y="190" width="340" height="2" fill="#94A3B8" />
+  <rect x="30" y="240" width="340" height="2" fill="#94A3B8" />
+  <rect x="30" y="290" width="340" height="2" fill="#94A3B8" />
+  
+  <!-- Bookshelves - columns -->
+  <rect x="30" y="40" width="2" height="250" fill="#94A3B8" />
+  <rect x="100" y="40" width="2" height="250" fill="#94A3B8" />
+  <rect x="170" y="40" width="2" height="250" fill="#94A3B8" />
+  <rect x="240" y="40" width="2" height="250" fill="#94A3B8" />
+  <rect x="310" y="40" width="2" height="250" fill="#94A3B8" />
+  <rect x="370" y="40" width="2" height="250" fill="#94A3B8" />
+  
+  <!-- Books on shelves - shelf 1 -->
+  <rect x="35" y="42" width="60" height="46" fill="#1E40AF" />
+  <rect x="105" y="42" width="60" height="46" fill="#BE185D" />
+  <rect x="175" y="42" width="60" height="46" fill="#0E7490" />
+  <rect x="245" y="42" width="60" height="46" fill="#B45309" />
+  <rect x="315" y="42" width="50" height="46" fill="#166534" />
+  
+  <!-- Books on shelves - shelf 2 -->
+  <rect x="35" y="92" width="60" height="46" fill="#7E22CE" />
+  <rect x="105" y="92" width="60" height="46" fill="#9F1239" />
+  <rect x="175" y="92" width="60" height="46" fill="#166534" />
+  <rect x="245" y="92" width="60" height="46" fill="#1E40AF" />
+  <rect x="315" y="92" width="50" height="46" fill="#BE185D" />
+  
+  <!-- Books on shelves - shelf 3 -->
+  <rect x="35" y="142" width="60" height="46" fill="#0E7490" />
+  <rect x="105" y="142" width="60" height="46" fill="#B45309" />
+  <rect x="175" y="142" width="60" height="46" fill="#7E22CE" />
+  <rect x="245" y="142" width="60" height="46" fill="#9F1239" />
+  <rect x="315" y="142" width="50" height="46" fill="#422006" />
+  
+  <!-- Books on shelves - shelf 4 -->
+  <rect x="35" y="192" width="60" height="46" fill="#BE185D" />
+  <rect x="105" y="192" width="60" height="46" fill="#166534" />
+  <rect x="175" y="192" width="60" height="46" fill="#1E40AF" />
+  <rect x="245" y="192" width="60" height="46" fill="#7E22CE" />
+  <rect x="315" y="192" width="50" height="46" fill="#0E7490" />
+  
+  <text x="200" y="280" font-family="Arial" font-size="12" fill="#1E293B" text-anchor="middle">Library Shelves</text>
+</svg>

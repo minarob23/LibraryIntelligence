@@ -1,0 +1,268 @@
+
+/* Arabic font support */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+.font-arabic {
+  font-family: 'Noto Sans Arabic', 'Arial Unicode MS', 'Tahoma', sans-serif;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* RTL text direction support */
+[dir="rtl"] {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Ensure Arabic text displays properly in tables */
+.arabic-text {
+  font-family: 'Noto Sans Arabic', 'Arial Unicode MS', 'Tahoma', sans-serif;
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: embed;
+}
+
+
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient 4s linear infinite;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 20 14.3% 4.1%;
+  --sidebar-primary: 207 90% 54%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 60 4.8% 95.9%;
+  --sidebar-accent-foreground: 24 9.8% 10%;
+  --sidebar-border: 20 5.9% 90%;
+  --sidebar-ring: 20 14.3% 4.1%;
+  --chart-1: 142 76% 36%;
+  --chart-2: 207 90% 54%;
+  --chart-3: 43 96% 58%;
+  --chart-4: 270 76% 55%;
+  --chart-5: 326 73% 62%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+  --sidebar-background: 240 10% 3.9%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 207 90% 54%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 240 4.9% 83.9%;
+  --chart-1: 142 76% 36%;
+  --chart-2: 207 90% 54%;
+  --chart-3: 43 96% 58%;
+  --chart-4: 270 76% 55%;
+  --chart-5: 326 73% 62%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded-md;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-500;
+}
+
+/* Shared Components */
+.page-title {
+  @apply text-2xl font-bold text-gray-900 dark:text-gray-50;
+}
+
+.page-subtitle {
+  @apply text-gray-600 dark:text-gray-400 mt-1;
+}
+
+.section-title {
+  @apply text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4;
+}
+
+/* Transition effects */
+.fade-in {
+  @apply transition-opacity duration-300 ease-in-out;
+}
+
+.slide-in {
+  @apply transition-transform duration-300 ease-in-out;
+}
+
+/* Form styles */
+.form-group {
+  @apply mb-4;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
+
+.form-input {
+  @apply bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 
+         text-gray-900 dark:text-gray-100 text-sm rounded-md px-3 py-2 w-full 
+         focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+}
+
+/* Card styles */
+.dashboard-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4;
+}
+
+/* Table styles */
+.data-table-container {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden;
+}
+
+/* Compact view styles */
+.compact td {
+  @apply px-2 py-2;
+}
+
+.compact .data-table-container {
+  @apply space-y-2;
+}
+
+.table-header {
+  @apply bg-gray-50 dark:bg-gray-700;
+}
+
+.table-header-cell {
+  @apply px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider;
+}
+
+.table-body-row {
+  @apply hover:bg-gray-50 dark:hover:bg-gray-700;
+}
+
+.table-body-cell {
+  @apply px-4 py-3 whitespace-nowrap text-sm;
+}
+
+/* Status badges */
+.status-badge {
+  @apply px-2 inline-flex text-xs leading-5 font-semibold rounded-full;
+}
+
+.status-active {
+  @apply bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400;
+}
+
+.status-inactive {
+  @apply bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400;
+}
+
+.status-pending {
+  @apply bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400;
+}

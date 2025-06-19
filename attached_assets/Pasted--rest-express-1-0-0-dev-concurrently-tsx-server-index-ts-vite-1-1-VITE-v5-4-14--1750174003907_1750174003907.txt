@@ -1,0 +1,86 @@
+
+> rest-express@1.0.0 dev
+> concurrently "tsx server/index.ts" "vite"
+
+[1] 
+[1]   VITE v5.4.14  ready in 679 ms
+[1] 
+[1]   ➜  Local:   http://localhost:5173/
+[1]   ➜  Network: use --host to expose
+[1] Error:   Failed to scan for dependencies from entries:
+[1]   /home/runner/workspace/client/index.html
+[1] 
+[1]   ✘ [ERROR] The character "}" is not valid inside a JSX element
+[1] 
+[1]     client/src/pages/books.tsx:1184:0:
+[1]       1184 │ };
+[1]            │ ^
+[1]            ╵ {'}'}
+[1] 
+[1]   Did you mean to escape it as "{'}'}" instead?
+[1] 
+[1] 
+[1] ✘ [ERROR] Unexpected end of file before a closing "div" tag
+[1] 
+[1]     client/src/pages/books.tsx:1186:25:
+[1]       1186 │ export default BooksPage;
+[1]            │                          ^
+[1]            ╵                          </div>
+[1] 
+[1]   The opening "div" tag is here:
+[1] 
+[1]     client/src/pages/books.tsx:652:5:
+[1]       652 │     <div className="animate-fade-in">
+[1]           ╵      ~~~
+[1] 
+[1] 
+[1]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[1]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[1]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[1]     at new Promise (<anonymous>)
+[1]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[1]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[1]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[1]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] 🚀 API routes initialized
+[0] 3:21:54 PM [express] serving on port 5001
+[0] Error:   Failed to scan for dependencies from entries:
+[0]   /home/runner/workspace/client/index.html
+[0] 
+[0]   ✘ [ERROR] The character "}" is not valid inside a JSX element
+[0] 
+[0]     client/src/pages/books.tsx:1184:0:
+[0]       1184 │ };
+[0]            │ ^
+[0]            ╵ {'}'}
+[0] 
+[0]   Did you mean to escape it as "{'}'}" instead?
+[0] 
+[0] 
+[0] ✘ [ERROR] Unexpected end of file before a closing "div" tag
+[0] 
+[0]     client/src/pages/books.tsx:1186:25:
+[0]       1186 │ export default BooksPage;
+[0]            │                          ^
+[0]            ╵                          </div>
+[0] 
+[0]   The opening "div" tag is here:
+[0] 
+[0]     client/src/pages/books.tsx:652:5:
+[0]       652 │     <div className="animate-fade-in">
+[0]           ╵      ~~~
+[0] 
+[0] 
+[0]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[0]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[0]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[0]     at new Promise (<anonymous>)
+[0]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[0]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[0]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[0]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] tsx server/index.ts exited with code 1

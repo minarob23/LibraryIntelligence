@@ -1,0 +1,34 @@
+[vite] connecting...
+[vite] connected.
+BorrowingTrends is not defined
+BorrowingTrends is not defined
+at Dashboard (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/pages/dashboard.tsx:171:183)
+at renderWithHooks (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:11548:26)
+at mountIndeterminateComponent (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:14926:21)
+at beginWork (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:15914:22)
+at HTMLUnknownElement.callCallback2 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:3674:22)
+at Object.invokeGuardedCallbackDev (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:3699:24)
+at invokeGuardedCallback (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:3733:39)
+at beginWork$1 (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:19765:15)
+at performUnitOfWork (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:19198:20)
+at workLoopSync (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c42d5482:19137:13)
+The above error occurred in the <Dashboard> component:
+
+    at Dashboard (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/pages/dashboard.tsx:27:23)
+    at main
+    at div
+    at div
+    at Layout (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/components/layout/sidebar.tsx:63:19)
+    at PrivateRoute (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=2I0JGME49xKefK-BaX7BM:46:27)
+    at Route (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:338:16)
+    at Switch (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=c42d5482:394:17)
+    at Router (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/App.tsx?v=2I0JGME49xKefK-BaX7BM:40:49)
+    at Provider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=c42d5482:38:15)
+    at TooltipProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c42d5482:63:5)
+    at ThemeProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (https://79d8d330-ab58-432e-9974-0fc26500225e-00-773a23i8m5i7.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=c42d5482:2875:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+BorrowingTrends is not defined

@@ -1,0 +1,35 @@
+[vite] connecting...
+DOMException {}
+stack: "SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=ql-KVpMQ8UlD' is invalid.↵ at new t (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:218737)↵ at setupWebSocket (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@vite/client:536:19)↵ at fallback (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@vite/client:509:16)↵ at WebSocket.<anonymous> (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@vite/client:555:7)"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: DOMException
+
+Running immediate corruption cleanup...
+Missing librarianId
+The above error occurred in the <App> component:
+
+    at App (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/src/App.tsx?v=r86VRrX262HqhHuHG_vvZ:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at App (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/src/App.tsx?v=r86VRrX262HqhHuHG_vvZ:227:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Missing librarianId
+at LocalStorage.createBorrowing (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/src/lib/localStorage.ts:231:13)
+at initializeSampleData (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/src/lib/sampleData.ts:129:26)
+at https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/src/App.tsx?v=r86VRrX262HqhHuHG_vvZ:228:5
+at commitHookEffectListMount (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:16915:34)
+at commitPassiveMountOnFiber (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:18156:19)
+at commitPassiveMountEffects_complete (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:18129:17)
+at commitPassiveMountEffects_begin (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:18119:15)
+at commitPassiveMountEffects (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:18109:11)
+at flushPassiveEffectsImpl (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:19490:11)
+at flushPassiveEffects (https://a348b0a8-1574-4c01-92e6-a4e736313418-00-2b8m9kxts6i2w.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=c6daf8c7:19447:22)

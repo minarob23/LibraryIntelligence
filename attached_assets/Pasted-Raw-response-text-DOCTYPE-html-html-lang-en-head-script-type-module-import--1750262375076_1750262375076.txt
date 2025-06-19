@@ -1,0 +1,72 @@
+Raw response text: <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="module">
+import { createHotContext } from "/@vite/client";
+const hot = createHotContext("/__dummy__runtime-error-plugin");
+
+function sendError(error) {
+  if (!(error instanceof Error)) {
+    error = new Error("(unknown runtime error)");
+  }
+  const serialized = {
+    message: error.message,
+    stack: error.stack,
+  };
+  hot.send("runtime-error-plugin:error", serialized);
+}
+
+window.addEventListener("error", (evt) => {
+  sendError(evt.error);
+});
+
+window.addEventListener("unhandledrejection", (evt) => {
+  sendError(evt.reason);
+});
+</script>
+
+    <script type="module">
+import RefreshRuntime from "/@react-refresh"
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true
+</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="description" content="Library Management System with comprehensive book, research, borrower and librarian management capabilities" />
+    <title>Library Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx?v=AJm7wurVTKYWJYxEoRcKi"></script>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>
+Response status: 200
+Response headers: 
+Headers {append: ƒ, delete: ƒ, get: ƒ, getSetCookie: ƒ, has: ƒ, …}
+JSON parse error: 
+SyntaxError {}
+
+Failed to parse response: 
+Error {}
+
+Error resetting data: 
+Error {}
+
+Full error details: 
+Object {message: "Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵  <head>↵   …", name: "Error", response: undefined, stack: "Error: Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵ …", toString: "Error: Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵ …"}
+message: "Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵ <head>↵ <script type="module">↵import { createHotContext } fro..."
+name: "Error"
+response: undefined
+stack: "Error: Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵ <head>↵ <script type="module">↵import { createHotContext } fro...↵ at handleSystemReset (https://9b5a6db9-50ea-45f7-acc2-1ac2147c1547-00-3b4idrf3r0ph2.picard.replit.dev:3000/src/pages/settings.tsx:1350:15)"
+toString: "Error: Server response error: Invalid JSON response: <!DOCTYPE html>↵<html lang="en">↵ <head>↵ <script type="module">↵import { createHotContext } fro..."
+[[Prototype]]: Object

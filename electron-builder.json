@@ -1,0 +1,50 @@
+{
+  "appId": "com.library.management",
+  "productName": "Library Management System",
+  "directories": {
+    "output": "electron-dist"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json",
+    "library.db"
+  ],
+  "extraResources": [
+    {
+      "from": "dist",
+      "to": "dist"
+    },
+    {
+      "from": "library.db",
+      "to": "library.db"
+    }
+  ],
+  "fileAssociations": [],
+  "protocols": [
+    {
+      "name": "library-management",
+      "schemes": ["library"]
+    }
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "generated-icon.png"
+  },
+  "mac": {
+    "target": "dmg",
+    "icon": "generated-icon.png",
+    "category": "public.app-category.productivity"
+  },
+  "linux": {
+    "target": "AppImage",
+    "icon": "generated-icon.png",
+    "category": "Office"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  }
+}

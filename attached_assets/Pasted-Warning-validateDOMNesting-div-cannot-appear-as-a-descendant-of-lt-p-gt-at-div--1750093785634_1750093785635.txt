@@ -1,0 +1,69 @@
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at p
+    at div
+    at div
+    at _c9 (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/components/ui/card.tsx:20:11)
+    at div
+    at LibraryPolicy (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/components/ui/library-policy.tsx:20:26)
+    at div
+    at div
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e3e08ad:42:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=8e3e08ad:61:7
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e3e08ad:79:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e3e08ad:56:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e3e08ad:42:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TQT7K6GT.js?v=8e3e08ad:29:5
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e3e08ad:235:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e3e08ad:158:58
+    at Presence (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=8e3e08ad:24:11)
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e3e08ad:149:64
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e3e08ad:79:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e3e08ad:56:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e3e08ad:42:13
+    at https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=8e3e08ad:260:22
+    at Presence (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=8e3e08ad:24:11)
+    at Provider (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e3e08ad:38:15)
+    at DialogPortal (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e3e08ad:111:11)
+    at _c3 (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e3e08ad:38:15)
+    at Dialog (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e3e08ad:52:5)
+    at Login (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/pages/login.tsx:28:18)
+    at Route (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8e3e08ad:338:16)
+    at Switch (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8e3e08ad:394:17)
+    at Router (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/App.tsx?v=m8ha5jzx4l-jGLZJQq0e_:42:49)
+    at Provider (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e3e08ad:38:15)
+    at TooltipProvider…
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+jsPDF PubSub Error Font is not stored as string-data in vFS, import fonts or remove declaration doc.addFont('https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvalIhTp2mxdt0UX8gUA.ttf'). 
+Error {}
+
+Error exporting to PDF: 
+ReferenceError {}
+message: "Cannot access 'enhancedBooks' before initialization"
+stack: "ReferenceError: Cannot access 'enhancedBooks' before initialization↵ at exportLibraryWithStatisticsToPDF (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/lib/utils/export.ts:567:49)↵ at handleEnhancedPDFExport (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/src/pages/books.tsx:595:7)↵ at HTMLUnknownElement.callCallback2 (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:3674:22)↵ at Object.invokeGuardedCallbackDev (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:3699:24)↵ at invokeGuardedCallback (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:3733:39)↵ at invokeGuardedCallbackAndCatchFirstError (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:3736:33)↵ at executeDispatch (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:7014:11)↵ at processDispatchQueueItemsInOrder (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:7034:15)↵ at processDispatchQueue (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:7043:13)↵ at dispatchEventsForPlugins (https://47a4afc0-b137-43eb-97c2-f8e3b2b3223b-00-3qh992x2vgt7y.picard.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e3e08ad:7051:11)"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch

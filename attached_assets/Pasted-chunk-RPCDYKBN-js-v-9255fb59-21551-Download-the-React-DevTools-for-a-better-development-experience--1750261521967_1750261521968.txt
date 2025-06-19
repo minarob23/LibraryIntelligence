@@ -1,0 +1,161 @@
+chunk-RPCDYKBN.js?v=9255fb59:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+main.tsx:22 🌐 Loading URL: http://localhost:5173
+main.tsx:24 📄 DOM is ready
+sampleData.ts:5 Running immediate corruption cleanup...
+sampleData.ts:31 Valid data already exists, skipping initialization
+main.tsx:27 ✅ Page loaded successfully
+VM4 sandbox_bundle:2 Electron Security Warning (Disabled webSecurity) This renderer process has "webSecurity" disabled. This
+  exposes users of this app to severe security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+(anonymous) @ VM4 sandbox_bundle:2
+VM4 sandbox_bundle:2 Electron Security Warning (allowRunningInsecureContent) This renderer process has "allowRunningInsecureContent"
+  enabled. This exposes users of this app to severe security risks.
+
+  
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+(anonymous) @ VM4 sandbox_bundle:2
+VM4 sandbox_bundle:2 Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+warnAboutInsecureCSP @ VM4 sandbox_bundle:2
+queryClient.ts:183 Unknown endpoint: GET /api/feedback, returning empty response
+mockApiResponse @ queryClient.ts:183
+chunk-RPCDYKBN.js?v=9255fb59:521 Warning: validateDOMNesting(...): <p> cannot appear as a descendant of <p>.
+    at p
+    at p
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:283:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:132:11
+    at _c9 (http://localhost:5173/src/components/ui/alert-dialog.tsx:148:12)
+    at div
+    at AlertDialogHeader (http://localhost:5173/src/components/ui/alert-dialog.tsx:82:3)
+    at Slottable2 (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:95:25)
+    at div
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-S2ZUYA2N.js?v=9255fb59:61:7
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:79:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:56:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-UDJZONCO.js?v=9255fb59:29:5
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:235:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:158:58
+    at Presence (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-WIIJQEXM.js?v=9255fb59:24:11)
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:149:64
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:17:13)
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:85:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:79:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:56:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-S2ZUYA2N.js?v=9255fb59:260:22
+    at Presence (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-WIIJQEXM.js?v=9255fb59:24:11)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at DialogPortal (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:111:11)
+    at AlertDialogPortal (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:66:11)
+    at _c3 (http://localhost:5173/src/components/ui/alert-dialog.tsx:48:12)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at Dialog (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:52:5)
+    at AlertDialog (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:50:11)
+    at div
+    at div
+    at div
+    at _c9 (http://localhost:5173/src/components/ui/card.tsx:106:12)
+    at div
+    at _c (http://localhost:5173/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at Settings (http://localhost:5173/src/pages/settings.tsx:44:21)
+    at main
+    at div
+    at div
+    at Layout (http://localhost:5173/src/components/layout/sidebar.tsx:60:19)
+    at PrivateRoute (http://localhost:5173/src/App.tsx:48:27)
+    at Route (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/wouter.js?v=66030d8d:338:16)
+    at Switch (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/wouter.js?v=66030d8d:394:17)
+    at Router (http://localhost:5173/src/App.tsx:42:49)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at TooltipProvider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=05532e82:63:5)
+    at CompactViewProvider (http://localhost:5173/src/lib/context/compact-view-context.tsx:20:39)
+    at ThemeProvider (http://localhost:5173/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@tanstack_react-query.js?v=abf6ed2b:2875:3)
+    at App (http://localhost:5173/src/App.tsx:245:3)
+printWarning @ chunk-RPCDYKBN.js?v=9255fb59:521
+chunk-RPCDYKBN.js?v=9255fb59:521 Warning: validateDOMNesting(...): <ul> cannot appear as a descendant of <p>.
+    at ul
+    at p
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:283:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:132:11
+    at _c9 (http://localhost:5173/src/components/ui/alert-dialog.tsx:148:12)
+    at div
+    at AlertDialogHeader (http://localhost:5173/src/components/ui/alert-dialog.tsx:82:3)
+    at Slottable2 (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:95:25)
+    at div
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-S2ZUYA2N.js?v=9255fb59:61:7
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:79:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:56:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-UDJZONCO.js?v=9255fb59:29:5
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:235:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:158:58
+    at Presence (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-WIIJQEXM.js?v=9255fb59:24:11)
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:149:64
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:17:13)
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:85:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:79:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-2K77HOHX.js?v=9255fb59:56:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=9255fb59:42:13
+    at http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-S2ZUYA2N.js?v=9255fb59:260:22
+    at Presence (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-WIIJQEXM.js?v=9255fb59:24:11)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at DialogPortal (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:111:11)
+    at AlertDialogPortal (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:66:11)
+    at _c3 (http://localhost:5173/src/components/ui/alert-dialog.tsx:48:12)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at Dialog (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-NXJUR56D.js?v=9255fb59:52:5)
+    at AlertDialog (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-alert-dialog.js?v=1b2ddbc1:50:11)
+    at div
+    at div
+    at div
+    at _c9 (http://localhost:5173/src/components/ui/card.tsx:106:12)
+    at div
+    at _c (http://localhost:5173/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at Settings (http://localhost:5173/src/pages/settings.tsx:44:21)
+    at main
+    at div
+    at div
+    at Layout (http://localhost:5173/src/components/layout/sidebar.tsx:60:19)
+    at PrivateRoute (http://localhost:5173/src/App.tsx:48:27)
+    at Route (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/wouter.js?v=66030d8d:338:16)
+    at Switch (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/wouter.js?v=66030d8d:394:17)
+    at Router (http://localhost:5173/src/App.tsx:42:49)
+    at Provider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/chunk-5AJU3CG7.js?v=9255fb59:38:15)
+    at TooltipProvider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=05532e82:63:5)
+    at CompactViewProvider (http://localhost:5173/src/lib/context/compact-view-context.tsx:20:39)
+    at ThemeProvider (http://localhost:5173/src/lib/context/app-context.tsx:21:3)
+    at QueryClientProvider (http://localhost:5173/@fs/C:/Users/Asus/Downloads/LibraryIntelligence/node_modules/.vite/deps/@tanstack_react-query.js?v=abf6ed2b:2875:3)
+    at App (http://localhost:5173/src/App.tsx:245:3)
+printWarning @ chunk-RPCDYKBN.js?v=9255fb59:521
+api/reset-database:1 
+            
+            
+           Failed to load resource: the server responded with a status of 404 (Not Found)
+settings.tsx:685 Error resetting data: Error: Reset failed
+    at handleSystemReset (settings.tsx:682:15)
+handleSystemReset @ settings.tsx:685

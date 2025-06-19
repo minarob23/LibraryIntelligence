@@ -1,0 +1,239 @@
+Error:   Failed to scan for dependencies from entries:
+[1]   /home/runner/workspace/client/index.html
+[1] 
+[1]   ✘ [ERROR] Multiple exports with the same name "exportToExcel"
+[1] 
+[1]     client/src/lib/utils/export.ts:357:13:
+[1]       357 │ export const exportToExcel = (data: any[], filename: string) => {
+[1]           ╵              ~~~~~~~~~~~~~
+[1] 
+[1]   The name "exportToExcel" was originally exported here:
+[1] 
+[1]     client/src/lib/utils/export.ts:8:13:
+[1]       8 │ export const exportToExcel = (data: any[], fileName: string = 'expo...
+[1]         ╵              ~~~~~~~~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] The symbol "exportToExcel" has already been declared
+[1] 
+[1]     client/src/lib/utils/export.ts:357:13:
+[1]       357 │ export const exportToExcel = (data: any[], filename: string) => {
+[1]           ╵              ~~~~~~~~~~~~~
+[1] 
+[1]   The symbol "exportToExcel" was originally declared here:
+[1] 
+[1]     client/src/lib/utils/export.ts:8:13:
+[1]       8 │ export const exportToExcel = (data: any[], fileName: string = 'expo...
+[1]         ╵              ~~~~~~~~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] The character ">" is not valid inside a JSX element
+[1] 
+[1]     client/src/pages/books.tsx:769:6:
+[1]       769 │ Button>
+[1]           │       ^
+[1]           ╵       {'>'}
+[1] 
+[1]   Did you mean to escape it as "{'>'}" instead?
+[1] 
+[1] 
+[1] ✘ [ERROR] Unexpected closing "DialogTrigger" tag does not match opening "Button" tag
+[1] 
+[1]     client/src/pages/books.tsx:770:22:
+[1]       770 │                     </DialogTrigger>
+[1]           │                       ~~~~~~~~~~~~~
+[1]           ╵                       Button
+[1] 
+[1]   The opening "Button" tag is here:
+[1] 
+[1]     client/src/pages/books.tsx:763:23:
+[1]       763 │                       <Button variant="ghost" className="text-pri...
+[1]           ╵                        ~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] Unexpected closing "Dialog" tag does not match opening "DialogTrigger" tag
+[1] 
+[1]     client/src/pages/books.tsx:792:20:
+[1]       792 │                   </Dialog>
+[1]           │                     ~~~~~~
+[1]           ╵                     DialogTrigger
+[1] 
+[1]   The opening "DialogTrigger" tag is here:
+[1] 
+[1]     client/src/pages/books.tsx:762:21:
+[1]       762 │                     <DialogTrigger asChild>
+[1]           ╵                      ~~~~~~~~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] The character "}" is not valid inside a JSX element
+[1] 
+[1]     client/src/pages/books.tsx:793:17:
+[1]       793 │                 )}
+[1]           │                  ^
+[1]           ╵                  {'}'}
+[1] 
+[1]   Did you mean to escape it as "{'}'}" instead?
+[1] 
+[1] 
+[1] ✘ [ERROR] The character ">" is not valid inside a JSX element
+[1] 
+[1]     client/src/pages/books.tsx:794:15:
+[1]       794 │               />
+[1]           │                ^
+[1]           ╵                {'>'}
+[1] 
+[1]   Did you mean to escape it as "{'>'}" instead?
+[1] 
+[1] 
+[1] ✘ [ERROR] Unexpected closing "CardContent" tag does not match opening "Dialog" tag
+[1] 
+[1]     client/src/pages/books.tsx:795:14:
+[1]       795 │             </CardContent>
+[1]           │               ~~~~~~~~~~~
+[1]           ╵               Dialog
+[1] 
+[1]   The opening "Dialog" tag is here:
+[1] 
+[1]     client/src/pages/books.tsx:756:19:
+[1]       756 │                   <Dialog open={openEditDialog && editingBook?.id...
+[1]           ╵                    ~~~~~~
+[1] 
+[1] 
+[1] ✘ [ERROR] Unterminated regular expression
+[1] 
+[1]     client/src/pages/books.tsx:796:17:
+[1]       796 │           </Card>
+[1]           ╵                  ^
+[1] 
+[1] 
+[1]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[1]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[1]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[1]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[1]     at new Promise (<anonymous>)
+[1]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[1]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[1]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[1]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] 🚀 API routes initialized
+[0] 3:41:21 PM [express] serving on port 5001
+[0] Error:   Failed to scan for dependencies from entries:
+[0]   /home/runner/workspace/client/index.html
+[0] 
+[0]   ✘ [ERROR] Multiple exports with the same name "exportToExcel"
+[0] 
+[0]     client/src/lib/utils/export.ts:357:13:
+[0]       357 │ export const exportToExcel = (data: any[], filename: string) => {
+[0]           ╵              ~~~~~~~~~~~~~
+[0] 
+[0]   The name "exportToExcel" was originally exported here:
+[0] 
+[0]     client/src/lib/utils/export.ts:8:13:
+[0]       8 │ export const exportToExcel = (data: any[], fileName: string = 'expo...
+[0]         ╵              ~~~~~~~~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] The symbol "exportToExcel" has already been declared
+[0] 
+[0]     client/src/lib/utils/export.ts:357:13:
+[0]       357 │ export const exportToExcel = (data: any[], filename: string) => {
+[0]           ╵              ~~~~~~~~~~~~~
+[0] 
+[0]   The symbol "exportToExcel" was originally declared here:
+[0] 
+[0]     client/src/lib/utils/export.ts:8:13:
+[0]       8 │ export const exportToExcel = (data: any[], fileName: string = 'expo...
+[0]         ╵              ~~~~~~~~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] The character ">" is not valid inside a JSX element
+[0] 
+[0]     client/src/pages/books.tsx:769:6:
+[0]       769 │ Button>
+[0]           │       ^
+[0]           ╵       {'>'}
+[0] 
+[0]   Did you mean to escape it as "{'>'}" instead?
+[0] 
+[0] 
+[0] ✘ [ERROR] Unexpected closing "DialogTrigger" tag does not match opening "Button" tag
+[0] 
+[0]     client/src/pages/books.tsx:770:22:
+[0]       770 │                     </DialogTrigger>
+[0]           │                       ~~~~~~~~~~~~~
+[0]           ╵                       Button
+[0] 
+[0]   The opening "Button" tag is here:
+[0] 
+[0]     client/src/pages/books.tsx:763:23:
+[0]       763 │                       <Button variant="ghost" className="text-pri...
+[0]           ╵                        ~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] Unexpected closing "Dialog" tag does not match opening "DialogTrigger" tag
+[0] 
+[0]     client/src/pages/books.tsx:792:20:
+[0]       792 │                   </Dialog>
+[0]           │                     ~~~~~~
+[0]           ╵                     DialogTrigger
+[0] 
+[0]   The opening "DialogTrigger" tag is here:
+[0] 
+[0]     client/src/pages/books.tsx:762:21:
+[0]       762 │                     <DialogTrigger asChild>
+[0]           ╵                      ~~~~~~~~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] The character "}" is not valid inside a JSX element
+[0] 
+[0]     client/src/pages/books.tsx:793:17:
+[0]       793 │                 )}
+[0]           │                  ^
+[0]           ╵                  {'}'}
+[0] 
+[0]   Did you mean to escape it as "{'}'}" instead?
+[0] 
+[0] 
+[0] ✘ [ERROR] The character ">" is not valid inside a JSX element
+[0] 
+[0]     client/src/pages/books.tsx:794:15:
+[0]       794 │               />
+[0]           │                ^
+[0]           ╵                {'>'}
+[0] 
+[0]   Did you mean to escape it as "{'>'}" instead?
+[0] 
+[0] 
+[0] ✘ [ERROR] Unexpected closing "CardContent" tag does not match opening "Dialog" tag
+[0] 
+[0]     client/src/pages/books.tsx:795:14:
+[0]       795 │             </CardContent>
+[0]           │               ~~~~~~~~~~~
+[0]           ╵               Dialog
+[0] 
+[0]   The opening "Dialog" tag is here:
+[0] 
+[0]     client/src/pages/books.tsx:756:19:
+[0]       756 │                   <Dialog open={openEditDialog && editingBook?.id...
+[0]           ╵                    ~~~~~~
+[0] 
+[0] 
+[0] ✘ [ERROR] Unterminated regular expression
+[0] 
+[0]     client/src/pages/books.tsx:796:17:
+[0]       796 │           </Card>
+[0]           ╵                  ^
+[0] 
+[0] 
+[0]     at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+[0]     at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+[0]     at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+[0]     at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+[0]     at new Promise (<anonymous>)
+[0]     at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+[0]     at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+[0]     at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+[0]     at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
+[0] tsx server/index.ts exited with code 1

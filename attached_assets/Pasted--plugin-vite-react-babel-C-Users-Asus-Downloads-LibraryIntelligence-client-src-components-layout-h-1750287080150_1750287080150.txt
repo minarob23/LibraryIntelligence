@@ -1,0 +1,50 @@
+[plugin:vite:react-babel] C:\Users\Asus\Downloads\LibraryIntelligence\client\src\components\layout\header.tsx: Identifier 'Header' has already been declared. (237:6)
+  240 |   const { toast } = useToast();
+C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/layout/header.tsx:237:6
+235|  import { useState } from 'react';
+236|  
+237|  const Header = () => {
+   |        ^
+238|    const { theme, setTheme } = useTheme();
+239|    const { isCompact, setIsCompact } = useCompactView();
+    at constructor (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:360:19)
+    at TypeScriptParserMixin.raise (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:3327:19)
+    at TypeScriptScopeHandler.checkRedeclarationInScope (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:1555:19)
+    at TypeScriptScopeHandler.declareName (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:1521:12)
+    at TypeScriptScopeHandler.declareName (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:7053:11)
+    at TypeScriptParserMixin.declareNameFromIdentifier (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:7476:16)
+    at TypeScriptParserMixin.checkIdentifier (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:7472:12)
+    at TypeScriptParserMixin.checkLVal (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:7413:12)
+    at TypeScriptParserMixin.parseVarId (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:13052:10)
+    at TypeScriptParserMixin.parseVarId (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9587:11)
+    at TypeScriptParserMixin.parseVar (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:13027:12)
+    at TypeScriptParserMixin.parseVarStatement (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12874:10)
+    at TypeScriptParserMixin.parseVarStatement (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9314:31)
+    at TypeScriptParserMixin.parseStatementContent (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12489:23)
+    at TypeScriptParserMixin.parseStatementContent (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9344:18)
+    at TypeScriptParserMixin.parseStatementLike (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12406:17)
+    at TypeScriptParserMixin.parseModuleItem (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12383:17)
+    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12960:36)
+    at TypeScriptParserMixin.parseBlockBody (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12953:10)
+    at TypeScriptParserMixin.parseProgram (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12280:10)
+    at TypeScriptParserMixin.parseTopLevel (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12270:25)
+    at TypeScriptParserMixin.parse (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:14120:10)
+    at TypeScriptParserMixin.parse (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9967:18)
+    at parse (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:14154:38)
+    at parser (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\core\lib\parser\index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\core\lib\transformation\normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\core\lib\transformation\index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\core\lib\transform.js:22:33)
+    at transform.next (<anonymous>)
+    at step (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:261:32)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:273:13
+    at async.call.result.err.err (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:223:11)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:189:28
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\core\lib\gensync-utils\async.js:67:7
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:113:33
+    at step (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:287:14)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:273:13
+    at async.call.result.err.err (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\gensync\index.js:223:11
