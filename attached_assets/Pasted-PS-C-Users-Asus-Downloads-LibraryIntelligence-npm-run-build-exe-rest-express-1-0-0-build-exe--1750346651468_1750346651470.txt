@@ -1,0 +1,988 @@
+PS C:\Users\Asus\Downloads\LibraryIntelligence> npm run build-exe
+
+> rest-express@1.0.0 build-exe
+> npm run build && pkg dist/index.js --target node18-win-x64 --output exe-dist/LibraryManagement.exe
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+client/src/components/dashboard/book-recommendations.tsx:96:15 - error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ [key: string]: number; } | {}'.
+  No index signature with a parameter of type 'string' was found on type '{ [key: string]: number; } | {}'.
+
+96           if (genrePreferences[genre]) {
+                 ~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:97:22 - error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ [key: string]: number; } | {}'.
+  No index signature with a parameter of type 'string' was found on type '{ [key: string]: number; } | {}'.
+
+97             score += genrePreferences[genre] * 3;
+                        ~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:106:36 - error TS18046: 'favAuthor' is of type 'unknown'.
+
+106           if (bookAuthors.includes(favAuthor.toLowerCase()) && favAuthor.length > 2) {
+                                       ~~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:106:64 - error TS18046: 'favAuthor' is of type 'unknown'.
+
+106           if (bookAuthors.includes(favAuthor.toLowerCase()) && favAuthor.length > 2) {
+                                                                   ~~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:113:16 - error TS2339: Property 'name' does not exist on type 'Book'.
+
+113       if (book.name) {
+                   ~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:114:32 - error TS2339: Property 'name' does not exist on type 'Book'.
+
+114         const bookTitle = book.name.toLowerCase();
+                                   ~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:116:34 - error TS18046: 'favBook' is of type 'unknown'.
+
+116           if (bookTitle.includes(favBook.toLowerCase()) || favBook.toLowerCase().includes(bookTitle)) {
+                                     ~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:116:60 - error TS18046: 'favBook' is of type 'unknown'.
+
+116           if (bookTitle.includes(favBook.toLowerCase()) || favBook.toLowerCase().includes(bookTitle)) {
+                                                               ~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:126:33 - error TS18046: 'favorite' is of type 'unknown'.
+
+126           if (bookTags.includes(favorite.toLowerCase())) {
+                                    ~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:145:63 - error TS2345: Argument of type 'Set<unknown> | Set<string>' is not assignable to parameter of type 'Set<string>'.
+  Type 'Set<unknown>' is not assignable to type 'Set<string>'.
+    Type 'unknown' is not assignable to type 'string'.
+
+145         matchReasons: getMatchReasons(book, genrePreferences, favoriteAuthors, favoriteBooks)
+                                                                  ~~~~~~~~~~~~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:248:35 - error TS2339: Property 'name' does not exist on type '{ recommendationScore: number; matchReasons: string[]; id: number; title: string; author: string; publisher?: string | undefined; genres?: string | undefined; tags?: string | undefined; bookCode?: string | undefined; copies?: number | undefined; publishedDate?: string | undefined; coverImage?: string | undefined; }'.
+
+248                         alt={book.name}
+                                      ~~~~
+
+client/src/components/dashboard/book-recommendations.tsx:256:31 - error TS2339: Property 'name' does not exist on type '{ recommendationScore: number; matchReasons: string[]; id: number; title: string; author: string; publisher?: string | undefined; genres?: string | undefined; tags?: string | undefined; bookCode?: string | undefined; copies?: number | undefined; publishedDate?: string | undefined; coverImage?: string | undefined; }'.
+
+256                         {book.name}
+                                  ~~~~
+
+client/src/components/dashboard/most-borrowed-books-chart.tsx:72:47 - error TS2339: Property 'name' does not exist on type 'Book'.
+
+72           const bookName = book.title || book.name || `Unknown Book`;
+                                                 ~~~~
+
+client/src/components/dashboard/most-borrowed-books-chart.tsx:75:11 - error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ month: string; }'.
+
+75           monthData[shortName] = bookBorrowCounts[bookId]?.[monthData.month] || 0;
+             ~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:22:44 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+22       const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+                                              ~~~~~~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:27:54 - error TS7006: Parameter 'b' implicitly has an 'any' type.
+
+27       const activeBorrowings = userBorrowings.filter(b => b.status === 'borrowed').length;
+                                                        ~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:28:56 - error TS7006: Parameter 'b' implicitly has an 'any' type.
+
+28       const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
+                                                          ~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:31:58 - error TS7006: Parameter 'b' implicitly has an 'any' type.
+
+31       const onTimeBorrowings = returnedBorrowings.filter(b => {
+                                                            ~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:54:42 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+54     const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+                                            ~~~~~~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:63:54 - error TS7006: Parameter 'b' implicitly has an 'any' type.
+
+63     const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
+                                                        ~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:64:56 - error TS7006: Parameter 'b' implicitly has an 'any' type.
+
+64     const onTimeBorrowings = returnedBorrowings.filter(b => {
+                                                          ~
+
+client/src/components/dashboard/top-borrowers-engagement.tsx:106:47 - error TS2339: Property 'map' does not exist on type '{}'.
+
+106   const topBorrowersByEngagement = borrowers?.map((borrower: any) => ({
+                                                  ~~~
+
+client/src/components/dashboard/top-borrowers.tsx:22:44 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+22       const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+                                              ~~~~~~
+
+client/src/components/dashboard/top-borrowers.tsx:83:29 - error TS2339: Property 'map' does not exist on type '{}'.
+
+83     select: (data) => data?.map((borrower: any) => ({
+                               ~~~
+
+client/src/components/dashboard/top-borrowers.tsx:223:66 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+223                               const userBorrowings = borrowings?.filter((b: any) => b.borrowerId === borrower.id) || [];
+                                                                     ~~~~~~
+
+client/src/components/forms/book-form.tsx:1422:38 - error TS2769: No overload matches this call.
+  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number | Date'.
+      Type 'undefined' is not assignable to type 'string | number | Date'.
+  Overload 2 of 4, '(value: string | number): Date', gave the following error.
+    Argument of type 'string | undefined' is not assignable to parameter of type 'string | number'.
+      Type 'undefined' is not assignable to type 'string | number'.
+
+1422                           ? new Date(form.getValues('publishedDate')).toLocaleDateString()
+                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+client/src/components/forms/book-form.tsx:1491:75 - error TS2345: Argument of type 'number | undefined' is not assignable to parameter of type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+
+1491                               i < Math.floor((parseFloat(getAverageRating(book.id) || '0')) / 2)
+                                                                               ~~~~~~~
+
+client/src/components/forms/book-form.tsx:1510:40 - error TS2339: Property 'some' does not exist on type '{}'.
+
+1510                     (borrowings || []).some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                                            ~~~~
+
+client/src/components/forms/book-form.tsx:1515:42 - error TS2339: Property 'some' does not exist on type '{}'.
+
+1515                       (borrowings || []).some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                                              ~~~~
+
+client/src/components/forms/book-form.tsx:1519:43 - error TS2339: Property 'some' does not exist on type '{}'.
+
+1519                       {(borrowings || []).some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                                               ~~~~
+
+client/src/components/forms/borrow-form.tsx:109:47 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+109   const filteredBorrowers = (borrowers || []).filter((borrower: any) =>
+                                                  ~~~~~~
+
+client/src/components/forms/borrow-form.tsx:114:49 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+114   const filteredLibrarians = (librarians || []).filter((librarian: any) =>
+                                                    ~~~~~~
+
+client/src/components/forms/borrow-form.tsx:118:39 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+118   const filteredBooks = (books || []).filter((book: any) =>
+                                          ~~~~~~
+
+client/src/components/layout/notification-dropdown.tsx:140:51 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'any[]'.
+  Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+140       const notifications = checkExpiryAndOverdue(borrowers, borrowings, librarians, notificationSettings);
+                                                      ~~~~~~~~~
+
+client/src/components/ui/aspect-ratio.tsx:1:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+1 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/carousel.tsx:4:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+4 } from "embla-carousel-react"
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:43 - error TS2307: Cannot find module 'input-otp' or its corresponding type declarations.
+
+2 import { OTPInput, OTPInputContext } from "input-otp"
+                                            ~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:36:44 - error TS18046: 'inputOTPContext' is of type 'unknown'.
+
+36   const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
+                                              ~~~~~~~~~~~~~~~
+
+client/src/components/ui/resizable.tsx:4:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+4 import * as ResizablePrimitive from "react-resizable-panels"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:757:7 - error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+
+757       cleanData.books = data.books.filter(book =>
+          ~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:768:7 - error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+
+768       cleanData.borrowers = data.borrowers.filter(borrower =>
+          ~~~~~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:779:7 - error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+
+779       cleanData.librarians = data.librarians.filter(librarian =>
+          ~~~~~~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:789:7 - error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+
+789       cleanData.borrowings = data.borrowings.filter(borrowing => {
+          ~~~~~~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:813:7 - error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+
+813       cleanData.membershipApplications = data.membershipApplications.filter(app =>
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/lib/localStorage.ts:844:52 - error TS7006: Parameter 'borrowing' implicitly has an 'any' type.
+
+844           data.borrowings = data.borrowings.filter(borrowing => {
+                                                       ~~~~~~~~~
+
+client/src/lib/sampleData.ts:284:47 - error TS2341: Property 'getData' is private and only accessible within class 'LocalStorage'.
+
+284     const existingData = localStorage_storage.getData();
+                                                  ~~~~~~~
+
+client/src/lib/utils/export.ts:459:23 - error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ name: any; author: any; publisher: any; genres: any; Cabinet: any; Shelf: any; Number: any; 'Book Code': any; copies: any; }'.
+  No index signature with a parameter of type 'string' was found on type '{ name: any; author: any; publisher: any; genres: any; Cabinet: any; Shelf: any; Number: any; 'Book Code': any; copies: any; }'.
+
+459         const value = book[header];
+                          ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:171:19 - error TS18047: 'e.currentTarget.parentElement' is possibly 'null'.
+
+171                   e.currentTarget.parentElement.innerHTML = '<BookOpen class="h-5 w-5 text-blue-600 dark:text-blue-300" />';
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/books.tsx:241:40 - error TS2339: Property 'some' does not exist on type '{}'.
+
+241         const isBorrowed = borrowings?.some((b: any) => b.bookId === row.id && b.status === 'borrowed');
+                                           ~~~~
+
+client/src/pages/books.tsx:316:23 - error TS2802: Type 'Set<unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+316   const authors = [...new Set(books?.map(book => book.author) || [])];
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/books.tsx:316:38 - error TS2339: Property 'map' does not exist on type '{}'.
+
+316   const authors = [...new Set(books?.map(book => book.author) || [])];
+                                         ~~~
+
+client/src/pages/books.tsx:316:42 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+316   const authors = [...new Set(books?.map(book => book.author) || [])];
+                                             ~~~~
+
+client/src/pages/books.tsx:317:26 - error TS2802: Type 'Set<unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+317   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/books.tsx:317:41 - error TS2339: Property 'map' does not exist on type '{}'.
+
+317   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
+                                            ~~~
+
+client/src/pages/books.tsx:317:45 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+317   const publishers = [...new Set(books?.map(book => book.publisher) || [])];
+                                                ~~~~
+
+client/src/pages/books.tsx:318:22 - error TS2802: Type 'Set<unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+318   const genres = [...new Set(books?.flatMap(book =>
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+319     book.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+320   ) || [])];
+    ~~~~~~~~~~
+
+client/src/pages/books.tsx:318:37 - error TS2339: Property 'flatMap' does not exist on type '{}'.
+
+318   const genres = [...new Set(books?.flatMap(book =>
+                                        ~~~~~~~
+
+client/src/pages/books.tsx:318:45 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+318   const genres = [...new Set(books?.flatMap(book =>
+                                                ~~~~
+
+client/src/pages/books.tsx:321:20 - error TS2802: Type 'Set<unknown>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+
+321   const tags = [...new Set(books?.flatMap(book =>
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+322     book.tags ? book.tags.split(',').map((t: string) => t.trim()) : []
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+323   ) || [])];
+    ~~~~~~~~~~
+
+client/src/pages/books.tsx:321:35 - error TS2339: Property 'flatMap' does not exist on type '{}'.
+
+321   const tags = [...new Set(books?.flatMap(book =>
+                                      ~~~~~~~
+
+client/src/pages/books.tsx:321:43 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+321   const tags = [...new Set(books?.flatMap(book =>
+                                              ~~~~
+
+client/src/pages/books.tsx:376:44 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+376           {filterType === 'code' && books?.filter(book => book.bookCode && book.bookCode.trim() !== '').map(book => (
+                                               ~~~~~~
+
+client/src/pages/books.tsx:376:51 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+376           {filterType === 'code' && books?.filter(book => book.bookCode && book.bookCode.trim() !== '').map(book => (
+                                                      ~~~~
+
+client/src/pages/books.tsx:376:109 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+376           {filterType === 'code' && books?.filter(book => book.bookCode && book.bookCode.trim() !== '').map(book => (
+                                                                                                                ~~~~
+
+client/src/pages/books.tsx:399:32 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+399   const filteredBooks = books?.filter(book => {
+                                   ~~~~~~
+
+client/src/pages/books.tsx:399:39 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+399   const filteredBooks = books?.filter(book => {
+                                          ~~~~
+
+client/src/pages/books.tsx:400:36 - error TS2339: Property 'some' does not exist on type '{}'.
+
+400     const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+                                       ~~~~
+
+client/src/pages/books.tsx:440:47 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+440   const borrowedBooks = filteredBooks?.filter(book =>
+                                                  ~~~~
+
+client/src/pages/books.tsx:441:17 - error TS2339: Property 'some' does not exist on type '{}'.
+
+441     borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                    ~~~~
+
+client/src/pages/books.tsx:445:40 - error TS2339: Property 'id' does not exist on type 'never'.
+
+445     .sort((a, b) => getTimesBorrowed(b.id) - getTimesBorrowed(a.id))
+                                           ~~
+
+client/src/pages/books.tsx:445:65 - error TS2339: Property 'id' does not exist on type 'never'.
+
+445     .sort((a, b) => getTimesBorrowed(b.id) - getTimesBorrowed(a.id))
+                                                                    ~~
+
+client/src/pages/books.tsx:446:43 - error TS2339: Property 'id' does not exist on type 'never'.
+
+446     .filter(book => getTimesBorrowed(book.id) > 0)
+                                              ~~
+
+client/src/pages/books.tsx:450:42 - error TS2339: Property 'id' does not exist on type 'never'.
+
+450     .sort((a, b) => getPopularityScore(b.id) - getPopularityScore(a.id))
+                                             ~~
+
+client/src/pages/books.tsx:450:69 - error TS2339: Property 'id' does not exist on type 'never'.
+
+450     .sort((a, b) => getPopularityScore(b.id) - getPopularityScore(a.id))
+                                                                        ~~
+
+client/src/pages/books.tsx:451:45 - error TS2339: Property 'id' does not exist on type 'never'.
+
+451     .filter(book => getPopularityScore(book.id) > 0)
+                                                ~~
+
+client/src/pages/books.tsx:455:43 - error TS2339: Property 'id' does not exist on type 'never'.
+
+455     .filter(book => getAverageRating(book.id) !== null)
+                                              ~~
+
+client/src/pages/books.tsx:456:51 - error TS2339: Property 'id' does not exist on type 'never'.
+
+456     .sort((a, b) => parseFloat(getAverageRating(b.id) || '0') - parseFloat(getAverageRating(a.id) || '0'))
+                                                      ~~
+
+client/src/pages/books.tsx:456:95 - error TS2339: Property 'id' does not exist on type 'never'.
+
+456     .sort((a, b) => parseFloat(getAverageRating(b.id) || '0') - parseFloat(getAverageRating(a.id) || '0'))
+                                                                                                  ~~
+
+client/src/pages/books.tsx:460:27 - error TS2339: Property 'length' does not exist on type '{}'.
+
+460       if (!books || books.length === 0) {
+                              ~~~~~~
+
+client/src/pages/books.tsx:469:49 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'any[]'.
+  Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+469       const stats = exportLibraryWithStatistics(books, borrowings);
+                                                    ~~~~~
+
+client/src/pages/books.tsx:478:27 - error TS2339: Property 'length' does not exist on type '{}'.
+
+478       if (!books || books.length === 0) {
+                              ~~~~~~
+
+client/src/pages/books.tsx:487:32 - error TS2339: Property 'map' does not exist on type '{}'.
+
+487       const exportData = books.map(book => ({
+                                   ~~~
+
+client/src/pages/books.tsx:487:36 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+487       const exportData = books.map(book => ({
+                                       ~~~~
+
+client/src/pages/books.tsx:714:19 - error TS2322: Type 'unknown' is not assignable to type 'any[]'.
+
+714                   books={books}
+                      ~~~~~
+
+  client/src/pages/books.tsx:512:67
+    512   const LibraryExportDialog = ({ books, borrowings, onExport }: { books: any[], borrowings: any[], onExport: () => void }) => {
+                                                                          ~~~~~
+    The expected type comes from property 'books' which is declared here on type 'IntrinsicAttributes & { books: any[]; borrowings: any[]; onExport: () => void; }'
+
+client/src/pages/books.tsx:715:19 - error TS2322: Type 'unknown' is not assignable to type 'any[]'.
+
+715                   borrowings={borrowings}
+                      ~~~~~~~~~~
+
+  client/src/pages/books.tsx:512:81
+    512   const LibraryExportDialog = ({ books, borrowings, onExport }: { books: any[], borrowings: any[], onExport: () => void }) => {
+                                                                                        ~~~~~~~~~~
+    The expected type comes from property 'borrowings' which is declared here on type 'IntrinsicAttributes & { books: any[]; borrowings: any[]; onExport: () => void; }'
+
+client/src/pages/books.tsx:740:34 - error TS2339: Property 'length' does not exist on type '{}'.
+
+740                   index={(books?.length || 0) + 1}
+                                     ~~~~~~
+
+client/src/pages/books.tsx:741:19 - error TS2322: Type '{ index: any; initialData: any; onSuccess: () => void; onCancel: () => void; }' is not assignable to type 'IntrinsicAttributes & BookFormProps'.
+  Property 'initialData' does not exist on type 'IntrinsicAttributes & BookFormProps'.
+
+741                   initialData={editingBook}
+                      ~~~~~~~~~~~
+
+client/src/pages/books.tsx:756:55 - error TS2339: Property 'length' does not exist on type '{}'.
+
+756           <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
+                                                          ~~~~~~
+
+client/src/pages/books.tsx:762:57 - error TS2339: Property 'length' does not exist on type '{}'.
+
+762           <TabsTrigger value="gallery">Gallery ({books?.length || 0})</TabsTrigger>
+                                                            ~~~~~~
+
+client/src/pages/books.tsx:775:15 - error TS2322: Type '{ data: any; columns: { key: string; header: string; cell: (row: any) => any; }[]; searchable: true; loading: boolean; emptyMessage: string; actions: (row: any) => Element; pagination: { totalItems: any; itemsPerPage: number; currentPage: number; onPageChange: Dispatch<...>; }; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'emptyMessage' does not exist on type 'IntrinsicAttributes & DataTableProps'.
+
+775               emptyMessage={getEmptyMessage()}
+                  ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:859:17 - error TS2322: Type '{ data: any; columns: { key: string; header: string; cell: (row: any) => any; }[]; searchable: true; loading: boolean; emptyMessage: string; actions: (row: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'emptyMessage' does not exist on type 'IntrinsicAttributes & DataTableProps'.
+
+859                 emptyMessage="No books are currently borrowed"
+                    ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:914:17 - error TS2322: Type '{ data: any[]; columns: { key: string; header: string; cell: (row: any) => any; }[]; searchable: true; loading: boolean; emptyMessage: string; actions: (row: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'emptyMessage' does not exist on type 'IntrinsicAttributes & DataTableProps'.
+
+914                 emptyMessage="No borrowing data available"
+                    ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:969:17 - error TS2322: Type '{ data: any[]; columns: { key: string; header: string; cell: (row: any) => any; }[]; searchable: true; loading: boolean; emptyMessage: string; actions: (row: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'emptyMessage' does not exist on type 'IntrinsicAttributes & DataTableProps'.
+
+969                 emptyMessage="No popularity data available"
+                    ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:1024:17 - error TS2322: Type '{ data: any[]; columns: { key: string; header: string; cell: (row: any) => any; }[]; searchable: true; loading: boolean; emptyMessage: string; actions: (row: any) => Element; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'emptyMessage' does not exist on type 'IntrinsicAttributes & DataTableProps'.
+
+1024                 emptyMessage="No rating data available"
+                     ~~~~~~~~~~~~
+
+client/src/pages/books.tsx:1093:39 - error TS7006: Parameter 'book' implicitly has an 'any' type.
+
+1093                   {filteredBooks.map((book) => {
+                                           ~~~~
+
+client/src/pages/books.tsx:1094:52 - error TS2339: Property 'some' does not exist on type '{}'.
+
+1094                     const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+                                                        ~~~~
+
+client/src/pages/borrowers.tsx:69:43 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+69   const filteredBorrowers = allBorrowers?.filter(borrower => {
+                                             ~~~~~~
+
+client/src/pages/borrowers.tsx:69:50 - error TS7006: Parameter 'borrower' implicitly has an 'any' type.
+
+69   const filteredBorrowers = allBorrowers?.filter(borrower => {
+                                                    ~~~~~~~~
+
+client/src/pages/borrowers.tsx:163:15 - error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ primary: string; middle: string; secondary: string; university: string; graduate: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ primary: string; middle: string; secondary: string; university: string; graduate: string; }'.
+
+163         name: categoryMap[category] || category,
+                  ~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/borrowers.tsx:177:13 - error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ primary: string; middle: string; secondary: string; university: string; graduate: string; }'.
+
+177       name: categoryMap[item.category] || item.category,
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/borrowers.tsx:377:31 - error TS2339: Property 'length' does not exist on type '{}'.
+
+377               ? allBorrowers?.length || 0
+                                  ~~~~~~
+
+client/src/pages/borrowers.tsx:378:31 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+378               : allBorrowers?.filter(borrower => borrower.category === category.value).length || 0;
+                                  ~~~~~~
+
+client/src/pages/borrowers.tsx:378:38 - error TS7006: Parameter 'borrower' implicitly has an 'any' type.
+
+378               : allBorrowers?.filter(borrower => borrower.category === category.value).length || 0;
+                                         ~~~~~~~~
+
+client/src/pages/borrowing.tsx:71:25 - error TS18046: 'borrowers' is of type 'unknown'.
+
+71     if (!borrowerId || !borrowers.length) return null;
+                           ~~~~~~~~~
+
+client/src/pages/borrowing.tsx:72:12 - error TS18046: 'borrowers' is of type 'unknown'.
+
+72     return borrowers.find((b: any) =>
+              ~~~~~~~~~
+
+client/src/pages/borrowing.tsx:79:21 - error TS18046: 'books' is of type 'unknown'.
+
+79     if (!bookId || !books.length) return null;
+                       ~~~~~
+
+client/src/pages/borrowing.tsx:80:12 - error TS18046: 'books' is of type 'unknown'.
+
+80     return books.find((b: any) =>
+              ~~~~~
+
+client/src/pages/borrowing.tsx:86:30 - error TS18046: 'borrowings' is of type 'unknown'.
+
+86   const filteredBorrowings = borrowings.filter((borrowing: any) => {
+                                ~~~~~~~~~~
+
+client/src/pages/borrowing.tsx:179:11 - error TS2801: This condition will always return true since this 'Promise<any>' is always defined.
+
+179       if (updatedBorrowing) {
+              ~~~~~~~~~~~~~~~~
+
+  client/src/pages/borrowing.tsx:179:11
+    179       if (updatedBorrowing) {
+                  ~~~~~~~~~~~~~~~~
+    Did you forget to use 'await'?
+
+client/src/pages/borrowing.tsx:200:42 - error TS18046: 'borrowings' is of type 'unknown'.
+
+200     { value: 'all', label: 'All', count: borrowings.length },
+                                             ~~~~~~~~~~
+
+client/src/pages/borrowing.tsx:201:48 - error TS18046: 'borrowings' is of type 'unknown'.
+
+201     { value: 'active', label: 'Active', count: borrowings.filter((b: any) => !b.returnDate).length },
+                                                   ~~~~~~~~~~
+
+client/src/pages/borrowing.tsx:202:52 - error TS18046: 'borrowings' is of type 'unknown'.
+
+202     { value: 'returned', label: 'Returned', count: borrowings.filter((b: any) => b.returnDate).length },
+                                                       ~~~~~~~~~~
+
+client/src/pages/borrowing.tsx:203:50 - error TS18046: 'borrowings' is of type 'unknown'.
+
+203     { value: 'overdue', label: 'Overdue', count: borrowings.filter((b: any) => !b.returnDate && new Date(b.dueDate) < new Date()).length },
+                                                     ~~~~~~~~~~
+
+client/src/pages/borrowing.tsx:568:15 - error TS2322: Type '{ data: any; columns: ({ key: string; header: string; cell: (row: any) => string; } | { key: string; header: string; cell: (row: any) => Element | "Unknown"; } | { key: string; header: string; cell: (row: any) => Element | "-"; } | { ...; })[]; isLoading: boolean; emptyMessage: string; }' is not assignable to type 'IntrinsicAttributes & DataTableProps'.
+  Property 'isLoading' does not exist on type 'IntrinsicAttributes & DataTableProps'. Did you mean 'loading'?
+
+568               isLoading={isLoading}
+                  ~~~~~~~~~
+
+client/src/pages/dashboard.tsx:47:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+47     onError: (error) => console.log('Books query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:47:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+47     onError: (error) => console.log('Books query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:53:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+53     onError: (error) => console.log('Borrowers query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:53:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+53     onError: (error) => console.log('Borrowers query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:59:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+59     onError: (error) => console.log('Member growth query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:59:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+59     onError: (error) => console.log('Member growth query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:65:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+65     onError: (error) => console.log('Borrowings query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:65:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+65     onError: (error) => console.log('Borrowings query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:71:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+71     onError: (error) => console.log('Research query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:71:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+71     onError: (error) => console.log('Research query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:77:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+77     onError: (error) => console.log('Most borrowed books query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:77:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+77     onError: (error) => console.log('Most borrowed books query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:83:5 - error TS2769: No overload matches this call.
+  Overload 1 of 3, '(options: DefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): DefinedUseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'DefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 2 of 3, '(options: UndefinedInitialDataOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UndefinedInitialDataOptions<unknown, Error, unknown, string[]>'.
+  Overload 3 of 3, '(options: UseQueryOptions<unknown, Error, unknown, string[]>, queryClient?: QueryClient | undefined): UseQueryResult<unknown, Error>', gave the following error.
+    Object literal may only specify known properties, and 'onError' does not exist in type 'UseQueryOptions<unknown, Error, unknown, string[]>'.
+
+83     onError: (error) => console.log('Borrower distribution query error:', error),
+       ~~~~~~~
+
+
+client/src/pages/dashboard.tsx:83:15 - error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+83     onError: (error) => console.log('Borrower distribution query error:', error),
+                 ~~~~~
+
+client/src/pages/dashboard.tsx:152:33 - error TS2339: Property 'map' does not exist on type '{}'.
+
+152     return borrowerDistribution.map((item: any) => ({
+                                    ~~~
+
+client/src/pages/dashboard.tsx:153:13 - error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ primary: string; middle: string; secondary: string; university: string; graduate: string; }'.
+
+153       name: categoryMap[item.category] || item.category,
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/dashboard.tsx:217:32 - error TS2339: Property 'length' does not exist on type '{}'.
+
+217             value={borrowings?.length || 0}
+                                   ~~~~~~
+
+client/src/pages/dashboard.tsx:219:42 - error TS2339: Property 'length' does not exist on type '{}'.
+
+219             change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
+                                             ~~~~~~
+
+client/src/pages/dashboard.tsx:219:74 - error TS2339: Property 'length' does not exist on type '{}'.
+
+219             change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
+                                                                             ~~~~~~
+
+client/src/pages/dashboard.tsx:225:31 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+225             value={borrowers?.filter(borrower => {
+                                  ~~~~~~
+
+client/src/pages/dashboard.tsx:225:38 - error TS7006: Parameter 'borrower' implicitly has an 'any' type.
+
+225             value={borrowers?.filter(borrower => {
+                                         ~~~~~~~~
+
+client/src/pages/dashboard.tsx:232:33 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+232               value: borrowers?.filter(borrower => {
+                                    ~~~~~~
+
+client/src/pages/dashboard.tsx:232:40 - error TS7006: Parameter 'borrower' implicitly has an 'any' type.
+
+232               value: borrowers?.filter(borrower => {
+                                           ~~~~~~~~
+
+client/src/pages/dashboard.tsx:237:33 - error TS2339: Property 'filter' does not exist on type '{}'.
+
+237               trend: borrowers?.filter(borrower => {
+                                    ~~~~~~
+
+client/src/pages/dashboard.tsx:237:40 - error TS7006: Parameter 'borrower' implicitly has an 'any' type.
+
+237               trend: borrowers?.filter(borrower => {
+                                           ~~~~~~~~
+
+client/src/pages/dashboard.tsx:257:33 - error TS2339: Property 'length' does not exist on type '{}'.
+
+257         {!borrowerDistribution?.length ? (
+                                    ~~~~~~
+
+client/src/pages/dashboard.tsx:276:29 - error TS2339: Property 'length' does not exist on type '{}'.
+
+276         {!memberGrowthData?.length && !borrowers?.length ? (
+                                ~~~~~~
+
+client/src/pages/dashboard.tsx:276:51 - error TS2339: Property 'length' does not exist on type '{}'.
+
+276         {!memberGrowthData?.length && !borrowers?.length ? (
+                                                      ~~~~~~
+
+client/src/pages/librarians.tsx:208:9 - error TS2740: Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+208         data={librarians || []}
+            ~~~~
+
+  client/src/components/tables/data-table.tsx:23:3
+    23   data: any[];
+         ~~~~
+    The expected type comes from property 'data' which is declared here on type 'IntrinsicAttributes & DataTableProps'
+
+client/src/pages/librarians.tsx:268:35 - error TS2339: Property 'length' does not exist on type '{}'.
+
+268           totalItems: librarians?.length || 0,
+                                      ~~~~~~
+
+client/src/pages/research.tsx:54:47 - error TS2345: Argument of type '{ method: string; }' is not assignable to parameter of type 'string'.
+
+54       await apiRequest(`/api/research/${id}`, {
+                                                 ~
+55         method: 'DELETE',
+   ~~~~~~~~~~~~~~~~~~~~~~~~~
+56       });
+   ~~~~~~~
+
+client/src/pages/research.tsx:113:40 - error TS2339: Property 'some' does not exist on type '{}'.
+
+113         const isBorrowed = borrowings?.some((b: any) => b.researchId === row.id && b.status === 'borrowed');
+                                           ~~~~
+
+client/src/pages/research.tsx:187:9 - error TS2740: Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+187         data={researchPapers || []}
+            ~~~~
+
+  client/src/components/tables/data-table.tsx:23:3
+    23   data: any[];
+         ~~~~
+    The expected type comes from property 'data' which is declared here on type 'IntrinsicAttributes & DataTableProps'
+
+client/src/pages/research.tsx:248:39 - error TS2339: Property 'length' does not exist on type '{}'.
+
+248           totalItems: researchPapers?.length || 0,
+                                          ~~~~~~
+
+client/src/pages/settings.tsx:396:35 - error TS2339: Property 'length' does not exist on type '{}'.
+
+396                           {books?.length || 0}
+                                      ~~~~~~
+
+client/src/pages/settings.tsx:399:36 - error TS2339: Property 'length' does not exist on type '{}'.
+
+399                           {(books?.length || 0) === 1 ? 'book' : 'books'}
+                                       ~~~~~~
+
+client/src/pages/settings.tsx:414:44 - error TS2339: Property 'length' does not exist on type '{}'.
+
+414                         if (books && books.length > 0) {
+                                               ~~~~~~
+
+client/src/pages/settings.tsx:415:41 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'any[]'.
+  Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+415                           exportToExcel(books, 'library-books-complete');
+                                            ~~~~~
+
+client/src/pages/settings.tsx:418:73 - error TS2339: Property 'length' does not exist on type '{}'.
+
+418                             description: `Successfully exported ${books.length} books to Excel file with complete details`,
+                                                                            ~~~~~~
+
+client/src/pages/settings.tsx:428:49 - error TS2339: Property 'length' does not exist on type '{}'.
+
+428                       disabled={!books || books.length === 0}
+                                                    ~~~~~~
+
+client/src/pages/settings.tsx:431:39 - error TS2339: Property 'length' does not exist on type '{}'.
+
+431                       {books && books.length > 0
+                                          ~~~~~~
+
+client/src/pages/settings.tsx:432:43 - error TS2339: Property 'length' does not exist on type '{}'.
+
+432                         ? `Export ${books.length} Books to Excel`
+                                              ~~~~~~
+
+client/src/pages/settings.tsx:702:54 - error TS18046: 'error' is of type 'unknown'.
+
+702         description: `Failed to reset system data: ${error.message}`,
+                                                         ~~~~~
+
+server/routes.ts:333:35 - error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '(req: express.Request, res: express.Response) => Promise<express.Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+      Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+333   app.post('/api/reset-database', async (req: express.Request, res: express.Response) => {
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  node_modules/@types/express-serve-static-core/index.d.ts:168:5
+    168     (path: PathParams, subApplication: Application): T;
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    The last overload is declared here.
+
+server/routes.ts:368:53 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+368       await db.run('DELETE FROM borrowings').catch((err) => {
+                                                        ~~~
+
+server/routes.ts:371:48 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+371       await db.run('DELETE FROM books').catch((err) => {
+                                                   ~~~
+
+server/routes.ts:374:52 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+374       await db.run('DELETE FROM borrowers').catch((err) => {
+                                                       ~~~
+
+server/routes.ts:377:53 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+377       await db.run('DELETE FROM librarians').catch((err) => {
+                                                        ~~~
+
+server/routes.ts:380:51 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+380       await db.run('DELETE FROM feedback').catch((err) => {
+                                                      ~~~
+
+server/routes.ts:383:58 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+383       await db.run('DELETE FROM research_papers').catch((err) => {
+                                                             ~~~
+
+server/routes.ts:386:53 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+386       await db.run('DELETE FROM book_index').catch((err) => {
+                                                        ~~~
+
+server/routes.ts:389:49 - error TS7006: Parameter 'err' implicitly has an 'any' type.
+
+389       await db.run('DELETE FROM quotes').catch((err) => {
+                                                    ~~~
+
+
+Found 166 errors in 22 files.
+
+Errors  Files
+    12  client/src/components/dashboard/book-recommendations.tsx:96
+     2  client/src/components/dashboard/most-borrowed-books-chart.tsx:72
+     8  client/src/components/dashboard/top-borrowers-engagement.tsx:22
+     3  client/src/components/dashboard/top-borrowers.tsx:22
+     5  client/src/components/forms/book-form.tsx:1422
+     3  client/src/components/forms/borrow-form.tsx:109
+     1  client/src/components/layout/notification-dropdown.tsx:140
+     1  client/src/components/ui/aspect-ratio.tsx:1
+     1  client/src/components/ui/carousel.tsx:4
+     2  client/src/components/ui/input-otp.tsx:2
+     1  client/src/components/ui/resizable.tsx:4
+     6  client/src/lib/localStorage.ts:757
+     1  client/src/lib/sampleData.ts:284
+     1  client/src/lib/utils/export.ts:459
+    49  client/src/pages/books.tsx:171
+     7  client/src/pages/borrowers.tsx:69
+    11  client/src/pages/borrowing.tsx:71
+    28  client/src/pages/dashboard.tsx:47
+     2  client/src/pages/librarians.tsx:208
+     4  client/src/pages/research.tsx:54
+     9  client/src/pages/settings.tsx:396
+     9  server/routes.ts:333

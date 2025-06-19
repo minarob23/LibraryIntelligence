@@ -1,0 +1,59 @@
+[plugin:vite:react-babel] C:\Users\Asus\Downloads\LibraryIntelligence\client\src\components\forms\book-form.tsx: Unexpected token, expected "}" (1484:77)
+  1487 |                       <div className="flex items-center mt-1">
+C:/Users/Asus/Downloads/LibraryIntelligence/client/src/components/forms/book-form.tsx:1484:77
+1482|                    <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800">
+1483|                      <span className="text-lg font-bold text-yellow-800 dark:text-yellow-300">
+1484|                        {isEditing && book?.id && getAverageRating(book.id) ? `${getAverageRating(book.id)}/10` : 'No ratings'}
+   |                                                                               ^
+1485|                      </span>
+1486|                      {isEditing && book?.id && getAverageRating(book.id) && (
+    at constructor (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:360:19)
+    at TypeScriptParserMixin.raise (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:3327:19)
+    at TypeScriptParserMixin.unexpected (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:3347:16)
+    at TypeScriptParserMixin.expect (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:3657:12)
+    at TypeScriptParserMixin.jsxParseExpressionContainer (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6810:10)
+    at TypeScriptParserMixin.jsxParseAttributeValue (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6777:21)
+    at TypeScriptParserMixin.jsxParseAttribute (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6826:38)
+    at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6840:28)
+    at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9885:18)
+    at TypeScriptParserMixin.jsxParseOpeningElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6835:17)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6859:33)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElementAt (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6871:32)
+    at TypeScriptParserMixin.jsxParseElement (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6922:17)
+    at TypeScriptParserMixin.parseExprAtom (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6932:19)
+    at TypeScriptParserMixin.parseExprSubscripts (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10758:23)
+    at TypeScriptParserMixin.parseUpdate (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10743:21)
+    at TypeScriptParserMixin.parseMaybeUnary (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10723:23)
+    at TypeScriptParserMixin.parseMaybeUnary (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9672:18)
+    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10576:61)
+    at TypeScriptParserMixin.parseExprOps (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10581:23)
+    at TypeScriptParserMixin.parseMaybeConditional (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10558:23)
+    at TypeScriptParserMixin.parseMaybeAssign (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10521:21)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9610:39
+    at TypeScriptParserMixin.tryParse (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:3665:20)
+    at TypeScriptParserMixin.parseMaybeAssign (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9610:18)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10491:39
+    at TypeScriptParserMixin.allowInAnd (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12100:12)
+    at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10491:17)
+    at TypeScriptParserMixin.parseParenAndDistinguishExpression (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:11359:28)
+    at TypeScriptParserMixin.parseExprAtom (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:11006:23)
+    at TypeScriptParserMixin.parseExprAtom (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:6937:20)
+    at TypeScriptParserMixin.parseExprSubscripts (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10758:23)
+    at TypeScriptParserMixin.parseUpdate (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10743:21)
+    at TypeScriptParserMixin.parseMaybeUnary (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10723:23)
+    at TypeScriptParserMixin.parseMaybeUnary (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9672:18)
+    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10576:61)
+    at TypeScriptParserMixin.parseExprOps (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10581:23)
+    at TypeScriptParserMixin.parseMaybeConditional (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10558:23)
+    at TypeScriptParserMixin.parseMaybeAssign (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10521:21)
+    at TypeScriptParserMixin.parseMaybeAssign (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:9621:20)
+    at TypeScriptParserMixin.parseExpressionBase (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10475:23)
+    at C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10471:39
+    at TypeScriptParserMixin.allowInAnd (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:12095:16)
+    at TypeScriptParserMixin.parseExpression (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser\lib\index.js:10471:17)
+    at TypeScriptParserMixin.parseReturnStatement (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\@babel\parser
