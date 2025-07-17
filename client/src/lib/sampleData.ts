@@ -329,7 +329,7 @@ export const initializeSampleData = () => {
       }
     });
 
-    
+
 
     // Create borrowings with proper librarianId
     sampleBorrowings.forEach(borrowing => {

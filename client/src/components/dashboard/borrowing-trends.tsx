@@ -9,7 +9,7 @@ const BorrowingTrends = () => {
   });
 
   const getMonthlyData = () => {
-    if (!borrowings) return [];
+    if (!borrowings || !Array.isArray(borrowings)) return [];
     
     const monthlyData = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -27,20 +27,20 @@ const BorrowingTrends = () => {
     }
 
     // Count borrowings per month
-    (borrowings as any[]).forEach((borrowing: any) => {
-      if (borrowing.borrowDate) {
-        const borrowDate = new Date(borrowing.borrowDate);
-        
-        // Ensure the date is valid
-        if (isNaN(borrowDate.getTime())) return;
-        
-        const monthKey = `${monthNames[borrowDate.getMonth()]} ${borrowDate.getFullYear()}`;
-        const monthData = monthlyData.find(data => data.name === monthKey);
-        if (monthData) {
-          monthData.borrowed++;
-          if (borrowing.returnDate) {
-            monthData.returned++;
-          }
+    borrowings.forEach((borrowing: any) => {
+      if (!borrowing || !borrowing.borrowDate) return;
+      
+      const borrowDate = new Date(borrowing.borrowDate);
+      
+      // Ensure the date is valid
+      if (isNaN(borrowDate.getTime())) return;
+      
+      const monthKey = `${monthNames[borrowDate.getMonth()]} ${borrowDate.getFullYear()}`;
+      const monthData = monthlyData.find(data => data.name === monthKey);
+      if (monthData) {
+        monthData.borrowed++;
+        if (borrowing.returnDate) {
+          monthData.returned++;
         }
       }
     });

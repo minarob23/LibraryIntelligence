@@ -106,36 +106,45 @@ const Dashboard = () => {
 
     // Count new borrowers by category for each month
     growthBorrowers.forEach((borrower: any) => {
-      if (borrower.joinedDate || borrower.created_at) {
-        const joinedDate = new Date(borrower.joinedDate || borrower.created_at);
+      if (!borrower || (!borrower.joinedDate && !borrower.created_at)) return;
+      
+      const joinedDate = new Date(borrower.joinedDate || borrower.created_at);
+      
+      // Ensure the date is valid
+      if (isNaN(joinedDate.getTime())) return;
+      
+      const borrowerMonth = joinedDate.getMonth();
+      const borrowerYear = joinedDate.getFullYear();
+
+      // Find the matching month in our data (don't restrict to last 6 months for demo purposes)
+      const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
+      const monthData = monthlyGrowth.find(m => m.month === monthKey);
+
+      if (monthData) {
+        const category = (borrower.category || 'primary').toLowerCase();
+        let categoryKey = 'Primary'; // Default
         
-        // Ensure the date is valid
-        if (isNaN(joinedDate.getTime())) return;
-        
-        const borrowerMonth = joinedDate.getMonth();
-        const borrowerYear = joinedDate.getFullYear();
-
-        // Only count borrowers from the last 6 months
-        const cutoffDate = new Date();
-        cutoffDate.setMonth(cutoffDate.getMonth() - 5);
-        cutoffDate.setDate(1);
-
-        if (joinedDate >= cutoffDate) {
-          // Find the matching month in our data
-          const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
-          const monthData = monthlyGrowth.find(m => m.month === monthKey);
-
-          if (monthData) {
-            const category = (borrower.category || 'primary').toLowerCase();
-            const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
-            if (categories.includes(categoryKey)) {
-              monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
-            } else {
-              // Default to Primary if category doesn't match
-              monthData['Primary'] = (monthData['Primary'] || 0) + 1;
-            }
-          }
+        switch (category) {
+          case 'primary':
+            categoryKey = 'Primary';
+            break;
+          case 'middle':
+            categoryKey = 'Middle';
+            break;
+          case 'secondary':
+            categoryKey = 'Secondary';
+            break;
+          case 'university':
+            categoryKey = 'University';
+            break;
+          case 'graduate':
+            categoryKey = 'Graduate';
+            break;
+          default:
+            categoryKey = 'Primary';
         }
+        
+        monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
       }
     });
 
