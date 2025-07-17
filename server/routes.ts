@@ -309,6 +309,23 @@ export async function setupRoutes(app: express.Application) {
     }
   });
 
+  // Membership Application routes
+  app.post('/api/membership-application', async (req, res) => {
+    try {
+      const { id, name, stage, birthdate, phone, additionalPhone, email, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks } = req.body;
+
+      const result = await db.run(`
+        INSERT INTO membership_applications (memberId, name, stage, birthdate, phone, additionalPhone, email, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, createdAt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [id, name, stage, birthdate, phone, additionalPhone, email, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, new Date().toISOString()]);
+
+      res.json({ id: result.lastID, ...req.body });
+    } catch (error) {
+      console.error('Error creating membership application:', error);
+      res.status(500).json({ error: 'Failed to create membership application' });
+    }
+  });
+
   // Dashboard routes
   app.get('/api/dashboard/stats', async (req, res) => {
     try {

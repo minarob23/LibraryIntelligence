@@ -100,4 +100,30 @@ export async function initializeDb() {
       FOREIGN KEY (librarianId) REFERENCES librarians (id)
     );
   `);
-}
+
+  await db.exec(`
+      CREATE TABLE IF NOT EXISTS membership_applications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        memberId TEXT NOT NULL,
+        name TEXT NOT NULL,
+        stage TEXT NOT NULL,
+        birthdate TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        additionalPhone TEXT,
+        email TEXT NOT NULL,
+        address TEXT NOT NULL,
+        organizationName TEXT,
+        emergencyContact TEXT,
+        studies TEXT,
+        job TEXT,
+        hobbies TEXT,
+        favoriteBooks TEXT,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    console.log('✅ All tables created successfully');
+  } catch (error) {
+    console.error('❌ Error creating tables:', error);
+    throw error;
+  }
