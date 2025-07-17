@@ -359,21 +359,40 @@ class LocalStorage {
     return newPaper;
   }
 
-  updateResearchPaper(id: number, data: any) {
-    const papers = this.getResearchPapers();
-    const index = papers.findIndex((p: any) => p.id === id);
-    if (index !== -1) {
-      papers[index] = { ...papers[index], ...data };
-      localStorage.setItem('research_papers', JSON.stringify(papers));
-      return papers[index];
-    }
-    throw new Error('Research paper not found');
+  // Feedback methods
+  getFeedback() {
+    const feedback = localStorage.getItem('feedback');
+    return feedback ? JSON.parse(feedback) : [];
   }
 
-  deleteResearchPaper(id: number) {
-    const papers = this.getResearchPapers();
-    const filtered = papers.filter((p: any) => p.id !== id);
-    localStorage.setItem('research_papers', JSON.stringify(filtered));
+  createFeedback(data: any) {
+    const feedback = this.getFeedback();
+    const newFeedback = {
+      id: Date.now(),
+      ...data,
+      submittedAt: new Date().toISOString(),
+      status: data.status || 'pending'
+    };
+    feedback.push(newFeedback);
+    localStorage.setItem('feedback', JSON.stringify(feedback));
+    return newFeedback;
+  }
+
+  updateFeedback(id: number, data: any) {
+    const feedback = this.getFeedback();
+    const index = feedback.findIndex((f: any) => f.id === id);
+    if (index !== -1) {
+      feedback[index] = { ...feedback[index], ...data };
+      localStorage.setItem('feedback', JSON.stringify(feedback));
+      return feedback[index];
+    }
+    throw new Error('Feedback not found');
+  }
+
+  deleteFeedback(id: number) {
+    const feedback = this.getFeedback();
+    const filtered = feedback.filter((f: any) => f.id !== id);
+    localStorage.setItem('feedback', JSON.stringify(filtered));
     return { success: true };
   }
 

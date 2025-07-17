@@ -335,7 +335,7 @@ export async function setupRoutes(app: express.Application) {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const fs = require('fs');
       const path = require('path');
-      
+
       // Create backup directory if it doesn't exist
       const backupDir = './backups';
       if (!fs.existsSync(backupDir)) {
@@ -372,10 +372,10 @@ export async function setupRoutes(app: express.Application) {
   // Reset database route
   app.post('/api/reset-database', async (req, res) => {
     console.log('🔄 Starting database reset...');
-    
+
     // Set response headers early
     res.setHeader('Content-Type', 'application/json');
-    
+
     try {
       // Ensure database is connected
       if (!db) {
@@ -419,9 +419,6 @@ export async function setupRoutes(app: express.Application) {
       });
       await db.run('DELETE FROM feedback').catch((err) => {
         console.log('feedback table cleared or does not exist:', err.message);
-      });
-      await db.run('DELETE FROM research_papers').catch((err) => {
-        console.log('research_papers table cleared or does not exist:', err.message);
       });
       await db.run('DELETE FROM book_index').catch((err) => {
         console.log('book_index table cleared or does not exist:', err.message);
@@ -534,25 +531,6 @@ export async function setupRoutes(app: express.Application) {
         `, [librarian.name, librarian.email, librarian.phone, librarian.department, librarian.shift, librarian.startDate, new Date().toISOString()]);
       }
 
-      // Insert sample research papers
-      const sampleResearch = [
-        {
-          name: 'Machine Learning in Library Systems',
-          author: 'Dr. Jane Smith',
-          publisher: 'Academic Press',
-          researchCode: 'RES001',
-          copies: 5,
-          coverImage: '/src/assets/book-covers/cover4.svg'
-        }
-      ];
-
-      for (const research of sampleResearch) {
-        await db.run(`
-          INSERT INTO research_papers (name, author, publisher, researchCode, copies, coverImage, createdAt)
-          VALUES (?, ?, ?, ?, ?, ?, ?)
-        `, [research.name, research.author, research.publisher, research.researchCode, research.copies, research.coverImage, new Date().toISOString()]);
-      }
-
       console.log('✅ Sample data inserted successfully');
 
       const successResponse = { 
@@ -565,7 +543,7 @@ export async function setupRoutes(app: express.Application) {
     } catch (error) {
       console.error('❌ Error resetting database:', error);
       console.error('Full error:', error);
-      
+
       // Ensure we always send a proper JSON response
       if (!res.headersSent) {
         try {

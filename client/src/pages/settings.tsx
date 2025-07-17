@@ -501,7 +501,7 @@ const Settings = () => {
 
                     <div className="space-y-2 mb-4">
                       <div className="text-xs text-blue-700 dark:text-blue-300">
-                        Backup includes: All Books, Borrowers, Librarians, Borrowing Records, Feedback Data, Research Papers, and System Configuration
+                        Backup includes: All Books, Borrowers, Librarians, Borrowing Records, Feedback Data, Library Statistics, and System Configuration
                       </div>
                     </div>
 

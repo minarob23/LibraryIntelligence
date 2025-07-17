@@ -329,14 +329,7 @@ export const initializeSampleData = () => {
       }
     });
 
-    // Create research papers
-    sampleResearchPapers.forEach(paper => {
-      try {
-        localStorage_storage.createResearchPaper(paper);
-      } catch (error) {
-        console.log('Research paper already exists or error creating:', error);
-      }
-    });
+    
 
     // Create borrowings with proper librarianId
     sampleBorrowings.forEach(borrowing => {

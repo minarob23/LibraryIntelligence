@@ -171,27 +171,7 @@ export const membershipApplications = pgTable("membership_applications", {
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
-// Research papers table
-export const researchPapers = pgTable("research_papers", {
-  id: serial("id").primaryKey(),
-  coverImage: text("cover_image").notNull(),
-  name: text("name").notNull(),
-  author: text("author").notNull(),
-  publisher: text("publisher").notNull(),
-  researchCode: text("research_code").notNull().unique(),
-  copies: integer("copies").notNull().default(1),
-  description: text("description"),
-  totalPages: integer("total_pages"),
-  publishedDate: date("published_date"),
-  keywords: text("keywords"),
-  abstract: text("abstract"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
 
-export const insertResearchPaperSchema = createInsertSchema(researchPapers).omit({
-  id: true,
-  createdAt: true,
-});
 
 // Types
 export type Book = typeof books.$inferSelect;
