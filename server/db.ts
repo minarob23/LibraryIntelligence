@@ -122,8 +122,6 @@ export async function initializeDb() {
       )
     `);
 
-    console.log('✅ All tables created successfully');
-  } catch (error) {
-    console.error('❌ Error creating tables:', error);
-    throw error;
-  }
+  console.log('✅ All tables created successfully');
+  return db;
+}
