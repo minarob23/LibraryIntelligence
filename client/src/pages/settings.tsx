@@ -92,6 +92,7 @@ const Settings = () => {
   const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
   const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
   const { data: feedback } = useQuery({ queryKey: ['/api/feedback'] });
+  const { data: research } = useQuery({ queryKey: ['/api/research'] });
 
 
 

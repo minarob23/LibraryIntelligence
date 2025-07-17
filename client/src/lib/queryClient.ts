@@ -169,7 +169,7 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
       return { message: 'Database restored successfully' };
 
     default:
-      // Silently return null for unknown endpoints
+      console.warn(`Unknown endpoint: ${options?.method || 'GET'} ${path}, returning empty response`);
       return { success: true, data: null };
   }
   } catch (error) {
@@ -234,12 +234,12 @@ export const getQueryFn: <T>(options: {
       const response = await mockApiResponse(queryKey[0] as string);
       // If response indicates an error, return empty data instead of throwing
       if (response && response.error) {
-        // Silently return null for missing endpoints to prevent console spam
+        console.warn('Query error for', queryKey[0], ':', response.message);
         return null;
       }
       return response;
     } catch (error: any) {
-      // Silently handle errors to prevent unhandled rejections and console spam
+      console.error('Query function error for', queryKey[0], ':', error);
       if (unauthorizedBehavior === "returnNull" && error.status === 401) {
         return null;
       }

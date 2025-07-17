@@ -32,6 +32,7 @@ const Dashboard = () => {
     queryClient.invalidateQueries({ queryKey: ['/api/books'] });
     queryClient.invalidateQueries({ queryKey: ['/api/borrowers'] });
     queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/research'] });
     queryClient.invalidateQueries({ queryKey: ['/api/dashboard/most-borrowed-books'] });
     queryClient.invalidateQueries({ queryKey: ['/api/dashboard/borrower-distribution'] });
     queryClient.invalidateQueries({ queryKey: ['/api/dashboard/member-growth'] });
@@ -62,6 +63,12 @@ const Dashboard = () => {
     queryKey: ['/api/borrowings'],
     retry: 1,
     onError: (error) => console.log('Borrowings query error:', error),
+  });
+
+  const { data: research } = useQuery({ 
+    queryKey: ['/api/research'],
+    retry: 1,
+    onError: (error) => console.log('Research query error:', error),
   });
 
   const { data: mostBorrowedBooks } = useQuery({ 
