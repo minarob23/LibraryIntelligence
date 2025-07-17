@@ -64,7 +64,7 @@ const BorrowingManagement = () => {
     console.log('Books raw data:', books);
   }, [borrowings, borrowers, books]);
 
-  
+
 
   // Helper function to find borrower by ID
   const findBorrowerById = (borrowerId: any) => {
@@ -215,10 +215,10 @@ const BorrowingManagement = () => {
       cell: (row: any) => {
         console.log('Borrower cell - row data:', row);
         if (!row) return 'Unknown';
-        
+
         const borrower = findBorrowerById(row.borrowerId);
         console.log('Found borrower:', borrower, 'for borrowerId:', row.borrowerId);
-        
+
         return borrower ? (
           <div className="flex items-center">
             <Avatar className="h-8 w-8">
@@ -245,10 +245,10 @@ const BorrowingManagement = () => {
       cell: (row: any) => {
         console.log('Book cell - row data:', row);
         if (!row) return 'Unknown';
-        
+
         const book = findBookById(row.bookId);
         console.log('Found book:', book, 'for bookId:', row.bookId);
-        
+
         return book ? (
           <div>
             <div className="text-sm font-medium">{book.title || book.name}</div>
@@ -270,7 +270,7 @@ const BorrowingManagement = () => {
         try {
           const borrowDate = new Date(row.borrowDate);
           const daysAgo = Math.floor((new Date().getTime() - borrowDate.getTime()) / (1000 * 60 * 60 * 24));
-          
+
           return (
             <div className="flex flex-col">
               <span className="font-medium">
@@ -299,7 +299,7 @@ const BorrowingManagement = () => {
           const dueDate = new Date(row.dueDate);
           const today = new Date();
           const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-          
+
           return (
             <div className="flex flex-col">
               <span className="font-medium">
@@ -345,7 +345,7 @@ const BorrowingManagement = () => {
         try {
           const returnDate = new Date(row.returnDate);
           const daysAgo = Math.floor((new Date().getTime() - returnDate.getTime()) / (1000 * 60 * 60 * 24));
-          
+
           return (
             <div className="flex flex-col">
               <span className="font-medium text-green-700 dark:text-green-400">
@@ -375,7 +375,7 @@ const BorrowingManagement = () => {
       header: 'Rating',
       cell: (row: any) => {
         if (!row) return <span className="text-gray-400 text-sm">-</span>;
-        
+
         if (row.returnDate && row.rating) {
           return (
             <div className="flex items-center gap-1">
@@ -392,7 +392,7 @@ const BorrowingManagement = () => {
       header: 'Actions',
       cell: (row: any) => {
         if (!row) return null;
-        
+
         return (
           <div className="flex items-center gap-2">
             <Dialog open={openEditDialog && editingBorrowing?.id === row.id} onOpenChange={(open) => {
@@ -505,6 +505,25 @@ const BorrowingManagement = () => {
       confirmDescription: 'Are you sure you want to delete this borrowing record? This action cannot be undone.',
     },
   ];
+
+  const formatBorrowings = (borrowings: any[]) => {
+    return borrowings.map(borrowing => ({
+      ...borrowing,
+      borrowerName: borrowing.borrower?.name || 'Unknown',
+      bookTitle: borrowing.book?.title || 'Unknown',
+      borrowDate: borrowing.borrowDate ? new Date(borrowing.borrowDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }) : 'N/A',
+      returnDate: borrowing.returnDate ? new Date(borrowing.returnDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }) : 'Not returned',
+      status: borrowing.returnDate ? 'Returned' : 'Borrowed'
+    }));
+  };
 
   return (
     <div className="animate-fade-in">

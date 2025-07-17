@@ -28,13 +28,19 @@ const BorrowingTrends = () => {
 
     // Count borrowings per month
     (borrowings as any[]).forEach((borrowing: any) => {
-      const borrowDate = new Date(borrowing.borrowDate);
-      const monthKey = `${monthNames[borrowDate.getMonth()]} ${borrowDate.getFullYear()}`;
-      const monthData = monthlyData.find(data => data.name === monthKey);
-      if (monthData) {
-        monthData.borrowed++;
-        if (borrowing.returnDate) {
-          monthData.returned++;
+      if (borrowing.borrowDate) {
+        const borrowDate = new Date(borrowing.borrowDate);
+        
+        // Ensure the date is valid
+        if (isNaN(borrowDate.getTime())) return;
+        
+        const monthKey = `${monthNames[borrowDate.getMonth()]} ${borrowDate.getFullYear()}`;
+        const monthData = monthlyData.find(data => data.name === monthKey);
+        if (monthData) {
+          monthData.borrowed++;
+          if (borrowing.returnDate) {
+            monthData.returned++;
+          }
         }
       }
     });

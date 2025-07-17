@@ -123,12 +123,14 @@ class LocalStorage {
   async createBorrower(borrower: any) {
     const data = this.getData();
     const newId = this.generateId();
+    const now = new Date();
     const newBorrower = {
       ...borrower,
       id: newId,
       memberId: borrower.memberId || borrower.id || `BRW-${newId}`,
-      createdAt: new Date().toISOString(),
-      joinedDate: borrower.joinedDate || new Date().toISOString().split('T')[0]
+      createdAt: now.toISOString(),
+      joinedDate: borrower.joinedDate || now.toISOString().split('T')[0],
+      expiryDate: borrower.expiryDate || new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
     };
     data.borrowers.push(newBorrower);
     this.saveData(data);
@@ -704,8 +706,8 @@ class LocalStorage {
           name: "John Smith",
           phone: "+1234567890",
           category: "university",
-          joinedDate: "2024-01-15",
-          expiryDate: "2025-01-15",
+          joinedDate: new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           email: "john.smith@email.com",
           address: "123 Main St, City",
           churchName: "St. Mary Church",
@@ -722,8 +724,8 @@ class LocalStorage {
           name: "Emily Johnson",
           phone: "+1234567892",
           category: "graduate",
-          joinedDate: "2024-02-20",
-          expiryDate: "2025-02-20",
+          joinedDate: new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           email: "emily.johnson@email.com",
           address: "456 Oak Ave, City",
           churchName: "Holy Trinity Church",
@@ -916,9 +918,9 @@ class LocalStorage {
     }
   }
 
-  
 
-  
+
+
 }
 
 // Dummy function for database sync, replace with actual implementation

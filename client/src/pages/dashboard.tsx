@@ -86,7 +86,7 @@ const Dashboard = () => {
   // Format borrower growth data for chart by category
   const formatBorrowerGrowth = () => {
     const growthBorrowers = memberGrowthData || borrowers;
-    if (!growthBorrowers) return [];
+    if (!growthBorrowers || !Array.isArray(growthBorrowers)) return [];
 
     const monthlyGrowth: { month: string; [key: string]: any }[] = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -105,34 +105,39 @@ const Dashboard = () => {
     }
 
     // Count new borrowers by category for each month
-    if (growthBorrowers && Array.isArray(growthBorrowers)) {
-      growthBorrowers.forEach((borrower: any) => {
-        if (borrower.joinedDate) {
-          const joinedDate = new Date(borrower.joinedDate);
-          const borrowerMonth = joinedDate.getMonth();
-          const borrowerYear = joinedDate.getFullYear();
+    growthBorrowers.forEach((borrower: any) => {
+      if (borrower.joinedDate || borrower.created_at) {
+        const joinedDate = new Date(borrower.joinedDate || borrower.created_at);
+        
+        // Ensure the date is valid
+        if (isNaN(joinedDate.getTime())) return;
+        
+        const borrowerMonth = joinedDate.getMonth();
+        const borrowerYear = joinedDate.getFullYear();
 
-          // Only count borrowers from the last 6 months
-          const cutoffDate = new Date();
-          cutoffDate.setMonth(cutoffDate.getMonth() - 5);
-          cutoffDate.setDate(1);
+        // Only count borrowers from the last 6 months
+        const cutoffDate = new Date();
+        cutoffDate.setMonth(cutoffDate.getMonth() - 5);
+        cutoffDate.setDate(1);
 
-          if (joinedDate >= cutoffDate) {
-            // Find the matching month in our data
-            const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
-            const monthData = monthlyGrowth.find(m => m.month === monthKey);
+        if (joinedDate >= cutoffDate) {
+          // Find the matching month in our data
+          const monthKey = `${monthNames[borrowerMonth]} ${borrowerYear}`;
+          const monthData = monthlyGrowth.find(m => m.month === monthKey);
 
-            if (monthData) {
-              const category = borrower.category || 'primary';
-              const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
-              if (categories.includes(categoryKey)) {
-                monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
-              }
+          if (monthData) {
+            const category = (borrower.category || 'primary').toLowerCase();
+            const categoryKey = category.charAt(0).toUpperCase() + category.slice(1);
+            if (categories.includes(categoryKey)) {
+              monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
+            } else {
+              // Default to Primary if category doesn't match
+              monthData['Primary'] = (monthData['Primary'] || 0) + 1;
             }
           }
         }
-      });
-    }
+      }
+    });
 
     return monthlyGrowth;
   };
