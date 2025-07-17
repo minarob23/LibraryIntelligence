@@ -25,7 +25,7 @@ import { queryClient } from '@/lib/queryClient';
 import { Search } from 'lucide-react';
 
 // Extend the schema to add validation messages
-const borrowingSchema = insertBorrowingSchema.extend({
+const borrowSchema = z.object({
   borrowerId: z.number({
     required_error: 'Borrower is required',
     invalid_type_error: 'Borrower must be selected',
@@ -41,10 +41,10 @@ const borrowingSchema = insertBorrowingSchema.extend({
   status: z.enum(['borrowed', 'returned', 'overdue'], {
     required_error: 'Status is required',
   }),
-});
-
-// We need to add a custom schema validator to ensure either bookId or researchId is provided
-const borrowSchema = borrowingSchema.superRefine((data, ctx) => {
+  rating: z.number().optional(),
+  review: z.string().optional(),
+  itemType: z.enum(['book', 'research']).default('book'),
+}).superRefine((data, ctx) => {
   // For book-only borrowing, we just need bookId
   if (!data.bookId && !data.researchId) {
     ctx.addIssue({

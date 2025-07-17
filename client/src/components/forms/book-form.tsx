@@ -169,7 +169,7 @@ const PREDEFINED_TAGS = [
   "Rare", "Valuable", "Limited Edition", "First Edition", "Reprinted", "Digital Available"
 ];
 
-const bookSchema = insertBookSchema.extend({
+const bookSchema = z.object({
   name: z.string().optional(),
   author: z.string().optional(),
   publisher: z.string().optional(),
@@ -185,7 +185,9 @@ const bookSchema = insertBookSchema.extend({
   addedDate: z.string().optional(),
   publishedDate: z.string().optional(),
   genres: z.string().optional(),
+  tags: z.string().optional(),
   comments: z.string().optional(),
+  tableOfContents: z.string().optional(),
 });
 
 type BookFormValues = z.infer<typeof bookSchema>;

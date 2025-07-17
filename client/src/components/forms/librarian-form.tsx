@@ -19,8 +19,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { queryClient } from '@/lib/queryClient';
 
-// Extend the schema to add validation messages
-const librarianSchema = insertLibrarianSchema.extend({
+// Create a proper schema with validation messages
+const librarianSchema = z.object({
   librarianId: z.string().min(1, 'Librarian ID is required'),
   name: z.string().min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(8, 'Phone number must be at least 8 characters'),

@@ -70,6 +70,32 @@ export const insertBookIndexSchema = createInsertSchema(bookIndex).omit({
   createdAt: true,
 });
 
+// Research papers table
+export const researchPapers = pgTable("research_papers", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  authors: text("authors").notNull(),
+  abstract: text("abstract"),
+  keywords: text("keywords"),
+  publicationDate: date("publication_date"),
+  journal: text("journal"),
+  volume: text("volume"),
+  issue: text("issue"),
+  pages: text("pages"),
+  doi: text("doi"),
+  url: text("url"),
+  pdfPath: text("pdf_path"),
+  category: text("category"),
+  language: text("language").default("English"),
+  coverImage: text("cover_image").default("/src/assets/book-covers/cover1.svg"),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+export const insertResearchPaperSchema = createInsertSchema(researchPapers).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Librarians table
 export const librarians = pgTable("librarians", {
   id: serial("id").primaryKey(),

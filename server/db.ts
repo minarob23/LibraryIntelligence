@@ -84,6 +84,26 @@ export async function initializeDb() {
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
+    CREATE TABLE IF NOT EXISTS research_papers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      authors TEXT NOT NULL,
+      abstract TEXT,
+      keywords TEXT,
+      publicationDate TEXT,
+      journal TEXT,
+      volume TEXT,
+      issue TEXT,
+      pages TEXT,
+      doi TEXT,
+      url TEXT,
+      pdfPath TEXT,
+      category TEXT,
+      language TEXT DEFAULT 'English',
+      coverImage TEXT DEFAULT '/src/assets/book-covers/cover1.svg',
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS librarians (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
