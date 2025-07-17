@@ -329,6 +329,46 @@ export async function setupRoutes(app: express.Application) {
     }
   });
 
+  // Create backup route
+  app.post('/api/create-backup', async (req, res) => {
+    try {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const fs = require('fs');
+      const path = require('path');
+      
+      // Create backup directory if it doesn't exist
+      const backupDir = './backups';
+      if (!fs.existsSync(backupDir)) {
+        fs.mkdirSync(backupDir, { recursive: true });
+      }
+
+      // Create backup filename with timestamp
+      const backupFilename = `library-backup-${timestamp}.db`;
+      const backupPath = path.join(backupDir, backupFilename);
+
+      // Copy the current database to backup location
+      fs.copyFileSync('./library.db', backupPath);
+
+      console.log(`✅ Backup created successfully: ${backupFilename}`);
+
+      res.json({
+        success: true,
+        message: 'Database backup created successfully',
+        filename: backupFilename,
+        timestamp: timestamp,
+        path: backupPath
+      });
+
+    } catch (error) {
+      console.error('❌ Error creating backup:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create backup',
+        details: error?.message || 'Unknown error occurred'
+      });
+    }
+  });
+
   // Reset database route
   app.post('/api/reset-database', async (req, res) => {
     console.log('🔄 Starting database reset...');

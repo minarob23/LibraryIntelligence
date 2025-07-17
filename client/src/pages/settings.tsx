@@ -470,6 +470,73 @@ const Settings = () => {
                       }
                     </Button>
                   </div>
+
+                  {/* Database Backup Card */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-2 rounded-lg">
+                          <Database className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-blue-800 dark:text-blue-300">Create Database Backup</h4>
+                          <p className="text-sm text-blue-600 dark:text-blue-400">
+                            Create a complete backup of the entire library database
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                          {new Date().toLocaleDateString()}
+                        </div>
+                        <div className="text-xs text-blue-600 dark:text-blue-400">
+                          Today's Date
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="text-xs text-blue-700 dark:text-blue-300">
+                        Backup includes: All Books, Borrowers, Librarians, Borrowing Records, Feedback Data, Research Papers, and System Configuration
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="default"
+                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-0 font-medium"
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/api/create-backup', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json'
+                            }
+                          });
+
+                          if (response.ok) {
+                            const result = await response.json();
+                            toast({
+                              title: "💾 Backup Created Successfully",
+                              description: `Database backup created: ${result.filename}`,
+                              className: "bg-green-500 text-white",
+                            });
+                          } else {
+                            throw new Error('Failed to create backup');
+                          }
+                        } catch (error) {
+                          console.error('Backup creation error:', error);
+                          toast({
+                            title: "❌ Backup Failed",
+                            description: "Failed to create database backup. Please try again.",
+                            variant: "destructive"
+                          });
+                        }
+                      }}
+                    >
+                      <Database className="mr-2 h-4 w-4" />
+                      Create Database Backup
+                    </Button>
+                  </div>
                 </div>
               </div>
 
