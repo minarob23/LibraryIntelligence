@@ -487,7 +487,11 @@ const Settings = () => {
                       </div>
                       <div className="text-right">
                         <div className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                          {new Date().toLocaleDateString()}
+                          {new Date().toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'numeric', 
+                            day: 'numeric' 
+                          })}
                         </div>
                         <div className="text-xs text-blue-600 dark:text-blue-400">
                           Today's Date
@@ -516,7 +520,7 @@ const Settings = () => {
                           if (response.ok) {
                             const result = await response.json();
                             toast({
-                              title: "💾 Backup Created Successfully",
+                              title: "✅ Backup Created Successfully",
                               description: `Database backup created: ${result.filename}`,
                               className: "bg-green-500 text-white",
                             });
@@ -526,7 +530,7 @@ const Settings = () => {
                         } catch (error) {
                           console.error('Backup creation error:', error);
                           toast({
-                            title: "❌ Backup Failed",
+                            title: "⚠️ Backup Failed",
                             description: "Failed to create database backup. Please try again.",
                             variant: "destructive"
                           });
