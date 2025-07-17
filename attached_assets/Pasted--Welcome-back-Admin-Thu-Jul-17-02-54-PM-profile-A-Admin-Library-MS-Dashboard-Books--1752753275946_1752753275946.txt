@@ -1,0 +1,155 @@
+
+
+Welcome back, Admin
+Thu, Jul 17
+02:54 PM
+
+
+profile
+A
+Admin
+Library MS
+Dashboard
+Books
+Borrowers
+Librarians
+Borrowing
+Membership
+Settings
+Borrowers Management
+Browse and manage library borrowers
+
+Add New Borrower
+All (2)
+Primary (0)
+Middle (0)
+Secondary (0)
+University (1)
+Graduate (1)
+All Categories
+Search...
+Show Expired Only
+Member ID	Name	Category	Phone	Joined Date	Membership Expiry	Status	Actions
+BRW-1750115756925	
+JS
+John Smith
+university
+University Student
++1234567890	
+Jan 15, 2024
+549 days ago
+Jan 15, 2025
+Expired 183 days ago
+Expired	EditRenewDelete
+BRW-1750115756894	
+EJ
+Emily Johnson
+graduate
+Graduate Student
++1234567892	
+Feb 20, 2024
+513 days ago
+Feb 20, 2025
+Expired 147 days ago
+Expired	EditRenewDelete
+Borrowers Distribution by Category
+University
+Graduate
+0
+0.25
+0.5
+0.75
+1
+
+Top Borrowers
+Most active library members and their engagement metrics
+
+Top Borrowers
+
+Engagement Score
+Borrower	Category	Books	Status
+JS
+John Smith
+ID: 1750115756925
+university	
+0
+engagement score
+Last borrowed: Never borrowed
+Expired
+EJ
+Emily Johnson
+ID: 1750115756894
+graduate	
+0
+engagement score
+Last borrowed: Never borrowed
+Expired
+Top Borrowers by Engagement Score
+Ranked by frequency, timeliness, participation, and activity • Graduate students prioritized
+
+Rank	Borrower	Engagement Score	Performance Metrics	Level
+1
+EJ
+Emily Johnson
+Graduate
+graduate • ID: 1750115756894
+0.0
+/10
+0 books borrowed
+0% on-time returns
+0 ratings given
+Low
+2
+JS
+John Smith
+university • ID: 1750115756925
+0.0
+/10
+0 books borrowed
+0% on-time returns
+0 ratings given
+Low
+0.25
+Add New Borrower
+Add a new borrower to the library system. Fill out the form below with the borrower details.
+
+Add New Borrower
+Member ID
+fewfew
+Full Name
+fewfew
+Category
+Secondary
+
+Phone Number
+fewfew
+Additional Phone (Optional)
+efwfew
+Email
+Enter email address
+Address
+Enter address
+Joined Date
+07/17/2025
+Membership Expiry Date
+07/17/2026
+Church Name (Optional)
+Enter church name
+Father of Confession (Optional)
+Enter father of confession
+Studies (Optional)
+Enter studies
+Job (Optional)
+Enter job
+Hobbies (Optional)
+Enter hobbies
+Favorite Books (Optional)
+Enter favorite books
+Cancel
+Add Borrower
+Close
+[plugin:runtime-error-plugin] Invalid element at key "memberId": expected a Zod schema
+
+    at get value (http://localhost:5173/@fs/D:/LibraryIntelligence/node_modules/.vite/deps/drizzle-zod.js?v=6b0aa1dd:607:23
+Click outside, press Esc key, or fix the code to dismiss.
+You can also disable this overlay by setting server.hmr.overlay to false in vite.config.ts.
