@@ -65,13 +65,23 @@ export async function initializeDb() {
 
     CREATE TABLE IF NOT EXISTS borrowers (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      memberId TEXT NOT NULL,
       name TEXT NOT NULL,
-      phone TEXT,
+      phone TEXT NOT NULL,
       email TEXT,
-      category TEXT,
+      category TEXT NOT NULL,
       membershipStatus TEXT DEFAULT 'active',
-      joinedDate TEXT,
-      createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+      joinedDate TEXT NOT NULL,
+      expiryDate TEXT,
+      address TEXT,
+      organizationName TEXT,
+      emergencyContact TEXT,
+      studies TEXT,
+      job TEXT,
+      hobbies TEXT,
+      favoriteBooks TEXT,
+      additionalPhone TEXT,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS librarians (

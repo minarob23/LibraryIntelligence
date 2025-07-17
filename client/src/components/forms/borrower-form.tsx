@@ -19,9 +19,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { queryClient } from '@/lib/queryClient';
 
-// Extend the schema to add validation messages
-const borrowerSchema = insertBorrowerSchema.extend({
-  memberId: z.string().min(1, 'Member ID is required'), // Changed id to memberId
+// Create a custom schema that includes all required validations
+const borrowerSchema = z.object({
+  memberId: z.string().min(1, 'Member ID is required'),
   name: z.string().min(2, 'Name must be at least 2 characters'),
   phone: z.string().min(8, 'Phone number must be at least 8 characters'),
   category: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate'], {
@@ -31,8 +31,8 @@ const borrowerSchema = insertBorrowerSchema.extend({
   expiryDate: z.string().min(1, 'Expiry date is required'),
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
   address: z.string().optional(),
-  churchName: z.string().optional(),
-  fatherOfConfession: z.string().optional(),
+  organizationName: z.string().optional(),
+  emergencyContact: z.string().optional(),
   studies: z.string().optional(),
   job: z.string().optional(),
   hobbies: z.string().optional(),
