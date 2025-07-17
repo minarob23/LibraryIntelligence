@@ -201,7 +201,20 @@ const Settings = () => {
                 <Input id="email" type="email" placeholder="your@email.com" />
               </div>
               <Button onClick={() => {
-                toast({ title: "Profile updated" });
+                // Update profile image in localStorage if changed
+                if (profileImage) {
+                  localStorage.setItem('profileImage', profileImage);
+                }
+                
+                // Trigger a window event to notify header component
+                window.dispatchEvent(new CustomEvent('profileImageUpdated', { 
+                  detail: { newImage: profileImage } 
+                }));
+                
+                toast({ 
+                  title: "Profile updated",
+                  description: "Your profile has been saved successfully."
+                });
               }}>
                 Save Profile
               </Button>

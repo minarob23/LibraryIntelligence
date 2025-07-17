@@ -23,7 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -32,6 +32,21 @@ interface HeaderProps {
 
 const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
   const { toast } = useToast();
+  const [profileImage, setProfileImage] = useState<string | null>(() => {
+    return localStorage.getItem('profileImage') || null;
+  });
+
+  useEffect(() => {
+    const handleProfileImageUpdate = (event: CustomEvent) => {
+      setProfileImage(event.detail.newImage);
+    };
+
+    window.addEventListener('profileImageUpdated', handleProfileImageUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('profileImageUpdated', handleProfileImageUpdate as EventListener);
+    };
+  }, []);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm z-20 fixed top-0 left-0 right-0 h-[60px]">
@@ -54,7 +69,7 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
         <div className="flex items-center space-x-4">
           <DateTimeDisplay />
           <ThemeToggle />
-          <UserMenu />
+          <UserMenu profileImage={profileImage} />
         </div>
       </div>
     </header>
@@ -100,7 +115,7 @@ const DateTimeDisplay = () => {
   );
 };
 
-const UserMenu = () => {
+const UserMenu = ({ profileImage }: { profileImage: string | null }) => {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [, navigate] = useLocation();
@@ -167,7 +182,7 @@ const UserMenu = () => {
         <DropdownMenuTrigger asChild>
           <button className="flex items-center space-x-2 focus:outline-none">
             <Avatar>
-              <img src="https://github.com/shadcn.png" alt="profile" className="w-full h-full rounded-full" />
+              <AvatarImage src={profileImage || "https://github.com/shadcn.png"} alt="profile" />
               <AvatarFallback className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
                 A
               </AvatarFallback>

@@ -174,7 +174,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSuccess }) => {
                 name="membershipStatus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>حالة العضوية</FormLabel>
+                    <FormLabel>Membership Status</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
