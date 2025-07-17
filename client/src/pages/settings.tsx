@@ -30,6 +30,12 @@ const Settings = () => {
   const [profileImage, setProfileImage] = useState<string | null>(() => {
     return localStorage.getItem('profileImage') || null;
   });
+  const [displayName, setDisplayName] = useState(() => {
+    return localStorage.getItem('displayName') || 'Admin';
+  });
+  const [email, setEmail] = useState(() => {
+    return localStorage.getItem('email') || 'admin@library.com';
+  });
   const [backupFrequency, setBackupFrequency] = useState('daily');
   const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const { isCompactView, setIsCompactView } = useCompactView();
@@ -194,21 +200,38 @@ const Settings = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="display-name">Display Name</Label>
-                <Input id="display-name" placeholder="Your name" />
+                <Input 
+                  id="display-name" 
+                  placeholder="Your name" 
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="your@email.com" />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <Button onClick={() => {
-                // Update profile image in localStorage if changed
+                // Update all profile data in localStorage
                 if (profileImage) {
                   localStorage.setItem('profileImage', profileImage);
                 }
+                localStorage.setItem('displayName', displayName);
+                localStorage.setItem('email', email);
                 
                 // Trigger a window event to notify header component
-                window.dispatchEvent(new CustomEvent('profileImageUpdated', { 
-                  detail: { newImage: profileImage } 
+                window.dispatchEvent(new CustomEvent('profileUpdated', { 
+                  detail: { 
+                    newImage: profileImage,
+                    newDisplayName: displayName,
+                    newEmail: email
+                  } 
                 }));
                 
                 toast({ 

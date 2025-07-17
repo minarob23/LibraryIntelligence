@@ -35,16 +35,33 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
   const [profileImage, setProfileImage] = useState<string | null>(() => {
     return localStorage.getItem('profileImage') || null;
   });
+  const [displayName, setDisplayName] = useState(() => {
+    return localStorage.getItem('displayName') || 'Admin';
+  });
+  const [email, setEmail] = useState(() => {
+    return localStorage.getItem('email') || 'admin@library.com';
+  });
 
   useEffect(() => {
-    const handleProfileImageUpdate = (event: CustomEvent) => {
-      setProfileImage(event.detail.newImage);
+    const handleProfileUpdate = (event: CustomEvent) => {
+      if (event.detail.newImage !== undefined) {
+        setProfileImage(event.detail.newImage);
+      }
+      if (event.detail.newDisplayName !== undefined) {
+        setDisplayName(event.detail.newDisplayName);
+      }
+      if (event.detail.newEmail !== undefined) {
+        setEmail(event.detail.newEmail);
+      }
     };
 
-    window.addEventListener('profileImageUpdated', handleProfileImageUpdate as EventListener);
+    // Listen for both old and new event types for compatibility
+    window.addEventListener('profileUpdated', handleProfileUpdate as EventListener);
+    window.addEventListener('profileImageUpdated', handleProfileUpdate as EventListener);
 
     return () => {
-      window.removeEventListener('profileImageUpdated', handleProfileImageUpdate as EventListener);
+      window.removeEventListener('profileUpdated', handleProfileUpdate as EventListener);
+      window.removeEventListener('profileImageUpdated', handleProfileUpdate as EventListener);
     };
   }, []);
 
@@ -63,13 +80,13 @@ const Header = ({ sidebarOpen, toggleSidebar }: HeaderProps) => {
               <div className="w-6 h-0.5 bg-current transition-all"></div>
             </div>
           </button>
-          <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Welcome back, Admin</h1>
+          <h1 className="ml-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Welcome back, {displayName}</h1>
         </div>
 
         <div className="flex items-center space-x-4">
           <DateTimeDisplay />
           <ThemeToggle />
-          <UserMenu profileImage={profileImage} />
+          <UserMenu profileImage={profileImage} displayName={displayName} email={email} />
         </div>
       </div>
     </header>
@@ -115,7 +132,11 @@ const DateTimeDisplay = () => {
   );
 };
 
-const UserMenu = ({ profileImage }: { profileImage: string | null }) => {
+const UserMenu = ({ profileImage, displayName, email }: { 
+  profileImage: string | null; 
+  displayName: string; 
+  email: string; 
+}) => {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [, navigate] = useLocation();
@@ -134,11 +155,11 @@ const UserMenu = ({ profileImage }: { profileImage: string | null }) => {
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Admin" />
+              <Input id="name" defaultValue={displayName} />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" defaultValue="admin@library.com" />
+              <Input id="email" type="email" defaultValue={email} />
             </div>
           </div>
           <DialogFooter>
@@ -187,7 +208,7 @@ const UserMenu = ({ profileImage }: { profileImage: string | null }) => {
                 A
               </AvatarFallback>
             </Avatar>
-            <span className="hidden md:inline-block font-medium">Admin</span>
+            <span className="hidden md:inline-block font-medium">{displayName}</span>
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
