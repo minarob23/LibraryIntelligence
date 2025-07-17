@@ -138,17 +138,17 @@ export const membershipApplicationSchema = z.object({
   id: z.string().min(1, "ID is required"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   stage: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate']),
-  birthdate: z.string(),
+  birthdate: z.string().min(1, "Birthdate is required"),
   phone: z.string().min(10, "Phone number must be at least 10 characters"),
-  additionalPhone: z.string().optional(),
+  additionalPhone: z.string().optional().or(z.literal('')),
   email: z.string().email("Invalid email address"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  organizationName: z.string().optional(),
-  emergencyContact: z.string().optional(),
-  studies: z.string().optional(),
-  job: z.string().optional(),
-  hobbies: z.string().optional(),
-  favoriteBooks: z.string().optional()
+  organizationName: z.string().optional().or(z.literal('')),
+  emergencyContact: z.string().optional().or(z.literal('')),
+  studies: z.string().optional().or(z.literal('')),
+  job: z.string().optional().or(z.literal('')),
+  hobbies: z.string().optional().or(z.literal('')),
+  favoriteBooks: z.string().optional().or(z.literal(''))
 });
 
 // Membership Applications table
