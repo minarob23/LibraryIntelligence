@@ -147,12 +147,12 @@ export async function setupRoutes(app: express.Application) {
 
   app.post('/api/borrowers', async (req, res) => {
     try {
-      const { name, phone, email, category, membershipStatus, joinedDate } = req.body;
+      const { name, phone, email, category, membershipStatus, joinedDate, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, additionalPhone } = req.body;
 
       const result = await db.run(`
-        INSERT INTO borrowers (name, phone, email, category, membershipStatus, joinedDate, createdAt)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `, [name, phone, email, category, membershipStatus, joinedDate, new Date().toISOString()]);
+        INSERT INTO borrowers (name, phone, email, category, membershipStatus, joinedDate, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, additionalPhone, createdAt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [name, phone, email, category, membershipStatus, joinedDate, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, additionalPhone, new Date().toISOString()]);
 
       res.json({ id: result.lastID, ...req.body });
     } catch (error) {
@@ -164,13 +164,13 @@ export async function setupRoutes(app: express.Application) {
   app.put('/api/borrowers/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, phone, email, category, membershipStatus, joinedDate } = req.body;
+      const { name, phone, email, category, membershipStatus, joinedDate, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, additionalPhone } = req.body;
 
       await db.run(`
         UPDATE borrowers 
-        SET name = ?, phone = ?, email = ?, category = ?, membershipStatus = ?, joinedDate = ?
+        SET name = ?, phone = ?, email = ?, category = ?, membershipStatus = ?, joinedDate = ?, address = ?, organizationName = ?, emergencyContact = ?, studies = ?, job = ?, hobbies = ?, favoriteBooks = ?, additionalPhone = ?
         WHERE id = ?
-      `, [name, phone, email, category, membershipStatus, joinedDate, id]);
+      `, [name, phone, email, category, membershipStatus, joinedDate, address, organizationName, emergencyContact, studies, job, hobbies, favoriteBooks, additionalPhone, id]);
 
       res.json({ success: true });
     } catch (error) {

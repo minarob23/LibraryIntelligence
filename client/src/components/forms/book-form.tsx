@@ -1390,7 +1390,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
               </div>
 
               <Label className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                📊 Book Statistics & Information
+                📊 Publication & Catalog Information
               </Label>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

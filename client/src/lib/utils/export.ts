@@ -107,7 +107,7 @@ export const exportToExcel = (data: any[], fileName: string = 'export') => {
           // Normalize Arabic text for proper UTF-8 encoding
           if (typeof cell === 'string') {
             cell = cell.normalize('NFC');
-            
+
             // Handle strings that need quotes
             if (cell.includes(',') || cell.includes('"') || cell.includes('\n') || cell.includes('\r')) {
               cell = `"${cell.replace(/"/g, '""')}"`;
@@ -446,6 +446,7 @@ export const exportLibraryWithStatistics = (books: any[], borrowings: any[], fil
     ...stats.topGenres.map(({ genre, count }) => `# ${genre}: ${count} books`),
     `# ============================================`,
     `# 📚 DETAILED BOOK INVENTORY`,
+    `Export contains: Complete Book Records, Creator Details, Publication Information, Category Classifications, Storage Location Data, and Reference Codes`,
     ``
   ];
 
@@ -655,11 +656,11 @@ export const exportLibraryWithStatisticsToPDF = (books: any[], borrowings: any[]
     currentY += 35;
 
     // Top Genres section
-    
 
-    
 
-    
+
+
+
 
     // Back to first page for footer
     const totalPages = doc.getNumberOfPages();

@@ -369,13 +369,13 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <FormField
                         control={form.control}
-                        name="churchName"
+                        name="organizationName"
                         render={({ field }) => (
                           <FormItem className="space-y-2">
-                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Church Name</FormLabel>
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Organization/Institution</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Your church community" 
+                                placeholder="Your organization or institution" 
                                 {...field} 
                                 className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
                               />
@@ -387,13 +387,13 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
 
                       <FormField
                         control={form.control}
-                        name="fatherOfConfession"
+                        name="emergencyContact"
                         render={({ field }) => (
                           <FormItem className="space-y-2">
-                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Father of Confession</FormLabel>
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Emergency Contact</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Your spiritual father" 
+                                placeholder="Emergency contact person" 
                                 {...field} 
                                 className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
                               />
