@@ -1,0 +1,67 @@
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at p
+    at div
+    at div
+    at _c9 (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/components/ui/card.tsx:106:12)
+    at div
+    at _c (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/components/ui/card.tsx:20:11)
+    at div
+    at LibraryPolicy (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/components/ui/library-policy.tsx:20:26)
+    at div
+    at div
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e8d13c8:42:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=8e8d13c8:61:7
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e8d13c8:79:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e8d13c8:56:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e8d13c8:42:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TQT7K6GT.js?v=8e8d13c8:29:5
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e8d13c8:235:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e8d13c8:158:58
+    at Presence (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=8e8d13c8:24:11)
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e8d13c8:149:64
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e8d13c8:79:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2K77HOHX.js?v=8e8d13c8:56:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-AXMZZQ2X.js?v=8e8d13c8:42:13
+    at https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7SWSU5HC.js?v=8e8d13c8:260:22
+    at Presence (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-7ZIEIKXH.js?v=8e8d13c8:24:11)
+    at Provider (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e8d13c8:38:15)
+    at DialogPortal (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e8d13c8:111:11)
+    at _c3 (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/components/ui/dialog.tsx:50:12)
+    at Provider (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e8d13c8:38:15)
+    at Dialog (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-BVDSK7N4.js?v=8e8d13c8:52:5)
+    at Login (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/pages/login.tsx:28:18)
+    at Route (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8e8d13c8:280:16)
+    at Switch (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8e8d13c8:336:17)
+    at Router (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/src/App.tsx?v=B7_q5Q4-uMxJYyVnra9De:42:49)
+    at Provider (https://91db64e3-ca75-46d1-b81e-87473dca0416-00-1dz32tfkte6kz.kirk.replit.dev:3000/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-E7IAXTU4.js?v=8e8d13c8:38:15)
+    at TooltipProvider…
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Unknown endpoint: GET /api/feedback, returning empty response
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Backup creation error: 
+SyntaxError {}
+message: "Unexpected token '<', "<!DOCTYPE "... is not valid JSON"
+stack: "SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
+Failed to fetch
