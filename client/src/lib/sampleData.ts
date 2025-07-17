@@ -331,8 +331,18 @@ export const initializeSampleData = () => {
 
 
 
-    // Create borrowings with proper librarianId
-    sampleBorrowings.forEach(borrowing => {
+    // Create borrowings with proper relationship IDs
+    const validBorrowerIds = sampleBorrowers.map(b => b.id);
+    const validBookIds = sampleBooks.map(b => b.id);
+    
+    // Filter borrowings to only include valid relationships
+    const validBorrowings = sampleBorrowings.filter(borrowing => {
+      const borrowerExists = validBorrowerIds.includes(borrowing.borrowerId);
+      const bookExists = validBookIds.includes(borrowing.bookId);
+      return borrowerExists && bookExists;
+    });
+
+    validBorrowings.forEach(borrowing => {
       try {
         const borrowingWithLibrarian = {
           ...borrowing,

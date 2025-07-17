@@ -287,7 +287,13 @@ const BorrowersPage = () => {
             })}
           </span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
-            {Math.floor((new Date().getTime() - new Date(row.joinedDate).getTime()) / (1000 * 60 * 60 * 24))} days ago
+            {(() => {
+              const today = new Date();
+              const joinedDate = new Date(row.joinedDate);
+              const timeDiff = today.getTime() - joinedDate.getTime();
+              const daysAgo = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
+              return daysAgo === 0 ? 'Today' : `${daysAgo} days ago`;
+            })()}
           </span>
         </div>
       ),
@@ -298,6 +304,8 @@ const BorrowersPage = () => {
       cell: (row: any) => {
         const expiryDate = new Date(row.expiryDate);
         const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to start of day
+        expiryDate.setHours(0, 0, 0, 0); // Reset time to start of day
         const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         
         return (

@@ -269,7 +269,9 @@ const BorrowingManagement = () => {
         if (!row?.borrowDate) return <span className="text-gray-400">-</span>;
         try {
           const borrowDate = new Date(row.borrowDate);
-          const daysAgo = Math.floor((new Date().getTime() - borrowDate.getTime()) / (1000 * 60 * 60 * 24));
+          const today = new Date();
+          const timeDiff = today.getTime() - borrowDate.getTime();
+          const daysAgo = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
 
           return (
             <div className="flex flex-col">
@@ -298,6 +300,8 @@ const BorrowingManagement = () => {
         try {
           const dueDate = new Date(row.dueDate);
           const today = new Date();
+          today.setHours(0, 0, 0, 0); // Reset time to start of day
+          dueDate.setHours(0, 0, 0, 0); // Reset time to start of day
           const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
           return (
@@ -344,7 +348,9 @@ const BorrowingManagement = () => {
         }
         try {
           const returnDate = new Date(row.returnDate);
-          const daysAgo = Math.floor((new Date().getTime() - returnDate.getTime()) / (1000 * 60 * 60 * 24));
+          const today = new Date();
+          const timeDiff = today.getTime() - returnDate.getTime();
+          const daysAgo = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
 
           return (
             <div className="flex flex-col">
