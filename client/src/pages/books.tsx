@@ -83,7 +83,7 @@ const BooksPage = () => {
 
   // Helper functions
   const getBookBorrowings = (bookId: number): Borrowing[] => {
-    return borrowings?.filter((b: Borrowing) => b.bookId === bookId) || [];
+    return Array.isArray(borrowings) ? borrowings.filter((b: Borrowing) => b.bookId === bookId) : [];
   };
 
   const getTimesBorrowed = (bookId: number): number => {
@@ -169,7 +169,9 @@ const BooksPage = () => {
                 alt={`Cover of ${row.name}`} 
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement.innerHTML = '<BookOpen class="h-5 w-5 text-blue-600 dark:text-blue-300" />';
+                  if (e.currentTarget.parentElement) {
+                    e.currentTarget.parentElement.innerHTML = '<BookOpen class="h-5 w-5 text-blue-600 dark:text-blue-300" />';
+                  }
                 }}
               />
             </div>
@@ -239,7 +241,7 @@ const BooksPage = () => {
       key: 'status',
       header: 'Status',
       cell: (row: any) => {
-        const isBorrowed = borrowings?.some((b: any) => b.bookId === row.id && b.status === 'borrowed');
+        const isBorrowed = Array.isArray(borrowings) ? borrowings.some((b: any) => b.bookId === row.id && b.status === 'borrowed') : false;
         const timesBorrowed = getTimesBorrowed(row.id);
         const lastBorrowed = getLastBorrowedDate(row.id);
 
@@ -374,7 +376,7 @@ const BooksPage = () => {
               </div>
             </SelectItem>
           ))}
-          {filterType === 'code' && books?.filter(book => book.bookCode && book.bookCode.trim() !== '').map(book => (
+          {filterType === 'code' && Array.isArray(books) && books.filter((book: any) => book.bookCode && book.bookCode.trim() !== '').map((book: any) => (
             <SelectItem key={book.bookCode} value={book.bookCode}>{book.bookCode}</SelectItem>
           ))}
         </SelectContent>
@@ -397,8 +399,8 @@ const BooksPage = () => {
   );
 
   // Filter books based on selections
-  const filteredBooks = books?.filter(book => {
-    const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+  const filteredBooks = Array.isArray(books) ? books.filter((book: any) => {
+    const isBorrowed = Array.isArray(borrowings) ? borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed') : false;
     const availabilityMatch = selectedAvailability === 'all' || 
       (selectedAvailability === 'borrowed' && isBorrowed) ||
       (selectedAvailability === 'available' && !isBorrowed);
@@ -465,7 +467,7 @@ const BooksPage = () => {
         return;
       }
 
-      const stats = exportLibraryWithStatistics(books, borrowings);
+      const stats = exportLibraryWithStatistics(books, Array.isArray(borrowings) ? borrowings : []);
 
       toast({
         title: '📊 Export Successful',
@@ -735,8 +737,8 @@ const BooksPage = () => {
               </DialogHeader>
               <div className="pr-4">
                 <BookForm 
-                  index={(books?.length || 0) + 1}
-                  initialData={editingBook}
+                  index={(Array.isArray(books) ? books.length : 0) + 1}
+                  book={editingBook}
                   onSuccess={() => {
                     setOpenAddDialog(false);
                     setEditingBook(undefined);
@@ -751,13 +753,13 @@ const BooksPage = () => {
 
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList className="grid w-full grid-cols-7">
-          <TabsTrigger value="all">All Books ({books?.length || 0})</TabsTrigger>
+          <TabsTrigger value="all">All Books ({Array.isArray(books) ? books.length : 0})</TabsTrigger>
           <TabsTrigger value="borrowed">Borrowed ({borrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="most-borrowed">Most Borrowed ({mostBorrowedBooks.length})</TabsTrigger>
           <TabsTrigger value="popular">Popular ({popularBooks.length})</TabsTrigger>
           <TabsTrigger value="top-rated">Top Rated ({topRatedBooks.length})</TabsTrigger>
           <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
-          <TabsTrigger value="gallery">Gallery ({books?.length || 0})</TabsTrigger>
+          <TabsTrigger value="gallery">Gallery ({Array.isArray(books) ? books.length : 0})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -770,7 +772,7 @@ const BooksPage = () => {
               columns={columns}
               searchable={true}
               loading={isLoading}
-              emptyMessage={getEmptyMessage()}
+              
               actions={(row) => (
               <>
                 <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
@@ -854,7 +856,7 @@ const BooksPage = () => {
                 columns={columns}
                 searchable={true}
                 loading={isLoading}
-                emptyMessage="No books are currently borrowed"
+                
                 actions={(row) => (
                   <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
                     setOpenEditDialog(open);
@@ -909,7 +911,7 @@ const BooksPage = () => {
                 columns={columns}
                 searchable={true}
                 loading={isLoading}
-                emptyMessage="No borrowing data available"
+                
                 actions={(row) => (
                   <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
                     setOpenEditDialog(open);
@@ -964,7 +966,7 @@ const BooksPage = () => {
                 columns={columns}
                 searchable={true}
                 loading={isLoading}
-                emptyMessage="No popularity data available"
+                
                 actions={(row) => (
                   <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
                     setOpenEditDialog(open);
@@ -1019,7 +1021,7 @@ const BooksPage = () => {
                 columns={columns}
                 searchable={true}
                 loading={isLoading}
-                emptyMessage="No rating data available"
+                
                 actions={(row) => (
                   <Dialog open={openEditDialog && editingBook?.id === row.id} onOpenChange={(open) => {
                     setOpenEditDialog(open);
@@ -1089,7 +1091,7 @@ const BooksPage = () => {
               ) : filteredBooks && filteredBooks.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                   {filteredBooks.map((book) => {
-                    const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+                    const isBorrowed = Array.isArray(borrowings) ? borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed') : false;
                     const avgRating = getAverageRating(book.id);
                     const timesBorrowed = getTimesBorrowed(book.id);
 

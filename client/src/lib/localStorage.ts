@@ -788,12 +788,13 @@ class LocalStorage {
 
   // Validate data structure before saving
   private validateAndCleanData(data: StorageData): StorageData {
+    const defaultSettings = {};
     const cleanData = {
-      books: [],
-      borrowers: [],
-      librarians: [],
-      borrowings: [],
-      membershipApplications: []
+      books: [] as any[],
+      borrowers: [] as any[],
+      librarians: [] as any[],
+      borrowings: [] as any[],
+      membershipApplications: [] as any[],
     };
 
     // Clean books
@@ -885,7 +886,7 @@ class LocalStorage {
         // Immediately clean corrupted borrowings if found
         if (data.borrowings && Array.isArray(data.borrowings)) {
           const originalLength = data.borrowings.length;
-          data.borrowings = data.borrowings.filter(borrowing => {
+          data.borrowings = data.borrowings.filter((borrowing: any) => {
             if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
               return false;
             }

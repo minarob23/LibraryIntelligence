@@ -156,8 +156,8 @@ const Dashboard = () => {
       'graduate': 'Graduate'
     };
 
-    return borrowerDistribution.map((item: any) => ({
-      name: categoryMap[item.category] || item.category,
+    return Array.isArray(borrowerDistribution) ? borrowerDistribution.map((item: any) => ({
+      name: (categoryMap as any)[item.category] || item.category,
       value: item.count
     }));
   };
@@ -229,19 +229,19 @@ const Dashboard = () => {
 
           <StatsCard
             title="Active Borrowers"
-            value={borrowers?.filter(borrower => {
+            value={Array.isArray(borrowers) ? borrowers.filter((borrower: any) => {
               const expiryDate = new Date(borrower.expiryDate);
               const today = new Date();
               return expiryDate >= today;
             }).length || 0}
             icon={<Users className="h-6 w-6 text-green-500 dark:text-green-400" />}
             change={{ 
-              value: borrowers?.filter(borrower => {
+              value: Array.isArray(borrowers) ? borrowers.filter((borrower: any) => {
                 const expiryDate = new Date(borrower.expiryDate);
                 const today = new Date();
                 return expiryDate >= today;
               }).length || 0, 
-              trend: borrowers?.filter(borrower => {
+              trend: Array.isArray(borrowers) ? borrowers.filter((borrower: any) => {
                 const expiryDate = new Date(borrower.expiryDate);
                 const today = new Date();
                 return expiryDate >= today;
@@ -261,7 +261,7 @@ const Dashboard = () => {
 
       {/* Categories & Growth */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {!borrowerDistribution?.length ? (
+        {!Array.isArray(borrowerDistribution) || !borrowerDistribution.length ? (
           <Card className="p-6">
             <CardTitle>Borrower Categories</CardTitle>
             <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">
@@ -280,7 +280,7 @@ const Dashboard = () => {
           />
         )}
 
-        {!memberGrowthData?.length && !borrowers?.length ? (
+        {(!Array.isArray(memberGrowthData) || !memberGrowthData.length) && (!Array.isArray(borrowers) || !borrowers.length) ? (
           <Card className="p-6">
             <CardTitle>Member's Growth</CardTitle>
             <div className="flex items-center justify-center h-[400px] text-gray-500 dark:text-gray-400">

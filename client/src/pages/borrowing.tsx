@@ -184,7 +184,8 @@ const BorrowingManagement = () => {
         status: 'returned'
       });
 
-      if (updatedBorrowing) {
+      const result = await updatedBorrowing;
+      if (result) {
         await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
         toast({
@@ -599,7 +600,7 @@ const BorrowingManagement = () => {
               data={filteredBorrowings}
               columns={columns}
               loading={isLoading}
-              emptyMessage="No borrowing records found"
+              
             />
           </TabsContent>
         ))}

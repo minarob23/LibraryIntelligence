@@ -907,7 +907,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     <FormLabel>Cover Image</FormLabel>
                     <FormControl>
                       <ImageUpload
-                        value={field.value}
+                        value={field.value || ''}
                         onChange={field.onChange}
                       />
                     </FormControl>
@@ -1392,7 +1392,6 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                   <QuoteCard
                     key={quote.id}
                     quote={quote}
-                    onEdit={handleEditQuote}
                     onDelete={handleDeleteQuote}
                     onToggleFavorite={handleToggleQuoteFavorite}
                   />
@@ -1452,7 +1451,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                       {book?.publishedDate 
                         ? new Date(book.publishedDate).toLocaleDateString() 
                         : form.getValues('publishedDate') 
-                          ? new Date(form.getValues('publishedDate')).toLocaleDateString()
+                          ? new Date(form.getValues('publishedDate') || '').toLocaleDateString()
                           : 'Not specified'
                       }
                     </span>
@@ -1521,7 +1520,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                           <Star 
                             key={i} 
                             className={`h-3 w-3 ${
-                              i < Math.floor((parseFloat(getAverageRating(book.id) || '0')) / 2) 
+                              i < Math.floor((parseFloat(getAverageRating(book.id || 0) || '0')) / 2) 
                                 ? 'text-yellow-500 fill-current' 
                                 : 'text-gray-300'
                             }`} 
