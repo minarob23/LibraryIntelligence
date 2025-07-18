@@ -184,7 +184,7 @@ const BorrowingManagement = () => {
         status: 'returned'
       });
 
-      // Remove this condition since updatedBorrowing is always a Promise
+      if (updatedBorrowing) {
         await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
         toast({
