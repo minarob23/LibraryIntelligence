@@ -426,7 +426,7 @@ const BooksPage = () => {
     }
 
     return filterMatch && availabilityMatch;
-  });
+  }) : [];
 
   // Custom empty state messages
   const getEmptyMessage = () => {
