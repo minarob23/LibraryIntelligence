@@ -940,8 +940,9 @@ class LocalStorage {
       console.error('Error during corruption cleanup:', error);
     }
   }
+}
 
-  // Function to safely get data from localStorage with error handling
+// Function to safely get data from localStorage with error handling
 const getStorageData = <T>(key: string, defaultValue: T): T => {
   try {
     if (typeof window === 'undefined') return defaultValue;
@@ -955,11 +956,6 @@ const getStorageData = <T>(key: string, defaultValue: T): T => {
     return defaultValue;
   }
 };
-
-
-
-
-}
 
 // Dummy function for database sync, replace with actual implementation
 async function syncWithDatabase(entityType: string, data: any, method: string = 'POST', id?: number) {
