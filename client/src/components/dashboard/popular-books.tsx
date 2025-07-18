@@ -39,14 +39,14 @@ const PopularBooks = () => {
       // Get all borrowings
       const allBorrowings = borrowings || [];
       const bookBorrowings = allBorrowings.filter((b: Borrowing) => b.bookId === bookId);
-      
+
       if (!bookBorrowings.length) return 0;
 
       // Calculate base metrics
       const timesBorrowed = bookBorrowings.length;
       const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating!);
       const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
-      
+
       // Get latest borrow date
       const borrowDates = bookBorrowings.map(b => new Date(b.borrowDate).getTime());
       const lastBorrowedDate = new Date(Math.max(...borrowDates));
@@ -192,19 +192,19 @@ const PopularBooks = () => {
                       {filter === 'popularity' && (
                         <div className="flex items-center gap-2">
                           <div className={`${
-                            book.popularityScore >= 0 
+                            (book as any).popularityScore >= 0 
                               ? "bg-blue-100 dark:bg-blue-900/50" 
                               : "bg-red-100 dark:bg-red-900/50"
                             } rounded-lg px-4 py-2`}>
                             <div className={`text-2xl font-bold ${
-                              book.popularityScore >= 0
+                              (book as any).popularityScore >= 0
                                 ? "text-blue-600 dark:text-blue-400"
                                 : "text-red-600 dark:text-red-400"
                             }`}>
-                              {book.popularityScore}
+                              {(book as any).popularityScore}
                             </div>
                             <div className={`text-xs font-medium ${
-                              book.popularityScore >= 0
+                              (book as any).popularityScore >= 0
                                 ? "text-blue-600/80 dark:text-blue-400/80"
                                 : "text-red-600/80 dark:text-red-400/80"
                             }`}>
@@ -228,14 +228,14 @@ const PopularBooks = () => {
                       {filter === 'rating' && (
                         <div className="flex items-center gap-2">
                           <div className="bg-gradient-to-r from-yellow-100/80 to-amber-100/80 dark:from-yellow-900/30 dark:to-amber-900/30 rounded-lg px-4 py-3 w-full backdrop-blur-sm">
-                            {book.rating !== null ? (
+                            {(book as any).rating !== null ? (
                               <>
                                 <div className="flex items-center justify-between">
                                   <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">
-                                    {Number(book.rating).toFixed(1)}
+                                    {Number((book as any).rating).toFixed(1)}
                                   </div>
                                   <div className="flex text-yellow-500 dark:text-yellow-400 transform hover:scale-105 transition-transform">
-                                    {renderStars(parseFloat(book.rating) / 2)}
+                                    {renderStars(parseFloat((book as any).rating) / 2)}
                                   </div>
                                 </div>
                                 <div className="text-xs text-yellow-700/90 dark:text-yellow-300/90 font-medium mt-1 tracking-wide">

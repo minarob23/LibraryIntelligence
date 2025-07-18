@@ -13,7 +13,7 @@ const BorrowingTrends = () => {
   const getMonthlyData = () => {
     if (!borrowings || !Array.isArray(borrowings)) return [];
     
-    const monthlyData = [];
+    const monthlyData: Array<{name: string, borrowed: number, returned: number}> = [];
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
     // Initialize last 6 months with 0

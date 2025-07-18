@@ -95,10 +95,10 @@ const BookRecommendations = () => {
 
       // Genre preference matching (35% weight)
       if (book.genres) {
-        const bookGenres = book.genres.split(',').map((g: string) => g.trim().toLowerCase());
+        const bookGenres = book.genres ? book.genres.split(',').map(g => g.trim().toLowerCase()) : [];
         bookGenres.forEach(genre => {
-          if (genrePreferences[genre]) {
-            score += genrePreferences[genre] * 3;
+          if (genrePreferences && typeof genrePreferences === 'object' && genrePreferences[genre]) {
+            score += (genrePreferences[genre] as number) * 3;
           }
         });
       }
@@ -107,7 +107,7 @@ const BookRecommendations = () => {
       if (book.author) {
         const bookAuthors = book.author.toLowerCase();
         favoriteAuthors.forEach(favAuthor => {
-          if (bookAuthors.includes(favAuthor.toLowerCase()) && favAuthor.length > 2) {
+          if (typeof favAuthor === 'string' && bookAuthors.includes(favAuthor.toLowerCase()) && favAuthor.length > 2) {
             score += 15; // High bonus for favorite authors
           }
         });
@@ -117,7 +117,7 @@ const BookRecommendations = () => {
       if (book.name) {
         const bookTitle = book.name.toLowerCase();
         favoriteBooks.forEach(favBook => {
-          if (bookTitle.includes(favBook.toLowerCase()) || favBook.toLowerCase().includes(bookTitle)) {
+          if (typeof favBook === 'string' && (bookTitle.includes(favBook.toLowerCase()) || favBook.toLowerCase().includes(bookTitle))) {
             score += 12; // High bonus for similar titles
           }
         });
@@ -127,7 +127,7 @@ const BookRecommendations = () => {
       if (book.tags) {
         const bookTags = book.tags.toLowerCase();
         favoriteBooks.forEach(favorite => {
-          if (bookTags.includes(favorite.toLowerCase())) {
+          if (typeof favorite === 'string' && bookTags.includes(favorite.toLowerCase())) {
             score += 5;
           }
         });

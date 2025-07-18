@@ -255,7 +255,7 @@ export const queryClient = new QueryClient({
       refetchOnMount: false,
       refetchOnReconnect: false,
       staleTime: 10 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
+      gcTime: 15 * 60 * 1000,
       retry: false,
       throwOnError: false,
     },

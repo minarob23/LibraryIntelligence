@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, queryClient } from '@/lib/queryClient';
-import { IndexItem } from '@/components/ui/index-item';
+import IndexItem from '@/components/ui/index-item';
 import QuoteCard from '@/components/ui/quote-card';
 import { 
   Form, 
@@ -222,7 +222,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
   // Helper functions for statistics calculation
   const getBookBorrowings = (bookId: number) => {
     if (!borrowings || !bookId) return [];
-    return borrowings.filter((b: any) => b.bookId === bookId) || [];
+    return Array.isArray(borrowings) ? borrowings.filter((b: any) => b.bookId === bookId) : [];
   };
 
   const getTimesBorrowed = (bookId: number) => {
@@ -234,7 +234,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
     if (bookBorrowings.length === 0) return null;
 
     const dates = bookBorrowings.map((b: any) => new Date(b.borrowDate));
-    return new Date(Math.max(...dates.map(d => d.getTime())));
+    return new Date(Math.max(...dates.map((d: Date) => d.getTime())));
   };
 
   const getAverageRating = (bookId: number) => {

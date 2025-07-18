@@ -242,14 +242,14 @@ const TopBorrowers = () => {
                             Last borrowed: {(() => {
                               const userBorrowings = borrowings?.filter((b: Borrowing) => b.borrowerId === borrower.id) || [];
                               const latestBorrowing = userBorrowings.reduce((latest: Borrowing | null, current: Borrowing) => {
-                                if (!latest || new Date(current.borrowDate) > new Date(latest.borrowDate)) {
+                                if (!latest || new Date((current as any).borrowDate) > new Date((latest as any).borrowDate)) {
                                   return current;
                                 }
                                 return latest;
                               }, null);
 
                               if (!latestBorrowing) return 'Never borrowed';
-                              const borrowDate = new Date(latestBorrowing.borrowDate);
+                              const borrowDate = new Date((latestBorrowing as any).borrowDate);
                               return borrowDate.toLocaleDateString('en-US', { 
                                 year: 'numeric',
                                 month: 'short',
