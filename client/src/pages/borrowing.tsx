@@ -114,7 +114,7 @@ const BorrowingManagement = () => {
       (selectedStatus === 'overdue' && !borrowing.returnDate && borrowing.dueDate && new Date(borrowing.dueDate) < new Date());
 
     return matchesSearch && matchesStatus;
-  });
+  }) : [];
 
   // Get status badge
   const getStatusBadge = (borrowing: any) => {
