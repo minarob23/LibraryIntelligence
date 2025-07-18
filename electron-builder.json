@@ -5,7 +5,6 @@
     "output": "electron-dist"
   },
   "files": [
-    "dist/**/*",
     "electron/main.js",
     "electron/preload.js",
     "library.db",
