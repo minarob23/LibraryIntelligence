@@ -100,12 +100,12 @@ const Dashboard = () => {
     // Count new borrowers by category for each month
     growthBorrowers.forEach((borrower: any) => {
       if (!borrower || (!borrower.joinedDate && !borrower.created_at)) return;
-      
+
       const joinedDate = new Date(borrower.joinedDate || borrower.created_at);
-      
+
       // Ensure the date is valid
       if (isNaN(joinedDate.getTime())) return;
-      
+
       const borrowerMonth = joinedDate.getMonth();
       const borrowerYear = joinedDate.getFullYear();
 
@@ -116,7 +116,7 @@ const Dashboard = () => {
       if (monthData) {
         const category = (borrower.category || 'primary').toLowerCase();
         let categoryKey = 'Primary'; // Default
-        
+
         switch (category) {
           case 'primary':
             categoryKey = 'Primary';
@@ -136,7 +136,7 @@ const Dashboard = () => {
           default:
             categoryKey = 'Primary';
         }
-        
+
         monthData[categoryKey] = (monthData[categoryKey] || 0) + 1;
       }
     });
@@ -221,9 +221,9 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StatsCard
             title="Books Borrowed"
-            value={borrowings?.length || 0}
+            value={Array.isArray(borrowings) ? borrowings.length : 0}
             icon={<Repeat className="h-6 w-6 text-purple-500 dark:text-purple-400" />}
-            change={{ value: borrowings?.length || 0, trend: borrowings?.length > 0 ? 'up' : 'down', text: 'total' }}
+            change={{ value: Array.isArray(borrowings) ? borrowings.length : 0, trend: Array.isArray(borrowings) && borrowings.length > 0 ? 'up' : 'down', text: 'total' }}
             iconColor="text-purple-500 dark:text-purple-400"
           />
 

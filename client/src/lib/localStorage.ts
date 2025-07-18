@@ -798,7 +798,7 @@ class LocalStorage {
 
     // Clean books
     if (Array.isArray(data.books)) {
-      cleanData.books = data.books.filter(book => 
+      cleanData.books = data.books.filter((book: any) => 
         book && 
         typeof book === 'object' && 
         !Array.isArray(book) &&
@@ -809,7 +809,7 @@ class LocalStorage {
 
     // Clean borrowers
     if (Array.isArray(data.borrowers)) {
-      cleanData.borrowers = data.borrowers.filter(borrower => 
+      cleanData.borrowers = data.borrowers.filter((borrower: any) => 
         borrower && 
         typeof borrower === 'object' && 
         !Array.isArray(borrower) &&
@@ -820,7 +820,7 @@ class LocalStorage {
 
     // Clean librarians
     if (Array.isArray(data.librarians)) {
-      cleanData.librarians = data.librarians.filter(librarian => 
+      cleanData.librarians = data.librarians.filter((librarian: any) => 
         librarian && 
         typeof librarian === 'object' && 
         !Array.isArray(librarian) &&
@@ -830,7 +830,7 @@ class LocalStorage {
 
     // Clean borrowings - be very strict here
     if (Array.isArray(data.borrowings)) {
-      cleanData.borrowings = data.borrowings.filter(borrowing => {
+      cleanData.borrowings = data.borrowings.filter((borrowing: any) => {
         if (!borrowing || typeof borrowing !== 'object' || Array.isArray(borrowing)) {
           return false;
         }
@@ -854,7 +854,7 @@ class LocalStorage {
 
     // Clean membership applications
     if (Array.isArray(data.membershipApplications)) {
-      cleanData.membershipApplications = data.membershipApplications.filter(app => 
+      cleanData.membershipApplications = data.membershipApplications.filter((app: any) => 
         app && 
         typeof app === 'object' && 
         !Array.isArray(app) &&

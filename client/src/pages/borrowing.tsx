@@ -76,7 +76,7 @@ const BorrowingManagement = () => {
 
   // Helper function to find borrower by ID
   const findBorrowerById = (borrowerId: any) => {
-    if (!borrowerId || !borrowers.length) return null;
+    if (!borrowerId || !borrowers || !Array.isArray(borrowers) || !borrowers.length) return null;
     return borrowers.find((b: any) => 
       b && b.id === borrowerId
     );
@@ -84,14 +84,14 @@ const BorrowingManagement = () => {
 
   // Helper function to find book by ID
   const findBookById = (bookId: any) => {
-    if (!bookId || !books.length) return null;
+    if (!bookId || !books || !Array.isArray(books) || !books.length) return null;
     return books.find((b: any) => 
       b && b.id === bookId
     );
   };
 
   // Filter borrowings based on search and status
-  const filteredBorrowings = borrowings.filter((borrowing: any) => {
+  const filteredBorrowings = Array.isArray(borrowings) ? borrowings.filter((borrowing: any) => {
     // Skip if borrowing data is completely invalid
     if (!borrowing || (!borrowing.borrowerId && !borrowing.bookId)) {
       return false;
@@ -184,7 +184,7 @@ const BorrowingManagement = () => {
         status: 'returned'
       });
 
-      if (updatedBorrowing) {
+      // Remove this condition since updatedBorrowing is always a Promise
         await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
 
         toast({
@@ -205,10 +205,10 @@ const BorrowingManagement = () => {
   };
 
   const statusTabs = [
-    { value: 'all', label: 'All', count: borrowings.length },
-    { value: 'active', label: 'Active', count: borrowings.filter((b: any) => !b.returnDate).length },
-    { value: 'returned', label: 'Returned', count: borrowings.filter((b: any) => b.returnDate).length },
-    { value: 'overdue', label: 'Overdue', count: borrowings.filter((b: any) => !b.returnDate && new Date(b.dueDate) < new Date()).length },
+    { value: 'all', label: 'All', count: Array.isArray(borrowings) ? borrowings.length : 0 },
+    { value: 'active', label: 'Active', count: Array.isArray(borrowings) ? borrowings.filter((b: any) => !b.returnDate).length : 0 },
+    { value: 'returned', label: 'Returned', count: Array.isArray(borrowings) ? borrowings.filter((b: any) => b.returnDate).length : 0 },
+    { value: 'overdue', label: 'Overdue', count: Array.isArray(borrowings) ? borrowings.filter((b: any) => !b.returnDate && new Date(b.dueDate) < new Date()).length : 0 },
   ];
 
   const columns = [
@@ -598,7 +598,7 @@ const BorrowingManagement = () => {
             <DataTable
               data={filteredBorrowings}
               columns={columns}
-              isLoading={isLoading}
+              loading={isLoading}
               emptyMessage="No borrowing records found"
             />
           </TabsContent>

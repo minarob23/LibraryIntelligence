@@ -314,14 +314,14 @@ const BooksPage = () => {
   const [selectedAvailability, setSelectedAvailability] = useState('all');
 
   // Get unique authors, publishers, genres, and tags from books
-  const authors = [...new Set(books?.map(book => book.author) || [])];
-  const publishers = [...new Set(books?.map(book => book.publisher) || [])];
-  const genres = [...new Set(books?.flatMap(book => 
+  const authors = [...new Set(Array.isArray(books) ? books.map((book: any) => book.author) : [])];
+  const publishers = [...new Set(Array.isArray(books) ? books.map((book: any) => book.publisher) : [])];
+  const genres = [...new Set(Array.isArray(books) ? books.flatMap((book: any) =>
     book.genres ? book.genres.split(',').map((g: string) => g.trim()) : []
-  ) || [])];
-  const tags = [...new Set(books?.flatMap(book => 
+  ) : [])];
+  const tags = [...new Set(Array.isArray(books) ? books.flatMap((book: any) =>
     book.tags ? book.tags.split(',').map((t: string) => t.trim()) : []
-  ) || [])];
+  ) : [])];
 
   const [filterType, setFilterType] = useState('publisher');
   const [filterValue, setFilterValue] = useState('all');
@@ -438,27 +438,25 @@ const BooksPage = () => {
   };
 
   // Get filtered books for different sections
-  const borrowedBooks = filteredBooks?.filter(book => 
-    borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
-  ) || [];
+  const borrowedBooks = Array.isArray(filteredBooks) ? filteredBooks.filter((book: any) =>
+    Array.isArray(borrowings) && borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+  ) : [];
 
-  const mostBorrowedBooks = [...(books || [])]
-    .sort((a, b) => getTimesBorrowed(b.id) - getTimesBorrowed(a.id))
-    .filter(book => getTimesBorrowed(book.id) > 0)
-    .slice(0, 20);
+  const mostBorrowedBooks = Array.isArray(books) ? [...books]
+    .sort((a: any, b: any) => getBookBorrowings(b.id).length - getBookBorrowings(a.id).length)
+    .slice(0, 6) : [];
 
-  const popularBooks = [...(books || [])]
-    .sort((a, b) => getPopularityScore(b.id) - getPopularityScore(a.id))
-    .filter(book => getPopularityScore(book.id) > 0)
-    .slice(0, 20);
+  const popularBooks = Array.isArray(books) ? [...books]
+    .filter((book: any) => getBookBorrowings(book.id).length > 0)
+    .slice(0, 6) : [];
 
-  const topRatedBooks = [...(books || [])]
+  const topRatedBooks = Array.isArray(books) ? [...books]
     .filter(book => getAverageRating(book.id) !== null)
     .sort((a, b) => parseFloat(getAverageRating(b.id) || '0') - parseFloat(getAverageRating(a.id) || '0'))
-    .slice(0, 20);
+    .slice(0, 20) : [];
 
     const handleExport = () => {
-      if (!books || books.length === 0) {
+      if (!books || !Array.isArray(books) || books.length === 0) {
         toast({
           title: 'No Data',
           description: 'No books available to export.',
@@ -476,7 +474,7 @@ const BooksPage = () => {
     };
 
     const handleQuickExport = () => {
-      if (!books || books.length === 0) {
+      if (!books || !Array.isArray(books) || books.length === 0) {
         toast({
           title: 'No Data',
           description: 'No books available to export.',
@@ -712,8 +710,7 @@ const BooksPage = () => {
               </DialogHeader>
               <div className="flex-1 overflow-y-auto pr-4">
                 <LibraryExportDialog 
-                  books={books} 
-                  borrowings={borrowings} 
+                  books={Array.isArray(books) ? books : []}                  borrowings={Array.isArray(borrowings) ? borrowings : []} 
                   onExport={() => setOpenExportDialog(false)} 
                 />
               </div>

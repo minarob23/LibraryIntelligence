@@ -139,7 +139,7 @@ const NotificationDropdown = () => {
 
   useEffect(() => {
     if (borrowers && borrowings && librarians) {
-      const notifications = checkExpiryAndOverdue(borrowers, borrowings, librarians, notificationSettings);
+      const notifications = checkExpiryAndOverdue(Array.isArray(borrowers) ? borrowers : [], borrowings, librarians, notificationSettings);
       notifications.forEach(notification => {
         addNotification(notification.message, notification.type);
       });

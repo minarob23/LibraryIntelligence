@@ -1540,16 +1540,16 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     📋 Current Status
                   </Label>
                   <div className={`p-3 rounded-md border ${
-                    borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                    Array.isArray(borrowings) && borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
                       ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
                       : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
                   }`}>
                     <span className={`text-sm font-medium ${
-                      borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                      Array.isArray(borrowings) && borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
                         ? 'text-yellow-800 dark:text-yellow-300'
                         : 'text-green-800 dark:text-green-300'
                     }`}>
-                      {borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
+                      {Array.isArray(borrowings) && borrowings.some((b: any) => b.bookId === book.id && b.status === 'borrowed')
                         ? '📤 Currently Borrowed'
                         : '📥 Available for Borrowing'
                       }

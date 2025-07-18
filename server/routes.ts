@@ -347,7 +347,7 @@ export async function setupRoutes(app: express.Application) {
   });
 
   // Reset database route
-  app.post('/api/reset-database', async (req, res) => {
+  app.post('/api/reset-database', async (req: any, res: any) => {
     console.log('🔄 Starting database reset...');
 
     // Set response headers early
@@ -375,7 +375,7 @@ export async function setupRoutes(app: express.Application) {
         const errorResponse = {
           success: false,
           error: 'Database connection test failed',
-          details: dbError?.message || 'Unknown database error'
+          details: (dbError as any)?.message || 'Unknown database error'
         };
         console.log('Sending db test error response:', errorResponse);
         return res.status(500).json(errorResponse);
@@ -527,8 +527,8 @@ export async function setupRoutes(app: express.Application) {
           const errorResponse = { 
             success: false,
             error: 'Failed to reset database',
-            details: error?.message || 'Unknown error occurred',
-            stack: process.env.NODE_ENV === 'development' ? error?.stack : undefined
+            details: (error as any)?.message || 'Unknown error occurred',
+            stack: process.env.NODE_ENV === 'development' ? (error as any)?.stack : undefined
           };
           console.log('Sending catch error response:', errorResponse);
           res.status(500).json(errorResponse);

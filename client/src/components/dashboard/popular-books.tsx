@@ -24,31 +24,28 @@ const PopularBooks = () => {
     refetchInterval: false, // Disable automatic refetching
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
-    onError: (error) => console.log('Popular books query error:', error),
   });
 
   const { data: borrowings } = useQuery<Borrowing[]>({ 
     queryKey: ['/api/borrowings'],
     retry: 1,
-    onError: (error) => console.log('Borrowings query error:', error),
-    // Remove onSuccess to prevent cascade invalidations
   });
 
   const calculatePopularityScore = (bookId: number) => {
     try {
       // Get all borrowings
-      const allBorrowings = borrowings || [];
+      const allBorrowings = Array.isArray(borrowings) ? borrowings : [];
       const bookBorrowings = allBorrowings.filter((b: Borrowing) => b.bookId === bookId);
 
       if (!bookBorrowings.length) return 0;
 
       // Calculate base metrics
       const timesBorrowed = bookBorrowings.length;
-      const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating!);
-      const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
+      const ratings = bookBorrowings.filter((b: Borrowing) => b.rating).map((b: Borrowing) => b.rating!);
+      const avgRating = ratings.length ? ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length : 0;
 
       // Get latest borrow date
-      const borrowDates = bookBorrowings.map(b => new Date(b.borrowDate).getTime());
+      const borrowDates = bookBorrowings.map((b: Borrowing) => new Date(b.borrowDate).getTime());
       const lastBorrowedDate = new Date(Math.max(...borrowDates));
       const daysSinceLastBorrow = Math.floor((new Date().getTime() - lastBorrowedDate.getTime()) / (1000 * 3600 * 24));
 
@@ -77,15 +74,15 @@ const PopularBooks = () => {
   };
 
   const getAverageRating = (bookId: number) => {
-    if (!borrowings) return null;
+    if (!borrowings || !Array.isArray(borrowings)) return null;
     const bookBorrowings = borrowings.filter((b: Borrowing) => b.bookId === bookId && b.rating);
     if (bookBorrowings.length === 0) return null;
     const totalRating = bookBorrowings.reduce((sum: number, b: Borrowing) => sum + (b.rating || 0), 0);
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
-  const sortBooks = (books: Book[]): BookWithStats[] => {
-    if (!books) return [];
+  const sortBooks = (books: Book[] | undefined): BookWithStats[] => {
+    if (!books || !Array.isArray(books)) return [];
 
     const booksWithScore = books.map(book => {
       const averageRating = getAverageRating(book.id);
@@ -217,7 +214,7 @@ const PopularBooks = () => {
                         <div className="flex items-center gap-2">
                           <div className="bg-purple-100 dark:bg-purple-900/50 rounded-lg px-4 py-2">
                             <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                              {book.timesBorrowed || 0}
+                              {(book as any).timesBorrowed || 0}
                             </div>
                             <div className="text-xs text-purple-600/80 dark:text-purple-400/80 font-medium">
                               Times Borrowed

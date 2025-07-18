@@ -281,7 +281,7 @@ export const initializeSampleData = () => {
     console.log('Initializing sample data...');
 
     // First, ensure we have a default librarian
-    const existingData = localStorage_storage.getData();
+    const existingData = (localStorage_storage as any).getData();
     let defaultLibrarianId: string;
 
     if (!existingData.librarians || existingData.librarians.length === 0) {
@@ -332,8 +332,8 @@ export const initializeSampleData = () => {
 
 
     // Create borrowings with proper relationship IDs
-    const validBorrowerIds = sampleBorrowers.map(b => b.id);
-    const validBookIds = sampleBooks.map(b => b.id);
+    const validBorrowerIds = sampleBorrowers.map((b: any) => b.id);
+    const validBookIds = sampleBooks.map((b: any) => b.id);
 
     // Filter borrowings to only include valid relationships
     const validBorrowings = sampleBorrowings.filter(borrowing => {

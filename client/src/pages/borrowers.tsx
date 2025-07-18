@@ -66,7 +66,7 @@ const BorrowersPage = () => {
   });
 
   // Filter borrowers based on selected category and search term
-  const filteredBorrowers = allBorrowers?.filter(borrower => {
+  const filteredBorrowers = Array.isArray(allBorrowers) ? allBorrowers.filter((borrower: any) => {
     const searchTermLower = searchTerm.toLowerCase();
     const nameLower = borrower.name.toLowerCase();
 
@@ -160,7 +160,7 @@ const BorrowersPage = () => {
       };
 
       return Object.entries(categoryCount).map(([category, count]) => ({
-        name: categoryMap[category] || category,
+        name: (categoryMap as any)[category] || category,
         value: count
       }));
     }
@@ -174,7 +174,7 @@ const BorrowersPage = () => {
     };
 
     return borrowerDistribution.map((item: any) => ({
-      name: categoryMap[item.category] || item.category,
+      name: (categoryMap as any)[item.category] || item.category,
       value: item.count
     }));
   };
@@ -382,8 +382,8 @@ const BorrowersPage = () => {
         <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-4">
           {categories.map((category) => {
             const count = category.value === 'all' 
-              ? allBorrowers?.length || 0
-              : allBorrowers?.filter(borrower => borrower.category === category.value).length || 0;
+              ? (Array.isArray(allBorrowers) ? allBorrowers.length : 0)
+              : (Array.isArray(allBorrowers) ? allBorrowers.filter((borrower: any) => borrower.category === category.value).length : 0);
 
             return (
               <TabsTrigger key={category.value} value={category.value}>

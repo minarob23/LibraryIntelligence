@@ -731,7 +731,7 @@ const Settings = () => {
       console.error("Error resetting data:", error);
       toast({
         title: "❌ Reset Failed",
-        description: `Failed to reset system data: ${error.message}`,
+        description: `Failed to reset system data: ${(error as any)?.message || 'Unknown error'}`,
         variant: "destructive",
       });
     }

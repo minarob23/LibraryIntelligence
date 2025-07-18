@@ -63,14 +63,11 @@ const ReturnBookForm = ({ borrowing, onSuccess, onCancel }: ReturnBookFormProps)
       //} else {
       //  throw new Error('Borrowing record not found');
       //}
-      const updatedBorrowing = await apiRequest(`/api/borrowings/${borrowing.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          returnDate: new Date().toISOString(),
-          rating: data.rating,
-          review: data.review || '',
-          status: 'returned',
-        }),
+      const updatedBorrowing = await apiRequest('PATCH', `/api/borrowings/${borrowing.id}`, {
+        status: 'returned',
+        returnDate: new Date().toISOString(),
+        rating: data.rating || null,
+        reviewComments: data.review || null,
       });
 
       if (updatedBorrowing) {

@@ -457,7 +457,7 @@ export const exportLibraryWithStatistics = (books: any[], borrowings: any[], fil
     headers.join(','),
     ...enhancedBooks.map(book => 
       headers.map(header => {
-        const value = book[header];
+        const value = (book as any)[header];
         if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
           return `"${value.replace(/"/g, '""')}"`;
         }

@@ -79,7 +79,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     const data: any[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const values = [];
+      const values: string[] = [];
       let current = '';
       let inQuotes = false;
 
@@ -272,9 +272,9 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       for (const book of validBooks) {
         try {
           const bookData = { ...book };
-          delete bookData.missingFields;
-          delete bookData.isValid;
-          delete bookData.rowIndex;
+          delete (bookData as any).missingFields;
+          delete (bookData as any).isValid;
+          delete (bookData as any).rowIndex;
 
           await apiRequest('POST', '/api/books', bookData);
           successCount++;

@@ -97,8 +97,8 @@ const BookRecommendations = () => {
       if (book.genres) {
         const bookGenres = book.genres ? book.genres.split(',').map(g => g.trim().toLowerCase()) : [];
         bookGenres.forEach(genre => {
-          if (genrePreferences && typeof genrePreferences === 'object' && genrePreferences[genre]) {
-            score += (genrePreferences[genre] as number) * 3;
+          if (genrePreferences && typeof genrePreferences === 'object' && genre in genrePreferences) {
+            score += (genrePreferences as { [key: string]: number })[genre] * 3;
           }
         });
       }
@@ -146,7 +146,7 @@ const BookRecommendations = () => {
       return {
         ...book,
         recommendationScore: Math.round(score),
-        matchReasons: getMatchReasons(book, genrePreferences, favoriteAuthors, favoriteBooks)
+        matchReasons: getMatchReasons(book, genrePreferences, favoriteAuthors as Set<string>, favoriteBooks)
       };
     });
 
