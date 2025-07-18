@@ -8,19 +8,37 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Trophy, Star, Clock, TrendingUp } from 'lucide-react';
 
+interface Borrowing {
+  id: number;
+  borrowerId: number;
+  status: string;
+  returnDate?: string;
+  dueDate: string;
+  rating?: number;
+}
+
+interface Borrower {
+  id: number;
+  name: string;
+  category: string;
+  expiryDate: string;
+  joinedDate: string;
+  borrowCount?: number;
+}
+
 const TopBorrowersByEngagement = () => {
-  const { data: borrowings } = useQuery({
+  const { data: borrowings } = useQuery<Borrowing[]>({
     queryKey: ['/api/borrowings'],
   });
 
-  const { data: borrowers, isLoading } = useQuery({
-    queryKey: ['/api/dashboard/top-borrowers'],
+  const { data: borrowers, isLoading } = useQuery<Borrower[]>({
+    queryKey: ['/api/borrowers'],
   });
 
   const calculateEngagementScore = (borrowerId: number): number => {
     try {
       const allBorrowings = borrowings || [];
-      const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+      const userBorrowings = allBorrowings.filter((b: Borrowing) => b.borrowerId === borrowerId);
 
       if (!userBorrowings.length) return 0;
 
@@ -30,6 +48,7 @@ const TopBorrowersByEngagement = () => {
       const ratedBorrowings = userBorrowings.filter(b => b.rating).length;
 
       const onTimeBorrowings = returnedBorrowings.filter(b => {
+        if (!b.returnDate) return false;
         const returnDate = new Date(b.returnDate);
         const dueDate = new Date(b.dueDate);
         return returnDate <= dueDate;
@@ -52,7 +71,7 @@ const TopBorrowersByEngagement = () => {
 
   const getEngagementMetrics = (borrowerId: number) => {
     const allBorrowings = borrowings || [];
-    const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+    const userBorrowings = allBorrowings.filter((b: Borrowing) => b.borrowerId === borrowerId);
     
     if (!userBorrowings.length) return {
       totalBooks: 0,
@@ -63,6 +82,7 @@ const TopBorrowersByEngagement = () => {
 
     const returnedBorrowings = userBorrowings.filter(b => b.status === 'returned');
     const onTimeBorrowings = returnedBorrowings.filter(b => {
+      if (!b.returnDate) return false;
       const returnDate = new Date(b.returnDate);
       const dueDate = new Date(b.dueDate);
       return returnDate <= dueDate;
@@ -103,12 +123,12 @@ const TopBorrowersByEngagement = () => {
     return <Clock className="h-4 w-4 text-gray-500" />;
   };
 
-  const topBorrowersByEngagement = borrowers?.map((borrower: any) => ({
+  const topBorrowersByEngagement = borrowers?.map((borrower: Borrower) => ({
     ...borrower,
     engagementScore: calculateEngagementScore(borrower.id),
     metrics: getEngagementMetrics(borrower.id)
   }))
-  .sort((a: any, b: any) => {
+  .sort((a, b) => {
     // Prioritize Graduate category borrowers
     if (a.category === 'graduate' && b.category !== 'graduate') return -1;
     if (b.category === 'graduate' && a.category !== 'graduate') return 1;
@@ -164,7 +184,7 @@ const TopBorrowersByEngagement = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              topBorrowersByEngagement?.map((borrower: any, index: number) => {
+              topBorrowersByEngagement?.map((borrower: Borrower & { engagementScore: number; metrics: any }, index: number) => {
                 const engagementLevel = getEngagementLevel(borrower.engagementScore);
                 return (
                   <TableRow key={borrower.id} className={`${

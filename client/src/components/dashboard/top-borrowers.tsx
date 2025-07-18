@@ -7,11 +7,30 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
+interface Borrowing {
+  id: number;
+  borrowerId: number;
+  status: string;
+  returnDate?: string;
+  dueDate: string;
+  rating?: number;
+}
+
+interface Borrower {
+  id: number;
+  name: string;
+  category: string;
+  expiryDate: string;
+  joinedDate: string;
+  borrowCount?: number;
+  engagementScore: number;
+}
+
 const TopBorrowers = () => {
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState('engagement');
 
-  const { data: borrowings } = useQuery({
+  const { data: borrowings } = useQuery<Borrowing[]>({
     queryKey: ['/api/borrowings'],
   });
 
@@ -19,7 +38,7 @@ const TopBorrowers = () => {
     try {
       // Get all borrowings
       const allBorrowings = borrowings || [];
-      const userBorrowings = allBorrowings.filter((b: any) => b.borrowerId === borrowerId);
+      const userBorrowings = allBorrowings.filter((b: Borrowing) => b.borrowerId === borrowerId);
 
       if (!userBorrowings.length) return 0;
 
@@ -31,6 +50,7 @@ const TopBorrowers = () => {
 
       // Calculate return timeliness
       const onTimeBorrowings = returnedBorrowings.filter(b => {
+        if (!b.returnDate) return false;
         const returnDate = new Date(b.returnDate);
         const dueDate = new Date(b.dueDate);
         return returnDate <= dueDate;
@@ -78,12 +98,9 @@ const TopBorrowers = () => {
     }
   };
 
-  const { data: borrowers, isLoading } = useQuery({
-    queryKey: ['/api/dashboard/top-borrowers'],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
-    },
-    select: (data) => data?.map((borrower: any) => ({
+  const { data: borrowers, isLoading } = useQuery<Borrower[]>({
+    queryKey: ['/api/borrowers'],
+    select: (data) => data?.map((borrower: Borrower) => ({
       ...borrower,
       engagementScore: calculateEngagementScore(borrower.id)
     }))
@@ -190,7 +207,7 @@ const TopBorrowers = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              borrowers?.map((borrower: any) => {
+              borrowers?.map((borrower: Borrower) => {
                 const daysUntilExpiry = getDaysUntilExpiry(borrower.expiryDate);
                 return (
                   <TableRow key={borrower.id}>
@@ -223,8 +240,8 @@ const TopBorrowers = () => {
                           </div>
                           <div className="text-xs text-gray-400">
                             Last borrowed: {(() => {
-                              const userBorrowings = borrowings?.filter((b: any) => b.borrowerId === borrower.id) || [];
-                              const latestBorrowing = userBorrowings.reduce((latest: any, current: any) => {
+                              const userBorrowings = borrowings?.filter((b: Borrowing) => b.borrowerId === borrower.id) || [];
+                              const latestBorrowing = userBorrowings.reduce((latest: Borrowing | null, current: Borrowing) => {
                                 if (!latest || new Date(current.borrowDate) > new Date(latest.borrowDate)) {
                                   return current;
                                 }

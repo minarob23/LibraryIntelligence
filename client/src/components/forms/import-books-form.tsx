@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -44,7 +43,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
   const validateBook = (book: any, index: number): ImportedBook => {
     const missingFields: string[] = [];
-    
+
     // Check required fields
     requiredFields.forEach(field => {
       if (!book[field] || String(book[field]).trim() === '') {
@@ -81,7 +80,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       const values = [];
       let current = '';
       let inQuotes = false;
-      
+
       // Parse CSV with proper quote handling
       for (let j = 0; j < lines[i].length; j++) {
         const char = lines[i][j];
@@ -115,36 +114,36 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       const workbook = XLSX.read(buffer, { type: 'array' });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
-      
+
       // Convert sheet to JSON with header row as keys
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
         header: 1,
         defval: '',
         blankrows: false
       });
-      
+
       if (jsonData.length < 2) return [];
-      
+
       const headers = (jsonData[0] as any[]).map(h => String(h || '').trim());
       const data: any[] = [];
-      
+
       for (let i = 1; i < jsonData.length; i++) {
         const values = jsonData[i] as any[];
         if (values.length === 0 || values.every(v => !v)) continue;
-        
+
         const row: any = {};
         headers.forEach((header, index) => {
           const value = values[index] || '';
           const normalizedHeader = normalizeHeaderName(header);
           row[normalizedHeader] = String(value).trim();
         });
-        
+
         // Skip completely empty rows
         if (Object.values(row).some(v => v)) {
           data.push(row);
         }
       }
-      
+
       return data;
     } catch (error) {
       console.error('Excel parsing error:', error);
@@ -173,7 +172,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     reader.onload = (e) => {
       try {
         let data: any[] = [];
-        
+
         if (isCSV) {
           const csvText = e.target?.result as string;
           data = parseCSV(csvText);
@@ -181,7 +180,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
           const arrayBuffer = e.target?.result as ArrayBuffer;
           data = parseExcel(arrayBuffer);
         }
-        
+
         if (data.length === 0) {
           toast({
             title: 'Invalid Data File',
@@ -194,7 +193,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         const books = data.map((book, index) => validateBook(book, index));
         setImportedBooks(books);
         setShowResults(true);
-        
+
         toast({
           title: '✅ File Processed Successfully',
           description: `Successfully processed ${books.length} books from your ${isCSV ? 'CSV' : 'Excel'} file.`,
@@ -208,7 +207,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         });
       }
     };
-    
+
     if (isCSV) {
       reader.readAsText(file);
     } else {
@@ -235,7 +234,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       'copy': 'copies',
       'number of copies': 'copies'
     };
-    
+
     const normalized = header.toLowerCase().trim();
     return mapping[normalized] || normalized.replace(/\s+/g, '');
   };
@@ -251,7 +250,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
 
     const validBooks = importedBooks.filter(book => book.isValid);
-    
+
     if (validBooks.length === 0) {
       toast({
         title: 'No Valid Books',
@@ -262,7 +261,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
 
     setIsImporting(true);
-    
+
     try {
       let successCount = 0;
       let errorCount = 0;
@@ -274,7 +273,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
           delete bookData.missingFields;
           delete bookData.isValid;
           delete bookData.rowIndex;
-          
+
           await apiRequest('POST', '/api/books', bookData);
           successCount++;
         } catch (error: any) {
@@ -285,13 +284,13 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['/api/books'] });
-      
+
       if (successCount > 0) {
         toast({
           title: '🎉 Import Successful',
           description: `Successfully imported ${successCount} books.${errorCount > 0 ? ` ${errorCount} failed.` : ''}`,
         });
-        
+
         if (onSuccess) {
           onSuccess();
         }
@@ -313,7 +312,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   };
 
-  
+
 
   const getFieldDisplayName = (field: string): string => {
     const displayNames: { [key: string]: string } = {
@@ -379,7 +378,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                 onChange={handleFileUpload}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
-              
+
               {/* Upload Icon and Animation */}
               <div className="flex flex-col items-center justify-center space-y-4">
                 <div className="relative">
@@ -390,7 +389,7 @@ const ImportBooksForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                 </div>
-                
+
                 {/* Upload Text */}
                 <div className="text-center space-y-2">
                   <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">

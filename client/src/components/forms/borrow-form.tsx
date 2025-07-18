@@ -90,15 +90,15 @@ const BorrowForm = ({ borrowing, onSuccess, onCancel }: BorrowFormProps) => {
   const twoWeeksFromNow = defaultDueDate.toISOString().split('T')[0];
 
   // Fetch borrowers, librarians, books and research papers
-  const { data: borrowers } = useQuery({ 
+  const { data: borrowers } = useQuery<any[]>({ 
     queryKey: ['/api/borrowers'],
   });
 
-  const { data: librarians } = useQuery({ 
+  const { data: librarians } = useQuery<any[]>({ 
     queryKey: ['/api/librarians'],
   });
 
-  const { data: books } = useQuery({ 
+  const { data: books } = useQuery<any[]>({ 
     queryKey: ['/api/books'],
   });
 

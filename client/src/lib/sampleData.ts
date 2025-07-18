@@ -334,7 +334,7 @@ export const initializeSampleData = () => {
     // Create borrowings with proper relationship IDs
     const validBorrowerIds = sampleBorrowers.map(b => b.id);
     const validBookIds = sampleBooks.map(b => b.id);
-    
+
     // Filter borrowings to only include valid relationships
     const validBorrowings = sampleBorrowings.filter(borrowing => {
       const borrowerExists = validBorrowerIds.includes(borrowing.borrowerId);

@@ -70,8 +70,8 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       expiryDate: borrower.expiryDate || oneYearFromNow,
       email: borrower.email || '',
       address: borrower.address || '',
-      churchName: borrower.churchName || '',
-      fatherOfConfession: borrower.fatherOfConfession || '',
+      organizationName: borrower.organizationName || '',
+      emergencyContact: borrower.emergencyContact || '',
       studies: borrower.studies || '',
       job: borrower.job || '',
       hobbies: borrower.hobbies || '',
@@ -86,8 +86,8 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
       expiryDate: oneYearFromNow,
       email: '',
       address: '',
-      churchName: '',
-      fatherOfConfession: '',
+      organizationName: '',
+      emergencyContact: '',
       studies: '',
       job: '',
       hobbies: '',
@@ -300,7 +300,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
               {/* Additional Information */}
               <FormField
                 control={form.control}
-                name="churchName"
+                name="organizationName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Church</FormLabel>
@@ -314,7 +314,7 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
 
               <FormField
                 control={form.control}
-                name="fatherOfConfession"
+                name="emergencyContact"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Father of Confession</FormLabel>

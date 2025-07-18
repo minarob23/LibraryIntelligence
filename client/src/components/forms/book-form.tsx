@@ -201,6 +201,7 @@ interface BookFormProps {
     rate?: number;
     addedDate?: string;
     publishedDate?: string;
+    tableOfContents?: string;
   };
   index?: number;
   onSuccess?: () => void;

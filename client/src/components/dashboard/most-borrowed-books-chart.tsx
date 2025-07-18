@@ -4,14 +4,26 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from '@/lib/hooks/use-theme';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
+interface Borrowing {
+  id: number;
+  bookId: number;
+  borrowDate: string;
+}
+
+interface Book {
+  id: number;
+  title?: string;
+  name: string;
+}
+
 const MostBorrowedBooksChart = () => {
   const { theme } = useTheme();
   
-  const { data: borrowings } = useQuery({ 
+  const { data: borrowings } = useQuery<Borrowing[]>({ 
     queryKey: ['/api/borrowings'],
   });
 
-  const { data: books } = useQuery({ 
+  const { data: books } = useQuery<Book[]>({ 
     queryKey: ['/api/books'],
   });
 
@@ -20,7 +32,7 @@ const MostBorrowedBooksChart = () => {
     
     // Get last 6 months
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const monthlyData = [];
+    const monthlyData: { [key: string]: any }[] = [];
     const today = new Date();
     
     // Initialize last 6 months
@@ -35,7 +47,7 @@ const MostBorrowedBooksChart = () => {
     // Count borrowings per book per month
     const bookBorrowCounts: { [bookId: string]: { [month: string]: number } } = {};
     
-    borrowings.forEach((borrowing: any) => {
+    borrowings.forEach((borrowing: Borrowing) => {
       if (!borrowing.borrowDate || !borrowing.bookId) return;
       
       const borrowDate = new Date(borrowing.borrowDate);
@@ -65,7 +77,7 @@ const MostBorrowedBooksChart = () => {
     // Add book data to monthly data
     monthlyData.forEach(monthData => {
       topBooks.forEach(({ bookId }) => {
-        const book = books.find((b: any) => b.id === parseInt(bookId));
+        const book = books.find((b: Book) => b.id === parseInt(bookId));
         if (book) {
           const bookName = book.title || book.name || `Unknown Book`;
           const shortName = bookName.length > 25 ? bookName.substring(0, 25) + '...' : bookName;

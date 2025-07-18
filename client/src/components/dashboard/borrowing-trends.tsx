@@ -3,8 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 import ChartContainer from './chart-container';
 import { Card, CardTitle } from '@/components/ui/card';
 
+interface Borrowing {
+  id: number;
+  borrowDate: string;
+  returnDate?: string;
+  status: string;
+}
+
 const BorrowingTrends = () => {
-  const { data: borrowings } = useQuery({ 
+  const { data: borrowings } = useQuery<Borrowing[]>({ 
     queryKey: ['/api/borrowings'],
   });
 
@@ -27,7 +34,7 @@ const BorrowingTrends = () => {
     }
 
     // Count borrowings per month
-    borrowings.forEach((borrowing: any) => {
+    borrowings.forEach((borrowing: Borrowing) => {
       if (!borrowing || !borrowing.borrowDate) return;
       
       const borrowDate = new Date(borrowing.borrowDate);

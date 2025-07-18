@@ -6,6 +6,29 @@ interface StorageData {
   membershipApplications: any[];
 }
 
+interface Book {
+  id: number;
+  name: string;
+  title?: string;
+  author: string;
+  genres?: string;
+  [key: string]: any;
+}
+
+interface Borrower {
+  id: number;
+  name: string;
+  [key: string]: any;
+}
+
+interface Borrowing {
+  id: number;
+  bookId: number;
+  borrowerId: number;
+  status: string;
+  [key: string]: any;
+}
+
 class LocalStorage {
   private storageKey = 'library-management-data';
 
@@ -57,7 +80,7 @@ class LocalStorage {
   }
 
   // Books
-  getBooks() {
+  getBooks(): Book[] {
     return this.getData().books;
   }
 
@@ -106,7 +129,7 @@ class LocalStorage {
   }
 
   // Borrowers
-  getBorrowers() {
+  getBorrowers(): Borrower[] {
     return this.getData().borrowers;
   }
 
@@ -229,7 +252,7 @@ class LocalStorage {
   }
 
   // Borrowings
-  getBorrowings(): any[] {
+  getBorrowings(): Borrowing[] {
     const data = this.getData();
     return data.borrowings || [];
   }

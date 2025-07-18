@@ -68,7 +68,7 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
 
       return localStorage_storage.getLibrarian(librarianId);
 
-    
+
 
     case path === '/api/borrowings':
       const borrowerIdParam = params.get('borrowerId');
@@ -129,7 +129,7 @@ const mockApiResponse = async (endpoint: string, options?: any): Promise<any> =>
     case path === '/api/dashboard/borrower-distribution':
       return localStorage_storage.getBorrowerDistribution();
 
-    
+
 
     case path === '/api/dashboard/member-growth':
       // Return borrowers data for member growth calculation

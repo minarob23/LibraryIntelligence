@@ -7,20 +7,37 @@ import coverImage1 from '@/assets/book-covers/cover1.svg';
 
 type FilterType = 'rating' | 'random' | 'borrowed' | 'popularity';
 
+interface Book {
+  id: number;
+  name: string;
+  title?: string;
+  author: string;
+  coverImage?: string;
+  popularityScore?: number;
+  rating?: string;
+  timesBorrowed?: number;
+}
+
+interface Borrowing {
+  id: number;
+  bookId: number;
+  borrowDate: string;
+  rating?: number;
+}
+
 const PopularBooks = () => {
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<FilterType>('popularity');
 
-  const { data: books, isLoading } = useQuery({
-    queryKey: ['/api/dashboard/popular-books'],
+  const { data: books, isLoading } = useQuery<Book[]>({
+    queryKey: ['/api/books'],
     refetchInterval: false, // Disable automatic refetching
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
     retry: 1,
     onError: (error) => console.log('Popular books query error:', error),
   });
 
-  const { data: borrowings } = useQuery({ 
+  const { data: borrowings } = useQuery<Borrowing[]>({ 
     queryKey: ['/api/borrowings'],
     retry: 1,
     onError: (error) => console.log('Borrowings query error:', error),
@@ -31,13 +48,13 @@ const PopularBooks = () => {
     try {
       // Get all borrowings
       const allBorrowings = borrowings || [];
-      const bookBorrowings = allBorrowings.filter((b: any) => b.bookId === bookId);
+      const bookBorrowings = allBorrowings.filter((b: Borrowing) => b.bookId === bookId);
       
       if (!bookBorrowings.length) return 0;
 
       // Calculate base metrics
       const timesBorrowed = bookBorrowings.length;
-      const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating);
+      const ratings = bookBorrowings.filter(b => b.rating).map(b => b.rating!);
       const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
       
       // Get latest borrow date
@@ -71,13 +88,13 @@ const PopularBooks = () => {
 
   const getAverageRating = (bookId: number) => {
     if (!borrowings) return null;
-    const bookBorrowings = borrowings.filter((b: any) => b.bookId === bookId && b.rating);
+    const bookBorrowings = borrowings.filter((b: Borrowing) => b.bookId === bookId && b.rating);
     if (bookBorrowings.length === 0) return null;
-    const totalRating = bookBorrowings.reduce((sum: number, b: any) => sum + b.rating, 0);
+    const totalRating = bookBorrowings.reduce((sum: number, b: Borrowing) => sum + (b.rating || 0), 0);
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
-  const sortBooks = (books: any[]) => {
+  const sortBooks = (books: Book[]) => {
     if (!books) return [];
 
     const booksWithScore = books.map(book => {
@@ -166,7 +183,7 @@ const PopularBooks = () => {
               No books data available
             </div>
           ) : (
-            sortedBooks?.map((book: any) => (
+            sortedBooks?.map((book: Book) => (
               <div key={book.id} className="flex space-x-3">
                 <img 
                   className="w-16 h-24 object-cover rounded shadow-sm border border-gray-200 dark:border-gray-700" 

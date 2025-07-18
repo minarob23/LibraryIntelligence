@@ -4,25 +4,50 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
+interface Book {
+  id: number;
+  name: string;
+  title?: string;
+  author: string;
+  genres?: string;
+  tags?: string;
+  coverImage?: string;
+}
+
+interface Borrower {
+  id: number;
+  name: string;
+  favoriteBooks?: string;
+}
+
+interface Borrowing {
+  id: number;
+  bookId: number;
+  borrowerId: number;
+  borrowDate: string;
+  status: string;
+  rating?: number;
+}
+
 const BookRecommendations = () => {
-  const { data: books = [] } = useQuery({ 
+  const { data: books = [] } = useQuery<Book[]>({ 
     queryKey: ['/api/books'],
     retry: 1,
   });
 
-  const { data: borrowers = [] } = useQuery({ 
+  const { data: borrowers = [] } = useQuery<Borrower[]>({ 
     queryKey: ['/api/borrowers'],
     retry: 1,
   });
 
-  const { data: borrowings = [] } = useQuery({ 
+  const { data: borrowings = [] } = useQuery<Borrowing[]>({ 
     queryKey: ['/api/borrowings'],
     retry: 1,
   });
 
   // Helper function to get book borrowing stats
   const getBookStats = (bookId: number) => {
-    const bookBorrowings = borrowings?.filter((b: any) => b.bookId === bookId) || [];
+    const bookBorrowings = borrowings?.filter((b: Borrowing) => b.bookId === bookId) || [];
     const timesBorrowed = bookBorrowings.length;
     const avgRating = bookBorrowings.filter(b => b.rating).length > 0 
       ? bookBorrowings.reduce((sum, b) => sum + (b.rating || 0), 0) / bookBorrowings.filter(b => b.rating).length
@@ -39,7 +64,7 @@ const BookRecommendations = () => {
     const favoriteAuthors = new Set<string>();
     const favoriteBooks = new Set<string>();
 
-    borrowers.forEach((borrower: any) => {
+    borrowers.forEach((borrower: Borrower) => {
       if (borrower.favoriteBooks) {
         const favorites = borrower.favoriteBooks.toLowerCase();
 
@@ -58,8 +83,8 @@ const BookRecommendations = () => {
 
     // Extract genre preferences from borrowing history
     if (books && borrowings) {
-      borrowings.forEach((borrowing: any) => {
-        const book = books.find((b: any) => b.id === borrowing.bookId);
+      borrowings.forEach((borrowing: Borrowing) => {
+        const book = books.find((b: Book) => b.id === borrowing.bookId);
         if (book?.genres) {
           book.genres.split(',').forEach((genre: string) => {
             const trimmedGenre = genre.trim().toLowerCase();
@@ -79,7 +104,7 @@ const BookRecommendations = () => {
     const { genrePreferences, favoriteAuthors, favoriteBooks } = extractGenresAndFavorites();
 
     // Score books based on multiple factors
-    const scoredBooks = books.map((book: any) => {
+    const scoredBooks = books.map((book: Book) => {
       let score = 0;
       const stats = getBookStats(book.id);
 
@@ -132,7 +157,7 @@ const BookRecommendations = () => {
       }
 
       // Recent books get slight penalty to promote variety
-      const isRecentlyBorrowed = borrowings?.some((b: any) => 
+      const isRecentlyBorrowed = borrowings?.some((b: Borrowing) => 
         b.bookId === book.id && 
         new Date(b.borrowDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
       );
@@ -156,8 +181,8 @@ const BookRecommendations = () => {
   };
 
   // Get reasons why a book was recommended
-  const getMatchReasons = (book: any, genrePreferences: any, favoriteAuthors: Set<string>, favoriteBooks: Set<string>) => {
-    const reasons = [];
+  const getMatchReasons = (book: Book, genrePreferences: { [key: string]: number }, favoriteAuthors: Set<string>, favoriteBooks: Set<string>) => {
+    const reasons: string[] = [];
 
     // Check genre matches
     if (book.genres) {
@@ -230,7 +255,7 @@ const BookRecommendations = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {recommendations.map((book, index) => {
             const stats = getBookStats(book.id);
-            const isBorrowed = borrowings?.some((b: any) => b.bookId === book.id && b.status === 'borrowed');
+            const isBorrowed = borrowings?.some((b: Borrowing) => b.bookId === book.id && b.status === 'borrowed');
 
             return (
               <div key={book.id} className="group relative">
@@ -246,7 +271,7 @@ const BookRecommendations = () => {
                     {/* Book Cover */}
                     <div className="flex-shrink-0">
                       <img 
-                        src={book.coverImage} 
+                        src={book.coverImage || '/src/assets/book-covers/cover1.svg'} 
                         alt={book.name}
                         className="w-16 h-20 object-cover rounded border border-gray-200 dark:border-gray-600"
                       />

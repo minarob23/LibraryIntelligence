@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Bell, Settings } from 'lucide-react';
 import { useNotifications } from '@/lib/hooks/use-notifications';
@@ -32,7 +31,7 @@ const checkExpiryAndOverdue = (borrowers: any[], borrowings: any[], librarians: 
     borrowers?.forEach(borrower => {
       const expiryDate = new Date(borrower.expiryDate);
       const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-      
+
       if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
         notifications.push({
           id: Date.now() + Math.random(),
@@ -122,7 +121,7 @@ const NotificationDropdown = () => {
   const [open, setOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { notifications, markAsRead, markAllAsRead, unreadCount, addNotification, clearAllNotifications } = useNotifications();
-  
+
   // Notification settings state
   const [notificationSettings, setNotificationSettings] = useState({
     membershipExpiry: JSON.parse(localStorage.getItem('notif_membershipExpiry') || 'true'),
@@ -130,9 +129,12 @@ const NotificationDropdown = () => {
     actionHistory: JSON.parse(localStorage.getItem('notif_actionHistory') || 'true'),
     employmentStatus: JSON.parse(localStorage.getItem('notif_employmentStatus') || 'true'),
   });
-  
+
   const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
-  const { data: borrowings } = useQuery({ queryKey: ['/api/borrowings'] });
+  const { data: borrowings } = useQuery<any[]>({ 
+    queryKey: ['/api/borrowings'],
+    refetchInterval: 60000, // Refresh every minute
+  });
   const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
 
   useEffect(() => {

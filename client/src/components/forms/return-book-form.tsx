@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,15 +40,37 @@ const ReturnBookForm = ({ borrowing, onSuccess, onCancel }: ReturnBookFormProps)
   const onSubmit = async (data: ReturnBookFormValues) => {
     setIsSubmitting(true);
     try {
-      // Import localStorage storage
-      const { localStorage_storage } = await import('@/lib/localStorage');
-      
+      // Import removed - using direct database operations instead
+
       // Update the borrowing record with return date and rating
-      const updatedBorrowing = localStorage_storage.updateBorrowing(borrowing.id, {
-        returnDate: new Date().toISOString(),
-        rating: data.rating,
-        review: data.review || '',
-        status: 'returned'
+      //const updatedBorrowing = localStorage_storage.updateBorrowing(borrowing.id, {
+      //  returnDate: new Date().toISOString(),
+      //  rating: data.rating,
+      //  review: data.review || '',
+      //  status: 'returned'
+      //});
+
+      //if (updatedBorrowing) {
+      //  await queryClient.invalidateQueries({ queryKey: ['/api/borrowings'] });
+      //  await queryClient.invalidateQueries({ queryKey: ['/api/books'] });
+
+      //  toast({
+      //    title: 'Success',
+      //    description: 'Book returned successfully and rating submitted!',
+      //  });
+
+      //  onSuccess?.();
+      //} else {
+      //  throw new Error('Borrowing record not found');
+      //}
+      const updatedBorrowing = await apiRequest(`/api/borrowings/${borrowing.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          returnDate: new Date().toISOString(),
+          rating: data.rating,
+          review: data.review || '',
+          status: 'returned',
+        }),
       });
 
       if (updatedBorrowing) {
