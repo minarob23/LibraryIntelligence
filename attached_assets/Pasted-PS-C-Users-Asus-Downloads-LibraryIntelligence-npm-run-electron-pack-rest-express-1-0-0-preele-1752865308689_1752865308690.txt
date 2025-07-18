@@ -1,0 +1,95 @@
+PS C:\Users\Asus\Downloads\LibraryIntelligence> npm run electron-pack
+
+> rest-express@1.0.0 preelectron-pack
+> npm run build
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+client/src/components/dashboard/book-recommendations.tsx:149:131 - error TS2345: Argument of type 'Set<string> | Set<unknown>' is not assignable to parameter of type 'Set<string>'.
+  Type 'Set<unknown>' is not assignable to type 'Set<string>'.
+    Type 'unknown' is not assignable to type 'string'.
+
+149         matchReasons: getMatchReasons(book, genrePreferences, new Set(Array.from(favoriteAuthors).map(author => String(author))), favoriteBooks)
+                                                                                                                                      ~~~~~~~~~~~~~
+
+client/src/components/ui/aspect-ratio.tsx:2:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+2 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/carousel.tsx:4:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+4 } from "embla-carousel-react";
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:43 - error TS2307: Cannot find module 'react-otp-input' or its corresponding type declarations.
+
+2 import { OTPInput, OTPInputContext } from "react-otp-input";
+                                            ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:60:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSeparator'.
+
+60 const InputOTPSeparator = React.forwardRef<
+         ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:70:10 - error TS2300: Duplicate identifier 'InputOTP'.
+
+70 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+            ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:70:20 - error TS2300: Duplicate identifier 'InputOTPGroup'.
+
+70 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                      ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:70:35 - error TS2300: Duplicate identifier 'InputOTPSlot'.
+
+70 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                     ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:70:49 - error TS2300: Duplicate identifier 'InputOTPSeparator'.
+
+70 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                                   ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:73:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSeparator'.
+
+73 const InputOTPSeparator = React.forwardRef<
+         ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:83:10 - error TS2300: Duplicate identifier 'InputOTP'.
+
+83 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+            ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:83:20 - error TS2300: Duplicate identifier 'InputOTPGroup'.
+
+83 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                      ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:83:35 - error TS2300: Duplicate identifier 'InputOTPSlot'.
+
+83 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                     ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:83:49 - error TS2300: Duplicate identifier 'InputOTPSeparator'.
+
+83 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                                   ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/resizable.tsx:7:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+7 import * as ResizablePrimitive from "react-resizable-panels";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 15 errors in 5 files.
+
+Errors  Files
+     1  client/src/components/dashboard/book-recommendations.tsx:149
+     1  client/src/components/ui/aspect-ratio.tsx:2
+     1  client/src/components/ui/carousel.tsx:4
+    11  client/src/components/ui/input-otp.tsx:2
+     1  client/src/components/ui/resizable.tsx:7
