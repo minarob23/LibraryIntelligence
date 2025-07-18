@@ -84,7 +84,7 @@ const BorrowersPage = () => {
 
     if (selectedCategory === 'all') return true;
     return borrower.category === selectedCategory;
-  });
+  }) : [];
 
 
   const { data: borrowerDistribution } = useQuery({ 
