@@ -1,0 +1,59 @@
+PS C:\Users\Asus\Downloads\LibraryIntelligence> npm run electron-pack
+
+> rest-express@1.0.0 preelectron-pack
+> npm run build
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+client/src/components/dashboard/book-recommendations.tsx:149:113 - error TS2345: Argument of type 'Set<string> | Set<unknown>' is not assignable to parameter of type 'Set<string>'.
+  Type 'Set<unknown>' is not assignable to type 'Set<string>'.
+    Type 'unknown' is not assignable to type 'string'.
+
+149         matchReasons: getMatchReasons(book, genrePreferences, new Set(Array.from(favoriteAuthors).map(String)), favoriteBooks)
+                                                                                                                    ~~~~~~~~~~~~~
+
+client/src/components/forms/book-form.tsx:1396:21 - error TS2322: Type '{ key: number | undefined; quote: { id?: number | undefined; content: string; page?: number | undefined; chapter?: string | undefined; author?: string | undefined; tags?: string | undefined; isFavorite?: boolean | undefined; }; onDelete: (id: string | number) => Promise<...>; onToggleFavorite: (id: string | number) ...' is not assignable to type 'IntrinsicAttributes & QuoteCardProps'.
+  Property 'onToggleFavorite' does not exist on type 'IntrinsicAttributes & QuoteCardProps'.
+
+1396                     onToggleFavorite={handleToggleQuoteFavorite}
+                         ~~~~~~~~~~~~~~~~
+
+client/src/components/layout/notification-dropdown.tsx:142:106 - error TS2345: Argument of type '{}' is not assignable to parameter of type 'any[]'.
+  Type '{}' is missing the following properties from type 'any[]': length, pop, push, concat, and 35 more.
+
+142       const notifications = checkExpiryAndOverdue(Array.isArray(borrowers) ? borrowers : [], borrowings, librarians, Array.isArray(notificationSettings) ? notificationSettings : []);
+                                                                                                             ~~~~~~~~~~
+
+client/src/components/ui/aspect-ratio.tsx:2:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+2 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/carousel.tsx:4:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+4 } from "embla-carousel-react";
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:43 - error TS2307: Cannot find module 'input-otp' or its corresponding type declarations.
+
+2 import { OTPInput, OTPInputContext } from "input-otp";
+                                            ~~~~~~~~~~~
+
+client/src/components/ui/resizable.tsx:5:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+5 import * as ResizablePrimitive from "react-resizable-panels";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 7 errors in 7 files.
+
+Errors  Files
+     1  client/src/components/dashboard/book-recommendations.tsx:149
+     1  client/src/components/forms/book-form.tsx:1396
+     1  client/src/components/layout/notification-dropdown.tsx:142
+     1  client/src/components/ui/aspect-ratio.tsx:2
+     1  client/src/components/ui/carousel.tsx:4
+     1  client/src/components/ui/input-otp.tsx:2
+     1  client/src/components/ui/resizable.tsx:5
