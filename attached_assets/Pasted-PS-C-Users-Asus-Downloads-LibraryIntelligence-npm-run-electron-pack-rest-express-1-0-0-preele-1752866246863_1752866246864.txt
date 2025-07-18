@@ -1,0 +1,78 @@
+PS C:\Users\Asus\Downloads\LibraryIntelligence> npm run electron-pack
+
+> rest-express@1.0.0 preelectron-pack
+> npm run build
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+vite v5.4.19 building for production...
+✓ 2959 modules transformed.
+[plugin:vite:reporter] [plugin vite:reporter]
+(!) C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/localStorage.ts is dynamically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts but also statically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/sampleData.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/settings.tsx, dynamic import will not move module into another chunk.
+
+../dist/index.html                              1.12 kB │ gzip:   0.58 kB
+../dist/assets/index-BjbKhJD-.css             124.75 kB │ gzip:  18.81 kB
+../dist/assets/purify.es-C_uT9hQ1.js           21.98 kB │ gzip:   8.74 kB
+../dist/assets/index.es-DhJnApJn.js           150.42 kB │ gzip:  51.39 kB
+../dist/assets/html2canvas.esm-CBrSDip1.js    201.42 kB │ gzip:  48.03 kB
+../dist/assets/index-bCz8Oz41.js            1,927.96 kB │ gzip: 573.44 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 13.61s
+
+> rest-express@1.0.0 electron-pack
+> npm run build && electron-builder
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+vite v5.4.19 building for production...
+✓ 2959 modules transformed.
+[plugin:vite:reporter] [plugin vite:reporter]
+(!) C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/localStorage.ts is dynamically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts but also statically imported by C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/queryClient.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/lib/sampleData.ts, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/borrowing.tsx, C:/Users/Asus/Downloads/LibraryIntelligence/client/src/pages/settings.tsx, dynamic import will not move module into another chunk.
+
+../dist/index.html                              1.12 kB │ gzip:   0.58 kB
+../dist/assets/index-BjbKhJD-.css             124.75 kB │ gzip:  18.81 kB
+../dist/assets/purify.es-C_uT9hQ1.js           21.98 kB │ gzip:   8.74 kB
+../dist/assets/index.es-DhJnApJn.js           150.42 kB │ gzip:  51.39 kB
+../dist/assets/html2canvas.esm-CBrSDip1.js    201.42 kB │ gzip:  48.03 kB
+../dist/assets/index-bCz8Oz41.js            1,927.96 kB │ gzip: 573.44 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.01s
+  • electron-builder  version=25.1.8 os=10.0.26100
+  • loaded configuration  file=C:\Users\Asus\Downloads\LibraryIntelligence\electron-builder.json
+  • description is missed in the package.json  appPackageFile=C:\Users\Asus\Downloads\LibraryIntelligence\package.json
+  • author is missed in the package.json  appPackageFile=C:\Users\Asus\Downloads\LibraryIntelligence\package.json
+  • writing effective config  file=electron-dist\builder-effective-config.yaml
+  • executing @electron/rebuild  electronVersion=32.3.3 arch=x64 buildFromSource=false appDir=./
+  • installing native dependencies  arch=x64
+  • preparing       moduleName=better-sqlite3 arch=x64
+  • finished        moduleName=better-sqlite3 arch=x64
+  • preparing       moduleName=sqlite3 arch=x64
+  • finished        moduleName=sqlite3 arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=32.3.3 appOutDir=electron-dist\win-unpacked
+  • downloading     url=https://github.com/electron/electron/releases/download/v32.3.3/electron-v32.3.3-win32-x64.zip size=113 MB parts=8
+  • downloaded      url=https://github.com/electron/electron/releases/download/v32.3.3/electron-v32.3.3-win32-x64.zip duration=45.949s
+  • updating asar integrity executable resource  executablePath=electron-dist\win-unpacked\Library Management System.exe
+  ⨯ Application entry file "dist\index.js" in the "C:\Users\Asus\Downloads\LibraryIntelligence\electron-dist\win-unpacked\resources\app.asar" does not exist. Seems like a wrong configuration.  failedTask=build stackTrace=Error: Application entry file "dist\index.js" in the "C:\Users\Asus\Downloads\LibraryIntelligence\electron-dist\win-unpacked\resources\app.asar" does not exist. Seems like a wrong configuration.
+    at error (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\asar\asarFileChecker.ts:7:12)
+    at checkFileInArchive (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\asar\asarFileChecker.ts:31:11)
+    at WinPackager.checkFileInPackage (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\platformPackager.ts:527:7)
+    at WinPackager.sanityCheckPackage (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\platformPackager.ts:575:5)
+    at WinPackager.doPack (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\platformPackager.ts:329:5)
+    at WinPackager.pack (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\platformPackager.ts:138:5)
+    at Packager.doBuild (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\packager.ts:459:9)
+    at executeFinally (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\builder-util\src\promise.ts:12:14)
+    at Packager.build (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\app-builder-lib\src\packager.ts:393:31)
+    at executeFinally (C:\Users\Asus\Downloads\LibraryIntelligence\node_modules\builder-util\src\promise.ts:12:14)
