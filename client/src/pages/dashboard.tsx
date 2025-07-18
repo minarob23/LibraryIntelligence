@@ -159,7 +159,7 @@ const Dashboard = () => {
     return Array.isArray(borrowerDistribution) ? borrowerDistribution.map((item: any) => ({
       name: (categoryMap as any)[item.category] || item.category,
       value: item.count
-    }));
+    })) : [];
   };
 
   return (
