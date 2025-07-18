@@ -233,15 +233,15 @@ const Dashboard = () => {
               const expiryDate = new Date(borrower.expiryDate);
               const today = new Date();
               return expiryDate >= today;
-            }).length || 0}
+            }).length : 0}
             icon={<Users className="h-6 w-6 text-green-500 dark:text-green-400" />}
             change={{ 
               value: Array.isArray(borrowers) ? borrowers.filter((borrower: any) => {
                 const expiryDate = new Date(borrower.expiryDate);
                 const today = new Date();
                 return expiryDate >= today;
-              }).length || 0, 
-              trend: Array.isArray(borrowers) ? borrowers.filter((borrower: any) => {
+              }).length : 0, 
+              trend: Array.isArray(borrowers) && borrowers.filter((borrower: any) => {
                 const expiryDate = new Date(borrower.expiryDate);
                 const today = new Date();
                 return expiryDate >= today;
