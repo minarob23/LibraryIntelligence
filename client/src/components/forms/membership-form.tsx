@@ -372,10 +372,10 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                         name="organizationName"
                         render={({ field }) => (
                           <FormItem className="space-y-2">
-                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Organization/Institution</FormLabel>
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Church</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Your organization or institution" 
+                                placeholder="Your church name" 
                                 {...field} 
                                 className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
                               />
@@ -390,10 +390,10 @@ const MembershipForm: React.FC<MembershipFormProps> = ({ onSuccess, onCancel }) 
                         name="emergencyContact"
                         render={({ field }) => (
                           <FormItem className="space-y-2">
-                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Emergency Contact</FormLabel>
+                            <FormLabel className="text-sm font-semibold text-gray-700 dark:text-gray-300">Father of Confession</FormLabel>
                             <FormControl>
                               <Input 
-                                placeholder="Emergency contact person" 
+                                placeholder="Father of confession name" 
                                 {...field} 
                                 className="border-2 border-gray-200 dark:border-gray-600 focus:border-orange-500 dark:focus:border-orange-400 rounded-lg transition-colors duration-200"
                               />

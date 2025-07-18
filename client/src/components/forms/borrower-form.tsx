@@ -303,9 +303,9 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                 name="churchName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Organization (Optional)</FormLabel>
+                    <FormLabel>Church</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter organization name" {...field} />
+                      <Input placeholder="Enter church name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -317,9 +317,9 @@ const BorrowerForm = ({ borrower, onSuccess, onCancel }: BorrowerFormProps) => {
                 name="fatherOfConfession"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Reference Person (Optional)</FormLabel>
+                    <FormLabel>Father of Confession</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter reference person name" {...field} />
+                      <Input placeholder="Enter father of confession name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
