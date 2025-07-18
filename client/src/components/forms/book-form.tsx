@@ -1393,7 +1393,7 @@ const BookForm = ({ book, index, onSuccess, onCancel }: BookFormProps) => {
                     key={quote.id}
                     quote={quote}
                     onDelete={handleDeleteQuote}
-                    onToggleFavorite={handleToggleQuoteFavorite}
+                    
                   />
                 ))}
 
