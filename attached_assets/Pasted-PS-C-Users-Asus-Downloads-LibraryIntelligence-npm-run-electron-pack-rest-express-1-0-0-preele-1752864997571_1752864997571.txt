@@ -1,0 +1,193 @@
+PS C:\Users\Asus\Downloads\LibraryIntelligence> npm run electron-pack
+
+> rest-express@1.0.0 preelectron-pack
+> npm run build
+
+
+> rest-express@1.0.0 build
+> tsc && vite build
+
+client/src/components/dashboard/book-recommendations.tsx:149:131 - error TS2345: Argument of type 'Set<string> | Set<unknown>' is not assignable to parameter of type 'Set<string>'.
+  Type 'Set<unknown>' is not assignable to type 'Set<string>'.
+    Type 'unknown' is not assignable to type 'string'.
+
+149         matchReasons: getMatchReasons(book, genrePreferences, new Set(Array.from(favoriteAuthors).map(author => String(author))), favoriteBooks)
+                                                                                                                                      ~~~~~~~~~~~~~
+
+client/src/components/forms/book-form.tsx:1396:21 - error TS2322: Type '{ key: number | undefined; quote: { id?: number | undefined; content: string; page?: number | undefined; chapter?: string | undefined; author?: string | undefined; tags?: string | undefined; isFavorite?: boolean | undefined; }; onDelete: (id: string | number) => Promise<...>; onToggleFavorite: (id: string | number) ...' is not assignable to type 'IntrinsicAttributes & QuoteCardProps'.
+  Property 'onToggleFavorite' does not exist on type 'IntrinsicAttributes & QuoteCardProps'.
+
+1396                     onToggleFavorite={handleToggleQuoteFavorite}
+                         ~~~~~~~~~~~~~~~~
+
+client/src/components/ui/aspect-ratio.tsx:2:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+2 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/carousel.tsx:4:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+4 } from "embla-carousel-react";
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:1:13 - error TS2300: Duplicate identifier 'React'.
+
+1 import * as React from "react";
+              ~~~~~
+
+client/src/components/ui/input-otp.tsx:2:10 - error TS2300: Duplicate identifier 'OTPInput'.
+
+2 import { OTPInput, OTPInputContext } from "react-otp-input";
+           ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:20 - error TS2300: Duplicate identifier 'OTPInputContext'.
+
+2 import { OTPInput, OTPInputContext } from "react-otp-input";
+                     ~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:43 - error TS2307: Cannot find module 'react-otp-input' or its corresponding type declarations.
+
+2 import { OTPInput, OTPInputContext } from "react-otp-input";
+                                            ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:3:10 - error TS2300: Duplicate identifier 'Dot'.
+
+3 import { Dot } from "lucide-react"
+           ~~~
+
+client/src/components/ui/input-otp.tsx:5:10 - error TS2300: Duplicate identifier 'cn'.
+
+5 import { cn } from "@/lib/utils"
+           ~~
+
+client/src/components/ui/input-otp.tsx:7:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTP'.
+
+7 const InputOTP = React.forwardRef<
+        ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:23:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPGroup'.
+
+23 const InputOTPGroup = React.forwardRef<
+         ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:31:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSlot'.
+
+31 const InputOTPSlot = React.forwardRef<
+         ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:59:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSeparator'.
+
+59 const InputOTPSeparator = React.forwardRef<
+         ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:69:10 - error TS2300: Duplicate identifier 'InputOTP'.
+
+69 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+            ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:69:20 - error TS2300: Duplicate identifier 'InputOTPGroup'.
+
+69 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                      ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:69:35 - error TS2300: Duplicate identifier 'InputOTPSlot'.
+
+69 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                     ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:69:49 - error TS2300: Duplicate identifier 'InputOTPSeparator'.
+
+69 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                                   ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:70:1 - error TS2349: This expression is not callable.
+  Type 'String' has no call signatures.
+
+70 ```
+   ~~
+
+client/src/components/ui/input-otp.tsx:73:13 - error TS2300: Duplicate identifier 'React'.
+
+73 import * as React from "react";
+               ~~~~~
+
+client/src/components/ui/input-otp.tsx:74:10 - error TS2300: Duplicate identifier 'OTPInput'.
+
+74 import { OTPInput, OTPInputContext } from "react-otp-input";
+            ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:74:20 - error TS2300: Duplicate identifier 'OTPInputContext'.
+
+74 import { OTPInput, OTPInputContext } from "react-otp-input";
+                      ~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:74:43 - error TS2307: Cannot find module 'react-otp-input' or its corresponding type declarations.
+
+74 import { OTPInput, OTPInputContext } from "react-otp-input";
+                                             ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:75:10 - error TS2300: Duplicate identifier 'Dot'.
+
+75 import { Dot } from "lucide-react"
+            ~~~
+
+client/src/components/ui/input-otp.tsx:77:10 - error TS2300: Duplicate identifier 'cn'.
+
+77 import { cn } from "@/lib/utils"
+            ~~
+
+client/src/components/ui/input-otp.tsx:79:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTP'.
+
+79 const InputOTP = React.forwardRef<
+         ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:95:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPGroup'.
+
+95 const InputOTPGroup = React.forwardRef<
+         ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:103:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSlot'.
+
+103 const InputOTPSlot = React.forwardRef<
+          ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:131:7 - error TS2451: Cannot redeclare block-scoped variable 'InputOTPSeparator'.
+
+131 const InputOTPSeparator = React.forwardRef<
+          ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:141:10 - error TS2300: Duplicate identifier 'InputOTP'.
+
+141 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+             ~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:141:20 - error TS2300: Duplicate identifier 'InputOTPGroup'.
+
+141 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                       ~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:141:35 - error TS2300: Duplicate identifier 'InputOTPSlot'.
+
+141 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                      ~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:141:49 - error TS2300: Duplicate identifier 'InputOTPSeparator'.
+
+141 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+                                                    ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/resizable.tsx:7:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+7 import * as ResizablePrimitive from "react-resizable-panels";
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 34 errors in 6 files.
+
+Errors  Files
+     1  client/src/components/dashboard/book-recommendations.tsx:149
+     1  client/src/components/forms/book-form.tsx:1396
+     1  client/src/components/ui/aspect-ratio.tsx:2
+     1  client/src/components/ui/carousel.tsx:4
+    29  client/src/components/ui/input-otp.tsx:1
+     1  client/src/components/ui/resizable.tsx:7
