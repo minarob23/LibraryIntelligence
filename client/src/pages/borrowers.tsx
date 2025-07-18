@@ -307,7 +307,7 @@ const BorrowersPage = () => {
         today.setHours(0, 0, 0, 0); // Reset time to start of day
         expiryDate.setHours(0, 0, 0, 0); // Reset time to start of day
         const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        
+
         return (
           <div className="flex flex-col">
             <span className="font-medium">

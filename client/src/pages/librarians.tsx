@@ -33,8 +33,8 @@ const LibrariansPage = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [editingLibrarian, setEditingLibrarian] = useState<any>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  
-  const { data: librarians, isLoading } = useQuery({ 
+
+  const { data: librarians, isLoading } = useQuery<any[]>({ 
     queryKey: ['/api/librarians'],
   });
 
@@ -150,7 +150,7 @@ const LibrariansPage = () => {
       cell: (row: any) => {
         const appointmentDate = new Date(row.appointmentDate);
         const yearsOfService = Math.floor((new Date().getTime() - appointmentDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
-        
+
         return (
           <div className="space-y-1">
             <div className="text-sm font-medium">
@@ -203,7 +203,7 @@ const LibrariansPage = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <DataTable
         data={librarians || []}
         columns={columns}
@@ -239,7 +239,7 @@ const LibrariansPage = () => {
                 )}
               </DialogContent>
             </Dialog>
-            
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" className="text-red-500 hover:text-red-600 ml-3">

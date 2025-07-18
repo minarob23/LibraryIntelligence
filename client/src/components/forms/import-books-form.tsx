@@ -1,3 +1,4 @@
+// Fixes the type definition for the imported book interface.
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { Upload, FileText, AlertTriangle, CheckCircle, X, Info } from 'lucide-re
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import * as XLSX from 'xlsx';
+import { Book } from '@/../../shared/schema';
 
 interface ImportedBook {
   name?: string;

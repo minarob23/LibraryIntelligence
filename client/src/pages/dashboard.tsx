@@ -44,43 +44,36 @@ const Dashboard = () => {
   const { data: books } = useQuery({ 
     queryKey: ['/api/books'],
     retry: 1,
-    onError: (error) => console.log('Books query error:', error),
   });
 
   const { data: borrowers } = useQuery({ 
     queryKey: ['/api/borrowers'],
     retry: 1,
-    onError: (error) => console.log('Borrowers query error:', error),
   });
 
   const { data: memberGrowthData } = useQuery({ 
     queryKey: ['/api/dashboard/member-growth'],
     retry: 1,
-    onError: (error) => console.log('Member growth query error:', error),
   });
 
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
     retry: 1,
-    onError: (error) => console.log('Borrowings query error:', error),
   });
 
   const { data: research } = useQuery({ 
     queryKey: ['/api/research'],
     retry: 1,
-    onError: (error) => console.log('Research query error:', error),
   });
 
   const { data: mostBorrowedBooks } = useQuery({ 
     queryKey: ['/api/dashboard/most-borrowed-books'],
     retry: 1,
-    onError: (error) => console.log('Most borrowed books query error:', error),
   });
 
   const { data: borrowerDistribution } = useQuery({ 
     queryKey: ['/api/dashboard/borrower-distribution'],
     retry: 1,
-    onError: (error) => console.log('Borrower distribution query error:', error),
   });
 
   // Format borrower growth data for chart by category

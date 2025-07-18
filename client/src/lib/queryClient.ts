@@ -232,7 +232,6 @@ export const getQueryFn: <T>(options: {
   async ({ queryKey }) => {
     try {
       const response = await mockApiResponse(queryKey[0] as string);
-      // If response indicates an error, return empty data instead of throwing
       if (response && response.error) {
         console.warn('Query error for', queryKey[0], ':', response.message);
         return null;
@@ -243,7 +242,6 @@ export const getQueryFn: <T>(options: {
       if (unauthorizedBehavior === "returnNull" && error.status === 401) {
         return null;
       }
-      // Return null instead of throwing to prevent unhandled rejections
       return null;
     }
   };
@@ -254,16 +252,16 @@ export const queryClient = new QueryClient({
       queryFn: getQueryFn({ on401: "returnNull" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
-      refetchOnMount: false, // Prevent refetch on component mount
-      refetchOnReconnect: false, // Prevent refetch on reconnect
-      staleTime: 10 * 60 * 1000, // 10 minutes
-      cacheTime: 15 * 60 * 1000, // 15 minutes
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: 10 * 60 * 1000,
+      cacheTime: 15 * 60 * 1000,
       retry: false,
-      throwOnError: false, // Prevent throwing errors that cause unhandled rejections
+      throwOnError: false,
     },
     mutations: {
       retry: false,
-      throwOnError: false, // Prevent throwing errors that cause unhandled rejections
+      throwOnError: false,
     },
   },
 });

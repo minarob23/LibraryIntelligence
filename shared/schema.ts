@@ -1,163 +1,242 @@
-import { pgTable, text, serial, integer, boolean, date, timestamp, pgEnum } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { sql } from "drizzle-orm";
 
-// Enums
-export const educationalStageEnum = pgEnum('educational_stage', ['primary', 'middle', 'secondary', 'university', 'graduate']);
-export const membershipStatusEnum = pgEnum('membership_status', ['active', 'inactive', 'temporary']);
+// Educational stage enum
+export const educationalStageValues = ['primary', 'middle', 'secondary', 'university', 'graduate'] as const;
+export type EducationalStage = typeof educationalStageValues[number];
 
-// Books table
-export const books = pgTable("books", {
-  id: serial("id").primaryKey(),
-  coverImage: text("cover_image").notNull(),
-  name: text("name").notNull(),
-  author: text("author").notNull(),
-  publisher: text("publisher").notNull(),
-  bookCode: text("book_code").notNull().unique(),
-  index: text("index"),
-  copies: integer("copies").notNull().default(1),
-  description: text("description"),
-  totalPages: integer("total_pages"),
-  cabinet: text("cabinet"),
-  shelf: text("shelf"),
-  num: text("num"),
-  addedDate: date("added_date").default(sql`CURRENT_DATE`),
-  publishedDate: date("published_date"),
-  genres: text("genres"),
-  tags: text("tags"),
-  comments: text("comments"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+// Membership status enum
+export const membershipStatusValues = ['active', 'inactive', 'temporary'] as const;
+export type MembershipStatus = typeof membershipStatusValues[number];
+
+// Books interface
+export interface Book {
+  id: number;
+  coverImage: string;
+  name: string;
+  title?: string;
+  author: string;
+  publisher: string;
+  bookCode: string;
+  index?: string;
+  copies: number;
+  description?: string;
+  totalPages?: number;
+  cabinet?: string;
+  shelf?: string;
+  num?: string;
+  addedDate?: string;
+  publishedDate?: string;
+  genres?: string;
+  tags?: string;
+  comments?: string;
+  createdAt: string;
+}
+
+// Interface definitions
+export interface Quote {
+  id: number;
+  bookId: number;
+  content: string;
+  page?: number;
+  chapter?: string;
+  author?: string;
+  tags?: string;
+  isFavorite: boolean;
+  createdAt: string;
+}
+
+export interface BookIndex {
+  id: number;
+  bookId: number;
+  title: string;
+  page?: number;
+  level: number;
+  parentId?: number;
+  order: number;
+  createdAt: string;
+}
+
+export interface ResearchPaper {
+  id: number;
+  title: string;
+  authors: string;
+  abstract?: string;
+  keywords?: string;
+  publicationDate?: string;
+  journal?: string;
+  volume?: string;
+  issue?: string;
+  pages?: string;
+  doi?: string;
+  url?: string;
+  pdfPath?: string;
+  category?: string;
+  language: string;
+  coverImage: string;
+  createdAt: string;
+}
+
+export interface Librarian {
+  id: number;
+  librarianId: string;
+  name: string;
+  phone: string;
+  appointmentDate: string;
+  membershipStatus: MembershipStatus;
+  email?: string;
+  createdAt: string;
+}
+
+export interface Borrower {
+  id: number;
+  memberId: string;
+  name: string;
+  phone: string;
+  category: EducationalStage;
+  joinedDate: string;
+  expiryDate: string;
+  email?: string;
+  address?: string;
+  organizationName?: string;
+  emergencyContact?: string;
+  studies?: string;
+  job?: string;
+  hobbies?: string;
+  favoriteBooks?: string;
+  additionalPhone?: string;
+  createdAt: string;
+}
+
+export interface Borrowing {
+  id: number;
+  borrowerId: number;
+  librarianId: number;
+  bookId?: number;
+  researchId?: number;
+  borrowDate: string;
+  dueDate: string;
+  returnDate?: string;
+  status: 'borrowed' | 'returned' | 'overdue';
+  rating?: number;
+  review?: string;
+  createdAt: string;
+}
+
+export interface MembershipApplication {
+  id: number;
+  memberId: string;
+  name: string;
+  stage: string;
+  birthdate: string;
+  phone: string;
+  additionalPhone?: string;
+  email: string;
+  address: string;
+  organizationName?: string;
+  emergencyContact?: string;
+  studies?: string;
+  job?: string;
+  hobbies?: string;
+  favoriteBooks?: string;
+  createdAt: string;
+}
+
+// Schema definitions
+export const insertBookSchema = z.object({
+  coverImage: z.string(),
+  name: z.string(),
+  author: z.string(),
+  publisher: z.string(),
+  bookCode: z.string(),
+  index: z.string().optional(),
+  copies: z.number().default(1),
+  description: z.string().optional(),
+  totalPages: z.number().optional(),
+  cabinet: z.string().optional(),
+  shelf: z.string().optional(),
+  num: z.string().optional(),
+  addedDate: z.string().optional(),
+  publishedDate: z.string().optional(),
+  genres: z.string().optional(),
+  tags: z.string().optional(),
+  comments: z.string().optional(),
 });
 
-// Quotes table
-export const quotes = pgTable("quotes", {
-  id: serial("id").primaryKey(),
-  bookId: integer("book_id").notNull(),
-  content: text("content").notNull(),
-  page: integer("page"),
-  chapter: text("chapter"),
-  author: text("author"),
-  tags: text("tags"),
-  isFavorite: boolean("is_favorite").default(false),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+export const insertQuoteSchema = z.object({
+  bookId: z.number(),
+  content: z.string(),
+  page: z.number().optional(),
+  chapter: z.string().optional(),
+  author: z.string().optional(),
+  tags: z.string().optional(),
+  isFavorite: z.boolean().default(false),
 });
 
-// Book Index table
-export const bookIndex = pgTable("book_index", {
-  id: serial("id").primaryKey(),
-  bookId: integer("book_id").notNull(),
-  title: text("title").notNull(),
-  page: integer("page"),
-  level: integer("level").default(1), // 1 for main chapters, 2 for subsections, etc.
-  parentId: integer("parent_id"),
-  order: integer("order").default(0),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+export const insertBookIndexSchema = z.object({
+  bookId: z.number(),
+  title: z.string(),
+  page: z.number().optional(),
+  level: z.number().default(1),
+  parentId: z.number().optional(),
+  order: z.number().default(0),
 });
 
-export const insertBookSchema = createInsertSchema(books).omit({
-  id: true,
-  createdAt: true,
+export const insertResearchPaperSchema = z.object({
+  title: z.string(),
+  authors: z.string(),
+  abstract: z.string().optional(),
+  keywords: z.string().optional(),
+  publicationDate: z.string().optional(),
+  journal: z.string().optional(),
+  volume: z.string().optional(),
+  issue: z.string().optional(),
+  pages: z.string().optional(),
+  doi: z.string().optional(),
+  url: z.string().optional(),
+  pdfPath: z.string().optional(),
+  category: z.string().optional(),
+  language: z.string().default("English"),
+  coverImage: z.string().default("/src/assets/book-covers/cover1.svg"),
 });
 
-export const insertQuoteSchema = createInsertSchema(quotes).omit({
-  id: true,
-  createdAt: true,
+export const insertLibrarianSchema = z.object({
+  librarianId: z.string(),
+  name: z.string(),
+  phone: z.string(),
+  appointmentDate: z.string(),
+  membershipStatus: z.enum(['active', 'inactive', 'temporary']),
+  email: z.string().optional(),
 });
 
-export const insertBookIndexSchema = createInsertSchema(bookIndex).omit({
-  id: true,
-  createdAt: true,
+export const insertBorrowerSchema = z.object({
+  memberId: z.string(),
+  name: z.string(),
+  phone: z.string(),
+  category: z.enum(['primary', 'middle', 'secondary', 'university', 'graduate']),
+  joinedDate: z.string(),
+  expiryDate: z.string(),
+  email: z.string().optional(),
+  address: z.string().optional(),
+  organizationName: z.string().optional(),
+  emergencyContact: z.string().optional(),
+  studies: z.string().optional(),
+  job: z.string().optional(),
+  hobbies: z.string().optional(),
+  favoriteBooks: z.string().optional(),
+  additionalPhone: z.string().optional(),
 });
 
-// Research papers table
-export const researchPapers = pgTable("research_papers", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  authors: text("authors").notNull(),
-  abstract: text("abstract"),
-  keywords: text("keywords"),
-  publicationDate: date("publication_date"),
-  journal: text("journal"),
-  volume: text("volume"),
-  issue: text("issue"),
-  pages: text("pages"),
-  doi: text("doi"),
-  url: text("url"),
-  pdfPath: text("pdf_path"),
-  category: text("category"),
-  language: text("language").default("English"),
-  coverImage: text("cover_image").default("/src/assets/book-covers/cover1.svg"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-export const insertResearchPaperSchema = createInsertSchema(researchPapers).omit({
-  id: true,
-  createdAt: true,
-});
-
-// Librarians table
-export const librarians = pgTable("librarians", {
-  id: serial("id").primaryKey(),
-  librarianId: text("librarian_id").notNull(),
-  name: text("name").notNull(),
-  phone: text("phone").notNull(),
-  appointmentDate: date("appointment_date").notNull(),
-  membershipStatus: text("membership_status").notNull().$type<'active' | 'inactive' | 'temporary'>(),
-  email: text("email"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-export const insertLibrarianSchema = createInsertSchema(librarians).omit({
-  id: true,
-  createdAt: true,
-});
-
-// Borrowers table
-export const borrowers = pgTable("borrowers", {
-  id: serial("id").primaryKey(),
-  memberId: text("member_id").notNull(),
-  name: text("name").notNull(),
-  phone: text("phone").notNull(),
-  category: text("category").notNull().$type<'primary' | 'middle' | 'secondary' | 'university' | 'graduate'>(),
-  joinedDate: date("joined_date").notNull(),
-  expiryDate: date("expiry_date").notNull(),
-  email: text("email"),
-  address: text("address"),
-  organizationName: text("organization_name"),
-  emergencyContact: text("emergency_contact"),
-  studies: text("studies"),
-  job: text("job"),
-  hobbies: text("hobbies"),
-  favoriteBooks: text("favorite_books"),
-  additionalPhone: text("additional_phone"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-export const insertBorrowerSchema = createInsertSchema(borrowers).omit({
-  id: true,
-  createdAt: true,
-});
-
-// Borrowing table - connects books, librarians, and borrowers
-export const borrowings = pgTable("borrowings", {
-  id: serial("id").primaryKey(),
-  borrowerId: integer("borrower_id").notNull(),
-  librarianId: integer("librarian_id").notNull(),
-  bookId: integer("book_id"),
-  researchId: integer("research_id"),
-  borrowDate: date("borrow_date").notNull(),
-  dueDate: date("due_date").notNull(),
-  returnDate: date("return_date"),
-  status: text("status").notNull().$type<'borrowed' | 'returned' | 'overdue'>(),
-  rating: integer("rating"),
-  review: text("review"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-export const insertBorrowingSchema = createInsertSchema(borrowings).omit({
-  id: true,
-  createdAt: true,
+export const insertBorrowingSchema = z.object({
+  borrowerId: z.number(),
+  librarianId: z.number(),
+  bookId: z.number().optional(),
+  researchId: z.number().optional(),
+  borrowDate: z.string(),
+  dueDate: z.string(),
+  returnDate: z.string().optional(),
+  status: z.enum(['borrowed', 'returned', 'overdue']),
+  rating: z.number().optional(),
+  review: z.string().optional(),
 });
 
 export const membershipApplicationSchema = z.object({
@@ -177,52 +256,15 @@ export const membershipApplicationSchema = z.object({
   favoriteBooks: z.string().optional().or(z.literal(''))
 });
 
-// Membership Applications table
-export const membershipApplications = pgTable("membership_applications", {
-  id: serial("id").primaryKey(),
-  memberId: text("member_id").notNull(),
-  name: text("name").notNull(),
-  stage: text("stage").notNull(),
-  birthdate: text("birthdate").notNull(),
-  phone: text("phone").notNull(),
-  additionalPhone: text("additional_phone"),
-  email: text("email").notNull(),
-  address: text("address").notNull(),
-  organizationName: text("organization_name"),
-  emergencyContact: text("emergency_contact"),
-  studies: text("studies"),
-  job: text("job"),
-  hobbies: text("hobbies"),
-  favoriteBooks: text("favorite_books"),
-  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
-
-
-
-// Types
-export type Book = typeof books.$inferSelect;
+// Type exports
 export type InsertBook = z.infer<typeof insertBookSchema>;
-
-export type ResearchPaper = typeof researchPapers.$inferSelect;
 export type InsertResearchPaper = z.infer<typeof insertResearchPaperSchema>;
-
-export type Librarian = typeof librarians.$inferSelect;
 export type InsertLibrarian = z.infer<typeof insertLibrarianSchema>;
-
-export type Borrower = typeof borrowers.$inferSelect;
 export type InsertBorrower = z.infer<typeof insertBorrowerSchema>;
-
-export type Borrowing = typeof borrowings.$inferSelect;
 export type InsertBorrowing = z.infer<typeof insertBorrowingSchema>;
-
-export type Quote = typeof quotes.$inferSelect;
 export type InsertQuote = z.infer<typeof insertQuoteSchema>;
-
-export type BookIndex = typeof bookIndex.$inferSelect;
 export type InsertBookIndex = z.infer<typeof insertBookIndexSchema>;
 
 export type LibraryHours = {
   [key: string]: { open: string; close: string };
 };
-
-export type MembershipApplication = z.infer<typeof membershipApplicationSchema>;

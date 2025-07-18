@@ -941,6 +941,21 @@ class LocalStorage {
     }
   }
 
+  // Function to safely get data from localStorage with error handling
+const getStorageData = <T>(key: string, defaultValue: T): T => {
+  try {
+    if (typeof window === 'undefined') return defaultValue;
+
+    const item = localStorage.getItem(key);
+    if (!item) return defaultValue;
+
+    return JSON.parse(item) as T;
+  } catch (error) {
+    console.warn(`Error loading ${key} from localStorage:`, error);
+    return defaultValue;
+  }
+};
+
 
 
 

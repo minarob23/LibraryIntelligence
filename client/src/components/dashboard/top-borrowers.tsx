@@ -247,7 +247,7 @@ const TopBorrowers = () => {
                                 }
                                 return latest;
                               }, null);
-                              
+
                               if (!latestBorrowing) return 'Never borrowed';
                               const borrowDate = new Date(latestBorrowing.borrowDate);
                               return borrowDate.toLocaleDateString('en-US', { 

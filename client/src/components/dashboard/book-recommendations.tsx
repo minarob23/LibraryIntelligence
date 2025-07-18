@@ -4,30 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-interface Book {
-  id: number;
-  name: string;
-  title?: string;
-  author: string;
-  genres?: string;
-  tags?: string;
-  coverImage?: string;
-}
-
-interface Borrower {
-  id: number;
-  name: string;
-  favoriteBooks?: string;
-}
-
-interface Borrowing {
-  id: number;
-  bookId: number;
-  borrowerId: number;
-  borrowDate: string;
-  status: string;
-  rating?: number;
-}
+import { Book, Borrower, Borrowing } from '@/../../shared/schema';
 
 const BookRecommendations = () => {
   const { data: books = [] } = useQuery<Book[]>({ 

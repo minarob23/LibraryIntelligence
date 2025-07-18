@@ -7,22 +7,12 @@ import coverImage1 from '@/assets/book-covers/cover1.svg';
 
 type FilterType = 'rating' | 'random' | 'borrowed' | 'popularity';
 
-interface Book {
-  id: number;
-  name: string;
-  title?: string;
-  author: string;
-  coverImage?: string;
+import { Book, Borrowing } from '@/../../shared/schema';
+
+interface BookWithStats extends Book {
   popularityScore?: number;
   rating?: string;
   timesBorrowed?: number;
-}
-
-interface Borrowing {
-  id: number;
-  bookId: number;
-  borrowDate: string;
-  rating?: number;
 }
 
 const PopularBooks = () => {
@@ -94,7 +84,7 @@ const PopularBooks = () => {
     return (totalRating / bookBorrowings.length).toFixed(1);
   };
 
-  const sortBooks = (books: Book[]) => {
+  const sortBooks = (books: Book[]): BookWithStats[] => {
     if (!books) return [];
 
     const booksWithScore = books.map(book => {
@@ -104,7 +94,7 @@ const PopularBooks = () => {
         ...book,
         popularityScore: calculatePopularityScore(book.id),
         rating: averageRating
-      };
+      } as BookWithStats;
     });
 
     switch (filter) {

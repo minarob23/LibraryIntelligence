@@ -1,9 +1,9 @@
 import express from 'express';
 import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import { open, Database } from 'sqlite';
 import { initializeDb } from './db';
 
-let db: any;
+let db: Database<sqlite3.Database, sqlite3.Statement>;
 
 export async function setupRoutes(app: express.Application) {
   // Initialize database connection

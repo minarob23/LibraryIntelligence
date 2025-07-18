@@ -45,16 +45,24 @@ const BorrowingManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
 
   // Fetch borrowings data
-  const { data: borrowings = [], isLoading } = useQuery({ 
+  const { data: borrowings, isLoading } = useQuery<any[]>({ 
     queryKey: ['/api/borrowings'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
   });
 
-  const { data: borrowers = [] } = useQuery({ 
-    queryKey: ['/api/borrowers'],
-  });
-
-  const { data: books = [] } = useQuery({ 
+  const { data: books } = useQuery<any[]>({ 
     queryKey: ['/api/books'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
+  });
+
+  const { data: borrowers } = useQuery<any[]>({ 
+    queryKey: ['/api/borrowers'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
+  });
+
+  const { data: librarians } = useQuery<any[]>({ 
+    queryKey: ['/api/librarians'],
+    refetchInterval: 2000, // Refetch every 2 seconds for real-time updates
   });
 
   // Debug logging

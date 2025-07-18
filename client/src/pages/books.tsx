@@ -26,6 +26,7 @@ import {
   FileText,
   Clock
 } from 'lucide-react';
+import { Book, Borrowing } from '@/../../shared/schema';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -81,27 +82,27 @@ const BooksPage = () => {
   });
 
   // Helper functions
-  const getBookBorrowings = (bookId: number) => {
-    return borrowings?.filter((b: any) => b.bookId === bookId) || [];
+  const getBookBorrowings = (bookId: number): Borrowing[] => {
+    return borrowings?.filter((b: Borrowing) => b.bookId === bookId) || [];
   };
 
-  const getTimesBorrowed = (bookId: number) => {
+  const getTimesBorrowed = (bookId: number): number => {
     return getBookBorrowings(bookId).length;
   };
 
-  const getLastBorrowedDate = (bookId: number) => {
+  const getLastBorrowedDate = (bookId: number): Date | null => {
     const bookBorrowings = getBookBorrowings(bookId);
     if (bookBorrowings.length === 0) return null;
 
-    const dates = bookBorrowings.map((b: any) => new Date(b.borrowDate));
+    const dates = bookBorrowings.map((b: Borrowing) => new Date(b.borrowDate));
     return new Date(Math.max(...dates.map(d => d.getTime())));
   };
 
-  const getAverageRating = (bookId: number) => {
-    const bookBorrowings = getBookBorrowings(bookId).filter((b: any) => b.rating);
+  const getAverageRating = (bookId: number): string | null => {
+    const bookBorrowings = getBookBorrowings(bookId).filter((b: Borrowing) => b.rating);
     if (bookBorrowings.length === 0) return null;
 
-    const sum = bookBorrowings.reduce((acc: number, b: any) => acc + b.rating, 0);
+    const sum = bookBorrowings.reduce((acc: number, b: Borrowing) => acc + (b.rating || 0), 0);
     return (sum / bookBorrowings.length).toFixed(1);
   };
 

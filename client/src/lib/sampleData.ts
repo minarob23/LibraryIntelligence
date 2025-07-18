@@ -361,3 +361,16 @@ export const initializeSampleData = () => {
     throw error;
   }
 };
+
+// Sample data for testing
+export const sampleBooks: any[] = [
+  {
+    id: 1,
+    name: 'To Kill a Mockingbird',
+    author: 'Harper Lee',
+    publisher: 'HarperCollins',
+    bookCode: 'BK001',
+    copies: 3,
+    coverImage: '/src/assets/book-covers/cover1.svg',
+  },
+]

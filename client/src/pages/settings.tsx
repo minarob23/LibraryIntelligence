@@ -80,19 +80,15 @@ const Settings = () => {
 
 
   // Fetch data for export
-  const { data: books } = useQuery({ 
-    queryKey: ['/api/books'],
-    refetchInterval: 2000,
-  });
-
+  const { data: books } = useQuery<any[]>({ queryKey: ['/api/books'] });
   const { data: borrowings } = useQuery({ 
     queryKey: ['/api/borrowings'],
     refetchInterval: 2000,
   });
-  const { data: borrowers } = useQuery({ queryKey: ['/api/borrowers'] });
-  const { data: librarians } = useQuery({ queryKey: ['/api/librarians'] });
-  const { data: feedback } = useQuery({ queryKey: ['/api/feedback'] });
-  const { data: research } = useQuery({ queryKey: ['/api/research'] });
+  const { data: borrowers } = useQuery<any[]>({ queryKey: ['/api/borrowers'] });
+  const { data: librarians } = useQuery<any[]>({ queryKey: ['/api/librarians'] });
+  const { data: feedback } = useQuery<any[]>({ queryKey: ['/api/feedback'] });
+  const { data: research } = useQuery<any[]>({ queryKey: ['/api/research'] });
 
 
 
@@ -743,3 +739,4 @@ const Settings = () => {
 };
 
 export default Settings;
+`
