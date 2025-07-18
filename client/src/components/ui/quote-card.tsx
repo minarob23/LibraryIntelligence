@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,7 +32,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
         <div className="absolute top-4 left-4 text-6xl text-blue-500/20 dark:text-blue-400/20 font-serif leading-none">
           "
         </div>
-        
+
         {/* Delete Button */}
         {onDelete && (
           <Button
@@ -51,7 +50,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
           <blockquote className="text-gray-700 dark:text-gray-300 italic text-base leading-relaxed mb-4 pl-4">
             {quote.content}
           </blockquote>
-          
+
           {/* Quote Footer */}
           <div className="flex flex-wrap items-center gap-2 text-sm">
             {quote.page && (
@@ -61,7 +60,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
                 </span>
               </div>
             )}
-            
+
             {quote.chapter && (
               <div className="flex items-center gap-1">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
@@ -69,7 +68,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({
                 </span>
               </div>
             )}
-            
+
             {quote.author && (
               <div className="flex items-center gap-1">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
