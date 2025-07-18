@@ -146,7 +146,7 @@ const BookRecommendations = () => {
       return {
         ...book,
         recommendationScore: Math.round(score),
-        matchReasons: getMatchReasons(book, genrePreferences, new Set(Array.from(favoriteAuthors).map(author => String(author))), favoriteBooks)
+        matchReasons: getMatchReasons(book, genrePreferences, new Set(Array.from(favoriteAuthors).map(author => String(author))), new Set(Array.from(favoriteBooks).map(book => String(book))))
       };
     });
 
